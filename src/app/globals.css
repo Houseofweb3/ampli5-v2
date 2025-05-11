@@ -1,0 +1,160 @@
+@import 'tailwindcss';
+
+* {
+  box-sizing: border-box;
+}
+
+@theme {
+  /* color */
+
+  --color-blue-btn: #106fe8;
+  --color-blue-tx: #1b79f2;
+  --color-blue-bg: #008cff;
+
+  /* typographic */
+  --text-12: 12px;
+  --text-14: 14px;
+  --text-16: 16px;
+  --text-18: 18px;
+  --text-20: 20px;
+  --text-24: 24px;
+  --text-32: 32px;
+  --text-56: 56px;
+
+  /* Spacing */
+  --spacing-8px: 8px;
+  --spacing-9px: 9px;
+  --spacing-12px: 12px;
+  --spacing-16px: 16px;
+  --spacing-18px: 18px;
+  --spacing-28px: 28px;
+  --spacing-32px: 32px;
+  --spacing-36px: 36px;
+  --spacing-40px: 40px;
+  --spacing-48px: 48px;
+  --spacing-60px: 60px;
+  --spacing-82px: 82px;
+  --spacing-86px: 86px;
+  --spacing-118px: 118px;
+  --spacing-180px: 180px;
+
+  /* width */
+  --width-151: 151px;
+
+  /* max-width */
+  --maxwidth-1105: 1104px;
+
+  /* Shadow */
+  --shadow-xl: 0px 4px 0px 0px rgba(0, 0, 0, 1);
+}
+
+@layer base {
+  .xxl {
+    @apply text-4xl lg:text-5xl xl:text-7xl leading-tight font-semibold;
+  }
+  h1,
+  .h1 {
+    @apply text-4xl lg:text-56 leading-normal font-semibold text-black;
+  }
+  h2 {
+    @apply text-24 lg:text-32 leading-normal font-semibold text-black;
+  }
+  .h2 {
+    @apply text-4xl lg:text-5xl leading-none font-extrabold;
+  }
+  h3 {
+    @apply text-20 lg:text-24 font-semibold text-black;
+  }
+  h4,
+  .h4 {
+    @apply text-16 lg:text-18 leading-6 font-bold text-black;
+  }
+  h5 {
+    @apply text-14 font-normal text-black/45;
+  }
+  .text_small {
+    @apply text-12 leading-[12px] text-[#4A474773] font-semibold;
+  }
+  .bg_square::after {
+    @apply content-[""] absolute top-0 left-0 bg-[url('/pattern/Union.png')] bg-contain bg-no-repeat w-full h-full;
+  }
+  .bg_square_bottom::before {
+    @apply content-[""] absolute bottom-0 md:bottom-10 lg:bottom-20 xl:bottom-[118px] right-0 bg-none lg:bg-[url('/pattern/square-bottom.png')] bg-contain bg-no-repeat bg-right w-full h-full max-w-[600px];
+  }
+
+  .hue_aimation {
+    animation: 6s linear infinite hue-rotate;
+  }
+
+  @keyframes hue-rotate {
+    0% {
+      filter: hue-rotate(0);
+    }
+    to {
+      filter: hue-rotate(-360deg);
+    }
+  }
+
+  .text_pattern {
+    text-shadow:
+      3px 3px 0 #000,
+      -1px -1px 0 #000,
+      1px -1px 0 #000;
+    @apply stroke-1 stroke-black text-white;
+  }
+
+  .gradient-border {
+    border-image: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.4),
+        rgba(175, 175, 175, 0.7),
+        rgba(255, 255, 255, 0.4)
+      )
+      1;
+  }
+}
+
+@layer components {
+  .hero_descript p {
+    @apply text-16 lg:text-2xl font-[#010101CC] font-normal text-center;
+  }
+  .brand_slider_title p {
+    @apply text-20 leading-tight font-normal text-[#010101CC];
+  }
+  .bg_blue_pattern {
+    @apply bg-[url('/images/banner/banner.jpg')] bg-cover bg-no-repeat bg-right w-full h-full;
+  }
+  .card_desc p {
+    @apply text-16 lg:text-20 leading-6 lg:leading-8 font-normal text-black;
+  }
+  .grid_content_info p {
+    @apply text-16 lg:text-20 leading-tight font-semibold text-black;
+  }
+  .bgsquare_bottom::before {
+    @apply content-[""] absolute bottom-0 right-0 bg-[url('/pattern/square-bottom1.png')] bg-contain bg-no-repeat bg-center sm:bg-bottom w-full h-full max-w-[600px];
+  }
+  .bg_vertial_pattern::after {
+    @apply content-[""] absolute top-0 left-0 bg-[url('/pattern/pattern_mobile1.png')] sm:bg-[url('/pattern/vertical-pattern.jpg')] bg-cover sm:bg-cover bg-no-repeat w-full h-[235px] sm:h-full sm:max-w-[610px];
+  }
+  .bg_star_pattern::after {
+    @apply content-[""] absolute bottom-[68px] md:bottom-[27px] left-[40px] md:-left-[27px] bg-[url('/icons/Star-1.png')] bg-cover sm:bg-cover bg-no-repeat w-[27px] h-[27px] md:w-[37px] md:h-[37px];
+  }
+  .bg_star_pattern::before {
+    @apply content-[""] absolute top-10 right-[50px] md:-right-[40px] bg-[url('/icons/Star-1.png')] bg-cover sm:bg-cover bg-no-repeat w-[30px] h-[30px] md:w-[47px] md:h-[47px];
+  }
+  .masenory_grid .masenory_grid_item {
+    @apply flex h-full;
+  }
+  .masenory_grid_item img {
+    @apply w-full;
+  }
+  .bg_wave_pattern {
+    @apply bg-[url('/pattern/wave_mobile.png')] sm:bg-[url('/pattern/wave.png')] bg-cover bg-center bg-no-repeat w-full h-full;
+  }
+  .bg-wave_pattern img {
+    @apply w-full h-full;
+  }
+  .bg_wave_info p {
+    @apply text-20 lg:text-32 leading-tight font-medium text-white max-w-[800px] w-full mx-auto;
+  }
+}
