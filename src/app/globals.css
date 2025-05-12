@@ -28,6 +28,7 @@
   --spacing-16px: 16px;
   --spacing-18px: 18px;
   --spacing-28px: 28px;
+  --spacing-30px: 30px;
   --spacing-32px: 32px;
   --spacing-36px: 36px;
   --spacing-40px: 40px;
@@ -156,5 +157,17 @@
   }
   .bg_wave_info p {
     @apply text-20 lg:text-32 leading-tight font-medium text-white max-w-[800px] w-full mx-auto;
+  }
+  .ctm_bounties_details p, .ctm_bounties_details ul li {
+    @apply text-16 lg:text-20 leading-tight font-normal text-[#000000CC] my-5;
+  }
+  .ctm_bounties_details ul {
+    @apply pl-6;
+  }
+  .ctm_bounties_details ul li {
+    @apply list-disc my-0! text-[#000000CC];
+  }
+  .ctm_bounties_details ul li::marker {
+    @apply text-12 font-light;
   }
 }
