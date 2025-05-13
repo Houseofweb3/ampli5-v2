@@ -1,7 +1,11 @@
 @import 'tailwindcss';
 
+:root {
+  --font-bricolage: 'Bricolage Grotesque', sans-serif;
+}
 * {
   box-sizing: border-box;
+  font-family: var(--font-bricolage);
 }
 
 @theme {
@@ -10,6 +14,29 @@
   --color-blue-btn: #106fe8;
   --color-blue-tx: #1b79f2;
   --color-blue-bg: #008cff;
+  --color-light-blue-bg: #7DB6FF;
+  --color-light-blue1-bg: #D8E9FF;
+  --color-light-sky-blue-bg: #93C2FF;
+  --color-purple-bg: #a476de;
+  --color-dark-purple-bg: #6701EC;
+  --color-dark-purple1-bg: #813DD4;
+  --color-cream-bg: #FDF4E9;
+  --color-light-cream-bg: #FFF9F1;
+  --color-cream-bg: #FDF4E9;
+  --color-waterfall-bg: #3EB59F;
+  --color-gray-bg: #878787;
+  --color-light-gray-bg: #d3d3d3;
+  --color-light-gray1-bg: #d0d0d0;
+  --color-light-gray2-bg: #E3E8EE;
+  --color-dark-gray-bg: #5C6578;
+  --color-light-silver-bg: #cdcdcd;
+  --color-yellow-bg: #E5DD04;
+  --color-light-yellow-bg: #FFDD55;
+  --color-alabaster-bg: #FAFAFA;
+  --color-dampened-black-bg: #4A4747;
+  --color-orange-bg: #FF543E;
+  --color-dark-orange-bg: #A32313;
+  --color-green-bg: #306400;
 
   /* typographic */
   --text-12: 12px;
@@ -17,36 +44,113 @@
   --text-16: 16px;
   --text-18: 18px;
   --text-20: 20px;
+  --text-22: 22px;
   --text-24: 24px;
+  --text-26: 26px;
   --text-32: 32px;
+  --text-36: 36px;
   --text-56: 56px;
+  --text-72: 72px;
+
+  /* Lineheight */
+  --leading-12: 12px;
+  --leading-14: 14px;
+  --leading-40: 40px;
+  --leading-58: 58px;
+  --leading-60: 60px;
+  --leading-90: 60px;
+  --leading-110: 110px;
 
   /* Spacing */
+  --spacing-1px: 1px;
+  --spacing-2px: 2px;
+  --spacing-3px: 3px;
+  --spacing-4px: 4px;
+  --spacing-5px: 5px;
+  --spacing-6px: 6px;
+  --spacing-7px: 7px;
   --spacing-8px: 8px;
   --spacing-9px: 9px;
+  --spacing-10px: 10px;
+  --spacing-11px: 11px;
   --spacing-12px: 12px;
   --spacing-16px: 16px;
   --spacing-18px: 18px;
+  --spacing-22px: 22px;
+  --spacing-25px: 25px;
+  --spacing-27px: 27px;
   --spacing-28px: 28px;
   --spacing-30px: 30px;
   --spacing-32px: 32px;
+  --spacing-33px: 33px;
   --spacing-36px: 36px;
+  --spacing-37px: 37px;
   --spacing-40px: 40px;
+  --spacing-44px: 44px;
+  --spacing-47px: 47px;
   --spacing-48px: 48px;
+  --spacing-50px: 50px;
+  --spacing-55px: 55px;
+  --spacing-56px: 56px;
+  --spacing-57px: 57px;
   --spacing-60px: 60px;
+  --spacing-68px: 68px;
+  --spacing-70px: 70px;
+  --spacing-72px: 72px;
+  --spacing-80px: 80px;
   --spacing-82px: 82px;
+  --spacing-84px: 84px;
   --spacing-86px: 86px;
+  --spacing-90px: 90px;
+  --spacing-91px: 91px;
+  --spacing-94px: 94px;
+  --spacing-100px: 100px;
+  --spacing-103px: 103px;
+  --spacing-115px: 115px;
   --spacing-118px: 118px;
+  --spacing-120px: 120px;
+  --spacing-141px: 141px;
+  --spacing-146px: 146px;
+  --spacing-147px: 147px;
+  --spacing-150px: 150px;
+  --spacing-166px: 166px;
+  --spacing-170px: 170px;
   --spacing-180px: 180px;
+  --spacing-200px: 200px;
+  --spacing-204px: 204px;
+  --spacing-235px: 235px;
+  --spacing-257px: 257px;
+  --spacing-300px: 300px;
+  --spacing-400px: 400px;
+  --spacing-473px: 473px;
+  --spacing-554px: 554px;
+  --spacing-600px: 600px;
+  --spacing-610px: 610px;
+  --spacing-725px: 725px;
+  --spacing-800px: 800px;
+  --spacing-835px: 835px;
+  --spacing-1105px: 1105px;
+  --spacing-1200px: 1200px;
+  --spacing-1230px: 1230px;
 
+  /* Radius */
+  --radius-8: 8px;
+  --radius-18: 18px;
+  --radius-20: 20px;
+  --radius-24: 24px;
+  --radius-36: 36px;
+  --radius-44: 44px;
   /* width */
   --width-151: 151px;
 
-  /* max-width */
-  --maxwidth-1105: 1104px;
-
   /* Shadow */
   --shadow-xl: 0px 4px 0px 0px rgba(0, 0, 0, 1);
+  /* z index */
+  --z-index-1: 1;
+  --z-index-2: 2;
+  --z-index-3: 3;
+  --z-index-4: 4;
+  --z-index-5: 5;
 }
 
 @layer base {
@@ -58,10 +162,10 @@
     @apply text-4xl lg:text-56 leading-normal font-semibold text-black;
   }
   h2 {
-    @apply text-24 lg:text-32 leading-normal font-semibold text-black;
+    @apply text-24 lg:text-32 leading-normal lg:leading-58 font-semibold text-black;
   }
   .h2 {
-    @apply text-4xl lg:text-5xl leading-none font-extrabold;
+    @apply text-4xl lg:text-5xl leading-normal lg:leading-58 font-extrabold;
   }
   h3 {
     @apply text-20 lg:text-24 font-semibold text-black;
@@ -74,15 +178,14 @@
     @apply text-14 font-normal text-black/45;
   }
   .text_small {
-    @apply text-12 leading-[12px] text-[#4A474773] font-semibold;
+    @apply text-12 leading-12 text-dampened-black-bg/45 font-semibold;
   }
   .bg_square::after {
-    @apply content-[""] absolute top-0 left-0 bg-[url('/pattern/Union.png')] bg-contain bg-no-repeat w-full h-full;
+    @apply content-[""] absolute top-0 left-0 bg-[url('/pattern/Union.png')] bg-contain bg-no-repeat w-full h-full max-w-725px;
   }
   .bg_square_bottom::before {
-    @apply content-[""] absolute bottom-0 md:bottom-10 lg:bottom-20 xl:bottom-[118px] right-0 bg-none lg:bg-[url('/pattern/square-bottom.png')] bg-contain bg-no-repeat bg-right w-full h-full max-w-[600px];
+    @apply content-[""] absolute bottom-0 md:bottom-10 lg:bottom-20 xl:bottom-118px right-0 bg-none lg:bg-[url('/pattern/square-bottom.png')] bg-contain bg-no-repeat bg-right w-full h-full max-w-600px;
   }
-
   .hue_aimation {
     animation: 6s linear infinite hue-rotate;
   }
@@ -113,14 +216,15 @@
       )
       1;
   }
+
 }
 
 @layer components {
   .hero_descript p {
-    @apply text-16 lg:text-2xl font-[#010101CC] font-normal text-center;
+    @apply text-16 lg:text-2xl text-black/80 font-normal text-center;
   }
   .brand_slider_title p {
-    @apply text-20 leading-tight font-normal text-[#010101CC];
+    @apply text-20 leading-tight font-normal text-black/80;
   }
   .bg_blue_pattern {
     @apply bg-[url('/images/banner/banner.jpg')] bg-cover bg-no-repeat bg-right w-full h-full;
@@ -132,16 +236,16 @@
     @apply text-16 lg:text-20 leading-tight font-semibold text-black;
   }
   .bgsquare_bottom::before {
-    @apply content-[""] absolute bottom-0 right-0 bg-[url('/pattern/square-bottom1.png')] bg-contain bg-no-repeat bg-center sm:bg-bottom w-full h-full max-w-[600px];
+    @apply content-[""] absolute bottom-0 right-0 bg-[url('/pattern/square-bottom1.png')] bg-contain bg-no-repeat bg-center sm:bg-bottom w-full h-full max-w-600px;
   }
   .bg_vertial_pattern::after {
-    @apply content-[""] absolute top-0 left-0 bg-[url('/pattern/pattern_mobile1.png')] sm:bg-[url('/pattern/vertical-pattern.jpg')] bg-cover sm:bg-cover bg-no-repeat w-full h-[235px] sm:h-full sm:max-w-[610px];
+    @apply content-[""] absolute top-0 left-0 bg-[url('/pattern/pattern_mobile1.png')] sm:bg-[url('/pattern/vertical-pattern.jpg')] bg-cover sm:bg-cover bg-no-repeat w-full h-235px sm:h-full sm:max-w-610px;
   }
   .bg_star_pattern::after {
-    @apply content-[""] absolute bottom-[68px] md:bottom-[27px] left-[40px] md:-left-[27px] bg-[url('/icons/Star-1.png')] bg-cover sm:bg-cover bg-no-repeat w-[27px] h-[27px] md:w-[37px] md:h-[37px];
+    @apply content-[""] absolute bottom-68px md:bottom-27px left-40px md:-left-27px bg-[url('/icons/Star-1.png')] bg-cover sm:bg-cover bg-no-repeat w-27px h-27px md:w-37px md:h-37px;
   }
   .bg_star_pattern::before {
-    @apply content-[""] absolute top-10 right-[50px] md:-right-[40px] bg-[url('/icons/Star-1.png')] bg-cover sm:bg-cover bg-no-repeat w-[30px] h-[30px] md:w-[47px] md:h-[47px];
+    @apply content-[""] absolute top-10 right-50px md:-right-40px bg-[url('/icons/Star-1.png')] bg-cover sm:bg-cover bg-no-repeat w-30px h-30px md:w-47px md:h-47px;
   }
   .masenory_grid .masenory_grid_item {
     @apply flex h-full;
@@ -156,16 +260,16 @@
     @apply w-full h-full;
   }
   .bg_wave_info p {
-    @apply text-20 lg:text-32 leading-tight font-medium text-white max-w-[800px] w-full mx-auto;
+    @apply text-20 lg:text-32 leading-tight font-medium text-white max-w-800px w-full mx-auto;
   }
-  .ctm_bounties_details p, .ctm_bounties_details ul li {
-    @apply text-16 lg:text-20 leading-tight font-normal text-[#000000CC] my-5;
+  .ctm_bounties_details p {
+    @apply text-16 lg:text-20 leading-tight font-normal text-black/80 my-5; 
   }
   .ctm_bounties_details ul {
     @apply pl-6;
   }
   .ctm_bounties_details ul li {
-    @apply list-disc my-0! text-[#000000CC];
+    @apply list-disc text-16 lg:text-20 leading-tight font-normal text-black/80;
   }
   .ctm_bounties_details ul li::marker {
     @apply text-12 font-light;

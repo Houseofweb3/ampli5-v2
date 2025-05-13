@@ -13,7 +13,7 @@ export default function BountiesCard() {
   ];
   return (
     <div className="border border-solid border-black  rounded-3xl bg-white p-4 lg:p-6 relative">
-      <div className="bg-blue-bg text-white text-12 lg:text-14 leading-[14px] font-semibold rounded-tr-3xl rounded-bl-3xl w-max py-8px px-16px absolute -top-[1px] -right-[1px] capitalize">
+      <div className="bg-blue-bg text-white text-12 lg:text-14 leading-14 font-semibold rounded-tr-3xl rounded-bl-3xl w-max py-8px px-16px absolute -top-1px -right-1px capitalize">
         open
       </div>
       <div className="flex flex-col gap-4 lg:gap-6">
@@ -29,26 +29,26 @@ export default function BountiesCard() {
               </Link>
             </div>
           </div>
-          <div className=" border border-solid border-black rounded-full py-[7px] px-[11px] text-16px font-semibold bg-[#6701EC] text-white flex items-center justify-center flex-shrink-0 flex-flex-1">
+          <div className=" border border-solid border-black rounded-full py-7px px-11px text-16px font-semibold bg-dark-purple-bg text-white flex items-center justify-center flex-shrink-0 flex-flex-1">
             2800 usdt
           </div>
         </div>
         <div className="flex flex-col gap-12 lg:gap-4">
-          <div className=" flex items-start gap-4">
-            <div className="flex-1/2">
-              <h5 className="mb-[6px]">Time Left</h5>
+          <div className="flex flex-start">
+            <div className="pr-3 flex-grow-1">
+              <h5 className="mb-6px">Time Left</h5>
               <h4>3 days</h4>
             </div>
-            <div className="flex-1/2">
-              <h5 className="mb-[6px]">No. of Submissions:</h5>
-              <h4>43</h4>
+            <div className=" px-3 border-l border-r border-solid border-black/20 flex-grow-1">
+              <h5 className="mb-6px">Min. Yaps Req.</h5>
+              <h4>80</h4>
+            </div>
+            <div className="pl-3 flex-grow-1">
+              <h5 className="mb-6px">Bounty Type</h5>
+              <h4>Video</h4>
             </div>
           </div>
           <div className=" flex items-center gap-4">
-            <div className="flex-1/2">
-              <h5 className="mb-[6px]">Time Left</h5>
-              <h4>3 days</h4>
-            </div>
             <div className="flex-1/2">
               <ExploreBtn >Explore</ExploreBtn>
               {/* <div className="flex justify-start -space-x-1.5">

@@ -51,8 +51,8 @@ export default function CreateBountiesForm() {
           value={form.message}
           onChange={handleChange}
         />
-        <button className="bg-[#813DD4] text-center text-white w-full py-2 text-20 font-bold rounded mt-4 cursor-pointer">
-          Submit
+        <button className="bg-dark-purple1-bg text-center text-white w-full py-2 text-20 font-bold rounded mt-4 cursor-pointer">
+          Get in Touch
         </button>
       </div>
     </form>

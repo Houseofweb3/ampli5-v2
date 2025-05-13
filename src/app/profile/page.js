@@ -10,7 +10,7 @@ export default function pages() {
   return (
     <div>
       <div>
-        <div className="bg-[#FDF4E9] relative pt-[56px] bg_square w-full overflow-x-hidden">
+        <div className="bg-cream-bg relative pt-[56px] bg_square w-full overflow-x-hidden">
           <Container>
             <div className="mb-6 lg:mb-9">
               <Title>My Profile</Title>
@@ -27,7 +27,7 @@ export default function pages() {
                       className="w-[79px] h-[79px]"
                     />{' '}
                   </div>
-                  <div className="">
+                  <div>
                     <h4>Deepak Sharma</h4>
                     <Link className="text_small" href="#">
                       @deepdesign16180

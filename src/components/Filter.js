@@ -20,7 +20,7 @@ export default function Filter() {
     const isActive = status === btnStatus;
     return isActive
       ? 'border border-black py-2 flex justify-center min-w-[90px]'
-      : 'bg-transparent border-none text-[#878787] py-2 flex justify-center min-w-[90px]';
+      : 'bg-transparent border-none text-gray-bg py-2 flex justify-center min-w-[90px]';
   };
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function Filter() {
         <Button
           active={isCategoryOpen}
           onClick={() => setIsCategoryOpen((prev) => !prev)}
-          className={`gap-3 px-5 py-2.5 border-black ${isCategoryOpen ? '' : 'bg-transparent text-[#878787]'}`}
+          className={`gap-3 px-5 py-2.5 border-black ${isCategoryOpen ? '' : 'bg-transparent text-gray-bg'}`}
         >
           <Image
             src="/icons/sorting-05.png"
@@ -77,7 +77,7 @@ export default function Filter() {
         </Button>
 
         {isCategoryOpen && (
-          <div className="absolute top-14 left-0 bg-white border border-[#878787] rounded-xl p-4 px-7 z-50 min-w-[150px]">
+          <div className="absolute top-14 left-0 bg-white border border-gray-bg rounded-xl p-4 px-7 z-50 min-w-150px">
             {['Thread', 'Article', 'Video', 'Meme'].map((label) => (
               <React.Fragment key={label}>
                 <Button
@@ -87,9 +87,9 @@ export default function Filter() {
                     setCategory(label.toLowerCase());
                     setIsCategoryOpen(false);
                   }}
-                  className="bg-transparent font-normal text-black py-3 px-0 w-full text-left border-none border-[#d3d3d3]"
+                  className="bg-transparent font-normal text-black py-3 px-0 w-full text-left border-none border-light-gray-bg"
                 />
-                <hr className="border-[#d3d3d3] nth-last-[1]:border-none" />
+                <hr className="border-light-gray-bg nth-last-[1]:border-none" />
               </React.Fragment>
             ))}
           </div>
@@ -101,7 +101,7 @@ export default function Filter() {
         <Button
           active={isSortingOpen}
           onClick={() => setIsSortingOpen((prev) => !prev)}
-          className={`flex  gap-3 px-5 py-2.5 border-black  ${isSortingOpen ? '' : 'bg-transparent text-[#878787]'}`}
+          className={`flex  gap-3 px-5 py-2.5 border-black  ${isSortingOpen ? '' : 'bg-transparent text-gray-bg'}`}
         >
           <span> Sort by</span>
           <Image
@@ -118,7 +118,7 @@ export default function Filter() {
         </Button>
 
         {isSortingOpen && (
-          <div className="absolute top-14 left-0 bg-white border border-[#878787] rounded-xl py-2 px-7 z-50 min-w-[150px]">
+          <div className="absolute top-14 left-0 bg-white border border-gray-bg rounded-xl py-2 px-7 z-50 min-w-150px">
             {['Latest', 'Rewards'].map((label) => (
               <React.Fragment key={label}>
                 <Button
@@ -128,9 +128,9 @@ export default function Filter() {
                     setSorting(label.toLowerCase());
                     setIsSortingOpen(false);
                   }}
-                  className="bg-transparent font-normal text-black py-3 px-0 w-full text-left border-none border-[#d3d3d3]"
+                  className="bg-transparent font-normal text-black py-3 px-0 w-full text-left border-none border-light-gray-bg"
                 />
-                <hr className="border-[#d3d3d3] nth-last-[1]:border-none" />
+                <hr className="border-light-gray-bg nth-last-[1]:border-none" />
               </React.Fragment>
             ))}
           </div>

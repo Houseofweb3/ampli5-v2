@@ -5,6 +5,7 @@ import Image from 'next/image';
 import ExploreBtn from './ui/explorebtn';
 import Link from 'next/link';
 import { AuthProfile } from '@/data/data';
+import PrimaryButton from './ui/PrimaryButton';
 
 export default function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -32,13 +33,13 @@ export default function Navbar() {
               alt="Logo"
               width={84}
               height={33}
-              className="w-[84px] lg:w-[115px] h-full"
+              className="w-84px lg:w-115px h-full"
               src="/logo/ampli5.png"
             />
           </Link>
           <div className="flex items-center gap-2 sm:gap-4">
             <Link href="/for-project" className="font-medium text-18">
-              <ExploreBtn className="bg-white hover:bg-white text-blue-btn! hover:text-white border-blue-btn shadow-none px-4 lg:px-7  py-1.5 lg:py-3 text-14 lg:text-20">
+              <ExploreBtn className="bg-white hover:bg-white text-blue-btn! hover:text-white border-blue-btn shadow-none px-4 lg:px-7  py-1.5 lg:py-4 text-14 lg:text-20">
                 For Projects
                 <Image
                   alt="Arrow"
@@ -50,9 +51,9 @@ export default function Navbar() {
               </ExploreBtn>
             </Link>
 
-            <ExploreBtn className="bg-blue-btn text-white! hover:text-white  px-4 lg:px-7 py-1.5 lg:py-3 text-14 lg:text-20">
+            <PrimaryButton>
               For Creators
-            </ExploreBtn>
+            </PrimaryButton>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4">
@@ -63,13 +64,13 @@ export default function Navbar() {
             <div className="relative" ref={profileRef}>
               <ExploreBtn
                 onClick={() => setIsProfileOpen((pre) => !pre)}
-                className="bg-blue-btn text-white! hover:text-white p-0 rounded-full w-[29px] h-[29px] lg:w-[58px] lg:h-[58px] text-14 lg:text-20 hover:shadow-xl hover:bg-blue-btn"
+                className="bg-blue-btn text-white! hover:text-white p-0 rounded-full w-30px h-30px lg:w-57px lg:h-57px text-14 lg:text-20 hover:shadow-xl hover:bg-blue-btn"
               >
                 AJ
               </ExploreBtn>
 
               {isProfileOpen ? (
-                <div className="absolute top-24 right-0 bg-white border border-[#878787] rounded-xl p-2 px-7 z-50 min-w-[200px]">
+                <div className="absolute top-24 right-0 bg-white border border-gray-bg rounded-xl p-2 px-7 z-50 min-w-200px">
                   {AuthProfile.map((value, index) => (
                     <Fragment key={value.id}>
                       <Link
@@ -79,7 +80,7 @@ export default function Navbar() {
                       >
                         {value.label}
                       </Link>
-                      {index < AuthProfile.length - 1 && <hr className="border-[#d3d3d3]" />}
+                      {index < AuthProfile.length - 1 && <hr className="border-light-gray-bg" />}
                     </Fragment>
                   ))}
                 </div>

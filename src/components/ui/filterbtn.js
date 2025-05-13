@@ -8,7 +8,7 @@ export default function Button({
   active = false,
   icon = null,
   img = null,
-  border = 'border-[#878787]',
+  border = 'border-gray-bg',
   size = 24,
   children,
   className = '',
@@ -21,7 +21,7 @@ export default function Button({
       className={cn(
         'flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-normal text-white transition-colors text-sm border',
         border,
-        active ? 'bg-blue-btn border-transparent' : 'bg-[#CDCDCD] ',
+        active ? 'bg-blue-btn border-transparent' : 'bg-light-silver-bg ',
         className
       )}
       {...props}
