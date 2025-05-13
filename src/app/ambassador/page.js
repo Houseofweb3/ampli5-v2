@@ -1,14 +1,10 @@
-'use client';
-import React, { useState } from 'react';
+import React from 'react';
+import Image from 'next/image';
 import Card from '@/components/ui/card';
 import Container from '@/components/ui/container';
-import ExploreBtn from '@/components/ui/explorebtn';
-import Image from 'next/image';
-
-
+import SecondaryButton from '@/components/ui/SecondaryButton';
 
 export default function pages() {
-  
   return (
     <div>
       <div className="bg-[#FDF4E9] relative pt-56px pb-14 bg_square overflow-x-hidden ">
@@ -118,9 +114,7 @@ export default function pages() {
               </Card>
             </div>
 
-            <ExploreBtn className=" w-full md:w-fit text-black hover:text-white px-4 lg:px-7 py-1.5 lg:py-3 text-14 lg:text-20 mx-auto">
-              Try Ampli5
-            </ExploreBtn>
+            <SecondaryButton className=" w-full md:w-fit mx-auto px-10">Try Ampli5</SecondaryButton>
           </div>
         </Container>
       </div>

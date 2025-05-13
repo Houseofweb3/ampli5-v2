@@ -1,3 +1,4 @@
+import RequireAuth from '@/components/ProtectedAuth';
 import Card from '@/components/ui/card';
 import Container from '@/components/ui/container';
 import ExploreBtn from '@/components/ui/explorebtn';
@@ -8,7 +9,7 @@ import React from 'react';
 
 export default function pages() {
   return (
-    <div>
+    <RequireAuth>
       <div>
         <div className="bg-cream-bg relative pt-[56px] bg_square w-full overflow-x-hidden">
           <Container>
@@ -27,7 +28,7 @@ export default function pages() {
                       className="w-[79px] h-[79px]"
                     />{' '}
                   </div>
-                  <div>
+                  <div className="">
                     <h4>Deepak Sharma</h4>
                     <Link className="text_small" href="#">
                       @deepdesign16180
@@ -42,7 +43,7 @@ export default function pages() {
                     </div>
                   </div>
                 </div>
-                <div className='my-6 sm:my-0 w-full'>
+                <div className="my-6 sm:my-0 w-full">
                   <ExploreBtn className="bg-white hover:bg-white text-blue-btn! hover:text-white border-blue-btn shadow-none px-7  py-3 text-16 font-bold w-full sm:w-fit ml-auto rounded-full sm:rounded-xl">
                     Disconnect
                     <Image
@@ -57,7 +58,7 @@ export default function pages() {
               </div>
 
               <div className="mt-4">
-                <div className='mb-4'>
+                <div className="mb-4">
                   <h3>Stats</h3>
                 </div>
                 <div className="bg-[#DAE9FB] rounded-2xl ">
@@ -106,6 +107,6 @@ export default function pages() {
           </Container>
         </div>
       </div>
-    </div>
+    </RequireAuth>
   );
 }

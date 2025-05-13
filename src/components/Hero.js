@@ -38,7 +38,7 @@ export default function Hero() {
             <p>Turn your post into profits</p>
           </div>
           <div className="flex items-center justify-center">
-            <PrimaryButton>
+            <PrimaryButton className="text-white">
               Explore
             </PrimaryButton>
           </div>

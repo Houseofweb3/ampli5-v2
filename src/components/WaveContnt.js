@@ -1,6 +1,4 @@
-import Image from 'next/image'
 import React from 'react'
-import ExploreBtn from './ui/explorebtn'
 import SecondaryButton from './ui/SecondaryButton'
 
 export default function WaveContnt() {

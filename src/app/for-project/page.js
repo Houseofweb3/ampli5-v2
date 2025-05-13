@@ -1,5 +1,4 @@
 import Container from '@/components/ui/container';
-import ExploreBtn from '@/components/ui/explorebtn';
 import Title from '@/components/ui/title';
 import { forProjectLinks } from '@/data/data';
 import Image from 'next/image';

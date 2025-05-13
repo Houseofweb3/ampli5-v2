@@ -51,7 +51,7 @@ export default function Navbar() {
               </ExploreBtn>
             </Link>
 
-            <PrimaryButton>
+            <PrimaryButton className="text-white">
               For Creators
             </PrimaryButton>
           </div>
