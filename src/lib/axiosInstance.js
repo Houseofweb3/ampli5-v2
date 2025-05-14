@@ -1,6 +1,6 @@
-import { useAuthStore } from '@/store/auth';
 import axios from 'axios';
 import Router from 'next/router';
+import {useAuthStore} from '@/store/auth';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:3001/api/v1',

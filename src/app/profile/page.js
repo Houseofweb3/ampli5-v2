@@ -1,13 +1,15 @@
+'use client';
 import RequireAuth from '@/components/ProtectedAuth';
 import Card from '@/components/ui/card';
 import Container from '@/components/ui/container';
-import ExploreBtn from '@/components/ui/explorebtn';
 import Title from '@/components/ui/title';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import TwitterLogout from '@/components/TwitterLogout';
 
 export default function pages() {
+
   return (
     <RequireAuth>
       <div>
@@ -44,16 +46,7 @@ export default function pages() {
                   </div>
                 </div>
                 <div className="my-6 sm:my-0 w-full">
-                  <ExploreBtn className="bg-white hover:bg-white text-blue-btn! hover:text-white border-blue-btn shadow-none px-7  py-3 text-16 font-bold w-full sm:w-fit ml-auto rounded-full sm:rounded-xl">
-                    Disconnect
-                    <Image
-                      alt="Arrow"
-                      width={1000}
-                      height={1000}
-                      className="w-6 h-6 ml-2 hidden sm:block"
-                      src="/icons/new-twitter.png"
-                    />
-                  </ExploreBtn>
+                  <TwitterLogout />
                 </div>
               </div>
 

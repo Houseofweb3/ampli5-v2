@@ -18,16 +18,11 @@ export default function page() {
               <Link
                 href={item.href}
                 key={index}
-                className="border-2  border border-solid border-black bg-white rounded-2xl p-3 lg:p-4  flex items-center justify-between gap-4 "
+                className="border-2  border-solid border-black bg-white rounded-2xl p-3 lg:p-4  flex items-center justify-between gap-4 "
               >
-                <h2>
-                  {}
-                  {item.title}
-                </h2>
+                <h2>{item.title}</h2>
                 <div>
-                  <button
-                    className="border border-solid rounded-4xl border-black  w-40px lg:w-12 h-40px lg:h-12 bg-[#E5DD04] text-black  capitalize transition duration-300 ease-in-out flex items-center justify-center shadow-2xl hover:shadow-none"
-                  >
+                  <button className="border border-solid rounded-4xl border-black  w-40px lg:w-12 h-40px lg:h-12 bg-[#E5DD04] text-black  capitalize transition duration-300 ease-in-out flex items-center justify-center shadow-2xl hover:shadow-none">
                     <Image
                       src="/icons/arrow-up-right-01.png"
                       height={24}

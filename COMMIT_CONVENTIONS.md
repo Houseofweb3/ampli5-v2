@@ -17,6 +17,7 @@ To maintain clarity and consistency in our codebase, use the following commit me
 | build:     | For build system or dependency changes        | build: update webpack config                 |
 | ci:        | For CI/CD configuration updates               | ci: add GitHub Actions for testing           |
 | revert:    | For reverting previous commits                | revert: undo homepage layout changes         |
+| wip:       | For work in progress (not ready for review)   | 	wip: implement filter logic for bounties    |
 
 ## ✅ Guidelines
 
