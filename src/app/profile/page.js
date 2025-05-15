@@ -11,7 +11,7 @@ import TwitterLogout from '@/components/TwitterLogout';
 export default function pages() {
 
   return (
-    <RequireAuth>
+     <RequireAuth>
       <div>
         <div className="bg-cream-bg relative pt-[56px] bg_square w-full overflow-x-hidden">
           <Container>
@@ -45,7 +45,21 @@ export default function pages() {
                     </div>
                   </div>
                 </div>
-                <div className="my-6 sm:my-0 w-full">
+                
+                <div className="my-6 sm:my-0 w-full flex flex-col gap-6">
+                  <div className=' p-4 bg-black rounded-2xl  w-fit flex-shrink-0 ml-auto hidden sm:block'>
+                    <h1 className='text-white font-normal leading-none'>45</h1>
+                    <div className=' flex items-center gap-3'>
+                      <Image
+                      src={'/icons/image-71.png'}
+                      alt="profile"
+                      height={24}
+                      width={24}
+                      className="w-6 h-6" 
+                    />
+                    <span className='text-white'>Yaps</span>
+                    </div>
+                  </div>
                   <TwitterLogout />
                 </div>
               </div>
@@ -100,6 +114,6 @@ export default function pages() {
           </Container>
         </div>
       </div>
-    </RequireAuth>
+     </RequireAuth>
   );
 }

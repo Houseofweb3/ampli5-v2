@@ -7,7 +7,7 @@ import React from 'react';
 
 export default function page() {
   return (
-    <div className="bg-[#FDF4E9] relative pt-[56px] pb-10 bg_square w-screen overflow-x-hidden">
+    <div className="bg-cream-bg relative pt-[56px] pb-10 bg_square w-screen overflow-x-hidden">
       <Container>
         <div className="mb-6 lg:mb-9">
           <Title>For Projects</Title>
