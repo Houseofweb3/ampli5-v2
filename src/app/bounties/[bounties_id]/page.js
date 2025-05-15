@@ -1,3 +1,4 @@
+import BountyPool from '@/components/BountyPool';
 import Card from '@/components/ui/card';
 import Container from '@/components/ui/container';
 import ExploreBtn from '@/components/ui/explorebtn';
@@ -61,8 +62,8 @@ export default function page() {
         </Container>
 
         <div className="w-full">
-          <Container>
-            <Card className="ctm_bounties_details p-4 lg:p-9">
+          <Container className="pb-4px">
+            <Card className="ctm_bounties_details p-4 lg:p-9 shadow-xl">
               <h2 className="text-36"> About the Project</h2>
               <p>
                 ZEUS Exchange is a fully on-chain perpetual DEX built on the Base network, designed
@@ -203,7 +204,7 @@ export default function page() {
                   <li className="flex gap-1 py-1 group">
                     <span className="font-bold">Website:</span>
                     <Link href="/team" className="flex gap-2">
-                      <span className="text-18 group-hover:text-yellow-bg transition-all duration-300 ease-in-out break-keep">
+                      <span className="text-18 group-hover:text-yellow-bg transition-all duration-300 ease-in-out break-words">
                         https://zeustrade.io
                       </span>
                       <Image
@@ -217,8 +218,8 @@ export default function page() {
                   </li>
                   <li className="flex gap-1 py-1 group">
                     <span className="font-bold">Website:</span>
-                    <Link href="/team" className="flex gap-2">
-                      <span className="text-18 group-hover:text-yellow-bg transition-all duration-300 ease-in-out break-keep">
+                    <Link href="/team" className="flex gap-2 break-all">
+                      <span className="text-18 group-hover:text-yellow-bg transition-all duration-300 ease-in-out break-words">
                         {' '}
                         https://twitter.com/zeus_exchange
                       </span>
@@ -234,7 +235,7 @@ export default function page() {
                   <li className="flex gap-1 py-1 group">
                     <span className="font-bold">Docs:</span>
                     <Link href="/team" className="flex items-center gap-2">
-                      <span className="text-18 group-hover:text-yellow-bg transition-all duration-300 ease-in-out break-keep">
+                      <span className="text-18 group-hover:text-yellow-bg transition-all duration-300 ease-in-out break-words">
                         {' '}
                         https://zeus-exchange.gitbook.io/white-paper-zeus-exchange
                       </span>
@@ -250,7 +251,7 @@ export default function page() {
                 </ul>
               </div>
 
-              <div className="">
+              <div>
                 <h2>Bounties Inspiration</h2>
                 <ul className="flex flex-col p-0 mt-4 w-fit mb-9">
                   <li className="flex flex-col md:flex-row gap-1 py-1 group">
@@ -369,6 +370,7 @@ export default function page() {
               </div>
             </Card>
           </Container>
+          <BountyPool></BountyPool>
         </div>
       </div>
     </div>
