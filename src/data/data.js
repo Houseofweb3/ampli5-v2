@@ -31,3 +31,18 @@ export const forProjectLinks = [
   { title: 'Ambassador Program', href: '/ambassador' },
   { title: 'Founder-led Marketing', href: '/founder-led' },
 ];
+
+export const XSliderData = [
+  { url: '/images/content/image.png' },
+  { url: '/images/content/image1.png' },
+  { url: '/images/content/image2.png' },
+  { url: '/images/content/image3.png' },
+  { url: '/images/content/image3.png' },
+  { url: '/images/content/image3.png' },
+];
+export const YoutubeSliderData = [
+  { url: '/images/content/image.png' },
+  { url: '/images/content/image1.png' },
+  { url: '/images/content/image2.png' },
+  { url: '/images/content/image3.png' },
+];

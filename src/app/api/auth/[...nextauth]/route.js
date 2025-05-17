@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import TwitterProvider from 'next-auth/providers/twitter';
 import axios from 'axios';
+import { URLSearchParams } from 'url';
 
 export const authOptions = {
   providers: [
@@ -14,25 +15,31 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, account, user, profile }) {
       if (account && user) {
+        const username = profile?.username;
+
         token.id = user.id;
-        token.username = profile?.username;
+        token.username = username;
         token.name = user.name;
-        token.picture = user.image;
         token.email = user.email;
-        token.apiToken = user.id;
         token.apiUser = {
-          name: profile?.username || user.name,
-          profile: profile?.username || user.name,
+          username,
+          name: user.name,
+          email: user.email,
         };
 
         try {
-          //           const res = await axios.post('https://your-api.com/auth', {
-          //             email: user.email,
-          //           });
-          //
-          //           console.log(res);
-        } catch (error) {
-          console.error('Failed to fetch external API token/user:', error);
+          const res = await axios.get(`https://api.kaito.ai/api/v1/yaps?username=${username}`);
+          console.log(res, 'data');
+          const data = res.data;
+
+          if (data.message) {
+            token.kaitoError = 'You are not eligible to join ampli5';
+          } else {
+            token.yaps_all = data.yaps_all;
+          }
+        } catch (err) {
+          console.error('Kaito API error:', err.message);
+          token.kaitoError = 'Failed to fetch Kaito score';
         }
       }
       return token;
@@ -45,7 +52,18 @@ export const authOptions = {
       session.user.email = token.email;
       session.apiToken = token.apiToken || null;
       session.apiUser = token.apiUser || null;
+      session.yaps_all = token.yaps_all || null;
+      session.kaitoError = token.kaitoError || null;
       return session;
+    },
+
+    async redirect({ url, baseUrl }) {
+      const params = new URLSearchParams({
+        username: 'custom_user', // You may replace this with a real value from session or token
+        status: 'success',
+      });
+
+      return `${baseUrl}/signup?${params.toString()}`;
     },
   },
 };

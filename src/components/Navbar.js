@@ -76,23 +76,21 @@ export default function Navbar() {
             </div>
           ) : (
             <div className="flex items-center gap-2 sm:gap-4">
-              <Link href="/for-project" className="font-medium text-18">
-                <ExploreBtn className="bg-white hover:bg-white text-blue-btn! hover:text-white border-blue-btn shadow-none px-4 lg:px-7  py-1.5 lg:py-4 text-14 lg:text-20">
-                  For Projects
-                  <Image
-                    alt="Arrow"
-                    width={1000}
-                    height={1000}
-                    className="w-6 h-6 ml-2 hidden sm:block"
-                    src="/icons/rocket-01.png"
-                  />
-                </ExploreBtn>
+              <Link
+                href="/for-project"
+                className="border border-solid rounded-4xl flex items-center justify-center lg:text-xl font-medium capitalize bg-white  text-blue-btn border-blue-btn s px-4 lg:px-7 py-1.5 lg:py-4 text-14 lg:text-20"
+              >
+                For Projects
+                <Image
+                  alt="Arrow"
+                  width={1000}
+                  height={1000}
+                  className="w-6 h-6 ml-2 hidden sm:block"
+                  src="/icons/rocket-01.png"
+                />
               </Link>
 
-              <PrimaryButton
-                className="text-white"
-                onClick={() => signIn('twitter', { callbackUrl: '/' })}
-              >
+              <PrimaryButton className="text-white" onClick={() => signIn('twitter')}>
                 For Creators
               </PrimaryButton>
             </div>

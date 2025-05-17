@@ -9,7 +9,6 @@ export default function SessionHandler() {
   const { data: session } = useSession();
   useEffect(() => {
     if (session?.apiToken && session?.apiUser) {
-      console.log({ user: session.apiUser, token: session.apiToken });
       data.login({ user: session.apiUser, token: session.apiToken });
     }
   }, [session]);

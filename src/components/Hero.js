@@ -6,10 +6,11 @@ import Image from 'next/image';
 import HowItWork from './HowItWork';
 import IconText from './Icontext';
 import CardImage from './CardImage';
-import LatestPerform from './LatestPerform';
 import PrimaryButton from './ui/PrimaryButton';
 import { useRouter } from 'next/navigation';
 import WaveContent from './WaveContent';
+import EffectSlider from './EffectSlider';
+import { XSliderData, YoutubeSliderData } from '@/data/data';
 
 export default function Hero() {
   const router = useRouter();
@@ -97,10 +98,19 @@ export default function Hero() {
             alt="img"
           />
         </div>
-        <LatestPerform></LatestPerform>
+        <div className="pt-60px lg:pt-147px relative z-1">
+          <div className="bg_star_pattern text_pattern relative text-waterfall-bg text-center text-4xl leading-tight lg:text-5xl lg:leading-58px font-extrabold pt-7 pb-16 px-7 w-fit mx-auto max-w-300px md:max-w-full">
+            Latest Performing Content
+          </div>
+        </div>
+        <EffectSlider data={XSliderData}>
+          <h2> X</h2>
+        </EffectSlider>
+        <EffectSlider data={YoutubeSliderData}>
+          <h2> Youtube</h2>
+        </EffectSlider>
       </div>
-
-      <div className="bg_wave_pattern relative -mt-100px sm:-mt-400px">
+      <div className="bg_wave_pattern relative -mt-100px sm:-mt-200px">
         <WaveContent></WaveContent>
       </div>
     </>

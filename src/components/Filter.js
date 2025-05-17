@@ -63,7 +63,7 @@ export default function Filter({
 
       <div className="flex gap-2 sm:gap-3 border rounded-xl p-1 bg-white">
         {BountiesStatusFilter?.map((label) => {
-          const value = label === 'All' ? null : label.value.toLowerCase();
+          const value = label.value === 'all' ? null : label.value.toLowerCase();
           return (
             <Button
               key={label.label}
