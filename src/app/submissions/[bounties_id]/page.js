@@ -15,10 +15,10 @@ export default function page() {
           height={1440}
           width={257}
           alt="img"
-          className="w-full h-[257px] object-cover"
+          className="w-full h-257px object-cover"
         />
       </div>
-      <div className="bg_square relative bg-[#FDF4E9]  ">
+      <div className="bg_square relative bg-cream-bg">
         <Container>
           <div className="w-full  relative flex flex-col">
             <Image
@@ -26,21 +26,21 @@ export default function page() {
               height={141}
               width={141}
               alt="img"
-              className="rounded-full w-[80px] h-[80px] md:w-[141px] md:h-[141px]  border-2 border-white mt-[-40px] md:mt-[-80px] "
+              className="rounded-full w-80px h-80px md:w-141px md:h-141px border-2 border-white -mt-40px md:-mt-80px "
             />
             <div className="mb-8 w-full sm:flex  justify-between items-end">
               <div>
                 <h2 className="my-4">Helium Wars</h2>
                 <div className="flex gap-4">
-                  <div className="w-fit text-white rounded-2xl bg-[#FF543E] border border-[#A32313] py-2 px-3 flex gap-1.5 justify-between items-center">
+                  <div className="w-fit text-white rounded-2xl bg-orange-bg border border-dark-orange-bg py-2 px-3 flex gap-1.5 justify-between items-center">
                     <Image src="/icons/ai-video.png" height={24} width={24} alt="icon" />
                     <span> Video</span>
                   </div>
-                  <div className="w-fit text-white rounded-2xl bg-[#FF543E] border border-[#A32313] py-2 px-3 flex gap-1.5 justify-between items-center">
+                  <div className="w-fit text-white rounded-2xl bg-orange-bg border border-dark-orange-bg py-2 px-3 flex gap-1.5 justify-between items-center">
                     <Image src="/icons/ai-video.png" height={24} width={24} alt="icon" />
                     <span> Video</span>
                   </div>
-                  <div className="w-fit text-white rounded-2xl bg-[#FF543E] border border-[#A32313] py-2 px-3 flex gap-1.5 justify-between items-center">
+                  <div className="w-fit text-white rounded-2xl bg-orange-bg border border-dark-orange-bg py-2 px-3 flex gap-1.5 justify-between items-center">
                     <Image src="/icons/ai-video.png" height={24} width={24} alt="icon" />
                     <span> Video</span>
                   </div>

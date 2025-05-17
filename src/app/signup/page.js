@@ -5,7 +5,7 @@ import React from 'react'
 export default function page() {
   return (
     <div>
-        <div className="bg-cream-bg relative pt-[56px] bg_square w-full overflow-x-hidden">
+        <div className="bg-cream-bg relative pt-56px bg_square w-full overflow-x-hidden">
                   <Container>
 
                     <div className='flex items-center justify-center'>

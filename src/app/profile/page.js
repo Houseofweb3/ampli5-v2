@@ -13,7 +13,7 @@ export default function pages() {
   return (
      <RequireAuth>
       <div>
-        <div className="bg-cream-bg relative pt-[56px] bg_square w-full overflow-x-hidden">
+        <div className="bg-cream-bg relative pt-56px bg_square w-full overflow-x-hidden">
           <Container>
             <div className="mb-6 lg:mb-9">
               <Title>My Profile</Title>
@@ -27,7 +27,7 @@ export default function pages() {
                       alt="profile"
                       height={100}
                       width={100}
-                      className="w-[79px] h-[79px]"
+                      className="w-80px h-80px"
                     />{' '}
                   </div>
                   <div className="">
@@ -38,10 +38,10 @@ export default function pages() {
                   </div>
                   <div className="flex gap-7">
                     <div className="flex gap-2 items-center">
-                      <h4>238</h4> <span className="text-14 text-[#00000073]">Following </span>
+                      <h4>238</h4> <span className="text-14 text-black/45">Following </span>
                     </div>
                     <div className="flex gap-2 items-center">
-                      <h4>105.2M</h4> <span className="text-14 text-[#00000073]">Followers </span>
+                      <h4>105.2M</h4> <span className="text-14 text-black/45">Followers </span>
                     </div>
                   </div>
                 </div>
@@ -68,11 +68,11 @@ export default function pages() {
                 <div className="mb-4">
                   <h3>Stats</h3>
                 </div>
-                <div className="bg-[#DAE9FB] rounded-2xl ">
+                <div className="bg-light-blue3-bg rounded-2xl ">
                   <div className="p-3 lg:p-4 flex justify-between items-center">
                     <div className="space-y-1">
                       <h2>238</h2>
-                      <p className="font-normal text-[#00000073]">Total Submissions</p>
+                      <p className="font-normal text-black/45">Total Submissions</p>
                     </div>
                     <div>
                       <Image src="/icons/circle-arrow.png" height={24} width={24} alt="icon" />
@@ -82,7 +82,7 @@ export default function pages() {
                   <div className="p-3 lg:p-4 flex justify-between items-center">
                     <div className="space-y-1">
                       <h2>238</h2>
-                      <p className="font-normal text-[#00000073]">Under Review</p>
+                      <p className="font-normal text-black/45">Under Review</p>
                     </div>
                     <div>
                       <Image src="/icons/circle-arrow.png" height={24} width={24} alt="icon" />
@@ -92,7 +92,7 @@ export default function pages() {
                   <div className="p-3 lg:p-4 flex justify-between items-center">
                     <div className="space-y-1">
                       <h2>0</h2>
-                      <p className="font-normal text-[#00000073]">Qualified</p>
+                      <p className="font-normal text-black/45">Qualified</p>
                     </div>
                     <div>
                       <Image src="/icons/circle-arrow.png" height={24} width={24} alt="icon" />
@@ -102,7 +102,7 @@ export default function pages() {
                   <div className="p-3 lg:p-4 flex justify-between items-center">
                     <div className="space-y-1">
                       <h2>238</h2>
-                      <p className="font-normal text-[#00000073]">Won</p>
+                      <p className="font-normal text-black/45">Won</p>
                     </div>
                     <div>
                       <Image src="/icons/circle-arrow.png" height={24} width={24} alt="icon" />

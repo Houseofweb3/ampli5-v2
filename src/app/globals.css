@@ -17,6 +17,7 @@
   --color-light-blue-bg: #7DB6FF;
   --color-light-blue1-bg: #D8E9FF;
   --color-light-blue2-bg: #D0D5DD;
+  --color-light-blue3-bg: #DAE9FB;
   --color-light-sky-blue-bg: #93C2FF;
   --color-purple-bg: #a476de;
   --color-dark-purple-bg: #6701EC;
@@ -124,6 +125,7 @@
   --spacing-257px: 257px;
   --spacing-300px: 300px;
   --spacing-400px: 400px;
+  --spacing-430px: 430px;
   --spacing-452px: 452px;
   --spacing-473px: 473px;
   --spacing-554px: 554px;
@@ -156,6 +158,9 @@
   --z-index-3: 3;
   --z-index-4: 4;
   --z-index-5: 5;
+
+  /* Ratio */
+  --aspect-retro: 3 / 4; 
 
 }
 
@@ -302,5 +307,7 @@
 .Bounty_Pool .swiper-slide.swiper-slide-active {
   @apply transform scale-105;
 }
-
+.NFT_news_slider .swiper-wrapper {
+  @apply overflow-visible;
+}
 }

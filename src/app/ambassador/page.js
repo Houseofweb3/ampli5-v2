@@ -7,7 +7,7 @@ import SecondaryButton from '@/components/ui/SecondaryButton';
 export default function pages() {
   return (
     <div>
-      <div className="bg-[#FDF4E9] relative pt-56px pb-14 bg_square overflow-x-hidden ">
+      <div className="bg-cream-bg relative pt-56px pb-14 bg_square overflow-x-hidden ">
         <div className="hue_aimations absolute top-9 lg:top-20 lg:-left-7">
           <Image
             className="w-90px h-90px lg:w-166px lg:h-166px"
