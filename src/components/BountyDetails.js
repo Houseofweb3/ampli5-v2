@@ -5,15 +5,17 @@ import Card from '@/components/ui/card';
 import Container from '@/components/ui/container';
 import ExploreBtn from '@/components/ui/explorebtn';
 import PrimaryButton from '@/components/ui/PrimaryButton';
+import { BountiesType } from '@/data/data';
 import axiosInstance from '@/lib/axiosInstance';
 import { deadlineCounter } from '@/lib/deadlineCounter';
-import { timeLeft } from '@/lib/timeLeft';
+import { TimeLeft } from '@/lib/timeLeft';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-export default function page() {
+export default function BountyDetailPage() {
   const { bounties_id } = useParams();
   const [bounty, setBounty] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -35,7 +37,6 @@ export default function page() {
       fetchBounty();
     }
   }, [bounties_id]);
-  console.log(bounty, 'data');
 
   return loading ? (
     <BountyDetailsSkeleton />
@@ -67,13 +68,24 @@ export default function page() {
                 <h2 className="my-4">{bounty.bountyName}</h2>
                 <div className="w-full sm:flex flex-wrap justify-between items-end gap-4">
                   <div className="flex flex-wrap gap-4">
-                    <div className="w-fit text-white rounded-2xl bg-orange-bg border border-dark-orange-bg py-2 px-3 flex gap-1.5 justify-between items-center">
-                      <Image src="/icons/ai-video.png" height={24} width={24} alt="icon" />
+                    <div
+                      className={cn(
+                        'w-fit text-white rounded-2xl py-2 px-3 flex gap-1.5 justify-between items-center border',
+                        BountiesType[bounty.bountyType].bgcolor,
+                        BountiesType[bounty.bountyType].borderColor
+                      )}
+                    >
+                      <Image
+                        src={BountiesType[bounty.bountyType].url}
+                        height={24}
+                        width={24}
+                        alt="icon"
+                      />
                       <span> {bounty.bountyType}</span>
                     </div>
                     <div className="w-fit text-black/45 rounded-2xl bg-white border border-black py-2 px-3 flex gap-1.5 justify-between items-center">
                       <Image src="/icons/clock-05.png" height={24} width={24} alt="icon" />
-                      <span> {timeLeft({ date: bounty.endDate, title: true })}</span>
+                      <span> {TimeLeft({ date: bounty.endDate, title: true })}</span>
                     </div>
                     <div className="w-fit text-white rounded-2xl bg-black border border-black py-2 px-3 flex gap-1.5 justify-between items-center">
                       <Image src="/icons/image-71.png" height={24} width={24} alt="icon" />
@@ -95,20 +107,6 @@ export default function page() {
             <Card className="ctm_bounties_details p-4 lg:p-9 shadow-xl">
               <h2 className="text-36"> About the Project</h2>
               <p>{bounty.metadata.about}</p>
-              {/* <p>Key features already deployed include:</p>
-              <ul>
-                <li>Smart contract-based trading, liquidation, and staking</li>
-                <li>Soulbound Token (SBT) reputation infrastructure</li>
-                <li>
-                  Retention-first tokenomics with airdrop distribution tied to staking and activity
-                </li>
-              </ul>
-              <p>
-                Next milestones include mainnet deployment, airdrop activation, and integration with
-                attribution tools (Spindl, Layer3), followed by onboarding institutional liquidity
-                providers and DAO-controlled incentives.
-              </p> */}
-
               <Link
                 href={bounty.metadata.resources.website}
                 className="font-medium text-18 pt-2 mb-9 flex items-center"
@@ -230,9 +228,9 @@ export default function page() {
               </div>
               <h2 className="mb-4">Do’s and Don’ts</h2>
               <div className="flex flex-col md:flex-row gap-4 mb-9">
-                <div className="flex items-start flex-col gap-2">
-                  <div className="border border-solid border-black/15 p-6 rounded-2xl w-full flex flex-col items-end gap-4">
-                    <ul className="p-0 m-0">
+                <div className="flex flex-1 items-start flex-col gap-2">
+                  <div className="border border-solid border-black/15 p-6 rounded-2xl w-full flex flex-col gap-4">
+                    <ul className="p-0 m-0 space-y-1.5">
                       {bounty.metadata.dos.map((vale, index) => (
                         <li key={index} className="list-none text-18 pb-1">
                           ✅ {vale}
@@ -241,16 +239,14 @@ export default function page() {
                     </ul>
                   </div>
                 </div>
-                <div className="flex items-start flex-col gap-2">
-                  <div className="border border-solid border-black/10 p-6 rounded-2xl w-full flex flex-col items-end gap-4">
-                    <ul className="p-0 m-0">
-                      <ul className="p-0 m-0">
-                        {bounty.metadata.dos.map((vale, index) => (
-                          <li key={index} className="list-none text-18 pb-1">
-                            ❌ {vale}
-                          </li>
-                        ))}
-                      </ul>
+                <div className="flex flex-1 items-start flex-col gap-2">
+                  <div className="border border-solid border-black/10 p-6 rounded-2xl w-full flex flex-col gap-4">
+                    <ul className="p-0 m-0 space-y-1.5">
+                      {bounty.metadata.dos.map((vale, index) => (
+                        <li key={index} className="list-none text-18 pb-1">
+                          ❌ {vale}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>
@@ -258,9 +254,7 @@ export default function page() {
               <div className="mb-9">
                 <h2 className="mb-4">Deadline</h2>
                 <div className="flex flex-col md:flex-row gap-4">
-                  <ul className=" m-0 grid grid-cols-3 text-center border border-solid border-black p-6 rounded-2xl max-w-554px w-full">
-                    {deadlineCounter({ date: bounty.endDate })}
-                  </ul>
+                  {deadlineCounter({ date: bounty.endDate })}
                 </div>
               </div>
 
@@ -306,7 +300,7 @@ export default function page() {
               </div>
             </Card>
           </Container>
-          <BountyPool></BountyPool>
+          <BountyPool Prize={bounty.prize}></BountyPool>
         </div>
       </div>
     </div>

@@ -46,3 +46,43 @@ export const YoutubeSliderData = [
   { url: '/images/content/image2.png' },
   { url: '/images/content/image3.png' },
 ];
+
+export const BountiesPollPrizeDistribution = [
+  { url: '/images/win-1.png', position: '1st', percentage: 25 },
+  { url: '/images/win-2.png', position: '2nd', percentage: 18 },
+  { url: '/images/win-3.png', position: '3rd', percentage: 14 },
+  { url: '/images/win-4.png', position: '4th', percentage: 10 },
+  { url: '/images/win-4.png', position: '5th', percentage: 8 },
+  { url: '/images/win-4.png', position: '6th', percentage: 7 },
+  { url: '/images/win-4.png', position: '7th', percentage: 6 },
+  { url: '/images/win-4.png', position: '8th', percentage: 5 },
+  { url: '/images/win-4.png', position: '9th', percentage: 4 },
+  { url: '/images/win-4.png', position: '10th', percentage: 3 },
+];
+
+export const BountiesType = {
+  video: {
+    name: 'Video',
+    url: '/icons/ai-video.png',
+    bgcolor: 'bg-videoBg',
+    borderColor: 'border-videoBadgeBorder',
+  },
+  thread: {
+    name: 'Thread',
+    url: '/icons/threads.png',
+    bgcolor: 'bg-threadBadgeBg',
+    borderColor: 'border-threadBadgeBorder',
+  },
+  meme: {
+    name: 'Meme',
+    url: '/icons/cookie.png',
+    bgcolor: 'bg-memeBadgeBg',
+    borderColor: 'border-memeBadgeBorder',
+  },
+  article: {
+    name: 'Article',
+    url: '/icons/news.png',
+    bgcolor: 'bg-articleBadgeBg',
+    borderColor: 'border-articleBadgeBorder',
+  },
+};

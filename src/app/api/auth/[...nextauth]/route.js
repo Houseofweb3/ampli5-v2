@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import TwitterProvider from 'next-auth/providers/twitter';
 import axios from 'axios';
-import { URLSearchParams } from 'url';
 
 export const authOptions = {
   providers: [
@@ -11,61 +10,47 @@ export const authOptions = {
       version: '2.0',
     }),
   ],
-
   callbacks: {
     async jwt({ token, account, user, profile }) {
-      if (account && user) {
-        const username = profile?.username;
-
-        token.id = user.id;
-        token.username = username;
-        token.name = user.name;
-        token.email = user.email;
-        token.apiUser = {
-          username,
-          name: user.name,
-          email: user.email,
-        };
+      if (account && profile?.data) {
+        const username = profile.data.username;
+        const id = profile.data.id;
+        console.log(profile, 'profile');
 
         try {
           const res = await axios.get(`https://api.kaito.ai/api/v1/yaps?username=${username}`);
-          console.log(res, 'data');
           const data = res.data;
 
-          if (data.message) {
-            token.kaitoError = 'You are not eligible to join ampli5';
-          } else {
-            token.yaps_all = data.yaps_all;
+          if (data.message || data.yaps_all < 10) {
+            token.yeps_error = 'Access denied — you need a minimum Yap score of 10 to continue.';
           }
+
+          token.yaps_score = Number(data.yaps_all || 0).toFixed(0);
+          token.user_id = id;
+          token.user_name = username;
         } catch (err) {
-          console.error('Kaito API error:', err.message);
-          token.kaitoError = 'Failed to fetch Kaito score';
+          token.yeps_error = 'Access denied — you need a minimum Yap score of 10 to continue.';
+          token.user_id = id;
+          token.user_name = username;
         }
       }
+
       return token;
     },
 
     async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.username = token.username;
-      session.user.image = token.picture;
-      session.user.email = token.email;
-      session.apiToken = token.apiToken || null;
-      session.apiUser = token.apiUser || null;
-      session.yaps_all = token.yaps_all || null;
-      session.kaitoError = token.kaitoError || null;
+      session.user_id = token.user_id ?? null;
+      session.user_name = token.user_name ?? null;
+      session.yaps_score = token.yaps_score ?? null;
+      session.yeps_error = token.yeps_error ?? null;
       return session;
     },
 
-    async redirect({ url, baseUrl }) {
-      const params = new URLSearchParams({
-        username: 'custom_user', // You may replace this with a real value from session or token
-        status: 'success',
-      });
-
-      return `${baseUrl}/signup?${params.toString()}`;
+    async redirect({ baseUrl }) {
+      return `${baseUrl}/api/user/verify`;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);

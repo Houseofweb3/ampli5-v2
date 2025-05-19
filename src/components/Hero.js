@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import BrandSlider from './ui/brandSlider';
 import MarqueeSlide from './ui/marquee';
 import Image from 'next/image';
@@ -7,13 +7,45 @@ import HowItWork from './HowItWork';
 import IconText from './Icontext';
 import CardImage from './CardImage';
 import PrimaryButton from './ui/PrimaryButton';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import WaveContent from './WaveContent';
 import EffectSlider from './EffectSlider';
 import { XSliderData, YoutubeSliderData } from '@/data/data';
+import { useAuthStore } from '@/store/auth';
+import { toast } from 'react-toastify';
 
 export default function Hero() {
   const router = useRouter();
+  const params = useSearchParams();
+  const Auth = useAuthStore();
+
+  const [hasHandled, setHasHandled] = useState(false);
+
+  useLayoutEffect(() => {
+    if (hasHandled) return;
+
+    const auth = params.get('token');
+    const id = params.get('id');
+    const username = params.get('username');
+    const name = params.get('name');
+    const yaps_score = params.get('yeps_score');
+    const message = params.get('message');
+
+    if (auth && id && username && yaps_score) {
+      Auth.login({ user: { id, username, yaps_score, name }, token: auth, isLogin: true });
+      const cleanUrl = window.location.pathname;
+      router.replace(cleanUrl, { scroll: false });
+    }
+
+    if (message) {
+      toast.error(message);
+      const cleanUrl = window.location.pathname;
+      router.replace(cleanUrl, { scroll: false });
+    }
+
+    setHasHandled(true);
+  }, [params, router, hasHandled, Auth]);
+
   return (
     <>
       <div className="bg_square bg_square_bottom relative overflow-hidden">

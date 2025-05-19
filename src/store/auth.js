@@ -1,43 +1,33 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
+const initialUser = {
+  id: null,
+  username: '',
+  name: '',
+  yeps_score: 0,
+};
+
 export const useAuthStore = create(
   persist(
-    (set, get) => ({
-      user: {
-        name: '',
-        profile: '',
-      },
-      yepsScore: 0,
+    (set) => ({
+      user: initialUser,
       token: null,
+      isLogin: false,
 
       login: ({ user, token }) => {
-        set({ user, token });
+        set({
+          user,
+          token,
+          isLogin: true,
+        });
       },
 
       logout: () => {
         set({
-          user: { name: '', profile: '' },
-          yepsScore: 0,
+          user: initialUser,
           token: null,
-        });
-      },
-
-      profileUpdate: ({ name, profile }) => {
-        const { token, yepsScore } = get();
-        set({
-          user: { name, profile },
-          yepsScore,
-          token,
-        });
-      },
-
-      updateYepsScore: ({ yepsScore }) => {
-        const { user, token } = get();
-        set({
-          user,
-          token,
-          yepsScore, // ✅ fixed casing from "YepsScore"
+          isLogin: false,
         });
       },
     }),

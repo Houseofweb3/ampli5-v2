@@ -1,5 +1,5 @@
 'use client';
-import React, { Fragment, useActionState, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import Container from './ui/container';
 import Image from 'next/image';
 import ExploreBtn from './ui/explorebtn';
@@ -10,7 +10,8 @@ import { signIn } from 'next-auth/react';
 import { useAuthStore } from '@/store/auth';
 
 export default function Navbar() {
-  const { token } = useAuthStore();
+  const { token, user } = useAuthStore();
+
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileRef = useRef(null);
 
@@ -51,7 +52,7 @@ export default function Navbar() {
                   onClick={() => setIsProfileOpen((pre) => !pre)}
                   className="bg-blue-btn text-white! hover:text-white p-0 rounded-full w-30px h-30px lg:w-57px lg:h-57px text-14 lg:text-20 hover:shadow-xl hover:bg-blue-btn"
                 >
-                  AJ
+                  {user.username?.slice(0, 2)}
                 </ExploreBtn>
 
                 {isProfileOpen ? (
@@ -91,7 +92,7 @@ export default function Navbar() {
               </Link>
 
               <PrimaryButton className="text-white" onClick={() => signIn('twitter')}>
-                For Creators
+                Login/Signup
               </PrimaryButton>
             </div>
           )}

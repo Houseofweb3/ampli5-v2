@@ -2,8 +2,7 @@ import { Bricolage_Grotesque } from 'next/font/google';
 import './globals.css';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import AuthSessionProvider from '@/store/authSessionProvider';
-import SessionHandler from '@/store/authSessionHandler';
+import Toast from '@/components/ui/toster';
 
 // Load only Bricolage Grotesque font with CSS variable
 const bricolage = Bricolage_Grotesque({
@@ -22,12 +21,10 @@ export default function RootLayout({ children }) {
       <body
         className={`${bricolage.variable}  font-sans antialiased bg-white min-h-screen h-full w-full`}
       >
-        <AuthSessionProvider>
-          <SessionHandler/>
-          <Navbar />
-          {children}
-          <Footer />
-        </AuthSessionProvider>
+        <Navbar />
+        {children}
+        <Footer />
+        <Toast />
       </body>
     </html>
   );

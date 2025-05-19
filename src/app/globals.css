@@ -12,36 +12,45 @@
   /* color */
 
   --color-blue-btn: #106fe8;
-  --color-slider-bg: #EDEDED;
-  --color-bounties-bg: #F6F6F6;
+  --color-slider-bg: #ededed;
+  --color-bounties-bg: #f6f6f6;
   --color-blue-tx: #1b79f2;
   --color-blue-bg: #008cff;
-  --color-light-blue-bg: #7DB6FF;
-  --color-light-blue1-bg: #D8E9FF;
-  --color-light-blue2-bg: #D0D5DD;
-  --color-light-blue3-bg: #DAE9FB;
-  --color-light-sky-blue-bg: #93C2FF;
+  --color-light-blue-bg: #7db6ff;
+  --color-light-blue1-bg: #d8e9ff;
+  --color-light-blue2-bg: #d0d5dd;
+  --color-light-blue3-bg: #dae9fb;
+  --color-light-sky-blue-bg: #93c2ff;
   --color-purple-bg: #a476de;
-  --color-dark-purple-bg: #6701EC;
-  --color-dark-purple1-bg: #813DD4;
-  --color-cream-bg: #FDF4E9;
-  --color-light-cream-bg: #FFF9F1;
-  --color-waterfall-bg: #3EB59F;
+  --color-dark-purple-bg: #6701ec;
+  --color-dark-purple1-bg: #813dd4;
+  --color-cream-bg: #fdf4e9;
+  --color-light-cream-bg: #fff9f1;
+  --color-waterfall-bg: #3eb59f;
   --color-gray-bg: #878787;
+  --color-gray-border: #b9b9b9;
   --color-light-gray-bg: #d3d3d3;
   --color-light-gray1-bg: #d0d0d0;
-  --color-light-gray2-bg: #E3E8EE;
-  --color-dark-gray-bg: #5C6578;
+  --color-light-gray2-bg: #e3e8ee;
+  --color-dark-gray-bg: #5c6578;
   --color-light-silver-bg: #cdcdcd;
-  --color-yellow-bg: #E5DD04;
-  --color-light-yellow-bg: #FFDD55;
-  --color-alabaster-bg: #FAFAFA;
-  --color-dampened-black-bg: #4A4747;
-  --color-orange-bg: #FF543E;
-  --color-dark-orange-bg: #A32313;
+  --color-yellow-bg: #e5dd04;
+  --color-light-yellow-bg: #ffdd55;
+  --color-alabaster-bg: #fafafa;
+  --color-dampened-black-bg: #4a4747;
+  --color-orange-bg: #ff543e;
+  --color-dark-orange-bg: #a32313;
   --color-green-bg: #306400;
-  --color-goldan-bg: #F4CF3B;
-  --color-light-goldan-bg: #FBD35E;
+  --color-goldan-bg: #f4cf3b;
+  --color-light-goldan-bg: #fbd35e;
+  --color-videoBg: #ff1d00;
+  --color-videoBadgeBorder: #de1900;
+  --color-threadBadgeBg: #000000;
+  --color-threadBadgeBorder: #000000;
+  --color-articleBadgeBg: #ff8000;
+  --color-articleBadgeBorder: #e07100;
+  --color-memeBadgeBg: #a762fe;
+  --color-memeBadgeBorder: #6d18d7;
 
   /* typographic */
   --text-12: 12px;
@@ -162,8 +171,11 @@
   --z-index-5: 5;
 
   /* Ratio */
-  --aspect-retro: 3 / 4; 
+  --aspect-retro: 3 / 4;
 
+  /* Screen */
+
+  --breakpoint-xsm: 440px;
 }
 
 @layer base {
@@ -180,7 +192,8 @@
   .h2 {
     @apply text-4xl lg:text-5xl leading-normal lg:leading-58 font-extrabold;
   }
-  h3, .h3 {
+  h3,
+  .h3 {
     @apply text-20 lg:text-24 font-semibold text-black;
   }
   h4,
@@ -229,7 +242,6 @@
       )
       1;
   }
-
 }
 
 @layer components {
@@ -276,7 +288,7 @@
     @apply text-20 lg:text-32 leading-tight font-medium text-white max-w-800px w-full mx-auto;
   }
   .ctm_bounties_details p {
-    @apply text-16 lg:text-20 leading-tight font-normal text-black/80 my-5; 
+    @apply text-16 lg:text-20 leading-tight font-normal text-black/80 my-5;
   }
   .ctm_bounties_details ul {
     @apply pl-6;
@@ -287,7 +299,7 @@
   .ctm_bounties_details ul li::marker {
     @apply text-12 font-light;
   }
-  
+
   .Bounty_Pool::before {
     animation: borderPulse 3s infinite;
     @apply content-[""] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-goldan-bg rounded-full md:max-w-554px md:max-h-554px lg:max-w-746px lg:max-h-746px w-473px h-473px md:h-full md:w-full;
@@ -303,24 +315,20 @@
       box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
     }
   }
-.Bounty_Pool .swiper-slide {
-  @apply transform scale-95 transition-transform duration-300 ease-in-out;
+  .Bounty_Pool .swiper-slide {
+    @apply transform scale-95 transition-transform duration-300 ease-in-out;
+  }
+  .Bounty_Pool .swiper-slide.swiper-slide-active {
+    @apply transform scale-105;
+  }
+  .NFT_news_slider .swiper-wrapper {
+    @apply overflow-visible;
+  }
 }
-.Bounty_Pool .swiper-slide.swiper-slide-active {
-  @apply transform scale-105;
-}
-.NFT_news_slider .swiper-wrapper {
-  @apply overflow-visible;
-}
-}
-
-
-
-
 
 .loader {
   color: rgb(124, 124, 124);
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 500;
   font-size: 25px;
   -webkit-box-sizing: content-box;
@@ -338,7 +346,7 @@
   position: relative;
 }
 .words::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
