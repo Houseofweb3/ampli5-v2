@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 export default function WaveContent() {
   const router = useRouter();
   return (
-    <div className="relative pt-56 sm:pt-147 pb-12 sm:pb-166px">
+    <div className="relative pt-56 sm:pt-473px pb-12 sm:pb-166px">
       <div className="bg_wave_info max-w-835px mx-auto text-center px-4">
         <div className="h2 max-w-610px mx-auto text-white pb-4">
           Choose What You Create. Get Paid To express.

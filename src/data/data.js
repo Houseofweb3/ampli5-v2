@@ -27,7 +27,7 @@ export const SortByOption = {
 
 export const forProjectLinks = [
   { title: 'Create Bounty', href: '/create/bounty' },
-  { title: 'KOL Saas platform', href: 'https://ampli5.ai/' },
+  { title: 'KOL-Discovery', href: 'https://ampli5.ai/' },
   { title: 'Ambassador Program', href: '/ambassador' },
   { title: 'Founder-led Marketing', href: '/founder-led' },
 ];

@@ -9,6 +9,7 @@ import Image from 'next/image';
 
 // import required modules
 import { Autoplay} from 'swiper/modules';
+import Link from 'next/link';
 export default function NftNewsSlider() {
   return (
     <div className='mt-6 lg:mt-48px'>
@@ -50,84 +51,102 @@ export default function NftNewsSlider() {
       >
       <SwiperSlide>
         <div className='rounded-2xl overflow-hidden relative'>
-           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide.png'}  width={225} height={278}  alt="image" /> 
-          <div className=' absolute bottom-5 px-18px'>
-            <h4 className='text-18 text-white font-extrabold'>Crypto Casey</h4>
+           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide01.png'}  width={225} height={278}  alt="image" /> 
+          <div className=' absolute bottom-0 w-full p-18px bg-linear-to-t from-black to-black-500'>
+            <Image className='mb-5px' src={'/icons/u-tube.png'}  width={17} height={12}  alt="image" /> 
+            <Link className='underline text-white' href=' https://www.youtube.com/@FinTechChannels/featured'>
+            <h4 className='text-18 text-white font-extrabold'>Fintech Channel</h4>
+            </Link>
             <div className='text-14 text-white font-medium'>
-              <p>Crypto podcast</p>
+              <p>AI, Defi</p>
+            </div>
+          </div>
+        </div>
+      </SwiperSlide>
+      <SwiperSlide>
+        <div className='rounded-2xl overflow-hidden relative '>
+           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide1.png'}  width={225} height={278}  alt="image" /> 
+          <div className=' absolute bottom-0 w-full p-18px bg-linear-to-t from-black to-black-500'>
+            <Image className='mb-5px' src={'/icons/u-tube.png'}  width={17} height={12}  alt="image" /> 
+            <Link className='underline text-white' href='https://www.youtube.com/@ProfessorCrypto/videos'>
+            <h4 className='text-18 text-white font-extrabold'>Professor Crypto</h4>
+            </Link>
+            <div className='text-14 text-white font-medium'>
+              <p>CEX/DEX, trading & Altcoins</p>
             </div>
           </div>
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className='rounded-2xl overflow-hidden relative'>
-           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide.png'}  width={225} height={278}  alt="image" /> 
-          <div className=' absolute bottom-5 px-18px'>
-            <h4 className='text-18 text-white font-extrabold'>Blockchain Basics</h4>
+           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide2.png'}  width={225} height={278}  alt="image" /> 
+          <div className=' absolute bottom-0 w-full p-18px bg-linear-to-t from-black to-black-500'>
+            <Image className='mb-5px invert' src={'/icons/icon-x.png'}  width={14} height={14}  alt="image" /> 
+            <Link className='underline text-white' href='https://x.com/JackNiewold'>
+              <h4 className='text-18 text-white font-extrabold'>Decypher Podcast</h4>
+            </Link>
             <div className='text-14 text-white font-medium'>
-              <p>Educational series</p>
+              <p>Defi, altcoins</p>
             </div>
           </div>
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className='rounded-2xl overflow-hidden relative'>
-           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide.png'}  width={225} height={278}  alt="image" /> 
-          <div className=' absolute bottom-5 px-18px'>
-            <h4 className='text-18 text-white font-extrabold'>DeFi Dive</h4>
+           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide4.png'}  width={225} height={278}  alt="image" /> 
+          <div className=' absolute bottom-0 w-full p-18px bg-linear-to-t from-black to-black-500'>
+            <Image className='mb-5px' src={'/icons/u-tube.png'}  width={17} height={12}  alt="image" /> 
+            <Link className='underline text-white' href='https://www.youtube.com/@MariaAndersenCrypto'>
+              <h4 className='text-18 text-white font-extrabold'>Maria Andersen Crypto</h4>
+            </Link>
             <div className='text-14 text-white font-medium'>
-              <p>Exploring decentralized <br/> finance</p>
+              <p>ALtcoins, Defi</p>
             </div>
           </div>
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className='rounded-2xl overflow-hidden relative'>
-           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide.png'}  width={225} height={278}  alt="image" /> 
-          <div className=' absolute bottom-5 px-18px'>
-            <h4 className='text-18 text-white font-extrabold'>NFT News Network</h4>
+           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide5.png'}  width={225} height={278}  alt="image" /> 
+          <div className=' absolute bottom-0 w-full p-18px bg-linear-to-t from-black to-black-500'>
+            <Image className='mb-5px invert' src={'/icons/icon-x.png'}  width={14} height={14}  alt="image" /> 
+            <Link className='underline text-white' href='https://x.com/WOLF_Financial'>
+              <h4 className='text-18 text-white font-extrabold'>Wolf Financial</h4>
+            </Link>
             <div className='text-14 text-white font-medium'>
-              <p>Latest in non-fungible <br/> tokens</p>
+              <p> Trading, Altcoins</p>
             </div>
           </div>
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className='rounded-2xl overflow-hidden relative'>
-           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide.png'}  width={225} height={278}  alt="image" /> 
-          <div className=' absolute bottom-5 px-18px'>
-            <h4 className='text-18 text-white font-extrabold'>Altcoin Academy</h4>
+           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide6.png'}  width={225} height={278}  alt="image" /> 
+          <div className=' absolute bottom-0 w-full p-18px bg-linear-to-t from-black to-black-500'>
+            <Image className='mb-5px' src={'/icons/u-tube.png'}  width={17} height={12}  alt="image" />
+            <Link className='underline text-white' href='https://www.youtube.com/@DeFiTalks/videos'>
+            <h4 className='text-18 text-white font-extrabold'>Defi Talks</h4>
+            </Link> 
             <div className='text-14 text-white font-medium'>
-              <p>Alternative <br/> cryptocurrencies</p>
+              <p>Defi, AI</p>
             </div>
           </div>
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className='rounded-2xl overflow-hidden relative'>
-           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide.png'}  width={225} height={278}  alt="image" /> 
-          <div className=' absolute bottom-5 px-18px'>
-            <h4 className='text-18 text-white font-extrabold'>Market Update Minute</h4>
+           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide7.png'}  width={225} height={278}  alt="image" /> 
+          <div className=' absolute bottom-0 w-full p-18px bg-linear-to-t from-black to-black-500'>
+            <Image className='mb-5px' src={'/icons/spotify.png'}  width={17} height={12}  alt="image" /> 
+            <Link className='underline text-white' href='https://open.spotify.com/show/4AGqU8qxIYVkxXM4q2XpO1?si=b3024d5462354a9a&nd=1&dlsi=4e8575ccb2974380'>
+              <h4 className='text-18 text-white font-extrabold'>BlockHash</h4>
+            </Link>
             <div className='text-14 text-white font-medium'>
-              <p>Daily crypto market <br/> insights</p>
+              <p>Defi, altcoins</p>
             </div>
           </div>
         </div>
       </SwiperSlide>
-      <SwiperSlide>
-        <div className='rounded-2xl overflow-hidden relative'>
-           <Image className='aspect-retro w-full h-full object-cover' src={'/images/Nft-slide.png'}  width={225} height={278}  alt="image" /> 
-          <div className=' absolute bottom-5 px-18px'>
-            <h4 className='text-18 text-white font-extrabold'>The HODL Podcast</h4>
-            <div className='text-14 text-white font-medium'>
-              <p>Long-term investment <br/> strategies</p>
-            </div>
-          </div>
-        </div>
-      </SwiperSlide>
-      
-     
-        
       </Swiper>
     </div>
   )

@@ -28,12 +28,12 @@ export default function pages() {
         </div>
         <Container>
           <div className=" lg:mt-22 mt-9 mb-22">
-            <div className="bg-blue-btn text-white mx-auto w-fit rounded-full mb-4 lg:mb-8 px-4 lg:px-7 py-1.5 lg:py-3 text-14 lg:text-20 border-none shadow-none">
+            <div className="bg-blue-btn sm:bg-transparent font-semibold text-white sm:text-black mx-auto w-fit rounded-full mb-4 py-3 px-5 border border-solid border-blue-btn lg:border-black text-14 lg:text-20 border-none shadow-none">
               Ambassador Program{' '}
             </div>
 
             <h1 className=" w-full text-center text-36 lg:text-72 leading-40 lg:leading-110 font-semibold">
-              You need Mercenaries,
+              You need mercenaries,
               <br className="hidden md:block" />
               <span className=" text-blue-tx">
                 not <br className="block md:hidden" /> cheerleaders

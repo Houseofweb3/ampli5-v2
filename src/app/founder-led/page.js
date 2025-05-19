@@ -40,8 +40,8 @@ export default function pages() {
         <Container>
            
           <div className=" lg:mt-22 mt-9 mb-16 lg:mb-32">
-            <div className=" text-black border border-solid border-black mx-auto w-fit rounded-full mb-7 lg:mb-8 px-4 lg:px-7 py-1.5 lg:py-3 text-14 lg:text-20 border-none shadow-none">
-              Founder led Marketing{' '}
+            <div className=" bg-blue-btn sm:bg-transparent font-semibold text-white sm:text-black mx-auto w-fit rounded-full mb-4 py-3 px-5 border border-solid border-blue-btn lg:border-black text-14 lg:text-20 border-none shadow-none">
+              Founder-led Marketing{' '}
             </div>
 
             <h1 className="w-full text-center text-36 lg:text-72 leading-40 lg:leading-tight font-semibold ">

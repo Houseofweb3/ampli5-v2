@@ -136,13 +136,17 @@ export default function Hero() {
           </div>
         </div>
         <EffectSlider data={XSliderData}>
-          <h2> X</h2>
+          <div className='mb-30px w-fit mx-auto'>
+           <Image src={'/icons/icon-x.png'} width={57} height={32} alt="img" />
+          </div>
         </EffectSlider>
         <EffectSlider data={YoutubeSliderData}>
-          <h2> Youtube</h2>
+         <div className='mb-30px w-fit mx-auto'>
+           <Image src={'/icons/youtube.png'} width={144} height={32} alt="img" />
+          </div>
         </EffectSlider>
       </div>
-      <div className="bg_wave_pattern relative -mt-100px sm:-mt-200px">
+      <div className="bg_wave_pattern relative">
         <WaveContent></WaveContent>
       </div>
     </>

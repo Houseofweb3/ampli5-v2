@@ -12,7 +12,7 @@ import { Navigation } from 'swiper/modules';
 
 export default function EffectSlider({ data, children }) {
   return (
-    <div className=" w-full pt-48px lg:pt-70px py-48px">
+    <div className=" w-full pt-48px lg:pt-70px py-48px ctm_effect_slider">
       <Container>
         {children}
         <Swiper
