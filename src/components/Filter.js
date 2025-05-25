@@ -1,136 +1,112 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import FilterGroup from './ui/FilterGroup';
+import React, { useRef, useEffect } from 'react';
 import Button from './ui/filterbtn';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { BountiesStatusFilter, BountyType, SortByOption } from '@/data/data';
 
-export default function Filter() {
-  const [status, setStatus] = useState(null);
-  const [category, setCategory] = useState(null);
-  const [sorting, setSorting] = useState(null);
-  const [isSortingOpen, setIsSortingOpen] = useState(false);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+export default function Filter({
+  type = 'Bounties',
+  statusFilter,
+  setStatusFilter,
+  sortBy,
+  setSortBy,
+  bountyType,
+  setBountyType,
+}) {
+  const [setIsSortByOpen, setSortByOpen] = React.useState(false);
 
-  const sortingWrapperRef = useRef(null);
-  const categoryWrapperRef = useRef(null);
-
-  const getButtonClass = (btnStatus) => {
-    const isActive = status === btnStatus;
-    return isActive
-      ? 'border border-black py-2 flex justify-center min-w-[90px]'
-      : 'bg-transparent border-none text-[#878787] py-2 flex justify-center min-w-[90px]';
+  const toggleFilter = (id) => {
+    setBountyType((prev) => (prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]));
   };
+
+  const sortByWrapperRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (sortingWrapperRef.current && !sortingWrapperRef.current.contains(event.target)) {
-        setIsSortingOpen(false);
-      }
-      if (categoryWrapperRef.current && !categoryWrapperRef.current.contains(event.target)) {
-        setIsCategoryOpen(false);
+      if (sortByWrapperRef.current && !sortByWrapperRef.current.contains(event.target)) {
+        setSortByOpen(false);
       }
     };
     document.addEventListener('click', handleClickOutside);
     return () => {
-      document.removeEventListener('click', () => setIsSortingOpen(false));
-      document.removeEventListener('click', () => setIsCategoryOpen(false));
+      document.removeEventListener('click', handleClickOutside);
     };
   }, []);
 
   return (
     <div className="flex flex-wrap justify-between items-center gap-4">
-      <FilterGroup />
+      <div className="flex gap-2 flex-wrap">
+        {BountyType?.map((filter) => (
+          <Button
+            key={filter.id}
+            active={bountyType.includes(filter.id)}
+            onClick={() => toggleFilter(filter.id)}
+          >
+            <Image src={filter.img} alt="icon" height={24} width={24} />
+            {filter.label}
+          </Button>
+        ))}
+        <Button onClick={() => setBountyType([])}>
+          <Image src="/icons/multiplication-sign.png" alt="icon" height={24} width={24} />
+          Deselect all
+        </Button>
+      </div>
 
-      {/* Status Buttons */}
-      <div className="flex  gap-2 sm:gap-3 border rounded-xl p-1 bg-white">
-        {['All', 'Open', 'Closed'].map((label) => {
-          const value = label === 'All' ? null : label.toLowerCase();
+      <div className="flex gap-2 sm:gap-3 border rounded-xl p-1 bg-white">
+        {BountiesStatusFilter?.map((label) => {
+          const value = label.value === 'all' ? null : label.value.toLowerCase();
           return (
             <Button
-              key={label}
-              label={label}
-              active={status === value}
-              onClick={() => setStatus(value)}
-              className={getButtonClass(value)}
+              key={label.label}
+              label={label.label}
+              active={statusFilter === value}
+              onClick={() => setStatusFilter(value)}
+              className={
+                statusFilter === value
+                  ? 'border border-black py-2 flex justify-center min-w-[90px]'
+                  : 'bg-transparent border-none text-gray-bg py-2 flex justify-center min-w-[90px]'
+              }
             />
           );
         })}
       </div>
 
-      {/* Category Dropdown */}
-      <div className="relative" ref={categoryWrapperRef}>
+      <div className="relative" ref={sortByWrapperRef}>
         <Button
-          active={isCategoryOpen}
-          onClick={() => setIsCategoryOpen((prev) => !prev)}
-          className={`gap-3 px-5 py-2.5 border-black ${isCategoryOpen ? '' : 'bg-transparent text-[#878787]'}`}
-        >
-          <Image
-            src="/icons/sorting-05.png"
-            alt="Sorting Icon"
-            height={1000}
-            width={1000}
-            className={cn('w-5')}
-          />
-          <span> Sort by</span>
-        </Button>
-
-        {isCategoryOpen && (
-          <div className="absolute top-14 left-0 bg-white border border-[#878787] rounded-xl p-4 px-7 z-50 min-w-[150px]">
-            {['Thread', 'Article', 'Video', 'Meme'].map((label) => (
-              <React.Fragment key={label}>
-                <Button
-                  label={label}
-                  active={category === label.toLowerCase()}
-                  onClick={() => {
-                    setCategory(label.toLowerCase());
-                    setIsCategoryOpen(false);
-                  }}
-                  className="bg-transparent font-normal text-black py-3 px-0 w-full text-left border-none border-[#d3d3d3]"
-                />
-                <hr className="border-[#d3d3d3] nth-last-[1]:border-none" />
-              </React.Fragment>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Sorting Dropdown */}
-      <div className="relative" ref={sortingWrapperRef}>
-        <Button
-          active={isSortingOpen}
-          onClick={() => setIsSortingOpen((prev) => !prev)}
-          className={`flex  gap-3 px-5 py-2.5 border-black  ${isSortingOpen ? '' : 'bg-transparent text-[#878787]'}`}
+          active={setIsSortByOpen}
+          onClick={() => setSortByOpen((prev) => !prev)}
+          className={`flex gap-3 px-5 py-2.5 border-black ${setIsSortByOpen ? '' : 'bg-transparent text-gray-bg'}`}
         >
           <span> Sort by</span>
           <Image
             src="/icons/Vector-arrow.png"
-            alt="Sorting Icon"
-            height={1000}
-            width={1000}
+            alt="sortBy Icon"
+            height={12}
+            width={12}
             className={cn(
               'w-3',
-              isSortingOpen ? 'rotate-180' : 'rotate-0',
+              setIsSortByOpen ? 'rotate-180' : 'rotate-0',
               'transition-transform duration-300'
             )}
           />
         </Button>
 
-        {isSortingOpen && (
-          <div className="absolute top-14 left-0 bg-white border border-[#878787] rounded-xl py-2 px-7 z-50 min-w-[150px]">
-            {['Latest', 'Rewards'].map((label) => (
-              <React.Fragment key={label}>
+        {setIsSortByOpen && (
+          <div className="absolute top-14 left-0 bg-white border border-gray-bg rounded-xl py-2 px-7 z-50 min-w-150px">
+            {SortByOption[type]?.map((label) => (
+              <React.Fragment key={label.label}>
                 <Button
-                  label={label}
-                  active={sorting === label.toLowerCase()}
+                  label={label.label}
+                  active={sortBy === label.value.toLowerCase()}
                   onClick={() => {
-                    setSorting(label.toLowerCase());
-                    setIsSortingOpen(false);
+                    setSortBy(label.value.toLowerCase());
+                    setSortByOpen(false);
                   }}
-                  className="bg-transparent font-normal text-black py-3 px-0 w-full text-left border-none border-[#d3d3d3]"
+                  className="bg-transparent font-normal text-black py-3 px-0 w-full text-left border-none border-light-gray-bg"
                 />
-                <hr className="border-[#d3d3d3] nth-last-[1]:border-none" />
+                <hr className="border-light-gray-bg" />
               </React.Fragment>
             ))}
           </div>
