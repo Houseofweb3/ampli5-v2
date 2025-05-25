@@ -15,21 +15,36 @@ export default function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileRef = useRef(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (profileRef.current && !profileRef.current.contains(event.target)) {
-        setIsProfileOpen(false);
-      }
-    };
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (profileRef.current && !profileRef.current.contains(event.target)) {
+      setIsProfileOpen(false);
+    }
+  };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  const header = document.getElementById("mainHeader");
+
+  const handleScroll = () => {
+    if (window.scrollY > 100) {
+      header?.classList.add("!fixed", "shadow-md");
+    } else {
+      header?.classList.remove("!fixed", "shadow-md");
+    }
+  };
+
+  document.addEventListener('mousedown', handleClickOutside);
+  window.addEventListener('scroll', handleScroll);
+
+  // Clean up both listeners
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+    window.removeEventListener('scroll', handleScroll);
+  };
+}, []);
+
 
   return (
-    <header className="bg-white w-full sticky top-0 z-50">
+    <header id="mainHeader" className="bg-white w-full sticky top-0 z-50">
       <Container className="py-18px">
         <div className="flex items-center justify-between">
           <Link href="/">
