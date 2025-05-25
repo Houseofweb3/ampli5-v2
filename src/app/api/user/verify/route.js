@@ -9,8 +9,6 @@ export async function GET(req) {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  // console.log(token, 'token');
-
   if (!token) {
     const url = new URL('/', req.url);
     url.searchParams.set('auth', 'Authentication failed try again');
@@ -45,7 +43,6 @@ export async function GET(req) {
     const user = response.data;
     const JwtToken = user.token;
 
-
     const url = new URL('/', req.url);
     if (token.yeps_error) {
       url.searchParams.set('message', token.yeps_error);
@@ -56,6 +53,7 @@ export async function GET(req) {
       url.searchParams.set('email', String(user.data.email));
       url.searchParams.set('name', String(user.data.firstName));
       url.searchParams.set('username', String(user.data.fullname));
+      url.searchParams.set('profile_picture', String(user.data.profilePicture));
     }
 
     return NextResponse.redirect(url);
@@ -77,6 +75,7 @@ export async function GET(req) {
       } else {
         url.searchParams.set('name', token.name);
         url.searchParams.set('username', token.user_name);
+        url.searchParams.set('profile_picture', token.profile_picture);
         url.searchParams.set('yaps', String(token.yaps_score));
         url.searchParams.set('email', String(userData.email));
         url.searchParams.set('auth', String(userData.password));

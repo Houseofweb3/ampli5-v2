@@ -7,7 +7,7 @@ export default function RequireAuth({ children }) {
   const { token } = useAuthStore();
   const router = useRouter();
 
-  const hasHydrated = useAuthStore.persist.hasHydrated();
+  const hasHydrated = useAuthStore?.persist?.hasHydrated();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function RequireAuth({ children }) {
   if (!hasHydrated || loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p>Loading...</p> 
+        <p>Loading...</p>
       </div>
     );
   }

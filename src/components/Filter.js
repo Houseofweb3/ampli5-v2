@@ -7,33 +7,26 @@ import { cn } from '@/lib/utils';
 import { BountiesStatusFilter, BountyType, SortByOption } from '@/data/data';
 
 export default function Filter({
-  type = "Bounties",
+  type = 'Bounties',
   statusFilter,
   setStatusFilter,
-  category,
-  setCategory,
   sortBy,
   setSortBy,
   bountyType,
   setBountyType,
 }) {
   const [setIsSortByOpen, setSortByOpen] = React.useState(false);
-  const [isCategoryOpen, setIsCategoryOpen] = React.useState(false);
 
   const toggleFilter = (id) => {
     setBountyType((prev) => (prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]));
   };
 
   const sortByWrapperRef = useRef(null);
-  const categoryWrapperRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (sortByWrapperRef.current && !sortByWrapperRef.current.contains(event.target)) {
         setSortByOpen(false);
-      }
-      if (categoryWrapperRef.current && !categoryWrapperRef.current.contains(event.target)) {
-        setIsCategoryOpen(false);
       }
     };
     document.addEventListener('click', handleClickOutside);
@@ -79,45 +72,6 @@ export default function Filter({
           );
         })}
       </div>
-
-      {/* Category Dropdown */}
-      {/* {type === 'bounties' ? (
-        <div className="relative" ref={categoryWrapperRef}>
-          <Button
-            active={isCategoryOpen}
-            onClick={() => setIsCategoryOpen((prev) => !prev)}
-            className={`gap-3 px-5 py-2.5 border-black ${isCategoryOpen ? '' : 'bg-transparent text-gray-bg'}`}
-          >
-            <Image
-              src="/icons/sorting-05.png"
-              alt="sortBy Icon"
-              height={24}
-              width={24}
-              className="w-5"
-            />
-            <span> Category</span>
-          </Button>
-
-          {isCategoryOpen && (
-            <div className="absolute top-14 left-0 bg-white border border-gray-bg rounded-xl p-4 px-7 z-50 min-w-150px">
-              {['Thread', 'Article', 'Video', 'Meme'].map((label) => (
-                <React.Fragment key={label}>
-                  <Button
-                    label={label}
-                    active={category === label.toLowerCase()}
-                    onClick={() => {
-                      setCategory(label.toLowerCase());
-                      setIsCategoryOpen(false);
-                    }}
-                    className="bg-transparent font-normal text-black py-3 px-0 w-full text-left border-none border-light-gray-bg"
-                  />
-                  <hr className="border-light-gray-bg" />
-                </React.Fragment>
-              ))}
-            </div>
-          )}
-        </div>
-      ) : null} */}
 
       <div className="relative" ref={sortByWrapperRef}>
         <Button

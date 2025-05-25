@@ -3,6 +3,7 @@ import './globals.css';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import Toast from '@/components/ui/toster';
+import Script from 'next/script';
 
 // Load only Bricolage Grotesque font with CSS variable
 const bricolage = Bricolage_Grotesque({

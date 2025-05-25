@@ -4,20 +4,20 @@ To maintain clarity and consistency in our codebase, use the following commit me
 
 ## 🔤 Prefixes
 
-| Prefix     | Use Case                                      | Example                                      |
-|------------|-----------------------------------------------|----------------------------------------------|
-| feat:      | For new features or pages                     | feat: create dashboard page design           |
-| fix:       | For bug fixes                                 | fix: resolve mobile menu toggle issue        |
-| style:     | For UI style changes (no logic changes)       | style: update spacing on homepage            |
-| refactor:  | For code restructuring without feature change | refactor: simplify form validation logic     |
-| perf:      | For performance improvements                  | perf: lazy-load hero images                  |
-| docs:      | For documentation updates                     | docs: add API usage examples to README       |
-| test:      | For adding or updating tests                  | test: add unit tests for login component     |
-| chore:     | For miscellaneous tasks (e.g., build tools)   | chore: update npm packages                   |
-| build:     | For build system or dependency changes        | build: update webpack config                 |
-| ci:        | For CI/CD configuration updates               | ci: add GitHub Actions for testing           |
-| revert:    | For reverting previous commits                | revert: undo homepage layout changes         |
-| wip:       | For work in progress (not ready for review)   | 	wip: implement filter logic                 |
+| Prefix    | Use Case                                      | Example                                  |
+| --------- | --------------------------------------------- | ---------------------------------------- |
+| feat:     | For new features or pages                     | feat: create dashboard page design       |
+| fix:      | For bug fixes                                 | fix: resolve mobile menu toggle issue    |
+| style:    | For UI style changes (no logic changes)       | style: update spacing on homepage        |
+| refactor: | For code restructuring without feature change | refactor: simplify form validation logic |
+| perf:     | For performance improvements                  | perf: lazy-load hero images              |
+| docs:     | For documentation updates                     | docs: add API usage examples to README   |
+| test:     | For adding or updating tests                  | test: add unit tests for login component |
+| chore:    | For miscellaneous tasks (e.g., build tools)   | chore: update npm packages               |
+| build:    | For build system or dependency changes        | build: update webpack config             |
+| ci:       | For CI/CD configuration updates               | ci: add GitHub Actions for testing       |
+| revert:   | For reverting previous commits                | revert: undo homepage layout changes     |
+| wip:      | For work in progress (not ready for review)   | wip: implement filter logic              |
 
 ## ✅ Guidelines
 
@@ -30,3 +30,4 @@ To maintain clarity and consistency in our codebase, use the following commit me
 git commit -m "feat: add contact form page"
 git commit -m "fix: correct typo in footer component"
 git commit -m "docs: update install instructions"
+```

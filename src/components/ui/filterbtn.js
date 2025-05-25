@@ -26,7 +26,6 @@ export default function Button({
       )}
       {...props}
     >
-    
       {label ? label : children}
     </button>
   );

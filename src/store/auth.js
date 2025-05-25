@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 
 const initialUser = {
   id: null,
+  profile_picture: '',
   username: '',
   name: '',
   yeps_score: 0,

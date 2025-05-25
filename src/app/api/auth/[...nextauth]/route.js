@@ -14,8 +14,9 @@ export const authOptions = {
     async jwt({ token, account, user, profile }) {
       if (account && profile?.data) {
         const username = profile.data.username;
+        const name = profile.data.name;
+        const profilePicture = profile.data.profile_image_url;
         const id = profile.data.id;
-        console.log(profile, 'profile');
 
         try {
           const res = await axios.get(`https://api.kaito.ai/api/v1/yaps?username=${username}`);
@@ -28,10 +29,14 @@ export const authOptions = {
           token.yaps_score = Number(data.yaps_all || 0).toFixed(0);
           token.user_id = id;
           token.user_name = username;
+          token.name = name;
+          token.profile_picture = profilePicture;
         } catch (err) {
           token.yeps_error = 'Access denied — you need a minimum Yap score of 10 to continue.';
           token.user_id = id;
           token.user_name = username;
+          token.name = name;
+          token.profile_picture = profilePicture;
         }
       }
 
@@ -41,6 +46,8 @@ export const authOptions = {
     async session({ session, token }) {
       session.user_id = token.user_id ?? null;
       session.user_name = token.user_name ?? null;
+      session.name = token.name ?? null;
+      session.profile_picture = token.profile_picture ?? null;
       session.yaps_score = token.yaps_score ?? null;
       session.yeps_error = token.yeps_error ?? null;
       return session;

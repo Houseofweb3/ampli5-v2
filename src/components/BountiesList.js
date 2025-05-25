@@ -14,7 +14,7 @@ import Pagination from './ui/Pagination';
 
 export default function BountiesList({ title, vector, type }) {
   const Auth = useAuthStore();
-  const hasHydrated = useAuthStore.persist.hasHydrated();
+  const hasHydrated = useAuthStore?.persist?.hasHydrated();
 
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState(null);
@@ -32,6 +32,7 @@ export default function BountiesList({ title, vector, type }) {
 
   const [loading, setLoading] = useState(true);
   const YapScore = Auth.user.yaps_score;
+  const userId = Auth.user.id;
 
   const fetchBounties = async () => {
     try {
@@ -45,12 +46,13 @@ export default function BountiesList({ title, vector, type }) {
       };
 
       if (type === 'Submissions') {
-        const response = await axiosInstance.get(
-          '/bounty-submission/0f9b7c86-d622-48cb-8cb1-48deaad7b3d9',
-          { params }
-        );
-        setBounties(response.data.bounties);
-        setBountiesMetaData(response.data.pagination);
+        const response = await axiosInstance.get(`/bounty/my/submission/${userId}`, { params });
+        const data = response.data.bounty.bounty.reduce((pre, bounty, index) => {
+          return [...pre, bounty.bounty];
+        }, []);
+
+        setBounties(data);
+        setBountiesMetaData(response.data.bounty.pagination);
       } else {
         const response = await axiosInstance.get('/bounty', { params });
         if (Auth.isLogin) {
@@ -112,7 +114,7 @@ export default function BountiesList({ title, vector, type }) {
                     <div className="bg-light-gray2-bg rounded-44 py-4 text-center my-4 lg:my-6">
                       <h3 className="text-18 lg:text-26 font-extrabold">Qualified Bounties</h3>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       {bounties.map((bounty) => (
                         <BountiesCard key={bounty.id} data={bounty} />
                       ))}
@@ -125,7 +127,7 @@ export default function BountiesList({ title, vector, type }) {
                     <div className="bg-light-gray2-bg rounded-44 py-4 text-center my-4 lg:my-6">
                       <h3 className="text-18 lg:text-26 font-extrabold">Need More Yaps</h3>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       {needMoreYapsBounties.map((bounty) => (
                         <BountiesCard key={bounty.id} data={bounty} />
                       ))}

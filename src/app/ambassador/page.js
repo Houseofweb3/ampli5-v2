@@ -1,9 +1,13 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Card from '@/components/ui/card';
 import Container from '@/components/ui/container';
-import SecondaryButton from '@/components/ui/SecondaryButton';
-
+import dynamic from 'next/dynamic';
+const AppointmentCalendar = dynamic(
+  () => import('@/components/AppointmentCalendar'),
+  { ssr: false } // Client-side only
+);
 export default function pages() {
   return (
     <div>
@@ -102,7 +106,6 @@ export default function pages() {
               <br />
               <span className=" text-light-yellow-bg">not cheerleaders </span>
             </h1>
-
             <div className="flex flex-col md:flex-row justify-between gap-4 lg:gap-8 items-center my-9 lg:my-12">
               <Card className=" w-full border-1 rounded-3xl p-36px">
                 <h3 className="font-extrabold">4K/month</h3>
@@ -113,8 +116,7 @@ export default function pages() {
                 <p>Extended combat deployment</p>
               </Card>
             </div>
-
-            <SecondaryButton className=" w-full md:w-fit mx-auto px-10">Try Ampli5</SecondaryButton>
+            <AppointmentCalendar />
           </div>
         </Container>
       </div>

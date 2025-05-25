@@ -1,6 +1,6 @@
 export const AuthProfile = [
   { id: '/profile', label: 'My Profile' },
-  { id: '/submissions', label: 'My Submissions' },
+  { id: '/bounties/my/submission', label: 'My Submissions' },
 ];
 export const BountyType = [
   { id: 'video', label: 'Video', img: '/icons/ai-video.png' },
@@ -19,9 +19,9 @@ export const SortByOption = {
     { label: 'Rewards', value: 'Rewards' },
   ],
   Submissions: [
-    { label: 'Expiry Date', value: 'ExpiryDate' },
+    { label: 'Expiry Date', value: 'ExpiredDate' },
     { label: 'Launch Date', value: 'LaunchDate' },
-    { label: 'Grant Value', value: 'GrantValue' },
+    { label: 'Bounty Value', value: 'BountyValue' },
   ],
 };
 
@@ -33,18 +33,70 @@ export const forProjectLinks = [
 ];
 
 export const XSliderData = [
-  { url: '/images/content/image.png' },
-  { url: '/images/content/image1.png' },
-  { url: '/images/content/image2.png' },
-  { url: '/images/content/image3.png' },
-  { url: '/images/content/image3.png' },
-  { url: '/images/content/image3.png' },
+  {
+    name: 'Cyrill',
+    url: 'https://i.ibb.co/n0rvxF1/Sm-Sdt0s-O-400x400.jpg',
+    link: 'https://x.com/cyrilXBT/status/1892596081076113557',
+  },
+  {
+    name: 'Wals_Eth',
+    url: 'https://i.ibb.co/4MZfh40/Xsu5-AJk-400x400.jpg',
+    link: 'https://x.com/wals_eth/status/1896572199818998252',
+  },
+  {
+    name: 'Defi Warhol',
+    url: 'https://i.ibb.co/f9mcwjw/g-UPtadna-400x400.jpg',
+    link: 'https://x.com/Defi_Warhol/status/1891568055635026260',
+  },
+  {
+    name: 'Axel Bitblaze',
+    url: 'https://i.ibb.co/bJVQ0kC/p-YItl-Wat-400x400.jpg',
+    link: 'https://x.com/axel_bitblaze69/status/1893257987122221208',
+  },
+  {
+    name: 'Dapp Center',
+    url: 'https://i.ibb.co/dPjPHm2/oea-Z2-H0-X-400x400.jpg',
+    link: 'https://x.com/degenlifer/status/1891829854905172146',
+  },
+  {
+    name: 'Crypto Gems',
+    url: 'https://i.ibb.co/GtndzPN/c-L1-O2-Sl-B-400x400.jpg',
+    link: 'https://x.com/cryptogems555/status/1876348413698306428',
+  },
+  {
+    name: 'NFT perks',
+    url: 'https://i.ibb.co/CHyNLwf/GBWz-Jp-400x400.jpg',
+    link: 'https://x.com/nftperks/status/1876982612927087033',
+  },
+  {
+    name: 'Thanos',
+    url: 'https://i.ibb.co/DrMVgXD/5-Nm-H7h-GI-400x400.jpg',
+    link: 'https://x.com/CryptoThannos/status/1876687051434942676',
+  },
+  {
+    name: 'Dami-Defi',
+    url: 'https://i.ibb.co/L9nNKK2/Yd-Qv-XW46-400x400.jpg',
+    link: 'https://x.com/DamiDefi/status/1877029634988269820',
+  },
 ];
+
 export const YoutubeSliderData = [
-  { url: '/images/content/image.png' },
-  { url: '/images/content/image1.png' },
-  { url: '/images/content/image2.png' },
-  { url: '/images/content/image3.png' },
+  {
+    link: 'https://www.youtube.com/watch?v=tPYW09HMkeI',
+    url: 'https://img.youtube.com/vi/tPYW09HMkeI/hqdefault.jpg',
+  },
+  {
+    link: 'https://youtu.be/inpz64ZoG-0?si=IgxfJ5LvcVHv4liO',
+    url: 'https://img.youtube.com/vi/inpz64ZoG-0/hqdefault.jpg',
+  },
+  {
+    link: 'https://www.youtube.com/watch?v=mm1RwwpdFoY',
+    url: 'https://img.youtube.com/vi/mm1RwwpdFoY/hqdefault.jpg',
+  },
+  {
+    link: 'https://www.youtube.com/watch?v=ssT7ma9Y1YI',
+    url: 'https://img.youtube.com/vi/ssT7ma9Y1YI/hqdefault.jpg',
+  },
 ];
 
 export const BountiesPollPrizeDistribution = [
@@ -86,3 +138,42 @@ export const BountiesType = {
     borderColor: 'border-articleBadgeBorder',
   },
 };
+
+export const TopAttention = [
+  {
+    img: '/images/crypto-image-1.png',
+    title: 'Wals',
+  },
+  {
+    img: '/images/crypto-image-2.png',
+    title: 'Yashas Naik',
+  },
+  {
+    img: '/images/crypto-image-3.png',
+    title: 'Dapp Centre',
+  },
+  {
+    img: '/images/crypto-image-4.png',
+    title: 'Crypto GEMs',
+  },
+  {
+    img: '/images/crypto-image-5.png',
+    title: 'DamiDefi',
+  },
+  {
+    img: 'https://i.ibb.co/rRgdvqwn/wvi-Okz-OE-400x400.jpg',
+    title: 'Senior',
+  },
+  {
+    img: 'https://i.ibb.co/fVLWQrrN/Ed-Ncd-XKpj1-Phz1u-Ax-FIt-b-Z7-BCXO57-Wut-YQv9ykqgb7-LJ-ZHu-Q2hc-Hoy-BE10-Olce-Tj-Ib61vh-TUI-s160-c.jpg',
+    title: 'CryptoRover',
+  },
+  {
+    img: '/images/crypto-image-8.png',
+    title: 'Danjo Capital',
+  },
+  {
+    img: 'https://i.ibb.co/n0rvxF1/Sm-Sdt0s-O-400x400.jpg',
+    title: 'CyrilXBT',
+  },
+];

@@ -19,8 +19,13 @@ export default function Footer() {
               />
             </Link>
             <div className="flex items-center gap-4 text-14 sm:text-18 font-medium">
-              <Link href="#">Privacy Policy</Link>
-              <Link href="#"> Terms of Service</Link>
+              <Link target="_bank" href="https://www.houseofweb3.com/legal/privacyPolicy">
+                Privacy Policy
+              </Link>
+              <Link target="_bank" href="https://www.houseofweb3.com/legal/termsOfUse">
+                {' '}
+                Terms of Service
+              </Link>
             </div>
           </div>
           <div className="flex  flex-col sm:flex-row gap-5 sm:gap-7 justify-between items-center">
@@ -28,7 +33,7 @@ export default function Footer() {
               @{new Date().getFullYear()} Supa Limited. All rights reserved.
             </div>
             <div className="flex items-center gap-4">
-              <Link href="#">
+              <Link target="_bank" href="https://x.com/nomo_nomaya">
                 {' '}
                 <Image
                   alt="Logo"
@@ -38,7 +43,7 @@ export default function Footer() {
                   src="/icons/x.png"
                 />
               </Link>
-              <Link href="#">
+              <Link target="_bank" href="https://t.me/ampli5ai">
                 <Image
                   alt="Logo"
                   width={32}

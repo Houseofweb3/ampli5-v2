@@ -1,4 +1,6 @@
 'use client';
+export const dynamic = 'force-dynamic';
+
 import React, { useLayoutEffect, useState } from 'react';
 import BrandSlider from './ui/brandSlider';
 import MarqueeSlide from './ui/marquee';
@@ -10,7 +12,7 @@ import PrimaryButton from './ui/PrimaryButton';
 import { useRouter, useSearchParams } from 'next/navigation';
 import WaveContent from './WaveContent';
 import EffectSlider from './EffectSlider';
-import { XSliderData, YoutubeSliderData } from '@/data/data';
+import { TopAttention, XSliderData, YoutubeSliderData } from '@/data/data';
 import { useAuthStore } from '@/store/auth';
 import { toast } from 'react-toastify';
 
@@ -28,11 +30,16 @@ export default function Hero() {
     const id = params.get('id');
     const username = params.get('username');
     const name = params.get('name');
+    const profile_picture = params.get('profile_picture');
     const yaps_score = params.get('yeps_score');
     const message = params.get('message');
 
     if (auth && id && username && yaps_score) {
-      Auth.login({ user: { id, username, yaps_score, name }, token: auth, isLogin: true });
+      Auth.login({
+        user: { id, username, yaps_score, name, profile_picture },
+        token: auth,
+        isLogin: true,
+      });
       const cleanUrl = window.location.pathname;
       router.replace(cleanUrl, { scroll: false });
     }
@@ -108,15 +115,9 @@ export default function Hero() {
             Our <br /> Top attention generators
           </div>
           <div className="relative z-1 grid grid-cols-2 lg:grid-cols-3 gap-4">
-            <CardImage></CardImage>
-            <CardImage></CardImage>
-            <CardImage></CardImage>
-            <CardImage></CardImage>
-            <CardImage></CardImage>
-            <CardImage></CardImage>
-            <CardImage></CardImage>
-            <CardImage></CardImage>
-            <CardImage></CardImage>
+            {TopAttention.map((data, index) => (
+              <CardImage key={index} data={data}></CardImage>
+            ))}
           </div>
         </div>
       </div>
@@ -136,13 +137,13 @@ export default function Hero() {
           </div>
         </div>
         <EffectSlider data={XSliderData}>
-          <div className='mb-30px w-fit mx-auto'>
-           <Image src={'/icons/icon-x.png'} width={57} height={32} alt="img" />
+          <div className="mb-30px w-fit mx-auto">
+            <Image src={'/icons/icon-x.png'} width={57} height={32} alt="img" />
           </div>
         </EffectSlider>
         <EffectSlider data={YoutubeSliderData}>
-         <div className='mb-30px w-fit mx-auto'>
-           <Image src={'/icons/youtube.png'} width={144} height={32} alt="img" />
+          <div className="mb-30px w-fit mx-auto">
+            <Image src={'/icons/youtube.png'} width={144} height={32} alt="img" />
           </div>
         </EffectSlider>
       </div>

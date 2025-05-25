@@ -15,11 +15,11 @@ export function TimeLeft({ date, title }) {
   let display = 'Closed';
 
   if (diffInDays >= 1) {
-    display = `${diffInDays.toFixed(0)} ${title && 'Day(s) left'}`;
+    display = `${diffInDays.toFixed(0)} ${title && 'Day'}`;
   } else if (diffInHours >= 1) {
-    display = `${diffInHours.toFixed(0)} ${title && 'Hour(s) left'}`;
+    display = `${diffInHours.toFixed(0)} ${title && 'Hour'}`;
   } else {
-    display = `${diffInMinutes}  ${title && 'Minute(s) left'}`;
+    display = `${diffInMinutes}  ${title && 'Minute'}`;
   }
 
   return <div>{display}</div>;

@@ -9,6 +9,7 @@ import 'swiper/css/navigation';
 import Image from 'next/image';
 import Container from './ui/container';
 import { Navigation } from 'swiper/modules';
+import Link from 'next/link';
 
 export default function EffectSlider({ data, children }) {
   return (
@@ -19,6 +20,8 @@ export default function EffectSlider({ data, children }) {
           slidesPerView={4}
           spaceBetween={20}
           navigation={true}
+          loop={true}
+          lazyPreloadPrevNext={10}
           modules={[Navigation]}
           breakpoints={{
             1024: {
@@ -40,7 +43,11 @@ export default function EffectSlider({ data, children }) {
         >
           {data.map((value, index) => (
             <SwiperSlide key={index}>
-              <div className="aspect-[5/3] overflow-hidden p-9px border border-solid border-black rounded-3xl w-full sm:w-fit bg-slider-bg">
+              <Link
+                href={value.link}
+                target="_blank"
+                className="inline-block aspect-[5/3] overflow-hidden p-9px border border-solid border-black rounded-3xl w-full sm:w-fit bg-slider-bg"
+              >
                 <Image
                   className="rounded-18 h-full w-full object-center"
                   src={value.url}
@@ -48,7 +55,7 @@ export default function EffectSlider({ data, children }) {
                   height={215}
                   alt="image "
                 />
-              </div>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>
