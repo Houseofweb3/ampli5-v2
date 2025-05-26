@@ -24,7 +24,13 @@ export default function HowItWork() {
               <p>Browse open contests from rising crypto startups.</p>
             </div>
             <div className="card_img">
-              <Image className='w-full h-auto' src={'/images/grid-img1.png'} width={297} height={257} alt="img1" />
+              <Image
+                className="w-auto  h-60  object-contain mx-auto"
+                src={'/images/grid-img1.png'}
+                width={297}
+                height={257}
+                alt="img1"
+              />
             </div>
           </div>
           <div className="card flex flex-col lg:gap-6 p-4 lg:p-6 bg-white border border-solid border-black">
@@ -34,8 +40,14 @@ export default function HowItWork() {
             <div className="card_desc">
               <p>Submit a Twitter thread, meme, video, reel, or short.</p>
             </div>
-            <div className="card_img w-fit mx-auto">
-              <Image className='w-full h-auto' src={'/images/grid-img2.png'} width={292} height={257} alt="img2" />
+            <div className="card_img ">
+              <Image
+                src={'/images/grid-img2.png'}
+                width={292}
+                height={257}
+                alt="img2"
+                className="w-auto h-60 object-contain mx-auto"
+              />
             </div>
           </div>
           <div className="card flex flex-col lg:gap-6 p-4 lg:p-6 bg-white border border-solid border-black">
@@ -45,8 +57,14 @@ export default function HowItWork() {
             <div className="card_desc">
               <p>Browse open contests from rising crypto startups.</p>
             </div>
-            <div className="card_img w-fit mx-auto">
-              <Image className='w-full h-auto' src={'/images/grid-img3.png'} width={164} height={238} alt="img3" />
+            <div className="card_img">
+              <Image
+                className="w-auto h-60  object-contain mx-auto"
+                src={'/images/grid-img3.png'}
+                width={297}
+                height={257}
+                alt="img3"
+              />
             </div>
           </div>
         </div>

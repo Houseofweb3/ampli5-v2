@@ -1,13 +1,9 @@
-'use client';
-import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Card from '@/components/ui/card';
 import Container from '@/components/ui/container';
 import dynamic from 'next/dynamic';
-const AppointmentCalendar = dynamic(
-  () => import('@/components/AppointmentCalendar'),
-  { ssr: false } // Client-side only
-);
+import AppointmentCalendar from '@/components/AppointmentCalendar';
+
 export default function pages() {
   return (
     <div>

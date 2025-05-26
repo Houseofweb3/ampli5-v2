@@ -1,9 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['ui-avatars.com','i.ibb.co','img.youtube.com'],
-        
-      },
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'ui-avatars.com',
+          pathname: '/**', // allows all paths, or you can restrict to specific ones
+        },
+        {
+          protocol: 'https',
+          hostname: 'i.ibb.co',
+          pathname: '/**', // allows all paths, or you can restrict to specific ones
+        },
+        {
+          protocol: 'https',
+          hostname: 'img.youtube.com',
+          pathname: '/**', // allows all paths, or you can restrict to specific ones
+        },
+      ],
+    }
 };
+
+
+
 
 export default nextConfig;

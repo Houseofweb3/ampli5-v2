@@ -1,13 +1,10 @@
-'use client';
 import React from 'react';
 import Image from 'next/image';
 import Card from '@/components/ui/card';
 import Container from '@/components/ui/container';
 import NftNewsSlider from '@/components/ui/NftNewsSlider';
-import dynamic from 'next/dynamic';
-const AppointmentCalendar = dynamic(() => import('@/components/AppointmentCalendar'), {
-  ssr: false,
-});
+import AppointmentCalendar from '@/components/AppointmentCalendar';
+
 export default function pages() {
   return (
     <div>
