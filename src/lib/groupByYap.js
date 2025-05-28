@@ -1,9 +1,7 @@
-export default function groupByYap({ bounties, threshold = 2500 }) {
+export default function groupByYap({ bounties, threshold }) {
   return bounties.reduce(
     (acc, bounty) => {
-      const prize = parseFloat(bounty.prize);
-
-      if (prize >= threshold * 100) {
+      if (bounty.metadata.yaps >= threshold) {
         acc.greaterThen.push(bounty);
       } else {
         acc.lessThan.push(bounty);

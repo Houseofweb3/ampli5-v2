@@ -135,14 +135,14 @@ export default function Hero() {
             Latest Performing Content
           </div>
         </div>
-        <EffectSlider data={XSliderData}>
-          <div className="mb-30px w-fit mx-auto">
-            <Image src={'/icons/icon-x.png'} width={57} height={32} alt="img" />
+        <EffectSlider data={YoutubeSliderData} type="youtube" direction="right">
+          <div className="mb-9  w-fit mx-auto">
+            <Image src={'/icons/youtube.png'} width={144} height={32} alt="img" />
           </div>
         </EffectSlider>
-        <EffectSlider data={YoutubeSliderData}>
-          <div className="mb-30px w-fit mx-auto">
-            <Image src={'/icons/youtube.png'} width={144} height={32} alt="img" />
+        <EffectSlider data={XSliderData} type="X" direction="right">
+          <div className="mb-9 w-fit mx-auto">
+            <Image src={'/icons/icon-x.png'} width={57} height={32} alt="img" />
           </div>
         </EffectSlider>
       </div>

@@ -1,12 +1,12 @@
 import moment from 'moment';
 import { cn } from './utils';
 
-export function deadlineCounter({ date }) {
+export function deadlineCounter({ date, status }) {
   const now = moment();
   const end = moment(date);
   const duration = moment.duration(end.diff(now));
 
-  const isExpired = duration.asSeconds() <= 0;
+  const isExpired = status === 'closed' ? true : duration.asSeconds() <= 0;
 
   const days = isExpired ? '00' : String(Math.floor(duration.asDays())).padStart(2, '0');
   const hours = isExpired ? '00' : String(duration.hours()).padStart(2, '0');

@@ -4,7 +4,7 @@ import React from 'react';
 export default function Title({ className, children }) {
   return (
     <div className={cn('w-full text-center lg:text-left relative z-1', className)}>
-      <h1>{children}</h1>
+      <h1 className='text-inherit'>{children}</h1>
     </div>
   );
 }
