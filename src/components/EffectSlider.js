@@ -16,49 +16,53 @@ export default function EffectSlider({ data, children }) {
     <div className=" w-full pt-48px lg:pt-70px py-48px ctm_effect_slider">
       <Container>
         {children}
-        <Swiper
-          slidesPerView={4}
-          spaceBetween={20}
-          navigation={true}
-          loop={true}
-          lazyPreloadPrevNext={10}
-          modules={[Navigation]}
-          breakpoints={{
-            1024: {
-              slidesPerView: 4,
-            },
-            767: {
-              slidesPerView: 3.5,
-            },
-            575: {
-              slidesPerView: 2.5,
-            },
-            375: {
-              slidesPerView: 1.5,
-            },
-            0: {
-              slidesPerView: 1.2,
-            },
-          }}
-        >
-          {data.map((value, index) => (
-            <SwiperSlide key={index}>
-              <Link
-                href={value.link}
-                target="_blank"
-                className="inline-block aspect-[5/3] overflow-hidden p-9px border border-solid border-black rounded-3xl w-full sm:w-fit bg-slider-bg"
-              >
-                <Image
-                  className="rounded-18 h-full w-full object-center"
-                  src={value.url}
-                  width={367}
-                  height={215}
-                  alt="image "
-                />
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <div className='ctm_slider_block'>
+          <Swiper
+            slidesPerView={4}
+            spaceBetween={20}
+            navigation={true}
+            loop={true}
+            lazyPreloadPrevNext={10}
+            centeredSlides={false}
+            centeredSlidesBounds={false}
+            modules={[Navigation]}
+            breakpoints={{
+              1024: {
+                slidesPerView: 4,
+              },
+              767: {
+                slidesPerView: 3.5,
+              },
+              575: {
+                slidesPerView: 2.5,
+              },
+              375: {
+                slidesPerView: 1.5,
+              },
+              0: {
+                slidesPerView: 1.2,
+              },
+            }}
+          >
+            {data.map((value, index) => (
+              <SwiperSlide key={index}>
+                <Link
+                  href={value.link}
+                  target="_blank"
+                  className="block aspect-[5/3] overflow-hidden p-9px border border-solid border-black rounded-3xl w-full sm:w-fit bg-slider-bg"
+                >
+                  <Image
+                    className="rounded-18 h-full w-full object-center"
+                    src={value.url}
+                    width={367}
+                    height={215}
+                    alt="image "
+                  />
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       </Container>
     </div>
   );

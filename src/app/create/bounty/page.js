@@ -1,13 +1,10 @@
-'use client';
 import React from 'react';
 import Title from '@/components/ui/title';
 import Card from '@/components/ui/card';
 import Container from '@/components/ui/container';
 import CreateBountiesForm from '@/components/CreateBountiesForm';
-import dynamic from 'next/dynamic';
-const AppointmentCalendar = dynamic(() => import('@/components/AppointmentCalendar'), {
-  ssr: false,
-});
+import AppointmentCalendar from '@/components/AppointmentCalendar';
+
 
 export default function pages() {
   return (

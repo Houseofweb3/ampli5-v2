@@ -98,7 +98,6 @@ export default function Hero() {
             </div>
           </div>
         </div>
-
         <BrandSlider></BrandSlider>
         <MarqueeSlide></MarqueeSlide>
       </div>
