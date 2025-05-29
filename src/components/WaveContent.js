@@ -14,7 +14,7 @@ export default function WaveContent() {
           Whether you write threads, create reels, or design memes — there’s a campaign for you.
         </p>
         <div className="flex justify-center items-center mt-9 lg:mt-60px max-w-full sm:max-w-180px mx-auto">
-          <SecondaryButton onClick={() => router.push('/bounties')}>Explore</SecondaryButton>
+          <SecondaryButton onClick={() => router.push('/bounty-hunt')}>Explore</SecondaryButton>
         </div>
       </div>
     </div>

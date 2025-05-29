@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Container from './ui/container';
 import Title from './ui/title';
 import Card from './ui/card';
@@ -14,7 +14,8 @@ import Pagination from './ui/Pagination';
 
 export default function BountiesList({ title, vector, type }) {
   const Auth = useAuthStore();
-  const hasHydrated = useAuthStore?.persist?.hasHydrated();
+  const hasHydrated = useAuthStore?.persist?.hasHydrated() || true;
+  
 
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState(null);
@@ -33,9 +34,10 @@ export default function BountiesList({ title, vector, type }) {
   const [loading, setLoading] = useState(true);
   const YapScore = Auth.user.yaps_score;
   const userId = Auth.user.id;
-
-  const fetchBounties = async () => {
+  
+  const fetchBounties = useCallback(async () => {
     try {
+      setLoading(true); // Optional: add this to reset loading on every call
       const params = {
         page,
         limit: 6,
@@ -47,7 +49,7 @@ export default function BountiesList({ title, vector, type }) {
 
       if (type === 'Submissions') {
         const response = await axiosInstance.get(`/bounty/my/submission/${userId}`, { params });
-        const data = response.data.bounty.bounty.reduce((pre, bounty, index) => {
+        const data = response.data.bounty.bounty.reduce((pre, bounty) => {
           return [...pre, bounty.bounty];
         }, []);
 
@@ -72,12 +74,12 @@ export default function BountiesList({ title, vector, type }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, statusFilter, bountyType, sortBy, category, type, Auth.isLogin, YapScore, userId]);
 
   useEffect(() => {
     if (!hasHydrated) return;
     fetchBounties();
-  }, [statusFilter, hasHydrated, category, sortBy, bountyType, page, Auth.user.yeps_score, type]);
+  }, [fetchBounties, hasHydrated]);
 
   useEffect(() => {
     setPage(1);

@@ -82,7 +82,7 @@ export default function BountyDetailPage() {
         toast.success('Your submission has been submitted');
       }
       setSubmissionLink('');
-      router.push('/bounties');
+      router.push('/bounty-hunt');
     } catch (error) {
       if (submittedUser) {
         toast.error('Submission Update failed. Please try again.');
@@ -295,9 +295,24 @@ export default function BountyDetailPage() {
               <div>
                 <h2>Bounties Inspiration</h2>
                 <ul className="flex flex-col p-0 mt-4 w-fit mb-9  text-16 sm:text-18">
-                  <li className="flex flex-col md:flex-row gap-1 py-1 group">
-                    <span className="font-bold">{bounty.metadata.contentInspiration}</span>
-                  </li>
+                  {Object.entries(bounty.metadata.contentInspiration).map(([key, value], index) =>
+                    value ? (
+                      <li key={index} className="flex gap-1 py-1 group  text-16 sm:text-18">
+                        <Link href={value} className="flex gap-2 list-none">
+                          <span className="  break-all group-hover:text-yellow-bg transition-all duration-300 ease-in-out break-words">
+                            {value}
+                          </span>
+                          <Image
+                            alt="Arrow"
+                            width={1000}
+                            height={1000}
+                            className="w-6 h-5 py-2px px-1 border border-solid border-black rounded-full shadow-xl bg-yellow-bg group-hover:shadow-none group-hover:bg-transparent transition-all duration-300 ease-in-out"
+                            src="/icons/arrow-up-right-01.png"
+                          />
+                        </Link>
+                      </li>
+                    ) : null
+                  )}
                 </ul>
               </div>
               <h2 className="mb-4">Do’s and Don’ts</h2>
@@ -334,7 +349,7 @@ export default function BountyDetailPage() {
               <div className="mb-9">
                 <h2 className="mb-4">Deadline</h2>
                 <div className="flex flex-col md:flex-row gap-4">
-                  {deadlineCounter({ date: bounty.endDate, status:bounty.status })}
+                  {deadlineCounter({ date: bounty.endDate, status: bounty.status })}
                 </div>
               </div>
 

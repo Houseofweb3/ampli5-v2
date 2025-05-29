@@ -44,7 +44,7 @@ useEffect(() => {
           </Link>
           {token ? (
             <div className="flex items-center gap-2 sm:gap-4">
-              <Link href="/bounties" className="font-medium text-18">
+              <Link href="/bounty-hunt" className="font-medium text-18">
                 Bounties
               </Link>
 

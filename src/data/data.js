@@ -1,6 +1,6 @@
 export const AuthProfile = [
   { id: '/profile', label: 'My Profile' },
-  { id: '/bounties/my/submission', label: 'My Submissions' },
+  { id: '/bounty-hunt/my/submission', label: 'My Submissions' },
 ];
 export const BountyType = [
   { id: 'video', label: 'Video', img: '/icons/ai-video.png' },
@@ -26,10 +26,10 @@ export const SortByOption = {
 };
 
 export const forProjectLinks = [
-  { title: 'Create Bounty', href: '/create/bounty' },
+  { title: 'Create Bounty', href: '/cast' },
   { title: 'KOL-Discovery', href: 'https://ampli5.ai/' },
-  { title: 'Ambassador Program', href: '/ambassador' },
-  { title: 'Founder-led Marketing', href: '/founder-led' },
+  { title: 'Ambassador Program', href: '/ambassadors' },
+  { title: 'Founder-led Marketing', href: '/founder-signal' },
 ];
 
 export const XSliderData = [

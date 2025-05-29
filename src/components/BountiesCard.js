@@ -48,7 +48,7 @@ export default function BountiesCard({ data }) {
             </div>
             <div className=" px-3 border-l border-r border-solid border-black/20 flex-grow-1">
               <h5 className="mb-6px">Min. Yaps Req.</h5>
-              <h4>{data.metadata.yaps || "-"}</h4>
+              <h4>{data.metadata.yaps || '-'}</h4>
             </div>
             <div className="pl-3 flex-grow-1">
               <h5 className="mb-6px">Bounty Type</h5>
@@ -68,7 +68,7 @@ export default function BountiesCard({ data }) {
             </div>
             <Link
               className="w-fit border  border-solid rounded-4xl border-black py-8px px-6 bg-white text-black text-14 lg:text-xl font-medium capitalize transition duration-300 ease-in-out flex items-center justify-center shadow-xl hover:bg-black hover:text-white hover:shadow-none cursor-pointer"
-              href={'/bounties/details/' + data.id}
+              href={'/bounty-hunt/details/' + data.id}
             >
               {data.status === 'closed' ? 'View' : ' Explore'}
             </Link>
