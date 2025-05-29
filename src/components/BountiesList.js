@@ -111,9 +111,11 @@ export default function BountiesList({ title, vector, type }) {
               <div>
                 {!isEmpty(bounties) ? (
                   <div>
-                    <div className="bg-light-gray2-bg rounded-44 py-4 text-center my-4 lg:my-6">
-                      <h3 className="text-18 lg:text-26 font-extrabold">Qualified Bounties</h3>
-                    </div>
+                    {Auth.isLogin ? (
+                      <div className="bg-light-gray2-bg rounded-44 py-4 text-center my-4 lg:my-6">
+                        <h3 className="text-18 lg:text-26 font-extrabold">Qualified Bounties</h3>
+                      </div>
+                    ) : null}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       {bounties.map((bounty) => (
                         <BountiesCard key={bounty.id} data={bounty} />

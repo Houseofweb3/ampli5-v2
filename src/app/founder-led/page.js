@@ -9,7 +9,7 @@ export default function pages() {
   return (
     <div>
       <div className="bg-cream-bg relative pt-56px pb-14 bg_square overflow-x-hidden ">
-        <div className="hue_aimations absolute top-9 lg:top-20 lg:-left-7">
+        <div className=" absolute top-9 lg:top-20 lg:-left-7">
           <Image
             className="w-90px h-90px lg:w-166px lg:h-166px"
             src={'/pattern/Vector3_mobile.png'}
@@ -18,7 +18,7 @@ export default function pages() {
             alt="icon"
           />
         </div>
-        <div className="hue_aimations absolute top-4 lg:top-20 -right-5 lg:-right-9">
+        <div className=" absolute top-4 lg:top-20 -right-5 lg:-right-9">
           <Image
             className="w-90px h-90px lg:w-170px lg:h-170px object-contain"
             src={'/pattern/Vector4.png'}

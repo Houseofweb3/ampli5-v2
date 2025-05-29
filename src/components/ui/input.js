@@ -23,13 +23,11 @@ const Input = ({
   };
 
   return (
-    <div className="mb-4">
+    <div className="mb-1">
       {label && (
-        <label
-          htmlFor={name}
-          className="block text-sm font-medium mb-1.5 text-[#686868] font-semibold"
-        >
+        <label htmlFor={name} className="block text-sm font-medium mb-1.5 text-[#686868] ">
           {label}
+          {required && <span className="text-red-500">*</span>}
         </label>
       )}
 

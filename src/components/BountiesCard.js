@@ -33,9 +33,9 @@ export default function BountiesCard({ data }) {
               </h4>
               <Link
                 className="truncate w-full block text-sm text-ellipsis overflow-hidden whitespace-nowrap"
-                href={data.metadata.resources.x}
+                href={data.metadata.resources?.x}
               >
-                {data.metadata.resources.x}
+                {data.metadata.resources?.x}
               </Link>
             </div>
           </div>
@@ -48,7 +48,7 @@ export default function BountiesCard({ data }) {
             </div>
             <div className=" px-3 border-l border-r border-solid border-black/20 flex-grow-1">
               <h5 className="mb-6px">Min. Yaps Req.</h5>
-              <h4>80</h4>
+              <h4>{data.metadata.yaps || "-"}</h4>
             </div>
             <div className="pl-3 flex-grow-1">
               <h5 className="mb-6px">Bounty Type</h5>

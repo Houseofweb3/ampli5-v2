@@ -10,58 +10,35 @@ import Image from 'next/image';
 import Container from './ui/container';
 import { Navigation } from 'swiper/modules';
 import Link from 'next/link';
+import Marquee from 'react-fast-marquee';
+import { cn } from '@/lib/utils';
 
-export default function EffectSlider({ data, children }) {
+export default function EffectSlider({ data, direction, type, children }) {
   return (
     <div className=" w-full pt-48px lg:pt-70px py-48px ctm_effect_slider">
       <Container>
         {children}
-        <div className='ctm_slider_block'>
-          <Swiper
-            slidesPerView={4}
-            spaceBetween={20}
-            navigation={true}
-            loop={true}
-            lazyPreloadPrevNext={10}
-            centeredSlides={false}
-            centeredSlidesBounds={false}
-            modules={[Navigation]}
-            breakpoints={{
-              1024: {
-                slidesPerView: 4,
-              },
-              767: {
-                slidesPerView: 3.5,
-              },
-              575: {
-                slidesPerView: 2.5,
-              },
-              375: {
-                slidesPerView: 1.5,
-              },
-              0: {
-                slidesPerView: 1.2,
-              },
-            }}
-          >
+        <div className="ctm_slider_block">
+          <Marquee direction={direction}>
             {data.map((value, index) => (
-              <SwiperSlide key={index}>
-                <Link
-                  href={value.link}
-                  target="_blank"
-                  className="block aspect-[5/3] overflow-hidden p-9px border border-solid border-black rounded-3xl w-full sm:w-fit bg-slider-bg"
-                >
-                  <Image
-                    className="rounded-18 h-full w-full object-center"
-                    src={value.url}
-                    width={367}
-                    height={215}
-                    alt="image "
-                  />
-                </Link>
-              </SwiperSlide>
+              <Link
+                href={value.link}
+                target="_blank"
+                className={cn(
+                  'block overflow-hidden min-w-[320px] h-auto p-9px border border-solid border-black rounded-3xl  bg-slider-bg mx-2',
+                  type === 'X' ? 'aspect-[5/4]' : 'aspect-video'
+                )}
+              >
+                <Image
+                  className="rounded-18 h-full w-full object-cover"
+                  src={value.url}
+                  width={367}
+                  height={215}
+                  alt="image "
+                />
+              </Link>
             ))}
-          </Swiper>
+          </Marquee>
         </div>
       </Container>
     </div>

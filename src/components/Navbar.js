@@ -51,7 +51,7 @@ useEffect(() => {
               <div className="relative" ref={profileRef}>
                 <ExploreBtn
                   onClick={() => setIsProfileOpen((pre) => !pre)}
-                  className="bg-blue-btn text-white! hover:text-white p-0 rounded-full w-30px h-30px lg:w-57px lg:h-57px text-14 lg:text-20 hover:shadow-xl hover:bg-blue-btn"
+                  className="bg-blue-btn uppercase text-white! hover:text-white p-0 rounded-full w-30px h-30px lg:w-57px lg:h-57px text-14 lg:text-20 hover:shadow-xl hover:bg-blue-btn"
                 >
                   {user.username?.slice(0, 2)}
                 </ExploreBtn>

@@ -8,7 +8,7 @@ export default function pages() {
   return (
     <div>
       <div className="bg-cream-bg relative pt-56px pb-14 bg_square overflow-x-hidden ">
-        <div className="hue_aimations absolute top-9 lg:top-20 lg:-left-7">
+        <div className=" absolute top-9 lg:top-20 lg:-left-7">
           <Image
             className="w-90px h-90px lg:w-166px lg:h-166px"
             src={'/pattern/Vector3_mobile.png'}
@@ -17,7 +17,7 @@ export default function pages() {
             alt="icon"
           />
         </div>
-        <div className="hue_aimations absolute top-4 lg:top-20 -right-5 lg:-right-9">
+        <div className=" absolute top-4 lg:top-20 -right-5 lg:-right-9">
           <Image
             className="w-90px h-90px lg:w-170px lg:h-170px object-contain"
             src={'/pattern/Vector4.png'}
@@ -96,23 +96,25 @@ export default function pages() {
       </div>
       <div className="bg-cream-bg py-4 lg:py-18">
         <Container className="p-0">
-          <div className="bg_blue_pattern py-8 lg:py-16 xl:rounded-2xl p-4 lg:px-14">
-            <h1 className=" w-full text-white text-center text-32 lg:text-56 leading-40 lg:leading-60 font-semibold">
-              You need Mercenaries,
-              <br />
-              <span className=" text-light-yellow-bg">not cheerleaders </span>
-            </h1>
-            <div className="flex flex-col md:flex-row justify-between gap-4 lg:gap-8 items-center my-9 lg:my-12">
-              <Card className=" w-full border-1 rounded-3xl p-36px">
-                <h3 className="font-extrabold">4K/month</h3>
-                <p>Enlist 5 battle-tested defenders</p>
-              </Card>
-              <Card className=" w-full  border-1 rounded-3xl p-36px">
-                <h3 className="font-extrabold">7.5K/2 months</h3>
-                <p>Extended combat deployment</p>
-              </Card>
+          <div className="bg_blue_pattern py-8 lg:py-16 xl:rounded-2xl p-4 lg:px-14 ">
+            <div className="sm:w-fit mx-auto">
+              <h1 className=" w-full text-white text-center text-32 lg:text-56 leading-40 lg:leading-60 font-semibold">
+                You need Mercenaries,
+                <br />
+                <span className=" text-light-yellow-bg">not cheerleaders </span>
+              </h1>
+              <div className="flex flex-col justify-between gap-4 lg:gap-8 items-center my-9 lg:my-12 w-full">
+                <Card className=" w-full border-1 rounded-3xl p-36px ">
+                  <h3 className="font-extrabold">$ 4K/month</h3>
+                  <p>Enlist 5 battle-tested defenders</p>
+                </Card>
+                <Card className="  w-full  border-1 rounded-3xl p-36px">
+                  <h3 className="font-extrabold">$ 7.5K/2 months</h3>
+                  <p>Extended combat deployment</p>
+                </Card>
+              </div>
+              <AppointmentCalendar />
             </div>
-            <AppointmentCalendar />
           </div>
         </Container>
       </div>

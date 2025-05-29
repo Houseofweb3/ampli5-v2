@@ -14,22 +14,24 @@ import moment from 'moment';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Winner from './WinnerList';
 
 export default function BountyDetailPage() {
   const { bounties_id } = useParams();
+  const router = useRouter();
+  const { isLogin, user } = useAuthStore();
+  const [loading, setLoading] = useState(true);
+
   const [bounty, setBounty] = useState(null);
   const [submissionsList, setSubmissionsList] = useState([]);
   const [winderList, setWinnerList] = useState([]);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionLink, setSubmissionLink] = useState('');
   const [submissionLinkValidation, setSubmissionLinkValidation] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const { isLogin, user } = useAuthStore();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchBounty = async () => {
@@ -79,6 +81,8 @@ export default function BountyDetailPage() {
         });
         toast.success('Your submission has been submitted');
       }
+      setSubmissionLink('');
+      router.push('/bounties');
     } catch (error) {
       if (submittedUser) {
         toast.error('Submission Update failed. Please try again.');
@@ -133,41 +137,51 @@ export default function BountyDetailPage() {
                 <h2 className="my-4">{bounty.bountyName}</h2>
                 <div className="w-full flex flex-wrap justify-between item-center gap-6">
                   <div className="flex flex-wrap gap-4">
-                    <div className="w-fit text-black rounded-2xl h-fit bg-white border border-black py-2 px-3 flex gap-1.5 justify-between items-center">
+                    <div className="w-fit text-white rounded-2xl h-fit  border-2 bg-blue-btn border-black py-2 px-3 flex gap-1.5 justify-between items-center">
                       <Image src="/icons/t-icon.png" height={24} width={24} alt="icon" />
-                      <span className="uppercase text-black/45 text-18"> {bounty.prize} USDT</span>
+                      <span className="uppercase  text-18"> {bounty.prize} USDT</span>
                     </div>
                     <div
                       className={cn(
                         'w-fit text-white rounded-2xl h-fit py-2 px-3 flex gap-2 justify-between items-center border',
-                        BountiesType[bounty.bountyType].bgcolor,
-                        BountiesType[bounty.bountyType].borderColor
+                        BountiesType[bounty.bountyType]?.bgcolor,
+                        BountiesType[bounty.bountyType]?.borderColor
                       )}
                     >
                       <Image
-                        src={BountiesType[bounty.bountyType].url}
+                        src={BountiesType[bounty.bountyType]?.url}
                         height={24}
                         width={24}
                         alt="icon"
                       />
                       <span className="text-18"> {bounty.bountyType}</span>
                     </div>
-                    <div className="w-fit h-fit text-black/45 rounded-2xl bg-white border border-black py-2 px-3 flex gap-2 justify-between items-center">
-                      <Image src="/icons/clock-05.png" height={24} width={24} alt="icon" />
-                      <span className="text-18">{moment(bounty.endDate).format('DD/MM/YYYY')}</span>
-                    </div>
                     <div className="w-fit h-fit text-white rounded-2xl bg-black border border-black py-2 px-3 flex gap-2 justify-between items-center">
                       <Image src="/icons/image-71.png" height={24} width={24} alt="icon" />
                       <span> {bounty.metadata.yaps} Yaps Req</span>
                     </div>
+                    {bounty.status === 'closed' ? (
+                      <div className="w-fit h-fit text-white rounded-2xl bg-videoBg border border-videoBadgeBorder py-2 px-3 flex gap-2 justify-between items-center">
+                        Closed
+                      </div>
+                    ) : (
+                      <div className="w-fit h-fit text-black/45 rounded-2xl bg-white border border-black py-2 px-3 flex gap-2 justify-between items-center">
+                        <Image src="/icons/clock-05.png" height={24} width={24} alt="icon" />
+                        <span className="text-18">
+                          {moment(bounty.endDate).format('DD/MM/YYYY')}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                  <div className="w-full sm:w-fit h-fit">
-                    <Link href="#submit">
-                      <PrimaryButton className="w-full sm:w-fit text-white px-6 lg:px-8 py-2 lg:py-3 ">
-                        Submit Bounty
-                      </PrimaryButton>
-                    </Link>
-                  </div>
+                  {bounty.status === 'closed' ? null : (
+                    <div className="w-full sm:w-fit h-fit">
+                      <Link href="#submit">
+                        <PrimaryButton className="w-full sm:w-fit text-white px-6 lg:px-8 py-2 lg:py-3 ">
+                          Submit Bounty
+                        </PrimaryButton>
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -197,9 +211,9 @@ export default function BountyDetailPage() {
               <h2>Founder/Team</h2>
               <ul className="flex flex-col p-0 mt-4 w-fit mb-9 ">
                 {Object.entries(bounty.metadata.founderTeam).map(([key, value], index) => (
-                  <li key={index} className="grid grid-cols-2 gap-2 py-1 group text-16 lg:text-18">
+                  <li key={index} className="grid grid-cols-2 gap-2 py-1  text-16 lg:text-18">
                     <span className="font-bold">{key}</span>
-                    <Link href={value.xUrl} className="flex items-center gap-2   break-all">
+                    <Link href={value.xUrl} className="flex group items-center gap-2   break-all">
                       <span className=" group-hover:text-yellow-bg transition-all duration-300 ease-in-out">
                         {value.name}
                       </span>
@@ -290,7 +304,7 @@ export default function BountyDetailPage() {
               <div className="flex flex-col md:flex-row gap-4 mb-9">
                 <div className="flex flex-1 items-start flex-col gap-2">
                   <div className="border border-solid border-black/15 p-6 rounded-2xl w-full flex flex-col gap-4">
-                    <ul className="p-0 m-0 space-y-1.5 text-16 sm:text-18 break-all list-none space-y-2 ">
+                    <ul className="p-0 m-0  text-16 sm:text-18 break-all list-none space-y-2 ">
                       {bounty.metadata.dos.map((vale, index) => (
                         <li
                           key={index}
@@ -320,7 +334,7 @@ export default function BountyDetailPage() {
               <div className="mb-9">
                 <h2 className="mb-4">Deadline</h2>
                 <div className="flex flex-col md:flex-row gap-4">
-                  {deadlineCounter({ date: bounty.endDate })}
+                  {deadlineCounter({ date: bounty.endDate, status:bounty.status })}
                 </div>
               </div>
 
@@ -328,7 +342,9 @@ export default function BountyDetailPage() {
                 <h2 className="mb-4">Rewards</h2>
                 <div className="flex flex-row items-center gap-4 w-full p-6 border-1 border-solid border-black/15 rounded-3xl">
                   <span className="text-20 lg:text-24 ">🤑</span>
-                  <small className="text-black/80 text-18 ">{bounty.prize} USDT </small>
+                  <small className="text-black/80 font-semibold text-18 ">
+                    {Number(bounty.prize).toFixed(0)} USDT{' '}
+                  </small>
                 </div>
               </div>
               <div className="mb-9 scroll-mt-[40vh]" id="submit">
@@ -371,7 +387,7 @@ export default function BountyDetailPage() {
                         </PrimaryButton>
                       </form>
                     ) : null}
-                    {bounty.status === 'close' ? (
+                    {bounty.status === 'closed' ? (
                       <span className="text-videoBg">This bounty is now closed</span>
                     ) : null}
                   </div>
@@ -389,11 +405,11 @@ export default function BountyDetailPage() {
                 <ul className="p-0  text-16 sm:text-18">
                   {Object.entries(bounty.metadata.contactForCoordination).map(
                     ([key, value], index) => (
-                      <li key={index} className="flex gap-1 py-1 group ">
+                      <li key={index} className="flex gap-1 py-1  ">
                         <span className="capitalize">{key}:</span>
                         <Link
                           href={value}
-                          className="flex items-center gap-2 break-words whitespace-normal break-all"
+                          className="flex items-center group gap-2 break-words whitespace-normal break-all w-fit"
                         >
                           <span className="text-18 group-hover:text-yellow-bg transition-all duration-300 ease-in-out">
                             {value}
