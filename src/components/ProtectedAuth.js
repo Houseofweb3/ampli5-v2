@@ -6,9 +6,15 @@ import { useRouter } from 'next/navigation';
 export default function RequireAuth({ children }) {
   const { token } = useAuthStore();
   const router = useRouter();
-
-  const hasHydrated = useAuthStore?.persist?.hasHydrated();
+  const [hasHydrated, setHasHydrated] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const checkHydration = useAuthStore.persist?.hasHydrated?.() ?? true;
+      setHasHydrated(checkHydration);
+    }
+  }, []);
 
   useEffect(() => {
     if (!hasHydrated) return;

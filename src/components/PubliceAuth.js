@@ -7,7 +7,8 @@ export default function RequireAuth({ children }) {
   const { token } = useAuthStore();
   const router = useRouter();
 
-  const hasHydrated = useAuthStore?.persist?.hasHydrated();
+  const hasHydrated = useAuthStore?.persist?.hasHydrated() || true;
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

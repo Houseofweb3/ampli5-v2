@@ -8,7 +8,6 @@ import 'swiper/css/navigation';
 
 import Image from 'next/image';
 import Container from './ui/container';
-import { Navigation } from 'swiper/modules';
 import Link from 'next/link';
 import Marquee from 'react-fast-marquee';
 import { cn } from '@/lib/utils';
@@ -22,6 +21,7 @@ export default function EffectSlider({ data, direction, type, children }) {
           <Marquee direction={direction}>
             {data.map((value, index) => (
               <Link
+                key={index}
                 href={value.link}
                 target="_blank"
                 className={cn(

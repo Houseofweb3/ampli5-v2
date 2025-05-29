@@ -1,3 +1,4 @@
+"use client"
 import BountiesList from '@/components/BountiesList';
 import RequireAuth from '@/components/ProtectedAuth';
 import React from 'react';
