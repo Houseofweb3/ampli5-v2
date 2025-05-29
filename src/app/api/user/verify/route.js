@@ -26,10 +26,6 @@ export async function GET(req) {
       password: userData.password,
     };
 
-    // const loginPayload = {
-    //   email: 'jekohew763@bamsrad.com',
-    //   password: 'securepassword123',
-    // };
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/verify/user`,
       JSON.stringify(loginPayload),
@@ -58,13 +54,7 @@ export async function GET(req) {
 
     return NextResponse.redirect(url);
   } catch (error) {
-    // if (axios.isAxiosError(error)) {
-    //   console.error('Axios error:', error.response);
-    //   console.error('Axios error message:', error.message);
-    // } else {
-    //   console.error('Unexpected error:', error);
-    // }
-
+  
     let url;
     const status = error?.response?.status;
 

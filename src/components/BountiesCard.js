@@ -33,9 +33,9 @@ export default function BountiesCard({ data }) {
               </h4>
               <Link
                 className="truncate w-full block text-sm text-ellipsis overflow-hidden whitespace-nowrap"
-                href={data.metadata.resources.x}
+                href={data.metadata.resources?.x}
               >
-                {data.metadata.resources.x}
+                {data.metadata.resources?.x}
               </Link>
             </div>
           </div>

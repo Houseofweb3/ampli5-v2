@@ -3,7 +3,7 @@ import Router from 'next/router';
 import { useAuthStore } from '@/store/auth';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3001/api/v1',
+  baseURL:  process.env.NEXT_PUBLIC_API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
