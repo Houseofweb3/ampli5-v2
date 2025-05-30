@@ -110,8 +110,8 @@ export default function BountyDetailPage() {
       <div className="relative">
         <Image
           src={
-            toString(bounty.metadata.coverImage).startsWith('http')
-              ? bounty.metadata.coverImage
+            toString(bounty?.metadata?.coverImage).startsWith('http')
+              ? bounty?.metadata?.coverImage
               : '/images/bounties-details-banner.png'
           }
           onError={(e) => (e.target.src = '/images/bounties-details-banner.png')}
@@ -125,7 +125,7 @@ export default function BountyDetailPage() {
         <Container>
           <div className="w-full relative flex flex-col">
             <Image
-              src={bounty.metadata.logo}
+              src={bounty?.metadata?.logo}
               onError={(e) => (e.target.src = '/images/bounties-details-img.png')}
               height={141}
               width={141}
@@ -158,7 +158,7 @@ export default function BountyDetailPage() {
                     </div>
                     <div className="w-fit h-fit text-white rounded-2xl bg-black border border-black py-2 px-3 flex gap-2 justify-between items-center">
                       <Image src="/icons/image-71.png" height={24} width={24} alt="icon" />
-                      <span> {bounty.metadata.yaps} Yaps Req</span>
+                      <span> {bounty?.metadata?.yaps} Yaps Req</span>
                     </div>
                     {bounty.status === 'closed' ? (
                       <div className="w-fit h-fit text-white rounded-2xl bg-videoBg border border-videoBadgeBorder py-2 px-3 flex gap-2 justify-between items-center">
@@ -192,13 +192,13 @@ export default function BountyDetailPage() {
           <Container className="pb-4px">
             <Card className="ctm_bounties_details p-4 lg:p-9 shadow-xl">
               <h2 className="text-36"> About the Project</h2>
-              <p>{bounty.metadata.about}</p>
+              <p>{bounty?.metadata?.about}</p>
               <Link
-                href={bounty.metadata.resources.website}
+                href={bounty?.metadata?.resources?.website}
                 className="font-medium text-18 pt-2 mb-9 flex items-center"
               >
                 <ExploreBtn className="bg-yellow-bg hover:bg-white text-black/80 hover:text-black border-black shadow-xl px-4 lg:px-7 py-1.5 lg:py-3 text-14 md:text-18 w-full md:w-fit">
-                  About Project - {bounty.metadata.resources.website}
+                  About Project - {bounty?.metadata?.?resources?.website}
                   <Image
                     alt="Arrow"
                     width={1000}
@@ -210,7 +210,7 @@ export default function BountyDetailPage() {
               </Link>
               <h2>Founder/Team</h2>
               <ul className="flex flex-col p-0 mt-4 w-fit mb-9 ">
-                {Object.entries(bounty.metadata.founderTeam).map(([key, value], index) => (
+                {Object?.entries(bounty?.metadata?.founderTeam)?.map(([key, value], index) => (
                   <li key={index} className="grid grid-cols-2 gap-2 py-1  text-16 lg:text-18">
                     <span className="font-bold">{key}</span>
                     <Link href={value.xUrl} className="flex group items-center gap-2   break-all">
@@ -233,7 +233,7 @@ export default function BountyDetailPage() {
                 <div className="flex items-start flex-col flex-1 gap-2">
                   <h2>USP</h2>
                   <div className="bg-linear-to-r from-light-blue1-bg to-light-sky-blue-bg p-6 rounded-2xl w-full flex flex-col items-end gap-4">
-                    <h3 className="font-normal w-full text-left">{bounty.metadata.USP}</h3>
+                    <h3 className="font-normal w-full text-left">{bounty?.metadata?.USP}</h3>
                     <Image src={'/icons/pie-chart.png'} width={54} height={54} alt="icons" />
                   </div>
                 </div>
@@ -241,7 +241,7 @@ export default function BountyDetailPage() {
                   <h2>Mission Statement</h2>
                   <div className="bg-linear-to-r from-light-blue1-bg to-light-sky-blue-bg p-6 rounded-2xl w-full flex flex-col items-end gap-4">
                     <h3 className="font-normal w-full text-left">
-                      {bounty.metadata.missionStatement}
+                      {bounty?.metadata?.missionStatement}
                     </h3>
                     <Image src={'/icons/target.png'} width={54} height={54} alt="icons" />
                   </div>
@@ -251,7 +251,7 @@ export default function BountyDetailPage() {
               <div className="mb-9">
                 <h2 className="mb-2">Key Features</h2>
                 <ul className="p-0 m-0  text-16 sm:text-18">
-                  {bounty.metadata.keyFeatures.map((value, index) => (
+                  {bounty?.metadata?.keyFeatures?.map((value, index) => (
                     <li key={index} className="list-none">
                       {value}
                     </li>
@@ -262,7 +262,7 @@ export default function BountyDetailPage() {
                 <h2 className="mb-2">Call to Action</h2>
                 <ul className="p-0 m-0  text-16 sm:text-18">
                   <li className="list-none">
-                    <strong>{bounty.metadata.callToAction}</strong>
+                    <strong>{bounty?.metadata?.callToAction}</strong>
                   </li>
                   <li className="list-none">
                     Trade, stake, and build your on-chain reputation — the gods favor ZEUS.
@@ -272,7 +272,7 @@ export default function BountyDetailPage() {
               <div>
                 <h2>Resources</h2>
                 <ul className="flex flex-col p-0 mt-4 w-fit mb-9  text-16 sm:text-18">
-                  {Object.entries(bounty.metadata.resources).map(([key, value], index) => (
+                  {Object.entries(bounty?.metadata?.resources)?.map(([key, value], index) => (
                     <li key={index} className="flex gap-1 py-1 group  text-16 sm:text-18">
                       <span className="font-bold capitalize">{key}:</span>
                       <Link href={value} className="flex gap-2 list-none">
@@ -295,7 +295,7 @@ export default function BountyDetailPage() {
               <div>
                 <h2>Bounties Inspiration</h2>
                 <ul className="flex flex-col p-0 mt-4 w-fit mb-9  text-16 sm:text-18">
-                  {Object.entries(bounty.metadata.contentInspiration).map(([key, value], index) =>
+                  {Object?.entries(bounty?.metadata?.contentInspiration)?.map(([key, value], index) =>
                     value ? (
                       <li key={index} className="flex gap-1 py-1 group  text-16 sm:text-18">
                         <Link href={value} className="flex gap-2 list-none">
@@ -320,7 +320,7 @@ export default function BountyDetailPage() {
                 <div className="flex flex-1 items-start flex-col gap-2">
                   <div className="border border-solid border-black/15 p-6 rounded-2xl w-full flex flex-col gap-4">
                     <ul className="p-0 m-0  text-16 sm:text-18 break-all list-none space-y-2 ">
-                      {bounty.metadata.dos.map((vale, index) => (
+                      {bounty?.metadata?.dos?.map((vale, index) => (
                         <li
                           key={index}
                           className="list-none pb-1 before:content-['✅'] before:mr-2 before:inline-block"
@@ -334,7 +334,7 @@ export default function BountyDetailPage() {
                 <div className="flex flex-1 items-start flex-col gap-2">
                   <div className="border border-solid border-black/10 p-6 rounded-2xl w-full flex flex-col gap-4">
                     <ul className="p-0 m-0 space-y-1.5  text-16 sm:text-18 break-all">
-                      {bounty.metadata.dos.map((vale, index) => (
+                      {bounty?.metadata?.dos?.map((vale, index) => (
                         <li
                           key={index}
                           className="list-none pb-1 before:content-['❌'] before:mr-2 before:inline-block"
@@ -418,7 +418,7 @@ export default function BountyDetailPage() {
               <div className="mb-0">
                 <h2 className="mb-4">Contact for Coordination</h2>
                 <ul className="p-0  text-16 sm:text-18">
-                  {Object.entries(bounty.metadata.contactForCoordination).map(
+                  {Object?.entries(bounty?.metadata?.contactForCoordination)?.map(
                     ([key, value], index) => (
                       <li key={index} className="flex gap-1 py-1  ">
                         <span className="capitalize">{key}:</span>
