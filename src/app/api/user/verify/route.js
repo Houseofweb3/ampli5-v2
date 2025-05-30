@@ -59,7 +59,7 @@ export async function GET(req) {
     const status = error?.response?.status;
 
     if (status === 404) {
-      url = new URL('/signup', req.url);
+      url = new URL('https://main.d3fv5kv319fusc.amplifyapp.com'+'/signup');
       if (token.yeps_error) {
         url.searchParams.set('message', token.yeps_error);
       } else {
