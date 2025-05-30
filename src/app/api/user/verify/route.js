@@ -10,7 +10,7 @@ export async function GET(req) {
   });
 
   if (!token) {
-    const url = new URL('/', req.url);
+    const url = new URL('https://main.d3fv5kv319fusc.amplifyapp.com');
     url.searchParams.set('auth', 'Authentication failed try again');
     return NextResponse.redirect(url);
   }
@@ -39,7 +39,7 @@ export async function GET(req) {
     const user = response.data;
     const JwtToken = user.token;
 
-    const url = new URL('/', req.url);
+    const url = new URL('https://main.d3fv5kv319fusc.amplifyapp.com');
     if (token.yeps_error) {
       url.searchParams.set('message', token.yeps_error);
     } else {
@@ -71,7 +71,7 @@ export async function GET(req) {
         url.searchParams.set('auth', String(userData.password));
       }
     } else {
-      url = new URL('/', req.url);
+      url = new URL('https://main.d3fv5kv319fusc.amplifyapp.com');
       url.searchParams.set('message', 'Authentication request failed! try again');
     }
 
