@@ -102,7 +102,7 @@ export default function BountyDetailPage() {
       setWinnerList([...IsWinnerDeclared]);
     }
   }, [submissionsList]);
-
+console.log(bounty,"bounty");
   return loading ? (
     <BountyDetailsSkeleton />
   ) : (
@@ -134,7 +134,7 @@ export default function BountyDetailPage() {
             />
             <div className="mb-8 ">
               <div>
-                <h2 className="my-4">{bounty.bountyName}</h2>
+                <h2 className="my-4">{bounty?.bountyName}</h2>
                 <div className="w-full flex flex-wrap justify-between item-center gap-6">
                   <div className="flex flex-wrap gap-4">
                     <div className="w-fit text-white rounded-2xl h-fit  border-2 bg-blue-btn border-black py-2 px-3 flex gap-1.5 justify-between items-center">
@@ -144,23 +144,23 @@ export default function BountyDetailPage() {
                     <div
                       className={cn(
                         'w-fit text-white rounded-2xl h-fit py-2 px-3 flex gap-2 justify-between items-center border',
-                        BountiesType[bounty.bountyType]?.bgcolor,
-                        BountiesType[bounty.bountyType]?.borderColor
+                        BountiesType[bounty?.bountyType]?.bgcolor,
+                        BountiesType[bounty?.bountyType]?.borderColor
                       )}
                     >
                       <Image
-                        src={BountiesType[bounty.bountyType]?.url}
+                        src={BountiesType[bounty?.bountyType]?.url}
                         height={24}
                         width={24}
                         alt="icon"
                       />
-                      <span className="text-18"> {bounty.bountyType}</span>
+                      <span className="text-18"> {bounty?.bountyType}</span>
                     </div>
                     <div className="w-fit h-fit text-white rounded-2xl bg-black border border-black py-2 px-3 flex gap-2 justify-between items-center">
                       <Image src="/icons/image-71.png" height={24} width={24} alt="icon" />
                       <span> {bounty?.metadata?.yaps} Yaps Req</span>
                     </div>
-                    {bounty.status === 'closed' ? (
+                    {bounty?.status === 'closed' ? (
                       <div className="w-fit h-fit text-white rounded-2xl bg-videoBg border border-videoBadgeBorder py-2 px-3 flex gap-2 justify-between items-center">
                         Closed
                       </div>
@@ -168,12 +168,12 @@ export default function BountyDetailPage() {
                       <div className="w-fit h-fit text-black/45 rounded-2xl bg-white border border-black py-2 px-3 flex gap-2 justify-between items-center">
                         <Image src="/icons/clock-05.png" height={24} width={24} alt="icon" />
                         <span className="text-18">
-                          {moment(bounty.endDate).format('DD/MM/YYYY')}
+                          {moment(bounty?.endDate)?.format('DD/MM/YYYY')}
                         </span>
                       </div>
                     )}
                   </div>
-                  {bounty.status === 'closed' ? null : (
+                  {bounty?.status === 'closed' ? null : (
                     <div className="w-full sm:w-fit h-fit">
                       <Link href="#submit">
                         <PrimaryButton className="w-full sm:w-fit text-white px-6 lg:px-8 py-2 lg:py-3 ">
