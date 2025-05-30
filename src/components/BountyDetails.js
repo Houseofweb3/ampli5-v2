@@ -198,7 +198,7 @@ export default function BountyDetailPage() {
                 className="font-medium text-18 pt-2 mb-9 flex items-center"
               >
                 <ExploreBtn className="bg-yellow-bg hover:bg-white text-black/80 hover:text-black border-black shadow-xl px-4 lg:px-7 py-1.5 lg:py-3 text-14 md:text-18 w-full md:w-fit">
-                  About Project - {bounty?.metadata?.?resources?.website}
+                  About Project - {bounty?.metadata?.resources?.website}
                   <Image
                     alt="Arrow"
                     width={1000}
