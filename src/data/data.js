@@ -1,6 +1,10 @@
+import Thumbnail from '@/components/Thumbnail';
+import { RouterLogo, SonicIcon, StoopidCatsIcon } from './icon';
+
 export const AuthProfile = [
   { id: '/profile', label: 'My Profile' },
   { id: '/bounty-hunt/my/submission', label: 'My Submissions' },
+  { id: null, label: 'Logout', type: 'Logout' },
 ];
 export const BountyType = [
   { id: 'video', label: 'Video', img: '/icons/ai-video.png' },
@@ -27,7 +31,7 @@ export const SortByOption = {
 
 export const forProjectLinks = [
   { title: 'Create Bounty', href: '/cast' },
-  { title: 'KOL-Discovery', href: 'https://ampli5.ai/' },
+  { title: 'KOL-Discovery', href: '/discover-kols' },
   { title: 'Ambassador Program', href: '/ambassadors' },
   { title: 'Founder-led Marketing', href: '/founder-signal' },
 ];
@@ -94,8 +98,8 @@ export const YoutubeSliderData = [
     url: 'https://img.youtube.com/vi/mm1RwwpdFoY/hqdefault.jpg',
   },
   {
-    link: 'https://www.youtube.com/watch?v=ssT7ma9Y1YI',
-    url: 'https://img.youtube.com/vi/ssT7ma9Y1YI/hqdefault.jpg',
+    link: 'https://youtu.be/OuwQuaCafSk?si=POS609m-UOCVTSFa',
+    url: 'https://img.youtube.com/vi/OuwQuaCafSk/maxresdefault.jpg',
   },
 ];
 
@@ -176,4 +180,107 @@ export const TopAttention = [
     img: 'https://i.ibb.co/n0rvxF1/Sm-Sdt0s-O-400x400.jpg',
     title: 'CyrilXBT',
   },
+];
+
+
+export const nftNewsData = [
+  {
+    image: '/images/Nft-slide01.png',
+    icon: '/icons/u-tube.png',
+    iconInvert: false,
+    title: 'Fintech Channel',
+    platform: 'YouTube',
+    href: 'https://www.youtube.com/@FinTechChannels/featured',
+    tags: 'AI, Defi',
+  },
+  {
+    image: '/images/Nft-slide1.png',
+    icon: '/icons/u-tube.png',
+    iconInvert: false,
+    title: 'Professor Crypto',
+    platform: 'YouTube',
+    href: 'https://www.youtube.com/@ProfessorCrypto/videos',
+    tags: 'CEX/DEX, trading & Altcoins',
+  },
+  {
+    image: '/images/Nft-slide2.png',
+    icon: '/icons/icon-x.png',
+    iconInvert: true,
+    title: 'Decypher Podcast',
+    platform: 'X',
+    href: 'https://x.com/JackNiewold',
+    tags: 'Defi, altcoins',
+  },
+  {
+    image: '/images/Nft-slide4.png',
+    icon: '/icons/u-tube.png',
+    iconInvert: false,
+    title: 'Maria Andersen Crypto',
+    platform: 'YouTube',
+    href: 'https://www.youtube.com/@MariaAndersenCrypto',
+    tags: 'ALtcoins, Defi',
+  },
+  {
+    image: '/images/Nft-slide5.png',
+    icon: '/icons/icon-x.png',
+    iconInvert: true,
+    title: 'Wolf Financial',
+    platform: 'X',
+    href: 'https://x.com/WOLF_Financial',
+    tags: 'Trading, Altcoins',
+  },
+  {
+    image: '/images/Nft-slide6.png',
+    icon: '/icons/u-tube.png',
+    iconInvert: false,
+    title: 'Defi Talks',
+    platform: 'YouTube',
+    href: 'https://www.youtube.com/@DeFiTalks/videos',
+    tags: 'Defi, AI',
+  },
+  {
+    image: '/images/Nft-slide7.png',
+    icon: '/icons/spotify.png',
+    iconInvert: false,
+    title: 'BlockHash',
+    platform: 'Spotify',
+    href: 'https://open.spotify.com/show/4AGqU8qxIYVkxXM4q2XpO1?si=b3024d5462354a9a&nd=1&dlsi=4e8575ccb2974380',
+    tags: 'Defi, altcoins',
+  },
+];
+
+
+export const CASE_STUDY_DATA = [
+  {
+    thumbnail: (
+      <Thumbnail
+        brandLogo={<RouterLogo />}
+        heading="Post-TGE sustenance campaign"
+        date="December, 2024"
+      />
+    ),
+    s3_url: 'https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+X+Router.pdf',
+  },
+  {
+    thumbnail: (
+      <Thumbnail date="January, 2025" brandLogo={<SonicIcon />} heading="A CEX LISTING CAMPAIGN" />
+    ),
+    s3_url: 'https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Sonic.pdf',
+  },
+  {
+    thumbnail: (
+      <Thumbnail
+        date="March, 2024"
+        brandLogo={<StoopidCatsIcon />}
+        heading="A Pre Sale Case study for P2E"
+      />
+    ),
+    s3_url: 'https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Stoopid+cat.pdf',
+  },
+];
+
+export const DEMO_POINTS = [
+  "Unlock the time-saving power of Ampli5's suite, fuelled by AI,",
+  'Discover how we help you find the perfect influencers to kickstart your campaigns,',
+  'Get answers to your most pressing questions!',
 ];

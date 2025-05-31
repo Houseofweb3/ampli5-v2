@@ -27,8 +27,11 @@ export default function CreateBountiesForm() {
     else if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = 'Invalid email format';
     if (!form.telegramId.trim()) newErrors.telegramId = 'Telegram ID is required';
     if (!form.projectURL.trim()) newErrors.projectURL = 'Project URL is required';
-    else if (!/^https?:\/\/.+\..+/.test(form.projectURL))
-      newErrors.projectURL = 'Invalid URL format';
+    else if (
+      !/^https?:\/\/.+\..+/.test(form.projectURL) && 
+      !/^www\.[^.\s]+\.[^\s]+/.test(form.projectURL)
+    )
+      newErrors.projectURL = 'Invalid URL format (must start with https:// OR www.)';
     return newErrors;
   };
 

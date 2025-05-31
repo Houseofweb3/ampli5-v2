@@ -7,7 +7,7 @@ export default function BrandSlider() {
   return (
     <div className="bg-white pb-8 lg:pb-16">
       <div className="brand_slider_title text-center pb-9 hidden lg:block">
-        <p>Customer brands</p>
+        <p>Partner Brands</p>
       </div>
       <Marquee direction="right" className="flex items-center justify-between">
         <div className="px-12 lg:px-16">

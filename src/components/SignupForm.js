@@ -111,7 +111,7 @@ const SignupForm = () => {
       authStore.login({
         user: {
           id: response.data.user.id,
-          username: response.data.user.username,
+          username: response.data.user.fullname,
           yaps_score: response.data.user?.yaps_score || yaps,
           name: response.data.user?.firstName,
           profile_picture: response.data.user?.profilePicture,

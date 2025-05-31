@@ -25,7 +25,7 @@ export default function EffectSlider({ data, direction, type, children }) {
                 href={value.link}
                 target="_blank"
                 className={cn(
-                  'block overflow-hidden min-w-[320px] h-auto p-9px border border-solid border-black rounded-3xl  bg-slider-bg mx-2',
+                  'block overflow-hidden w-[320px] h-full p-9px border border-solid border-black rounded-3xl  bg-slider-bg mx-2',
                   type === 'X' ? 'aspect-[5/4]' : 'aspect-video'
                 )}
               >

@@ -1,7 +1,7 @@
 'use client';
 export const dynamic = 'force-dynamic';
 
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import BrandSlider from './ui/brandSlider';
 import MarqueeSlide from './ui/marquee';
 import Image from 'next/image';
@@ -15,17 +15,18 @@ import EffectSlider from './EffectSlider';
 import { TopAttention, XSliderData, YoutubeSliderData } from '@/data/data';
 import { useAuthStore } from '@/store/auth';
 import { toast } from 'react-toastify';
+import CaseStudies from './CaseStudies';
 
 export default function Hero() {
   const router = useRouter();
   const params = useSearchParams();
   const Auth = useAuthStore();
-
+  const error = params.get('error');
   const [hasHandled, setHasHandled] = useState(false);
-
   useLayoutEffect(() => {
     if (hasHandled) return;
 
+   
     const auth = params.get('token');
     const id = params.get('id');
     const username = params.get('username');
@@ -53,9 +54,23 @@ export default function Hero() {
     setHasHandled(true);
   }, [params, router, hasHandled, Auth]);
 
+  useEffect(() => {
+    const errorMessages = {
+      Callback: 'Login was cancelled or failed.',
+      AccessDenied: 'You denied access.',
+      Configuration: 'Auth config error.',
+      OAuthSignin: 'Provider issue. Try again.',
+      OAuthCallback: 'Something went wrong.',
+      Default: 'Unknown error occurred.',
+    };
+
+    if (error) {
+      toast.error(errorMessages[error] || errorMessages.Default);
+    }
+  }, [error]);
   return (
     <>
-      <div className="bg_square bg_square_bottom relative overflow-hidden">
+      <div className="bg_square bg_square_bottom relative overflow-hidden bg-white">
         <div className="absolute top-18px md:top-9 lg:top-11 md:-left-7">
           <Image
             className="w-90px h-90px md:w-166px md:h-166px"
@@ -146,8 +161,12 @@ export default function Hero() {
           </div>
         </EffectSlider>
       </div>
-      <div className="bg_wave_pattern relative">
+
+      <div className="bg_wave_pattern relative bg-white">
         <WaveContent></WaveContent>
+      </div>
+      <div className=" pb-12 md:py-14 lg:py-20">
+        <CaseStudies />
       </div>
     </>
   );

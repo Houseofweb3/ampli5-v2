@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/auth';
 import { useRouter } from 'next/navigation';
 
-export default function RequireAuth({ children }) {
+export default function RequireAuth({isLoading, children }) {
   const { token } = useAuthStore();
   const router = useRouter();
   const [hasHydrated, setHasHydrated] = useState(false);
@@ -26,7 +26,7 @@ export default function RequireAuth({ children }) {
     }
   }, [token, hasHydrated, router]);
 
-  if (!hasHydrated || loading) {
+  if (!hasHydrated || loading || isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <p>Loading...</p>

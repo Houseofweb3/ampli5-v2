@@ -17,12 +17,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full w-full">
-      <body
-        className={`${bricolage.variable}  font-sans antialiased bg-white h-full w-full`}
-      >
+      <body className={`${bricolage.variable}  font-sans antialiased bg-white h-full w-full`}>
         <Navbar />
         <div className="h-[65px] lg:h-80px w-full bg-black"></div>
-        {children}
+        <div className="min-h-[calc(100vh_-_295px)] bg-cream-bg">{children}</div>
         <Footer />
         <Toast />
       </body>

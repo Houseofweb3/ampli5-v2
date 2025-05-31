@@ -17,6 +17,11 @@ const nextConfig = {
           hostname: 'img.youtube.com',
           pathname: '/**', // allows all paths, or you can restrict to specific ones
         },
+        {
+          protocol: 'https',
+          hostname: 'pbs.twimg.com',
+          pathname: '/**', // allows all paths, or you can restrict to specific ones
+        },
       ],
     }
 };

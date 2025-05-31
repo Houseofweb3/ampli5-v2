@@ -4,10 +4,15 @@ import React, { useState } from 'react';
 import ExploreBtn from './ui/explorebtn';
 import Image from 'next/image';
 import axiosInstance from '@/lib/axiosInstance';
+import { toast } from 'react-toastify';
+
+
+
 
 export default function TwitterLogout() {
   const { logout, token } = useAuthStore();
   const [loading, setLoading] = useState(false);
+
 
   const logoutHandler = async () => {
     setLoading(true);
@@ -15,13 +20,13 @@ export default function TwitterLogout() {
       await axiosInstance.post('/auth/logout', { refreshToken: token });
       logout();
     } catch (error) {
-      console.error('Logout failed', error);
+      toast.error('Failed to logout');
     } finally {
       setLoading(false);
     }
   };
-
-  return (
+  
+   return (
     <ExploreBtn
       onClick={logoutHandler}
       disabled={loading}

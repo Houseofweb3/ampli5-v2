@@ -17,6 +17,7 @@ export const authOptions = {
         const name = profile.data.name;
         const profilePicture = profile.data.profile_image_url;
         const id = profile.data.id;
+        console.log(id, 'id');
 
         try {
           const res = await axios.get(`https://api.kaito.ai/api/v1/yaps?username=${username}`);
@@ -58,6 +59,11 @@ export const authOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
+
+  pages: {
+    signIn: '/',
+    error: '/',
+  },
 };
 
 const handler = NextAuth(authOptions);

@@ -11,11 +11,11 @@ import BountiesSkeletonCard from './ui/bountiesSkeletonCard';
 import { useAuthStore } from '@/store/auth';
 import groupByYap from '@/lib/groupByYap';
 import Pagination from './ui/Pagination';
+import GoBackButton from './ui/doBackBtn';
 
 export default function BountiesList({ title, vector, type }) {
   const Auth = useAuthStore();
   const hasHydrated = useAuthStore?.persist?.hasHydrated() || true;
-  
 
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState(null);
@@ -34,7 +34,7 @@ export default function BountiesList({ title, vector, type }) {
   const [loading, setLoading] = useState(true);
   const YapScore = Auth.user.yaps_score;
   const userId = Auth.user.id;
-  
+
   const fetchBounties = useCallback(async () => {
     try {
       setLoading(true); // Optional: add this to reset loading on every call
@@ -88,8 +88,8 @@ export default function BountiesList({ title, vector, type }) {
   return (
     <div className="bg-cream-bg relative pt-56px bg_square w-full overflow-x-hidden">
       <Container>
-        <div className="mb-6 lg:mb-9">
-          <Title>{title || 'Bounties'}</Title>
+        <div className="mb-6 lg:mb-9 flex justify-center items-center gap-4">
+          <GoBackButton /> <Title>{title || 'Bounties'}</Title>
         </div>
         <Card vector={vector}>
           <div>
