@@ -23,17 +23,17 @@ export default function BountiesSkeletonCard({ count = 1 }) {
 
             {/* Stats Section */}
             <div className="flex flex-col gap-4">
-              <div className="flex justify-between">
+              <div className="flex justify-between overflow-hidden">
                 <div className="flex-1 pr-3">
                   <div className="h-3 w-20 bg-gray-200 rounded mb-1"></div>
                   <div className="h-4 w-16 bg-gray-300 rounded"></div>
                 </div>
                 <div className="flex-1 px-3 border-l border-r border-black/10 border-solid">
-                  <div className="h-3 w-24 bg-gray-200 rounded mb-1"></div>
+                  <div className="h-3 w-20 bg-gray-200 rounded mb-1"></div>
                   <div className="h-4 w-10 bg-gray-300 rounded"></div>
                 </div>
                 <div className="flex-1 pl-3">
-                  <div className="h-3 w-24 bg-gray-200 rounded mb-1"></div>
+                  <div className="h-3 w-20 bg-gray-200 rounded mb-1"></div>
                   <div className="h-4 w-16 bg-gray-300 rounded"></div>
                 </div>
               </div>

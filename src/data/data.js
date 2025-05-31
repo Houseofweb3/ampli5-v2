@@ -100,16 +100,16 @@ export const YoutubeSliderData = [
 ];
 
 export const BountiesPollPrizeDistribution = [
-  { url: '/images/win-1.png', position: '1st', percentage: 25 },
-  { url: '/images/win-2.png', position: '2nd', percentage: 18 },
-  { url: '/images/win-3.png', position: '3rd', percentage: 14 },
-  { url: '/images/win-4.png', position: '4th', percentage: 10 },
-  { url: '/images/win-4.png', position: '5th', percentage: 8 },
-  { url: '/images/win-4.png', position: '6th', percentage: 7 },
-  { url: '/images/win-4.png', position: '7th', percentage: 6 },
-  { url: '/images/win-4.png', position: '8th', percentage: 5 },
-  { url: '/images/win-4.png', position: '9th', percentage: 4 },
-  { url: '/images/win-4.png', position: '10th', percentage: 3 },
+  { url: '/images/win/1.png', position: '1st', percentage: 25 },
+  { url: '/images/win/2.png', position: '2nd', percentage: 18 },
+  { url: '/images/win/3.png', position: '3rd', percentage: 14 },
+  { url: '/images/win/4.png', position: '4th', percentage: 10 },
+  { url: '/images/win/5.png', position: '5th', percentage: 8 },
+  { url: '/images/win/6.png', position: '6th', percentage: 7 },
+  { url: '/images/win/7.png', position: '7th', percentage: 6 },
+  { url: '/images/win/8.png', position: '8th', percentage: 5 },
+  { url: '/images/win/9.png', position: '9th', percentage: 4 },
+  { url: '/images/win/10.png', position: '10th', percentage: 3 },
 ];
 
 export const BountiesType = {

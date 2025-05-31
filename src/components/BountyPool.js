@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
 import 'swiper/css';
 import Image from 'next/image';
 import { calculatePrizes } from '@/lib/bountyPoolCalculate';
+import { Autoplay, } from 'swiper/modules';
+import { cn } from '@/lib/utils';
 
 export default function BountyPool({ Prize }) {
   const data = calculatePrizes(Prize);
@@ -18,6 +19,13 @@ export default function BountyPool({ Prize }) {
         slidesPerView={3.5}
         spaceBetween={30}
         centeredSlides={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        onSlideChange={(e)=>{console.log(e);
+        }}
+        modules={[ Autoplay]}
         breakpoints={{
           1024: {
             slidesPerView: 3.5,
@@ -45,7 +53,15 @@ export default function BountyPool({ Prize }) {
         {data.map((vale, index) => {
           return (
             <SwiperSlide key={index}>
-              <div className="border border-solid border-black shadow-xl rounded-4xl bg-linear-to-bl from-white to-light-goldan-bg">
+              <div
+                className={cn(
+                  'border border-solid border-black shadow-xl rounded-4xl bg-linear-to-br from-white ',
+                  index === 0 && 'to-light-gold-bg',
+                  index === 1 && 'to-light-silver-bg',
+                  index === 2 && 'to-light-orange-bg',
+                  index >= 3 && 'to-light-wood-bg',
+                )}
+              >
                 <div className="flex h-full justify-between">
                   <div className="relative">
                     <Image src={vale.url} width={161} height={265} alt="badges" />

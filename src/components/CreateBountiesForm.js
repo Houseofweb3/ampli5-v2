@@ -6,7 +6,6 @@ import axiosInstance from '@/lib/axiosInstance';
 import { toast } from 'react-toastify';
 import Card from './ui/card';
 import AppointmentCalendar from './AppointmentCalendar';
-import Container from './ui/container';
 import Title from './ui/title';
 
 export default function CreateBountiesForm() {
@@ -121,7 +120,7 @@ export default function CreateBountiesForm() {
 
                 <button
                   type="submit"
-                  className="bg-dark-purple1-bg text-white w-full py-2 text-20 font-bold rounded mt-4 disabled:opacity-50 disabled:pointer-events-none"
+                  className="bg-dark-purple1-bg text-white w-full py-2 text-20 cursor-pointer font-bold rounded mt-4 disabled:opacity-50 disabled:pointer-events-none"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Submitting...' : 'Book a meeting'}
