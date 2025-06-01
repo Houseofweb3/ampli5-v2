@@ -29,6 +29,7 @@ export default function BountyDetailPage() {
   const [submissionsList, setSubmissionsList] = useState([]);
   const [winderList, setWinnerList] = useState([]);
 
+  const [submittedUser, setSubmittedUser] = useState(false);
   const [submissionLink, setSubmissionLink] = useState('');
   const [submissionLinkValidation, setSubmissionLinkValidation] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,11 +53,17 @@ export default function BountyDetailPage() {
     }
   }, [bounties_id]);
 
+  useEffect(() => {
+    if (user && submissionsList.length) {
+      const userId = user.id;
+      const isSubmittedUser = submissionsList.find((user) => user.userId == userId);
+      setSubmittedUser(isSubmittedUser);
+    }
+  }, [user, submissionsList]);
   const bountySubmittingHandler = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    const userId = user.id;
-    const submittedUser = submissionsList.find((user) => user.userId == userId);
+
     try {
       if (!submissionLink || !bounties_id || !user.id) {
         toast.warn('Required filed messing');
@@ -102,7 +109,7 @@ export default function BountyDetailPage() {
       setWinnerList([...IsWinnerDeclared]);
     }
   }, [submissionsList]);
-console.log(bounty,"bounty");
+
   return loading ? (
     <BountyDetailsSkeleton />
   ) : (
@@ -158,7 +165,7 @@ console.log(bounty,"bounty");
                     </div>
                     <div className="w-fit h-fit text-white rounded-2xl bg-black border border-black py-2 px-3 flex gap-2 justify-between items-center">
                       <Image src="/icons/image-71.png" height={24} width={24} alt="icon" />
-                      <span> {bounty?.metadata?.yaps} Yaps Req</span>
+                      <span> {bounty?.yaps} Yaps Req</span>
                     </div>
                     {bounty?.status === 'closed' ? (
                       <div className="w-fit h-fit text-white rounded-2xl bg-videoBg border border-videoBadgeBorder py-2 px-3 flex gap-2 justify-between items-center">
@@ -261,12 +268,7 @@ console.log(bounty,"bounty");
               <div className="mb-9">
                 <h2 className="mb-2">Call to Action</h2>
                 <ul className="p-0 m-0  text-16 sm:text-18">
-                  <li className="list-none">
-                    <strong>{bounty?.metadata?.callToAction}</strong>
-                  </li>
-                  <li className="list-none">
-                    Trade, stake, and build your on-chain reputation — the gods favor ZEUS.
-                  </li>
+                  <li className="list-none">{bounty?.metadata?.callToAction}</li>
                 </ul>
               </div>
               <div>
@@ -295,23 +297,24 @@ console.log(bounty,"bounty");
               <div>
                 <h2>Bounties Inspiration</h2>
                 <ul className="flex flex-col p-0 mt-4 w-fit mb-9  text-16 sm:text-18">
-                  {Object?.entries(bounty?.metadata?.contentInspiration)?.map(([key, value], index) =>
-                    value ? (
-                      <li key={index} className="flex gap-1 py-1 group  text-16 sm:text-18">
-                        <Link href={value} className="flex gap-2 list-none">
-                          <span className="  break-all group-hover:text-yellow-bg transition-all duration-300 ease-in-out break-words">
-                            {value}
-                          </span>
-                          <Image
-                            alt="Arrow"
-                            width={1000}
-                            height={1000}
-                            className="w-6 h-5 py-2px px-1 border border-solid border-black rounded-full shadow-xl bg-yellow-bg group-hover:shadow-none group-hover:bg-transparent transition-all duration-300 ease-in-out"
-                            src="/icons/arrow-up-right-01.png"
-                          />
-                        </Link>
-                      </li>
-                    ) : null
+                  {Object?.entries(bounty?.metadata?.contentInspiration)?.map(
+                    ([key, value], index) =>
+                      value ? (
+                        <li key={index} className="flex gap-1 py-1 group  text-16 sm:text-18">
+                          <Link href={value} className="flex gap-2 list-none">
+                            <span className="  break-all group-hover:text-yellow-bg transition-all duration-300 ease-in-out break-words">
+                              {value}
+                            </span>
+                            <Image
+                              alt="Arrow"
+                              width={1000}
+                              height={1000}
+                              className="w-6 h-5 py-2px px-1 border border-solid border-black rounded-full shadow-xl bg-yellow-bg group-hover:shadow-none group-hover:bg-transparent transition-all duration-300 ease-in-out"
+                              src="/icons/arrow-up-right-01.png"
+                            />
+                          </Link>
+                        </li>
+                      ) : null
                   )}
                 </ul>
               </div>
@@ -364,54 +367,63 @@ console.log(bounty,"bounty");
               </div>
               <div className="mb-9 scroll-mt-[40vh]" id="submit">
                 <h2>Submission</h2>
-                {isLogin ? (
-                  <div>
-                    {bounty.status === 'open' ? (
-                      <form>
-                        <div className="flex flex-col w-full">
-                          <label className="text-14 text-dark-gray-bg">
-                            For video submissions, videos can be submitted only on Youtube and
-                            LinkedIn{' '}
-                          </label>
-                          <input
-                            type="url"
-                            required={true}
-                            pattern="https?://.+"
-                            className="bg-alabaster-bg border border-solid border-light-gray1-bg rounded-8 px-4 py-3.5 mt-4 w-full"
-                            placeholder="https://x.com/yourthreadlink"
-                            value={submissionLink}
-                            onChange={(e) => {
-                              setSubmissionLink(e.target.value.trim());
-                              setSubmissionLinkValidation(null);
-                            }}
-                          />
-                          {submissionLinkValidation && (
-                            <spam className="text-videoBg m-1"> {submissionLinkValidation}</spam>
-                          )}
-                        </div>
+                {bounty?.yaps <= user?.yaps_score ? (
+                  isLogin ? (
+                    <div>
+                      {bounty.status === 'open' ? (
+                        <form>
+                          <div className="flex flex-col w-full">
+                            <label className="text-14 text-dark-gray-bg">
+                              For video submissions, videos can be submitted only on Youtube and
+                              LinkedIn{' '}
+                            </label>
+                            <input
+                              type="url"
+                              required={true}
+                              pattern="https?://.+"
+                              className="bg-alabaster-bg border border-solid border-light-gray1-bg rounded-8 px-4 py-3.5 mt-4 w-full"
+                              placeholder="https://x.com/yourthreadlink"
+                              value={submissionLink}
+                              onChange={(e) => {
+                                setSubmissionLink(e.target.value.trim());
+                                setSubmissionLinkValidation(null);
+                              }}
+                            />
+                            {submissionLinkValidation && (
+                              <spam className="text-videoBg m-1"> {submissionLinkValidation}</spam>
+                            )}
+                          </div>
 
-                        <PrimaryButton
-                          type="submit"
-                          disabled={
-                            isSubmitting || submissionLink.length < 1 || bounty.status !== 'open'
-                          }
-                          className="mt-4 text-white w-full md:w-fit py-3"
-                          onClick={bountySubmittingHandler}
-                        >
-                          Submit
-                        </PrimaryButton>
-                      </form>
-                    ) : null}
-                    {bounty.status === 'closed' ? (
-                      <span className="text-videoBg">This bounty is now closed</span>
-                    ) : null}
-                  </div>
+                          <PrimaryButton
+                            type="submit"
+                            disabled={
+                              isSubmitting || submissionLink.length < 1 || bounty.status !== 'open'
+                            }
+                            className="mt-4 text-white w-full md:w-fit py-3"
+                            onClick={bountySubmittingHandler}
+                          >
+                            {submittedUser ? 'Update' : 'Submit'}
+                          </PrimaryButton>
+                        </form>
+                      ) : null}
+                      {bounty.status === 'closed' ? (
+                        <span className="text-videoBg">This bounty is now closed</span>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <div>
+                      <spa> Join the bounty contest by signing up. It’s free!</spa>
+                      <PrimaryButton className="text-white mt-2" onClick={() => signIn('twitter')}>
+                        Sign up to participate{' '}
+                      </PrimaryButton>
+                    </div>
+                  )
                 ) : (
-                  <div>
-                    <spa> Join the bounty contest by signing up. It’s free!</spa>
-                    <PrimaryButton className="text-white mt-2" onClick={() => signIn('twitter')}>
-                      Sign up to participate{' '}
-                    </PrimaryButton>
+                  <div className="text-red-500">
+                    <spa>
+                      {`You are not allowed to participate in this bounty because your Yaps score is too low.
+                       You need at least ${bounty?.yaps - user?.yaps_score} more Yaps to qualify.`}
+                    </spa>
                   </div>
                 )}
               </div>

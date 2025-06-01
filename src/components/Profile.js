@@ -7,7 +7,7 @@ import Image from 'next/image';
 import React, {  useEffect, useState } from 'react';
 import TwitterLogout from '@/components/TwitterLogout';
 import { useAuthStore } from '@/store/auth';
-import GoBackButton from './ui/doBackBtn';
+import GoBackButton from './ui/goBackBtn';
 import { toast } from 'react-toastify';
 import axiosInstance from '@/lib/axiosInstance';
 

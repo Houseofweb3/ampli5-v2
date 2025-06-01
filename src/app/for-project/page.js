@@ -1,5 +1,5 @@
 import Container from '@/components/ui/container';
-import GoBackButton from '@/components/ui/doBackBtn';
+import GoBackButton from '@/components/ui/goBackBtn';
 import Title from '@/components/ui/title';
 import { forProjectLinks } from '@/data/data';
 import Image from 'next/image';

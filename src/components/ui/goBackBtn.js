@@ -11,9 +11,9 @@ const GoBackButton = ({ label, className = '' }) => {
   return (
     <button
       onClick={() => router.back()}
-      className="border border-dark-purple1-bg hover:bg-dark-purple1-bg rounded-4xl p-3 group bg-purple-bg text-white  transition duration-300 ease-in-out cursor-pointer"
+      className="border border-dark-purple1-bg hover:bg-dark-purple1-bg rounded-4xl  p-2 sm:p-3 group bg-purple-bg text-white  transition duration-300 ease-in-out cursor-pointer"
     >
-      <FaArrowLeft className="text-xl font-extrabold group-hover:pr-1 transition-all duration-300 ease-in-out" />
+      <FaArrowLeft className=" text-lg sm:text-xl font-extrabold group-hover:pr-1 transition-all duration-300 ease-in-out" />
       {label}
     </button>
   );

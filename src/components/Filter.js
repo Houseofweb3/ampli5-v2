@@ -38,20 +38,24 @@ export default function Filter({
   return (
     <div className="flex flex-wrap justify-between items-center gap-4">
       <div className="flex gap-2 flex-wrap">
+        <Button
+          active={!BountyType.find((filter) => bountyType.includes(filter.id))}
+          onClick={() => setBountyType([])}
+          className="cursor-pointer"
+        >
+          All
+        </Button>
         {BountyType?.map((filter) => (
           <Button
             key={filter.id}
             active={bountyType.includes(filter.id)}
             onClick={() => toggleFilter(filter.id)}
+            className="cursor-pointer"
           >
             <Image src={filter.img} alt="icon" height={24} width={24} />
             {filter.label}
           </Button>
         ))}
-        <Button onClick={() => setBountyType([])}>
-          <Image src="/icons/multiplication-sign.png" alt="icon" height={24} width={24} />
-          Deselect all
-        </Button>
       </div>
 
       <div className="flex gap-2 sm:gap-3 border rounded-xl p-1 bg-white">

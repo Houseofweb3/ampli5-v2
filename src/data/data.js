@@ -11,6 +11,8 @@ export const BountyType = [
   { id: 'thread', label: 'Thread', img: '/icons/threads.png' },
   { id: 'article', label: 'Article', img: '/icons/news.png' },
   { id: 'meme', label: 'Meme', img: '/icons/cookie.png' },
+  { id: 'tweet', label: 'Tweet', img: '/icons/new-twitter.png' },
+  { id: 'quests', label: 'Quests', img: '/icons/news.png' },
 ];
 export const BountiesStatusFilter = [
   { label: 'All', value: 'all' },
@@ -20,7 +22,7 @@ export const BountiesStatusFilter = [
 export const SortByOption = {
   Bounties: [
     { label: 'Latest', value: 'Latest' },
-    { label: 'Rewards', value: 'Rewards' },
+    { label: 'Rewards', value: 'prize' },
   ],
   Submissions: [
     { label: 'Expiry Date', value: 'ExpiredDate' },

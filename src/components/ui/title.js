@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import React from 'react';
-import GoBackButton from './doBackBtn';
+import GoBackButton from './goBackBtn';
 
 export default function Title({ className, children }) {
   return (

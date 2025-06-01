@@ -11,14 +11,14 @@ import BountiesSkeletonCard from './ui/bountiesSkeletonCard';
 import { useAuthStore } from '@/store/auth';
 import groupByYap from '@/lib/groupByYap';
 import Pagination from './ui/Pagination';
-import GoBackButton from './ui/doBackBtn';
+import GoBackButton from './ui/goBackBtn';
 
 export default function BountiesList({ title, vector, type }) {
   const Auth = useAuthStore();
   const hasHydrated = useAuthStore?.persist?.hasHydrated() || true;
 
   const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState(null);
+  const [statusFilter, setStatusFilter] = useState("closed");
   const [category, setCategory] = useState(null);
   const [sortBy, setSortBy] = useState(null);
   const [bountyType, setBountyType] = useState([]);
