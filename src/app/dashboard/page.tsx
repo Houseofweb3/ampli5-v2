@@ -14,7 +14,7 @@ const Page = () => {
       <div className="font-Jakarta px-4 md:px-12 w-full flex flex-col gap-6 justify-center md:items-center pb-8">
         <div className="flex w-full items-center justify-center relative 2md:flex-row flex-col gap-4">
           <p className="text-gray-600 uppercase tracking-widest">
-            Welcome {session?.user.name}
+            Welcome {session?.user?.name}
           </p>
         </div>
         <span className="font-semibold text-2xl md:text-5xl tracking-wider text-center">
