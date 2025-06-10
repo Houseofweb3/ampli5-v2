@@ -4,6 +4,7 @@ import React from "react";
 
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
+import DemoSection from "@/src/components/DemoSection";
 
 const FilterSection = dynamic(() => import("./_components/FilterSection"));
 
@@ -24,7 +25,7 @@ const Page = () => {
 
       <FilterSection />
 
-
+      <DemoSection />
 
     </div>
   );

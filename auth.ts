@@ -52,8 +52,6 @@ const setUserCookies = (userData: UserDataType) => {
   }
 };
 
-
-
 export const {
   handlers: { GET, POST },
   auth,
@@ -80,7 +78,10 @@ export const {
       const { email, name } = user;
 
       if (account?.provider === "google") {
-        if (!email) return false;
+        if (!email) {
+          console.error("No email returned from Google provider");
+          return false;
+        }
 
         try {
           const userData = await createUser(
@@ -90,24 +91,10 @@ export const {
             "user"
           );
           setUserCookies(userData);
-          cookies().set("provider", "google", {
-            maxAge: 1 * 60 * 60 * 60,
-            path: "/",
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-          });
           return true;
-        } catch {
+        } catch (err) {
           return false;
         }
-      } else if (account?.provider === "twitter") {
-        cookies().set("provider", "twitter", {
-          maxAge: 1 * 60 * 60 * 60,
-          path: "/",
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "lax",
-        });
-        return true;
       }
 
       return true;
@@ -155,22 +142,7 @@ export const {
       return { ...user, ...token };
     },
 
-    async session({ session, token }) {
-      console.log(token, "token");
-
-      const provider = cookies().get("provider")?.value;
-
-      if (provider === "twitter") {
-        session.user = {
-          isOAuth: false,
-          name: "",
-          email: "",
-          id: "",
-          emailVerified: null,
-        };
-        return session;
-      }
-
+    async session({ session }) {
       session.user.accessToken = cookies().get("access_token")?.value;
       session.user.refreshToken = cookies().get("refresh_token")?.value;
       const userId = cookies().get("userId")?.value;
@@ -178,23 +150,6 @@ export const {
         session.user.id = userId;
       }
       return session;
-    },
-    async redirect({ baseUrl }) {
-      const provider = cookies().get("provider")?.value;
-      console.log(provider, "provider");
-
-      // For Google, redirect to dashboard
-      if (provider === "google") {
-        return `${baseUrl}/dashboard/home`;
-      }
-
-      // For Twitter, redirect to verify
-      if (provider === "twitter") {
-        return `${baseUrl}/api/user/verify`;
-      }
-
-      // Default fallback
-      return `${baseUrl}`;
     },
   },
   secret: process.env.AUTH_SECRET,

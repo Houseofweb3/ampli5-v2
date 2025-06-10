@@ -46,7 +46,7 @@ export default function NavbarHome(): JSX.Element {
   return (
     <header id="mainHeader" className="bg-white w-full fixed top-0 z-50">
       <Container className="py-18px">
-        <div className="flex items-center justify-between">
+        <div className=" flex items-center justify-between">
           <Link href="/">
             <Image
               alt="Logo"
@@ -136,7 +136,7 @@ export default function NavbarHome(): JSX.Element {
                 />
               </Link>
 
-              <PrimaryButton className="text-white" onClick={() => signIn("twitter")}>
+              <PrimaryButton className="text-white" onClick={() => signIn("twitter", { callbackUrl: '/api/user/verify' })}>
                 Login/Signup
               </PrimaryButton>
             </div>

@@ -24,7 +24,6 @@ const NavbarDashBoard = () => {
 
   const { data: session } = useSession();
   const User = session?.user;
-  console.log(User, "User");
 
 
   const handleCartIconClick = () => {
@@ -40,18 +39,16 @@ const NavbarDashBoard = () => {
     <>
       <div className="bg-white w-full fixed top-0 z-50">
         <Container className="py-6">
-          <div className="w-full relative flex justify-between">
-            <div className="flex justify-center gap-7">
-              <Link href="/">
-                <Image
-                  alt="Logo"
-                  width={84}
-                  height={33}
-                  className="w-84px lg:w-115px h-full"
-                  src="/logo/ampli5.png"
-                />
-              </Link>
-            </div>
+          <div className=" flex items-center justify-between">
+            <Link href="/">
+              <Image
+                alt="Logo"
+                width={84}
+                height={33}
+                className="w-84px lg:w-115px h-fit"
+                src="/logo/ampli5.png"
+              />
+            </Link>
             {pathname.includes("/dashboard/cart") ||
               pathname.includes("/dashboard/checkout") ||
               pathname === ALLROUTES.DASHBOARD ? (
@@ -67,7 +64,7 @@ const NavbarDashBoard = () => {
                   </div>
 
                   <div className="bg-primary w-4 h-4 p-2 rounded-full flex justify-center items-center text-white font-Jakarta text-[10px] absolute -top-1 -right-2 ">
-                      {User?.id
+                    {User?.id
                       ? cart && cart.influencerCartItems && cart.packageCartItems
                         ? cart.influencerCartItems?.length +
                         cart.packageCartItems?.length
@@ -76,9 +73,10 @@ const NavbarDashBoard = () => {
                   </div>
                 </div>
                 <div>
-                    {User?.id ? (
-                    <img
-                      src={session?.user?.image ?? ""}
+                  {User?.id ? (
+                    <Image
+                      loading="lazy"
+                      src={User?.image || ""}
                       width={40}
                       height={40}
                       className="rounded-[20px] cursor-pointer hover:scale-105 transition-all ease-in-out active:scale-95"
