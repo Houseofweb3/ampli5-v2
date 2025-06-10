@@ -1,0 +1,9 @@
+.husky
+.next
+node_modules
+.env
+package.json
+package-lock.json
+yarn.lock
+next-env.d.ts
+public

@@ -2,15 +2,23 @@ export const SonicIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
-    width="512"
-    height="139"
+    width="auto"
+    height="54"
     viewBox="0 0 512 139"
     fill="none"
   >
     <rect width="512" height="139" fill="url(#pattern0_88_1374)" />
     <defs>
-      <pattern id="pattern0_88_1374" patternContentUnits="objectBoundingBox" width="1" height="1">
-        <use xlinkHref="#image0_88_1374" transform="scale(0.00195312 0.00719424)" />
+      <pattern
+        id="pattern0_88_1374"
+        patternContentUnits="objectBoundingBox"
+        width="1"
+        height="1"
+      >
+        <use
+          xlinkHref="#image0_88_1374"
+          transform="scale(0.00195312 0.00719424)"
+        />
       </pattern>
       <image
         id="image0_88_1374"
@@ -27,14 +35,19 @@ export const RouterLogo = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
-    width="307"
-    height="142"
+    width="auto"
+    height="54"
     viewBox="0 0 307 142"
     fill="none"
   >
     <rect width="306.833" height="141.615" fill="url(#pattern0_88_1388)" />
     <defs>
-      <pattern id="pattern0_88_1388" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <pattern
+        id="pattern0_88_1388"
+        patternContentUnits="objectBoundingBox"
+        width="1"
+        height="1"
+      >
         <use
           xlinkHref="#image0_88_1388"
           transform="matrix(0.00111982 0 0 0.00242628 0 -0.0604703)"
@@ -55,8 +68,8 @@ export const StoopidCatsIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
-    width="308"
-    height="142"
+    width="auto"
+    height="54"
     viewBox="0 0 308 142"
     fill="none"
   >
@@ -80,9 +93,21 @@ export const StoopidCatsIcon = () => (
 );
 
 export const CaseStudyAmpli5Logo = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="298" height="84" viewBox="0 0 298 84" fill="none">
-    <path d="M237.714 19.0182L297.915 0.335205L256.397 37.7012L237.714 19.0182Z" fill="white" />
-    <path d="M285.459 50.1569L231.486 66.764L268.852 33.5498L285.459 50.1569Z" fill="white" />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="auto"
+    height="54"
+    viewBox="0 0 298 84"
+    fill="none"
+  >
+    <path
+      d="M237.714 19.0182L297.915 0.335205L256.397 37.7012L237.714 19.0182Z"
+      fill="white"
+    />
+    <path
+      d="M285.459 50.1569L231.486 66.764L268.852 33.5498L285.459 50.1569Z"
+      fill="white"
+    />
     <path
       d="M220.31 10.9607H209.648L209.549 0H220.31V10.9607ZM220.41 66.7605H209.648V16.9392H220.41V66.7605Z"
       fill="white"

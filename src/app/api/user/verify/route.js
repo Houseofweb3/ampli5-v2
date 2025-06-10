@@ -1,17 +1,18 @@
-import axios from 'axios';
-import { getToken } from 'next-auth/jwt';
-import { NextResponse } from 'next/server';
-import CryptoJS from 'crypto-js';
+import axios from "axios";
+import { getToken } from "next-auth/jwt";
+import { NextResponse } from "next/server";
+import CryptoJS from "crypto-js";
 
 export async function GET(req) {
   const token = await getToken({
     req,
     secret: process.env.NEXTAUTH_SECRET,
   });
+  console.log(token, "token");
 
   if (!token) {
     const url = new URL(process.env.NEXTAUTH_URL);
-    url.searchParams.set('auth', 'Authentication failed try again');
+    url.searchParams.set("auth", "Authentication failed try again");
     return NextResponse.redirect(url);
   }
 
@@ -27,11 +28,11 @@ export async function GET(req) {
     };
 
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/verify/user`,
+      `${process.env.NEXT_PUBLIC_API_URL_BOUNTY}/auth/verify/user`,
       JSON.stringify(loginPayload),
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -40,39 +41,41 @@ export async function GET(req) {
     const JwtToken = user.token;
 
     const url = new URL(process.env.NEXTAUTH_URL);
-    if (token.yeps_error) {
-      url.searchParams.set('message', token.yeps_error);
+    if (token.yaps_error) {
+      url.searchParams.set("message", token.yaps_error);
     } else {
-      url.searchParams.set('yeps_score', String(token.yaps_score));
-      url.searchParams.set('token', JwtToken);
-      url.searchParams.set('id', String(user.data.id));
-      url.searchParams.set('email', String(user.data.email));
-      url.searchParams.set('name', String(user.data.firstName));
-      url.searchParams.set('username', String(user.data.fullname));
-      url.searchParams.set('profile_picture', String(user.data.profilePicture));
+      url.searchParams.set("yaps_score", String(token.yaps_score));
+      url.searchParams.set("token", JwtToken);
+      url.searchParams.set("id", String(user.data.id));
+      url.searchParams.set("email", String(user.data.email));
+      url.searchParams.set("name", String(user.data.firstName));
+      url.searchParams.set("username", String(user.data.fullname));
+      url.searchParams.set("profile_picture", String(user.data.profilePicture));
     }
 
     return NextResponse.redirect(url);
   } catch (error) {
-  
     let url;
     const status = error?.response?.status;
 
     if (status === 404) {
-      url = new URL(process.env.NEXTAUTH_URL + '/signup');
-      if (token.yeps_error) {
-        url.searchParams.set('message', token.yeps_error);
+      url = new URL(process.env.NEXTAUTH_URL + "/signup");
+      if (token.yaps_error) {
+        url.searchParams.set("message", token.yaps_error);
       } else {
-        url.searchParams.set('name', token.name);
-        url.searchParams.set('username', token.user_name);
-        url.searchParams.set('profile_picture', token.profile_picture);
-        url.searchParams.set('yaps', String(token.yaps_score));
-        url.searchParams.set('email', String(userData.email));
-        url.searchParams.set('auth', String(userData.password));
+        url.searchParams.set("name", token.name);
+        url.searchParams.set("username", token.user_name);
+        url.searchParams.set("profile_picture", token.profile_picture);
+        url.searchParams.set("yaps", String(token.yaps_score));
+        url.searchParams.set("email", String(userData.email));
+        url.searchParams.set("auth", String(userData.password));
       }
     } else {
       url = new URL(process.env.NEXTAUTH_URL);
-      url.searchParams.set('message', 'Authentication request failed! try again');
+      url.searchParams.set(
+        "message",
+        "Authentication request failed! try again"
+      );
     }
 
     return NextResponse.redirect(url);
