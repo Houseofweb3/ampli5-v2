@@ -17,8 +17,8 @@ const CheckOutPage = () => {
   const router = useRouter();
   const how3 = useHow3client();
 
-  const [firstName, setFirstName] = useState(user?.name.split(" ")[0] || "");
-  const [lastname, setLastName] = useState(user?.name.split(" ")[1] || "");
+  const [firstName, setFirstName] = useState(user?.name?.split(" ")[0] || "");
+  const [lastname, setLastName] = useState(user?.name?.split(" ")[1] || "");
   const [email, setEmail] = useState(user?.email || "");
   const [projectName, setProjectName] = useState("");
   const [projectUrl, setProjectUrl] = useState("");
