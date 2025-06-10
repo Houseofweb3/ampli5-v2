@@ -115,7 +115,7 @@ const FilterSection = () => {
     }
 
     setLoading(true);
-    if (session?.user.accessToken) {
+    if (session?.user?.accessToken) {
       router.push(ALLROUTES.HOME);
     } else {
       // redirect to new login page

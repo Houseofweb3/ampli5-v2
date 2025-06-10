@@ -6,7 +6,7 @@ import CryptoJS from "crypto-js";
 export async function GET(req) {
   const token = await getToken({
     req,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.AUTH_SECRET,
   });
   console.log(token, "token");
 
