@@ -102,7 +102,7 @@ const useHow3client = () => {
               await update({
                 ...session,
                 user: {
-                  ...session.user,
+                  ...session?.user,
                   accessToken: newAccessToken,
                 },
               });
