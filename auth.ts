@@ -58,9 +58,6 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
-  trustHost: true,
-  redirectProxyUrl: `${process.env.NEXTAUTH_URL}/api/auth`,
-
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -153,6 +150,8 @@ export const {
     },
   },
   secret: process.env.AUTH_SECRET,
+  debug: true,
+
   session: {
     strategy: "jwt",
   },

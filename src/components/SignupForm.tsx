@@ -59,7 +59,7 @@ const SignupForm: React.FC = () => {
   const username = params.get('username') || '';
   const profile_picture = params.get('profile_picture') || '';
   const name = params.get('name') || '';
-  const message = params.get('message') || '';
+  const error = params.get('error') || '';
 
   // Set data from URL once on mount
   useEffect(() => {
@@ -83,18 +83,18 @@ const SignupForm: React.FC = () => {
     if (hasHandled) return;
 
     try {
-      if (auth || message) {
+      if (auth || error) {
         router.replace(window.location.pathname, { scroll: false });
       }
-      if (message) {
-        toast.error(message);
+      if (error) {
+        toast.error(error);
       }
     } catch (error) {
       toast.error('Decryption failed. Please try again or contact support.');
     }
 
     setHasHandled(true);
-  }, [auth, name, username, message, profile_picture, hasHandled, authStore, router]);
+  }, [auth, name, username, error, profile_picture, hasHandled, authStore, router]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
