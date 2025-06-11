@@ -36,16 +36,16 @@ export default async function RootLayout({
       <head>
       </head>
       <body className={`${bricolage.variable}`}>
+        <Toast />
+        <ToastProvider />
         <SessionProvider session={session}>
           <CartProvider>
             <LogCartProvider>
               <LogpackageProvider>
-                <ToastProvider />
                 <Navbar />
                 <div className="h-[65px] lg:h-80px w-full bg-black"></div>
                 <div className="min-h-[calc(100vh_-_295px)] bg-cream-bg">{children}</div>
                 <Footer />
-                <Toast />
               </LogpackageProvider>
             </LogCartProvider>
           </CartProvider>

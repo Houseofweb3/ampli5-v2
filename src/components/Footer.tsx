@@ -21,21 +21,21 @@ export default function Footer(): JSX.Element {
             <div className="flex items-center gap-4 text-14 sm:text-18 font-medium ">
               <Link
                 href="for-project"
-                className="hover:text-blue-btn transition-colors duration-200"
+                className="hover:text-primary transition-colors duration-200"
               >
                 For Project
               </Link>
               <Link
                 target="_blank"
                 href="https://www.houseofweb3.com/legal/privacyPolicy"
-                className="hover:text-blue-btn transition-colors duration-200"
+                className="hover:text-primary transition-colors duration-200"
               >
                 Privacy Policy
               </Link>
               <Link
                 target="_blank"
                 href="https://www.houseofweb3.com/legal/termsOfUse"
-                className="hover:text-blue-btn transition-colors duration-200"
+                className="hover:text-primary transition-colors duration-200"
               >
                 {' '}
                 Terms of Service

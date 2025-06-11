@@ -80,7 +80,7 @@ const Profile: React.FC = () => {
                       {user.username}
                     </p>
                   </div>
-                  <div className="flex gap-7">
+                  {/* <div className="flex gap-7">
                     <div className="flex gap-2 items-center">
                       <h4>{user?.Following || 0}</h4>{' '}
                       <span className="text-14 text-black/45">Following </span>
@@ -89,7 +89,7 @@ const Profile: React.FC = () => {
                       <h4>{user?.Followers || 0}</h4>{' '}
                       <span className="text-14 text-black/45">Followers </span>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="my-6 sm:my-0 w-full flex flex-col gap-6">

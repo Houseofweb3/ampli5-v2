@@ -11,9 +11,11 @@ import { useAuthStore } from '../store/auth';
 import { toast } from 'react-toastify';
 import axiosInstance from '../lib/axiosInstance';
 import Loader from './ui/loader';
+import { useRouter } from 'next/navigation';
 
 export default function NavbarHome(): JSX.Element {
   const { token, user, logout } = useAuthStore();
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -36,6 +38,7 @@ export default function NavbarHome(): JSX.Element {
       setIsLoading(true);
       await axiosInstance.post('/auth/logout', { refreshToken: token });
       logout();
+      router.replace("/")
     } catch (error) {
       toast.error('Failed to Logout');
     } finally {
@@ -60,7 +63,7 @@ export default function NavbarHome(): JSX.Element {
             <div className="flex items-center gap-2 sm:gap-4">
               <Link
                 href="/bounty-hunt"
-                className="font-medium text-18 hover:text-blue-btn transition-colors duration-200"
+                className="font-medium text-18 hover:text-primary transition-colors duration-200"
               >
                 Bounties
               </Link>
@@ -73,7 +76,7 @@ export default function NavbarHome(): JSX.Element {
                     alt="profile"
                     src={user?.profile_picture}
                     onClick={() => setIsProfileOpen((pre) => !pre)}
-                    className="w-30px h-30px lg:w-57px lg:h-57px rounded-full  object-contain bg-white shadow-xl"
+                    className="w-30px h-30px lg:w-57px lg:h-57px rounded-full  object-contain bg-white shadow-xl cursor-pointer"
                   />
                 ) : (
                   <ExploreBtn
@@ -92,7 +95,7 @@ export default function NavbarHome(): JSX.Element {
                           <Link
                             href={value.id}
                             onClick={() => setIsProfileOpen(false)}
-                            className="text-16 font-normal text-black inline-block w-full py-3 hover:text-blue-btn transition-colors duration-200 "
+                            className="text-16 font-normal text-black inline-block w-full py-3 hover:text-primary transition-colors duration-200 "
                           >
                             {value.label}
                           </Link>
@@ -100,7 +103,7 @@ export default function NavbarHome(): JSX.Element {
                           <button
                             onClick={logoutHandler}
                             disabled={isLoading}
-                            className="text-16 font-normal flex gap-2 items-center text-black  hover:text-blue-btn transition-colors duration-200 w-full py-3.5 text-left cursor-pointer disabled:pointer-events-none"
+                            className="text-16 font-normal flex gap-2 items-center text-black  hover:text-primary transition-colors duration-200 w-full py-3.5 text-left cursor-pointer disabled:pointer-events-none"
                           >
                             {isLoading && (
                               <Loader
@@ -124,7 +127,7 @@ export default function NavbarHome(): JSX.Element {
             <div className="flex items-center gap-2 sm:gap-4">
               <Link
                 href="/for-project"
-                className="border border-solid rounded-4xl flex items-center justify-center lg:text-xl font-medium capitalize bg-white  text-blue-btn border-blue-btn s px-4 lg:px-7 py-1.5 lg:py-4 text-14 lg:text-20"
+                className="border border-solid rounded-4xl flex items-center justify-center lg:text-xl font-medium capitalize bg-white  text-blue-btn border-blue-btn s px-4 lg:px-7 py-1.5 lg:py-4 text-14 "
               >
                 For Projects
                 <Image
