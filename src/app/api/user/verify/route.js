@@ -5,12 +5,12 @@ import CryptoJS from "crypto-js";
 
 export async function GET(req) {
   console.log(req,"req")
-const cookieKey = '__Secure-authjs.session-token'
+  const cookieKey = '__Secure-authjs.session-token'
   const token = await getToken({
     req,
     secret: process.env.AUTH_SECRET,
-     salt: cookieKey,
-        cookieName: cookieKey
+    salt: cookieKey,
+    cookieName: cookieKey
   });
   console.log(token, "token");
 
