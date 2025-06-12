@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import CryptoJS from "crypto-js";
 
 export async function GET(req) {
+  console.log(req,"req")
   const token = await getToken({
     req,
     secret: process.env.AUTH_SECRET,
