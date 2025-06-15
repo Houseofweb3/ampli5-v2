@@ -117,7 +117,7 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
     }
   }, [user, submissionsList]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -133,12 +133,12 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
         return;
       }
       if (submittedUser) {
-        axiosInstance.put(`/bounty-submission/${submittedUser.id}`, {
+        await axiosInstance.put(`/bounty-submission/${submittedUser.id}`, {
           submissionLink: submissionLink,
         });
         toast.success('Your submission has been Updated');
       } else {
-        axiosInstance.post('/bounty-submission', {
+        await axiosInstance.post('/bounty-submission', {
           userId: user.id,
           bountyId: bounties_id,
           submissionLink: submissionLink,
@@ -153,6 +153,8 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
       } else {
         toast.error('Submission failed. Please try again.');
       }
+      console.log(error, "error");
+
     } finally {
       setIsSubmitting(false);
     }
