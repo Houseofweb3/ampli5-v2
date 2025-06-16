@@ -2,7 +2,7 @@
 
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import Input from './ui/input';
-import axiosInstance from '../utils/axios';
+import axiosInstance from '../lib/axiosInstance';
 import { toast } from 'react-toastify';
 import Card from './ui/card';
 import AppointmentCalendar from './AppointmentCalendar';
@@ -42,7 +42,7 @@ const CreateBountiesForm: React.FC = () => {
     if (!form.telegramId.trim()) newErrors.telegramId = 'Telegram ID is required';
     if (!form.projectURL.trim()) newErrors.projectURL = 'Project URL is required';
     else if (
-      !/^https?:\/\/.+\..+/.test(form.projectURL) && 
+      !/^https?:\/\/.+\..+/.test(form.projectURL) &&
       !/^www\.[^.\s]+\.[^\s]+/.test(form.projectURL)
     )
       newErrors.projectURL = 'Invalid URL format (must start with https:// OR www.)';
@@ -67,6 +67,9 @@ const CreateBountiesForm: React.FC = () => {
       toast.success('Form has been submitted');
       setIsBookingOpen(true);
     } catch (error) {
+
+      console.log(error, "error");
+
       toast.error('Failed to submit form!');
     } finally {
       setSubmitting(false);
