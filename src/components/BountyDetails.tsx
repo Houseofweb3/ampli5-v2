@@ -334,7 +334,7 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
                 <h2>Resources</h2>
                 <ul className="flex flex-col p-0 mt-4 w-fit mb-9  text-16 sm:text-18">
                   {Object.entries(bounty?.metadata?.resources || {})?.map(([key, value], index) => (
-                    <li key={index} className="flex gap-1 py-1 group  text-16 sm:text-18">
+                    value ? <li key={index} className="flex gap-1 py-1 group  text-16 sm:text-18">
                       <span className="font-bold capitalize">{key}:</span>
                       <Link href={value as string} className="flex gap-2 list-none">
                         <span className="  break-all group-hover:text-yellow-bg transition-all duration-300 ease-in-out break-words">
@@ -348,7 +348,7 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
                           src="/icons/arrow-up-right-01.png"
                         />
                       </Link>
-                    </li>
+                    </li> : null
                   ))}
                 </ul>
               </div>
