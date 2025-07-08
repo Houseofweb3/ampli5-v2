@@ -32,6 +32,12 @@ export default function BrandSlider(): JSX.Element {
           <Image src={'/images/brand/image-5.png'} width={94} height={55} alt="image" />
         </div>
         <div className="px-12 lg:px-16">
+          <Image src={'/images/brand/cabbage..jpg'} width={94} height={55} alt="image" />
+        </div>
+        <div className="px-12 lg:px-16">
+          <Image src={'/images/brand/multiplifi.png'} width={94} height={55} alt="image" />
+        </div>
+        <div className="px-12 lg:px-16">
           <Image src={'/images/brand/image-1.png'} width={162} height={55} alt="image" />
         </div>
         <div className="px-12 lg:px-16">
@@ -51,6 +57,12 @@ export default function BrandSlider(): JSX.Element {
         </div>
         <div className="px-12 lg:px-16">
           <Image src={'/images/brand/image-5.png'} width={94} height={55} alt="image" />
+        </div>
+        <div className="px-12 lg:px-16">
+          <Image src={'/images/brand/cabbage..jpg'} width={94} height={55} alt="image" />
+        </div>
+        <div className="px-12 lg:px-16">
+          <Image src={'/images/brand/multiplifi.png'} width={94} height={55} alt="image" />
         </div>
       </Marquee>
     </div>
