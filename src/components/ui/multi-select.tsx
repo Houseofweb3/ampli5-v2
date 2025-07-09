@@ -42,7 +42,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
       className="w-full mx-auto relative font-Jakarta"
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
-      onClick={() => setIsOpen(!isOpen)}
+      // onClick={() => setIsOpen(!isOpen)}
     >
       <div className="flex items-center justify-between p-2 text-gray-600 cursor-pointer border border-gray-300 rounded-xl h-12 font-Jakarta text-sm ">
         <div
