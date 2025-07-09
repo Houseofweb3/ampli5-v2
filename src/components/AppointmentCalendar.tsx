@@ -5,8 +5,8 @@ import React, { useEffect } from 'react';
 const AppointmentCalendar: React.FC = () => {
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = 'https://cdn.lemcal.com/lemcal-integrations.min.js';
-    script.defer = true;
+    script.src = 'https://assets.calendly.com/assets/external/widget.js';
+    script.async = true;
     document.body.appendChild(script);
 
     return () => {
@@ -16,10 +16,15 @@ const AppointmentCalendar: React.FC = () => {
 
   return (
     <div
-      className="lemcal-embed-booking-calendar  my-8 md:my-14 max-w-[350px] mx-auto sm:max-w-full  sm:w-full"
-      data-user="usr_dkaCWS9H7QvTQN8nP"
-      data-meeting-type="met_kCDPcSFktqbotx26B"
-    ></div>
+      className="my-8 md:my-14 max-w-[350px] mx-auto sm:max-w-full sm:w-full rounded-2xl"
+      style={{ minWidth: 320, height: 700 }}
+    >
+      <div
+        className="calendly-inline-widget"
+        data-url="https://calendly.com/partnerships-houseofweb3/30min"
+        style={{ minWidth: 320, height: 700 }}
+      ></div>
+    </div>
   );
 };
 
