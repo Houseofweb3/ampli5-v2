@@ -217,6 +217,18 @@ export const BountiesType: Record<string, BountyTypeInfo> = {
     bgcolor: 'bg-articleBadgeBg',
     borderColor: 'border-articleBadgeBorder',
   },
+  tweet: {
+    name: 'Tweet',
+    url: '/icons/x.png',
+    bgcolor: 'bg-threadBadgeBg',
+    borderColor: 'border-threadBadgeBorder',
+  },
+  quests: {
+    name: 'Quests',
+    url: '/icons/news.png',
+    bgcolor: 'bg-articleBadgeBg',
+    borderColor: 'border-articleBadgeBorder',
+  },
 };
 
 export const TopAttention: TopAttentionItem[] = [
