@@ -90,9 +90,14 @@ export const {
             name || "User",
             "user"
           );
+          
+          console.log(userData, "user in database Google");
+
           setUserCookies(userData);
           return true;
         } catch (err) {
+          console.log(err, "Error creating user in database Google");
+          
           return false;
         }
       }
