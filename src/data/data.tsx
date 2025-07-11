@@ -349,7 +349,7 @@ export const CASE_STUDY_DATA = [
   },
   {
     thumbnail: (
-      <Thumbnail date="January, 2025" brandLogo={<SonicIcon />} heading="A CEX LISTING CAMPAIGN" />
+      <Thumbnail date="January, 2025" brandLogo={<SonicIcon />} heading="A CEX listing campaign" />
     ),
     s3_url: 'https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Sonic.pdf',
   },
@@ -358,7 +358,7 @@ export const CASE_STUDY_DATA = [
       <Thumbnail
         date="March, 2024"
         brandLogo={<StoopidCatsIcon />}
-        heading="A Pre Sale Case study for P2E"
+        heading="A pre sale case study for P2E"
       />
     ),
     s3_url: 'https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Stoopid+cat.pdf',
@@ -366,9 +366,9 @@ export const CASE_STUDY_DATA = [
   {
     thumbnail: (
       <Thumbnail
-        date="Jun, 2025"
+        date="December, 2024"
         brandLogo={<MultipliCatsIcon />}
-        heading="A Pre Sale Case study for Multipli"
+        heading="High-Yield Defi Campaign"
       />
     ),
     s3_url: 'https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Multipli+Case+study.pdf',
