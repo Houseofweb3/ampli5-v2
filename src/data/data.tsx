@@ -361,7 +361,7 @@ export const CASE_STUDY_DATA = [
         heading="A pre sale case study for P2E"
       />
     ),
-    s3_url: 'https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Stoopid+cat.pdf',
+    s3_url: 'https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Stoopid+Cats.pdf',
   },
   {
     thumbnail: (
