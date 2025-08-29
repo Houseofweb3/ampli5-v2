@@ -73,9 +73,19 @@ export const StoopidCatsIcon = () => (
     viewBox="0 0 308 142"
     fill="none"
   >
-    <rect x="0.914062" width="306.833" height="141.615" fill="url(#pattern0_88_1405)" />
+    <rect
+      x="0.914062"
+      width="306.833"
+      height="141.615"
+      fill="url(#pattern0_88_1405)"
+    />
     <defs>
-      <pattern id="pattern0_88_1405" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <pattern
+        id="pattern0_88_1405"
+        patternContentUnits="objectBoundingBox"
+        width="1"
+        height="1"
+      >
         <use
           xlinkHref="#image0_88_1405"
           transform="matrix(0.000812568 0 0 0.00176056 -0.00135427 0)"
@@ -91,6 +101,7 @@ export const StoopidCatsIcon = () => (
     </defs>
   </svg>
 );
+
 export const MultipliCatsIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -152,6 +163,242 @@ export const MultipliCatsIcon = () => (
     />
   </svg>
 );
+export const CabbageCatsIcon = () => (
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="96" height="96">
+    <path
+      d="M0 0 C5.7421875 1.78125 5.7421875 1.78125 8.0625 3.75 C8.701875 4.1625 9.34125 4.575 10 5 C12.98319856 4.23507729 15.02157289 2.98526729 17.5625 1.25 C18.7690625 0.63125 18.7690625 0.63125 20 0 C23.72797328 1.2714351 26.04950649 3.84508021 28.75 6.625 C29.54921875 7.44226563 30.3484375 8.25953125 31.171875 9.1015625 C31.77515625 9.72804688 32.3784375 10.35453125 33 11 C30.16985789 17.70125603 23.96223264 24.97693592 17.09570312 27.77636719 C12.26632356 29.00421644 7.62094839 28.93995775 3 27 C-2.51886513 23.21274685 -6.79517315 18.15091289 -11 13 C-9.30413874 9.36696916 -7.26199512 7.05450954 -4.375 4.25 C-3.55773438 3.45078125 -2.74046875 2.6515625 -1.8984375 1.828125 C-0.95871094 0.92320313 -0.95871094 0.92320313 0 0 Z "
+      fill="#B3ECCE"
+      transform="translate(37,18)"
+    />
+    <path
+      d="M0 0 C2.77991956 1.03254155 5.05857502 2.04100251 7.5 3.75 C9.91558879 5.30160409 9.91558879 5.30160409 12.375 4.375 C13.24125 3.92125 14.1075 3.4675 15 3 C17.31 2.01 19.62 1.02 22 0 C25.63 3.63 29.26 7.26 33 11 C29.13727661 18.72544678 22.69752591 26.12525043 14.5546875 29.375 C9.57566912 29.91940292 6.07006921 29.49126696 1.921875 26.50292969 C-2.78570081 22.49332931 -7.37712358 18.03219833 -11 13 C-11 12.34 -11 11.68 -11 11 C-9.35546875 9.4140625 -9.35546875 9.4140625 -7.1875 7.625 C-4.35520187 5.2828081 -2.10737561 3.01813415 0 0 Z "
+      fill="#B2EACC"
+      transform="translate(37,50)"
+    />
+    <path
+      d="M0 0 C5.28 0 10.56 0 16 0 C16 0.33 16 0.66 16 1 C10.72 1 5.44 1 0 1 C0 0.67 0 0.34 0 0 Z "
+      fill="#C3F6DB"
+      transform="translate(40,46)"
+    />
+    <path
+      d="M0 0 C4.62 0 9.24 0 14 0 C14 0.33 14 0.66 14 1 C9.38 1 4.76 1 0 1 C0 0.67 0 0.34 0 0 Z "
+      fill="#AACBBB"
+      transform="translate(41,79)"
+    />
+    <path d="" fill="#B4D9C6" transform="translate(0,0)" />
+    <path d="" fill="#B7D3C7" transform="translate(0,0)" />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#BCDFC9"
+      transform="translate(47,54)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#B6D9C5"
+      transform="translate(50,52)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#BBDAC7"
+      transform="translate(44,52)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#C8EED9"
+      transform="translate(52,51)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#CCEFDC"
+      transform="translate(42,51)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#BFEAD4"
+      transform="translate(54,50)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#9DC8B1"
+      transform="translate(39,49)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#ABC7B4"
+      transform="translate(57,48)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#A4C8B3"
+      transform="translate(37,48)"
+    />
+    <path d="" fill="#C1DECE" transform="translate(0,0)" />
+    <path d="" fill="#B6D1C3" transform="translate(0,0)" />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#D3F9E1"
+      transform="translate(47,22)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#C7ECD8"
+      transform="translate(50,20)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#BBD9C8"
+      transform="translate(43,19)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#BCE6D1"
+      transform="translate(53,18)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#BFDFCD"
+      transform="translate(41,18)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#C0EAD7"
+      transform="translate(55,17)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#C4E4D5"
+      transform="translate(39,17)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#BCD6C9"
+      transform="translate(57,16)"
+    />
+    <path
+      d="M0 0 C2 1 2 1 2 1 Z "
+      fill="#BED7CA"
+      transform="translate(37,16)"
+    />
+    <path d="" fill="#CDFAE4" transform="translate(0,0)" />
+    <path d="" fill="#CBF7E4" transform="translate(0,0)" />
+    <path d="" fill="#BCEFD7" transform="translate(0,0)" />
+    <path d="" fill="#BDE7D5" transform="translate(0,0)" />
+    <path d="" fill="#BEEDD6" transform="translate(0,0)" />
+    <path d="" fill="#BDE7D5" transform="translate(0,0)" />
+    <path d="" fill="#BDEFD7" transform="translate(0,0)" />
+    <path d="" fill="#BDE8D3" transform="translate(0,0)" />
+    <path d="" fill="#BCEDD6" transform="translate(0,0)" />
+    <path d="" fill="#BFE9D2" transform="translate(0,0)" />
+    <path d="" fill="#BFE9D2" transform="translate(0,0)" />
+    <path d="" fill="#BDE8D3" transform="translate(0,0)" />
+    <path d="" fill="#C0E8D2" transform="translate(0,0)" />
+    <path d="" fill="#BAE4CF" transform="translate(0,0)" />
+    <path d="" fill="#C4F1D9" transform="translate(0,0)" />
+    <path d="" fill="#B6E8D0" transform="translate(0,0)" />
+    <path d="" fill="#BCF0D5" transform="translate(0,0)" />
+    <path d="" fill="#B9E8D1" transform="translate(0,0)" />
+    <path d="" fill="#BBECD5" transform="translate(0,0)" />
+    <path d="" fill="#BCE7CF" transform="translate(0,0)" />
+    <path d="" fill="#C1E9D5" transform="translate(0,0)" />
+    <path d="" fill="#BBE8CF" transform="translate(0,0)" />
+    <path d="" fill="#C2F2D9" transform="translate(0,0)" />
+    <path d="" fill="#C3EDD8" transform="translate(0,0)" />
+    <path d="" fill="#BEF4D9" transform="translate(0,0)" />
+    <path d="" fill="#C5EDD8" transform="translate(0,0)" />
+    <path d="" fill="#BBECD5" transform="translate(0,0)" />
+    <path d="" fill="#C2E7D4" transform="translate(0,0)" />
+    <path d="" fill="#BBECD5" transform="translate(0,0)" />
+    <path d="" fill="#B9E3D0" transform="translate(0,0)" />
+    <path d="" fill="#C5F4DD" transform="translate(0,0)" />
+    <path d="" fill="#BCE6D5" transform="translate(0,0)" />
+    <path d="" fill="#ABD5C0" transform="translate(0,0)" />
+    <path d="" fill="#C1E2D2" transform="translate(0,0)" />
+    <path d="" fill="#B0D3BE" transform="translate(0,0)" />
+    <path d="" fill="#C0DECD" transform="translate(0,0)" />
+    <path d="" fill="#B3D1BE" transform="translate(0,0)" />
+    <path d="" fill="#C0DECD" transform="translate(0,0)" />
+    <path d="" fill="#C8E4D2" transform="translate(0,0)" />
+    <path d="" fill="#BCDDC8" transform="translate(0,0)" />
+    <path d="" fill="#BEDFCB" transform="translate(0,0)" />
+    <path d="" fill="#B7DDC7" transform="translate(0,0)" />
+    <path d="" fill="#B6E1CC" transform="translate(0,0)" />
+    <path d="" fill="#B1DEC8" transform="translate(0,0)" />
+    <path d="" fill="#B5E1CC" transform="translate(0,0)" />
+    <path d="" fill="#AFDBC8" transform="translate(0,0)" />
+    <path d="" fill="#B3DBC7" transform="translate(0,0)" />
+    <path d="" fill="#AECFBA" transform="translate(0,0)" />
+    <path d="" fill="#C2E0CD" transform="translate(0,0)" />
+    <path d="" fill="#B0D7C5" transform="translate(0,0)" />
+    <path d="" fill="#B2D7C3" transform="translate(0,0)" />
+    <path d="" fill="#B2D6C5" transform="translate(0,0)" />
+    <path d="" fill="#A9CCB9" transform="translate(0,0)" />
+    <path d="" fill="#B5D5C3" transform="translate(0,0)" />
+    <path d="" fill="#AACBB9" transform="translate(0,0)" />
+    <path d="" fill="#B4DFC7" transform="translate(0,0)" />
+    <path d="" fill="#B5D6C1" transform="translate(0,0)" />
+    <path d="" fill="#B6D5C1" transform="translate(0,0)" />
+    <path d="" fill="#B1D9C3" transform="translate(0,0)" />
+    <path d="" fill="#B6D7C3" transform="translate(0,0)" />
+    <path d="" fill="#BBE1C9" transform="translate(0,0)" />
+    <path d="" fill="#AFDCC4" transform="translate(0,0)" />
+    <path d="" fill="#BBE1C9" transform="translate(0,0)" />
+    <path d="" fill="#AFDCC4" transform="translate(0,0)" />
+    <path d="" fill="#B9EAD0" transform="translate(0,0)" />
+    <path d="" fill="#B1DEC6" transform="translate(0,0)" />
+    <path d="" fill="#B9EAD0" transform="translate(0,0)" />
+    <path d="" fill="#B1DEC6" transform="translate(0,0)" />
+    <path d="" fill="#B6E1CA" transform="translate(0,0)" />
+    <path d="" fill="#AAD7C1" transform="translate(0,0)" />
+    <path d="" fill="#B2E3CA" transform="translate(0,0)" />
+    <path d="" fill="#ACD6C1" transform="translate(0,0)" />
+    <path d="" fill="#B6F0D1" transform="translate(0,0)" />
+    <path d="" fill="#B8E2CD" transform="translate(0,0)" />
+    <path d="" fill="#BBEDD1" transform="translate(0,0)" />
+    <path d="" fill="#BCE6D1" transform="translate(0,0)" />
+    <path d="" fill="#B4DFC7" transform="translate(0,0)" />
+    <path d="" fill="#AFDCC6" transform="translate(0,0)" />
+    <path d="" fill="#B6DEC7" transform="translate(0,0)" />
+    <path d="" fill="#AFDCC6" transform="translate(0,0)" />
+    <path d="" fill="#BCE4CD" transform="translate(0,0)" />
+    <path d="" fill="#B1DEC8" transform="translate(0,0)" />
+    <path d="" fill="#BAE2CC" transform="translate(0,0)" />
+    <path d="" fill="#B1DEC8" transform="translate(0,0)" />
+    <path d="" fill="#B6DDC9" transform="translate(0,0)" />
+    <path d="" fill="#ACD6C1" transform="translate(0,0)" />
+    <path d="" fill="#B6DDC9" transform="translate(0,0)" />
+    <path d="" fill="#AED5C1" transform="translate(0,0)" />
+    <path d="" fill="#BAE2CE" transform="translate(0,0)" />
+    <path d="" fill="#BFE4D3" transform="translate(0,0)" />
+    <path d="" fill="#C0E3D0" transform="translate(0,0)" />
+    <path d="" fill="#B7DECC" transform="translate(0,0)" />
+    <path d="" fill="#C2E5D3" transform="translate(0,0)" />
+    <path d="" fill="#B8E2CD" transform="translate(0,0)" />
+    <path d="" fill="#C2E5D3" transform="translate(0,0)" />
+    <path d="" fill="#B4E4CB" transform="translate(0,0)" />
+    <path d="" fill="#C5EDD6" transform="translate(0,0)" />
+    <path d="" fill="#B7E9D1" transform="translate(0,0)" />
+    <path d="" fill="#C1EDD5" transform="translate(0,0)" />
+    <path d="" fill="#B9EAD3" transform="translate(0,0)" />
+    <path d="" fill="#BEF0D8" transform="translate(0,0)" />
+    <path d="" fill="#B6E9D3" transform="translate(0,0)" />
+    <path d="" fill="#C0EFD8" transform="translate(0,0)" />
+    <path d="" fill="#B4EAD3" transform="translate(0,0)" />
+    <path d="" fill="#C7EFDD" transform="translate(0,0)" />
+    <path d="" fill="#C5EBD5" transform="translate(0,0)" />
+    <path d="" fill="#D0EEDD" transform="translate(0,0)" />
+    <path d="" fill="#B7EAD5" transform="translate(0,0)" />
+    <path d="" fill="#C9ECDC" transform="translate(0,0)" />
+    <path d="" fill="#C9E2D3" transform="translate(0,0)" />
+    <path d="" fill="#B7EAD5" transform="translate(0,0)" />
+    <path d="" fill="#C5E3D5" transform="translate(0,0)" />
+    <path d="" fill="#C4EBD7" transform="translate(0,0)" />
+    <path d="" fill="#B9E8D3" transform="translate(0,0)" />
+    <path d="" fill="#C4E2D3" transform="translate(0,0)" />
+    <path d="" fill="#BBE5D2" transform="translate(0,0)" />
+    <path d="" fill="#D8F6E7" transform="translate(0,0)" />
+    <path d="" fill="#CDEFDF" transform="translate(0,0)" />
+  </svg>
+);
 
 export const CaseStudyAmpli5Logo = () => (
   <svg
@@ -189,17 +436,25 @@ export const CaseStudyAmpli5Logo = () => (
   </svg>
 );
 
-
 export const CheckIcon = () => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="31" viewBox="0 0 20 31" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="31"
+      viewBox="0 0 20 31"
+      fill="none"
+    >
       <path
         d="M18.6667 15.3333C18.6667 10.731 14.9357 7 10.3333 7C5.73096 7 2 10.731 2 15.3333C2 19.9357 5.73096 23.6667 10.3333 23.6667C14.9357 23.6667 18.6667 19.9357 18.6667 15.3333Z"
         stroke="#FFFF"
         stroke-width="1.5"
       />
-      <path d="M7 15.9167L9.08333 18L13.6667 13" stroke="#FFF" stroke-width="1.5" />
+      <path
+        d="M7 15.9167L9.08333 18L13.6667 13"
+        stroke="#FFF"
+        stroke-width="1.5"
+      />
     </svg>
   );
 };
-  

@@ -1,5 +1,5 @@
 import Thumbnail from '../components/Thumbnail';
-import { MultipliCatsIcon, RouterLogo, SonicIcon, StoopidCatsIcon } from './icon';
+import { CabbageCatsIcon, MultipliCatsIcon, RouterLogo, SonicIcon, StoopidCatsIcon } from './icon';
 
 interface AuthProfileItem {
   id: string | null;
@@ -372,6 +372,16 @@ export const CASE_STUDY_DATA = [
       />
     ),
     s3_url: 'https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Multipli+Case+study.pdf',
+  },
+  {
+    thumbnail: (
+      <Thumbnail
+        date="July, 2025"
+        brandLogo={<CabbageCatsIcon />}
+        heading="Memecoin Campaign"
+      />
+    ),
+    s3_url: 'https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Cabbage.pdf',
   },
 ];
 
