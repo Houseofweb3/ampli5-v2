@@ -4,7 +4,7 @@ import { google } from "googleapis";
 interface FormData {
   fullName: string;
   startupName: string;
-  startupDescription: string;
+  startupWebsite: string;
   stage: string;
   generatingRevenue: string;
   monthlyRevenue: string;
@@ -16,6 +16,7 @@ interface FormData {
   heardAbout: string;
   preferredMode: string;
   otherTopic: string;
+  contactDetail: string;
 }
 
 export async function POST(request: Request) {
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
     if (
       !formData.fullName?.trim() ||
       !formData.startupName?.trim() ||
-      !formData.startupDescription?.trim()
+      !formData.startupWebsite?.trim()
     ) {
       return NextResponse.json(
         { message: "All required fields must be filled." },
@@ -58,7 +59,7 @@ export async function POST(request: Request) {
           [
             formData.fullName,
             formData.startupName,
-            formData.startupDescription,
+            formData.startupWebsite,
             formData.stage,
             formData.generatingRevenue,
             formData.monthlyRevenue,
@@ -70,6 +71,7 @@ export async function POST(request: Request) {
             formData.heardAbout,
             formData.preferredMode,
             formData.otherTopic || "",
+            formData.contactDetail,
           ],
         ];
 
