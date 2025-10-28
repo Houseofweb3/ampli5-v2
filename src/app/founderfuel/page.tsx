@@ -41,6 +41,72 @@ const FounderInquiryForm: React.FC = () => {
     otherTopic: "",
   });
 
+  const [showForm, setShowForm] = useState<boolean>(false);
+
+  const [currentStep, setCurrentStep] = useState<number>(1);
+
+  const stepFields: Record<number, string[]> = {
+    1: ["fullName", "startupName", "startupDescription"],
+    2: ["stage", "generatingRevenue", "monthlyRevenue"],
+    3: ["conversationTopics", "hateAboutGroups"],
+    4: [
+      "yearsBuilding",
+      "openToMatching",
+      "city",
+      "heardAbout",
+      "preferredMode",
+    ],
+  };
+
+  const validateCurrentStep = (): boolean => {
+    const fields = stepFields[currentStep] || [];
+
+    for (const field of fields) {
+      const value: any = (formData as any)[field];
+      if (field === "conversationTopics") {
+        if (!Array.isArray(value) || value.length === 0) {
+          toast.error("Please select at least one conversation topic.");
+          return false;
+        }
+        if (value.includes("Something else") && !formData.otherTopic.trim()) {
+          toast.error("Please specify your other topic.");
+          return false;
+        }
+        continue;
+      }
+
+      if (typeof value === "string" && !value.trim()) {
+        const messages: Record<string, string> = {
+          fullName: "Full name is required.",
+          startupName: "Startup name is required.",
+          startupDescription: "Startup description is required.",
+          stage: "Please select your current stage.",
+          generatingRevenue: "Please indicate if you are generating revenue.",
+          monthlyRevenue: "Please select your monthly revenue range.",
+          hateAboutGroups: "Please tell us what you hate about founder groups.",
+          yearsBuilding: "Please select how many years you have been building.",
+          openToMatching: "Please indicate if you are open to 1:1 matching.",
+          city: "Please enter your city.",
+          heardAbout: "Please tell us how you heard about us.",
+          preferredMode: "Please select your preferred communication mode.",
+        };
+        toast.error(messages[field] || "Please complete the required fields.");
+        return false;
+      }
+    }
+
+    if (
+      currentStep === 1 &&
+      formData.startupDescription &&
+      formData.startupDescription.split(" ").length > 30
+    ) {
+      toast.error("Startup description must be 30 words or less.");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -134,6 +200,7 @@ const FounderInquiryForm: React.FC = () => {
         toast.success(
           "Application submitted successfully! We'll be in touch soon."
         );
+        setCurrentStep(1);
         console.log("Form submitted with leadID:", response.data.leadID);
       }
 
@@ -166,408 +233,476 @@ const FounderInquiryForm: React.FC = () => {
   };
 
   return (
-    <div className="bg-cream-bg relative pt-56px bg_square w-full overflow-x-hidden min-h-screen">
+    <div className="bg-cream-bg relative py-4 sm:py-8 md:py-12 bg_square w-full overflow-x-hidden ">
       <Container>
         <div className="flex items-center justify-center">
           <div className="max-w-4xl w-full mx-auto">
             {/* Header Section */}
-            <div className="text-center mb-12">
-              <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-black">
-                A private space for founders of revenue-generating startups
-              </h1>
-              <p className="text-xl lg:text-2xl text-black/80 mb-4">
-                (Pre-Seed → Series A) who want to talk openly — about struggles,
-                burn, hiring nightmares, co-founder conflicts, investor
-                pressure, or just… the silence that comes after "how's it
-                going?".
-              </p>
-              <p className="text-lg text-black/70 mb-8">
-                No pitches. No flexing. Just real talk.
-              </p>
-              <p className="text-lg text-black/70 mb-8">
-                👉 Let's see if this space is right for you.
-              </p>
+            <div className="text-center ">
+              {!showForm && (
+                <>
+                  <h1 className="text-xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-black">
+                    A private space for founders of revenue-generating startups
+                  </h1>
+                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-black/80 mb-4">
+                    (Pre-Seed → Series A) who want to talk openly — about
+                    struggles, burn, hiring nightmares, co-founder conflicts,
+                    investor pressure, or just… the silence that comes after
+                    "how's it going?".
+                  </p>
+                  <p className=" text-base md:text-lg text-black/70 mb-4 md:mb-8">
+                    No pitches. No flexing. Just real talk.
+                  </p>
+                  <p className="text-base md:text-lg text-black/70  mb-4 md:mb-8">
+                    👉 Let's see if this space is right for you.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setShowForm(true)}
+                    className="inline-flex items-center justify-center bg-dark-purple1-bg text-white px-6 py-3 rounded-12 font-bold"
+                  >
+                    I'm in
+                  </button>
+                </>
+              )}
             </div>
 
             {/* Form */}
-            <div className="bg-white rounded-2xl p-8 lg:p-12 shadow-lg">
-              <form onSubmit={handleSubmit} className="space-y-8">
-                {/* Section 1: Founder Basics */}
-                <div className=" pb-8 space-y-6">
-                  {/* Full Name */}
-                  <Input
-                    label="1. What's your full name?"
-                    name="fullName"
-                    type="text"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    placeholder="Enter your full name"
-                    required
-                  />
-
-                  {/* Startup Name & Description */}
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-[#686868]">
-                      2. Startup name & one-line description (max 30 words)
-                    </label>
-                    <Input
-                      name="startupName"
-                      type="text"
-                      value={formData.startupName}
-                      onChange={handleChange}
-                      placeholder="Startup name"
-                      required
+            {showForm && (
+              <div className="bg-white rounded-2xl p-4 md:p-8 lg:p-12 shadow-lg">
+                <h1 className="text-xl md:text-4xl text-center font-bold mb-4 md:mb-6 text-black">
+                  A private space for founders of revenue-generating startups
+                </h1>
+                {/* Step indicator */}
+                <div className="mb-6">
+                  <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+                    <span>Step {currentStep} of 4</span>
+                  </div>
+                  <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-dark-purple1-bg transition-all duration-300"
+                      style={{ width: `${(currentStep / 4) * 100}%` }}
                     />
-                    <Input
-                      name="startupDescription"
-                      type="text"
-                      value={formData.startupDescription}
-                      onChange={handleChange}
-                      placeholder="One-line description (max 30 words)"
-                      required
-                    />
-                    <p className="text-sm text-gray-500">
-                      💡 Example: "Xpo is a SaaS tool that automates influencer
-                      payouts."
-                    </p>
                   </div>
+                </div>
+                <form onSubmit={handleSubmit} className="space-y-8">
+                  {/* Section 1: Founder Basics */}
+                  {currentStep === 1 && (
+                    <div className=" pb-0 sm:pb-8 space-y-6">
+                      {/* Full Name */}
+                      <Input
+                        label="1. What's your full name?"
+                        name="fullName"
+                        type="text"
+                        value={formData.fullName}
+                        onChange={handleChange}
+                        placeholder="Enter your full name"
+                        required
+                      />
 
-                  {/* Current Stage */}
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-[#686868]">
-                      3. What stage are you currently at?
-                    </label>
-                    <div className="space-y-2">
-                      {[
-                        "Pre-seed (some revenue / MVP live)",
-                        "Seed (steady revenue & small team)",
-                        "Series A (scaling operations)",
-                      ].map((option) => (
-                        <label
-                          key={option}
-                          className="flex items-center space-x-2 cursor-pointer"
-                        >
-                          <input
-                            type="radio"
-                            name="stage"
-                            value={option}
-                            checked={formData.stage === option}
-                            onChange={handleChange}
-                            className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
-                          />
-                          <span className="text-sm text-gray-700">
-                            {option}
-                          </span>
+                      {/* Startup Name & Description */}
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-[#686868]">
+                          2. Startup name & one-line description (max 30 words)
                         </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Generating Revenue */}
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-[#686868]">
-                      4. Are you currently generating revenue?
-                    </label>
-                    <div className="space-y-2">
-                      {[
-                        "Yes, consistently",
-                        "Yes, but irregular",
-                        "Not yet",
-                      ].map((option) => (
-                        <label
-                          key={option}
-                          className="flex items-center space-x-2 cursor-pointer"
-                        >
-                          <input
-                            type="radio"
-                            name="generatingRevenue"
-                            value={option}
-                            checked={formData.generatingRevenue === option}
-                            onChange={handleChange}
-                            className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
-                          />
-                          <span className="text-sm text-gray-700">
-                            {option}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Monthly Revenue Range */}
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-[#686868]">
-                      5. What's your current monthly revenue range?
-                    </label>
-                    <div className="space-y-2">
-                      {[
-                        "< $10 K",
-                        "$10 K – $50 K",
-                        "$50 K – $200 K",
-                        "$200 K +",
-                      ].map((option) => (
-                        <label
-                          key={option}
-                          className="flex items-center space-x-2 cursor-pointer"
-                        >
-                          <input
-                            type="radio"
-                            name="monthlyRevenue"
-                            value={option}
-                            checked={formData.monthlyRevenue === option}
-                            onChange={handleChange}
-                            className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
-                          />
-                          <span className="text-sm text-gray-700">
-                            {option}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-[#686868]">
-                      6. What kind of conversations do you wish you could have
-                      with other founders?
-                      <span className="text-gray-500"> (choose up to 3)</span>
-                    </label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {[
-                        "Mental health & burnout",
-                        "Fundraising pressure",
-                        "Hiring / firing / leadership",
-                        "Loneliness & founder guilt",
-                        "Product-market fit struggles",
-                        "Relationships / life balance",
-                      ].map((topic) => (
-                        <label
-                          key={topic}
-                          className="flex items-center space-x-2 cursor-pointer"
-                        >
-                          <input
-                            type="checkbox"
-                            value={topic}
-                            checked={formData.conversationTopics.includes(
-                              topic
-                            )}
-                            onChange={handleCheckboxChange}
-                            className="w-4 h-4 text-primary focus:ring-primary border-gray-300 rounded"
-                          />
-                          <span className="text-sm text-gray-700">{topic}</span>
-                        </label>
-                      ))}
-                    </div>
-                    <div className="mt-2">
-                      <label className="flex items-center space-x-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          value="Something else"
-                          checked={formData.conversationTopics.includes(
-                            "Something else"
-                          )}
-                          onChange={handleCheckboxChange}
-                          className="w-4 h-4 text-primary focus:ring-primary border-gray-300 rounded"
-                        />
-                        <span className="text-sm text-gray-700">
-                          Something else
-                        </span>
-                      </label>
-                      {formData.conversationTopics.includes(
-                        "Something else"
-                      ) && (
                         <Input
-                          name="otherTopic"
+                          name="startupName"
                           type="text"
-                          value={formData.otherTopic}
+                          value={formData.startupName}
                           onChange={handleChange}
-                          placeholder="Please specify"
-                          className="mt-2"
+                          placeholder="Startup name"
+                          required
                         />
-                      )}
+                        <Input
+                          name="startupDescription"
+                          type="text"
+                          value={formData.startupDescription}
+                          onChange={handleChange}
+                          placeholder="One-line description (max 30 words)"
+                          required
+                        />
+                        <p className="text-sm text-gray-500">
+                          💡 Example: "Xpo is a SaaS tool that automates
+                          influencer payouts."
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
-                  {/* Hate About Groups */}
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-[#686868]">
-                      7. What do you hate about most founder groups today?
-                    </label>
-                    <textarea
-                      name="hateAboutGroups"
-                      value={formData.hateAboutGroups}
-                      onChange={handleChange}
-                      placeholder="Be honest — this helps us keep the vibe right."
-                      rows={4}
-                      maxLength={500}
-                      className="w-full placeholder:text-[#0000004D] focus:outline-none rounded-lg p-3 border bg-[#FAFAFA] border-[#D0D5DD]"
-                      required
-                    />
-                    <p className="text-sm text-gray-500">
-                      💡 Be honest — this helps us keep the vibe right.
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      {formData.hateAboutGroups.length}/500 characters
-                    </p>
-                  </div>
+                  {/* Section 2: Stage & Revenue */}
+                  {currentStep === 2 && (
+                    <div className=" pb-0 sm:pb-8 space-y-6">
+                      {/* Current Stage */}
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-[#686868]">
+                          3. What stage are you currently at?
+                        </label>
+                        <div className="space-y-2">
+                          {[
+                            "Pre-seed (some revenue / MVP live)",
+                            "Seed (steady revenue & small team)",
+                            "Series A (scaling operations)",
+                          ].map((option) => (
+                            <label
+                              key={option}
+                              className="flex items-center space-x-2 cursor-pointer"
+                            >
+                              <input
+                                type="radio"
+                                name="stage"
+                                value={option}
+                                checked={formData.stage === option}
+                                onChange={handleChange}
+                                className="w-5 h-5 lg:w-4 lg:h-4 text-primary focus:ring-primary border-gray-300"
+                              />
+                              <span className="text-sm text-gray-700">
+                                {option}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
 
-                  {/* Years Building */}
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-[#686868]">
-                      8. How many years have you been building this startup?
-                    </label>
-                    <div className="space-y-2">
-                      {[
-                        "< 1 year",
-                        "1 – 3 years",
-                        "3 – 5 years",
-                        "5 + years",
-                      ].map((option) => (
-                        <label
-                          key={option}
-                          className="flex items-center space-x-2 cursor-pointer"
-                        >
-                          <input
-                            type="radio"
-                            name="yearsBuilding"
-                            value={option}
-                            checked={formData.yearsBuilding === option}
-                            onChange={handleChange}
-                            className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
-                          />
-                          <span className="text-sm text-gray-700">
-                            {option}
+                      {/* Generating Revenue */}
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-[#686868]">
+                          4. Are you currently generating revenue?
+                        </label>
+                        <div className="space-y-2">
+                          {[
+                            "Yes, consistently",
+                            "Yes, but irregular",
+                            "Not yet",
+                          ].map((option) => (
+                            <label
+                              key={option}
+                              className="flex items-center space-x-2 cursor-pointer"
+                            >
+                              <input
+                                type="radio"
+                                name="generatingRevenue"
+                                value={option}
+                                checked={formData.generatingRevenue === option}
+                                onChange={handleChange}
+                                className="w-5 h-5 lg:w-4 lg:h-4 text-primary focus:ring-primary border-gray-300"
+                              />
+                              <span className="text-sm text-gray-700">
+                                {option}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Monthly Revenue Range */}
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-[#686868]">
+                          5. What's your current monthly revenue range?
+                        </label>
+                        <div className="space-y-2">
+                          {[
+                            "< $10 K",
+                            "$10 K – $50 K",
+                            "$50 K – $200 K",
+                            "$200 K +",
+                          ].map((option) => (
+                            <label
+                              key={option}
+                              className="flex items-center space-x-2 cursor-pointer"
+                            >
+                              <input
+                                type="radio"
+                                name="monthlyRevenue"
+                                value={option}
+                                checked={formData.monthlyRevenue === option}
+                                onChange={handleChange}
+                                className="w-5 h-5 lg:w-4 lg:h-4 text-primary focus:ring-primary border-gray-300"
+                              />
+                              <span className="text-sm text-gray-700">
+                                {option}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Section 3: Topics & Pain points */}
+                  {currentStep === 3 && (
+                    <div className=" pb-0 sm:pb-8 space-y-6">
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-[#686868]">
+                          6. What kind of conversations do you wish you could
+                          have with other founders?
+                          <span className="text-gray-500">
+                            {" "}
+                            (choose up to 3)
                           </span>
                         </label>
-                      ))}
-                    </div>
-                  </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          {[
+                            "Mental health & burnout",
+                            "Fundraising pressure",
+                            "Hiring / firing / leadership",
+                            "Loneliness & founder guilt",
+                            "Product-market fit struggles",
+                            "Relationships / life balance",
+                          ].map((topic) => (
+                            <label
+                              key={topic}
+                              className="flex items-center space-x-2 cursor-pointer"
+                            >
+                              <input
+                                type="checkbox"
+                                value={topic}
+                                checked={formData.conversationTopics.includes(
+                                  topic
+                                )}
+                                onChange={handleCheckboxChange}
+                                className="w-5 h-5 lg:w-4 lg:h-4 text-primary focus:ring-primary border-gray-300 rounded"
+                              />
+                              <span className="text-sm text-gray-700">
+                                {topic}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                        <div className="mt-2">
+                          <label className="flex items-center space-x-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              value="Something else"
+                              checked={formData.conversationTopics.includes(
+                                "Something else"
+                              )}
+                              onChange={handleCheckboxChange}
+                              className="w-5 h-5 lg:w-4 lg:h-4 text-primary focus:ring-primary border-gray-300 rounded"
+                            />
+                            <span className="text-sm text-gray-700">
+                              Something else
+                            </span>
+                          </label>
+                          {formData.conversationTopics.includes(
+                            "Something else"
+                          ) && (
+                            <Input
+                              name="otherTopic"
+                              type="text"
+                              value={formData.otherTopic}
+                              onChange={handleChange}
+                              placeholder="Please specify"
+                              className="mt-2"
+                            />
+                          )}
+                        </div>
+                      </div>
 
-                  {/* Open to Matching */}
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-[#686868]">
-                      9. Would you be open to being matched 1:1 with another
-                      founder for a private conversation every 2 weeks?
-                    </label>
-                    <div className="space-y-2">
-                      {[
-                        "Yes",
-                        "Maybe, depends on schedule",
-                        "No, prefer group convos only",
-                      ].map((option) => (
-                        <label
-                          key={option}
-                          className="flex items-center space-x-2 cursor-pointer"
-                        >
-                          <input
-                            type="radio"
-                            name="openToMatching"
-                            value={option}
-                            checked={formData.openToMatching === option}
-                            onChange={handleChange}
-                            className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
-                          />
-                          <span className="text-sm text-gray-700">
-                            {option}
-                          </span>
+                      {/* Hate About Groups */}
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-[#686868]">
+                          7. What do you hate about most founder groups today?
                         </label>
-                      ))}
+                        <textarea
+                          name="hateAboutGroups"
+                          value={formData.hateAboutGroups}
+                          onChange={handleChange}
+                          placeholder="Be honest — this helps us keep the vibe right."
+                          rows={4}
+                          maxLength={500}
+                          className="w-full placeholder:text-[#0000004D] focus:outline-none rounded-lg p-3 border bg-[#FAFAFA] border-[#D0D5DD]"
+                          required
+                        />
+                        <p className="text-sm text-gray-500">
+                          💡 Be honest — this helps us keep the vibe right.
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          {formData.hateAboutGroups.length}/500 characters
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
-                  {/* City */}
-                  <Input
-                    label="10. What city are you based in?"
-                    name="city"
-                    type="text"
-                    value={formData.city}
-                    onChange={handleChange}
-                    placeholder="Enter your city"
-                    required
-                  />
-
-                  {/* Heard About */}
-                  <Input
-                    label="11. How did you hear about us?"
-                    name="heardAbout"
-                    type="text"
-                    value={formData.heardAbout}
-                    onChange={handleChange}
-                    placeholder="Tell us how you found us"
-                    required
-                  />
-
-                  {/* Preferred Mode */}
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-[#686868]">
-                      12. Preferred mode to communicate?
-                    </label>
-                    <div className="space-y-2">
-                      {["WhatsApp", "Slack"].map((option) => (
-                        <label
-                          key={option}
-                          className="flex items-center space-x-2 cursor-pointer"
-                        >
-                          <input
-                            type="radio"
-                            name="preferredMode"
-                            value={option}
-                            checked={formData.preferredMode === option}
-                            onChange={handleChange}
-                            className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
-                          />
-                          <span className="text-sm text-gray-700">
-                            {option}
-                          </span>
+                  {/* Section 4: Experience & Preferences */}
+                  {currentStep === 4 && (
+                    <div className=" pb-0 sm:pb-8 space-y-6">
+                      {/* Years Building */}
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-[#686868]">
+                          8. How many years have you been building this startup?
                         </label>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                        <div className="space-y-2">
+                          {[
+                            "< 1 year",
+                            "1 – 3 years",
+                            "3 – 5 years",
+                            "5 + years",
+                          ].map((option) => (
+                            <label
+                              key={option}
+                              className="flex items-center space-x-2 cursor-pointer"
+                            >
+                              <input
+                                type="radio"
+                                name="yearsBuilding"
+                                value={option}
+                                checked={formData.yearsBuilding === option}
+                                onChange={handleChange}
+                                className="w-5 h-5 lg:w-4 lg:h-4 text-primary focus:ring-primary border-gray-300"
+                              />
+                              <span className="text-sm text-gray-700">
+                                {option}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
 
-                {/* Submit Button */}
-                <div className="pt-6">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="bg-dark-purple1-bg text-center text-white w-full py-4 lg:py-5 px-6 text-16 lg:text-20 font-bold rounded-12 mb-3 cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
-                  >
-                    {isSubmitting ? (
-                      <span className="flex justify-center items-center gap-2">
-                        <svg
-                          className="animate-spin h-5 w-5 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                          ></path>
-                        </svg>
-                        Submitting...
-                      </span>
+                      {/* Open to Matching */}
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-[#686868]">
+                          9. Would you be open to being matched 1:1 with another
+                          founder for a private conversation every 2 weeks?
+                        </label>
+                        <div className="space-y-2">
+                          {[
+                            "Yes",
+                            "Maybe, depends on schedule",
+                            "No, prefer group convos only",
+                          ].map((option) => (
+                            <label
+                              key={option}
+                              className="flex items-center space-x-2 cursor-pointer"
+                            >
+                              <input
+                                type="radio"
+                                name="openToMatching"
+                                value={option}
+                                checked={formData.openToMatching === option}
+                                onChange={handleChange}
+                                className="w-5 h-5 lg:w-4 lg:h-4 text-primary focus:ring-primary border-gray-300"
+                              />
+                              <span className="text-sm text-gray-700">
+                                {option}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* City */}
+                      <Input
+                        label="10. What city are you based in?"
+                        name="city"
+                        type="text"
+                        value={formData.city}
+                        onChange={handleChange}
+                        placeholder="Enter your city"
+                        required
+                      />
+
+                      {/* Heard About */}
+                      <Input
+                        label="11. How did you hear about us?"
+                        name="heardAbout"
+                        type="text"
+                        value={formData.heardAbout}
+                        onChange={handleChange}
+                        placeholder="Tell us how you found us"
+                        required
+                      />
+
+                      {/* Preferred Mode */}
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-[#686868]">
+                          12. Preferred mode to communicate?
+                        </label>
+                        <div className="space-y-2">
+                          {["WhatsApp", "Slack"].map((option) => (
+                            <label
+                              key={option}
+                              className="flex items-center space-x-2 cursor-pointer"
+                            >
+                              <input
+                                type="radio"
+                                name="preferredMode"
+                                value={option}
+                                checked={formData.preferredMode === option}
+                                onChange={handleChange}
+                                className="w-5 h-5 lg:w-4 lg:h-4 text-primary focus:ring-primary border-gray-300"
+                              />
+                              <span className="text-sm text-gray-700">
+                                {option}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Step Controls - sticky on mobile */}
+                  <div className="flex items-center gap-3 justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setCurrentStep((s) => Math.max(1, s - 1))}
+                      disabled={currentStep === 1 || isSubmitting}
+                      className="w-fit bg-[#E5E7EB] text-black px-6 py-3 rounded-12 disabled:opacity-50 disabled:pointer-events-none"
+                    >
+                      Back
+                    </button>
+
+                    {currentStep < 4 ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (!validateCurrentStep()) return;
+                          setCurrentStep((s) => Math.min(4, s + 1));
+                        }}
+                        disabled={isSubmitting}
+                        className="w-fit bg-dark-purple1-bg text-white px-6 py-3 rounded-12 disabled:opacity-50 disabled:pointer-events-none"
+                      >
+                        Next
+                      </button>
                     ) : (
-                      "I'm in"
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-fit bg-dark-purple1-bg text-white px-6 py-3 rounded-12 disabled:opacity-50 disabled:pointer-events-none"
+                      >
+                        {isSubmitting ? (
+                          <span className="flex justify-center items-center gap-2">
+                            <svg
+                              className="animate-spin h-5 w-5 text-white"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                              ></circle>
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                              ></path>
+                            </svg>
+                            Submitting...
+                          </span>
+                        ) : (
+                          "Submit"
+                        )}
+                      </button>
                     )}
-                  </button>
-
-                  <small className="text-12 font-normal text-black/30">
-                    By submitting this form, you agree to our Terms & Conditions
-                    and Privacy Policy.
-                  </small>
-                </div>
-              </form>
-            </div>
+                  </div>
+                </form>
+              </div>
+            )}
           </div>
         </div>
       </Container>

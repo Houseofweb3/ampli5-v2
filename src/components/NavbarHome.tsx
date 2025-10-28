@@ -1,46 +1,49 @@
-'use client';
-import React, { Fragment, useEffect, useRef, useState } from 'react';
-import Container from './ui/container';
-import Image from 'next/image';
-import ExploreBtn from './ui/explorebtn';
-import Link from 'next/link';
-import { AuthProfile } from '../data/data';
-import PrimaryButton from './ui/PrimaryButton';
-import { signIn } from 'next-auth/react';
-import { useAuthStore } from '../store/auth';
-import { toast } from 'react-toastify';
-import axiosInstance from '../lib/axiosInstance';
-import Loader from './ui/loader';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import Container from "./ui/container";
+import Image from "next/image";
+import ExploreBtn from "./ui/explorebtn";
+import Link from "next/link";
+import { AuthProfile } from "../data/data";
+import PrimaryButton from "./ui/PrimaryButton";
+import { signIn } from "next-auth/react";
+import { useAuthStore } from "../store/auth";
+import { toast } from "react-toastify";
+import axiosInstance from "../lib/axiosInstance";
+import Loader from "./ui/loader";
+import { useRouter } from "next/navigation";
 
 export default function NavbarHome(): JSX.Element {
   const { token, user, logout } = useAuthStore();
-  const router = useRouter()
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const profileRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+      if (
+        profileRef.current &&
+        !profileRef.current.contains(event.target as Node)
+      ) {
         setIsProfileOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   const logoutHandler = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      await axiosInstance.post('/auth/logout', { refreshToken: token });
+      await axiosInstance.post("/auth/logout", { refreshToken: token });
       logout();
-      router.replace("/")
+      router.replace("/");
     } catch (error) {
-      toast.error('Failed to Logout');
+      toast.error("Failed to Logout");
     } finally {
       setIsLoading(false);
     }
@@ -84,7 +87,7 @@ export default function NavbarHome(): JSX.Element {
                     className="bg-blue-btn uppercase text-white! hover:text-white p-0 rounded-full overflow-hidden w-30px h-30px lg:w-57px lg:h-57px text-14 lg:text-20 hover:shadow-xl hover:bg-blue-btn"
                     disabled={false}
                   >
-                    {user?.name?.[0] || 'U'}
+                    {user?.name?.[0] || "U"}
                   </ExploreBtn>
                 )}
                 {isProfileOpen ? (
@@ -114,12 +117,14 @@ export default function NavbarHome(): JSX.Element {
                             {value.label}
                           </button>
                         )}
-                        {index < AuthProfile.length - 1 && <hr className="border-light-gray-bg" />}
+                        {index < AuthProfile.length - 1 && (
+                          <hr className="border-light-gray-bg" />
+                        )}
                       </Fragment>
                     ))}
                   </div>
                 ) : (
-                  ''
+                  ""
                 )}
               </div>
             </div>
@@ -139,7 +144,12 @@ export default function NavbarHome(): JSX.Element {
                 />
               </Link>
 
-              <PrimaryButton className="text-white" onClick={() => signIn("twitter", { callbackUrl: '/api/user/verify' })}>
+              <PrimaryButton
+                className="text-white text-sm sm:text-base px-2 sm:px-6 lg:px-12 py-1.5 sm:py-2 lg:py-4"
+                onClick={() =>
+                  signIn("twitter", { callbackUrl: "/api/user/verify" })
+                }
+              >
                 Login/Signup
               </PrimaryButton>
             </div>
