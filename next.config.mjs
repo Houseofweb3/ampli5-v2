@@ -9,6 +9,15 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/ostium",
+        destination: "https://app.ostium.com/trade?from=SPX&to=USD&ref=QPJDE",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
