@@ -1,5 +1,5 @@
 import React from 'react';
-import Container from './ui/container';
+import Container from './container';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -19,12 +19,12 @@ export default function Footer(): JSX.Element {
               />
             </Link>
             <div className="flex items-center gap-4 text-14 sm:text-18 font-medium ">
-              <Link
+              {/* <Link
                 href="for-project"
                 className="hover:text-primary transition-colors duration-200"
               >
                 For Project
-              </Link>
+              </Link> */}
               <Link
                 target="_blank"
                 href="https://www.houseofweb3.com/legal/privacyPolicy"
@@ -37,7 +37,7 @@ export default function Footer(): JSX.Element {
                 href="https://www.houseofweb3.com/legal/termsOfUse"
                 className="hover:text-primary transition-colors duration-200"
               >
-                {' '}
+                {" "}
                 Terms of Service
               </Link>
             </div>
@@ -48,7 +48,7 @@ export default function Footer(): JSX.Element {
             </div>
             <div className="flex items-center gap-4">
               <Link target="_blank" href="https://x.com/nomo_nomaya">
-                {' '}
+                {" "}
                 <Image
                   alt="Logo"
                   width={32}
@@ -57,13 +57,13 @@ export default function Footer(): JSX.Element {
                   src="/icons/x.png"
                 />
               </Link>
-              <Link target="_blank" href="https://t.me/ampli5ai">
+              <Link target="_blank" href="https://www.instagram.com">
                 <Image
                   alt="Logo"
                   width={32}
                   height={32}
                   className="w-32px h-full"
-                  src="/icons/telegram.png"
+                  src="/icons/instagram.png"
                 />
               </Link>
             </div>

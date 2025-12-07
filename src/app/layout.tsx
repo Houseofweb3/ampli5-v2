@@ -8,7 +8,7 @@ import { LogCartProvider } from "../context/InfluencersContext";
 import { LogpackageProvider } from "../context/PackagesContext";
 import { CartProvider } from "../context/CartContext";
 import { ToastProvider } from "../components/toast";
-import Footer from "../components/Footer";
+import Footer from "../components/ui/Footer";
 import Navbar from "../components/Navbar";
 import Toast from "../components/ui/toster";
 

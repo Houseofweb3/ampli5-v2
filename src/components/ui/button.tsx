@@ -44,7 +44,7 @@ const Button: React.FC<ButtonProps> = ({
         baseStyles,
         sizeStyles,
         typeStyles,
-        { "bg-primary/70 cursor-not-allowed": disabled },
+        { "bg-dark-purple1-bg cursor-not-allowed": disabled },
         className
       )}
     >

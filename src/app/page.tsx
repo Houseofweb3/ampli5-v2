@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
 import { Suspense } from 'react';
+import NewHome from "../components/newHome";
 
 interface LoaderProps {
   height?: string;
@@ -16,7 +16,7 @@ const Page: React.FC = () => {
     <div className="w-full h-full min-h-screen">
       <Navbar />
       <Suspense fallback={<SectionLoader />}>
-        <Hero></Hero>
+        <NewHome></NewHome>
       </Suspense>
     </div>
   );

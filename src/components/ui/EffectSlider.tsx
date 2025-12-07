@@ -2,10 +2,10 @@
 
 import React, { ReactNode } from 'react';
 import Image from 'next/image';
-import Container from './ui/container';
+import Container from './container';
 import Link from 'next/link';
 import Marquee from 'react-fast-marquee';
-import { cn } from '../lib/utils';
+import { cn } from '../../lib/utils';
 
 interface EffectSliderData {
   link: string;
@@ -21,7 +21,7 @@ interface EffectSliderProps {
 
 const EffectSlider: React.FC<EffectSliderProps> = ({ data, direction = 'left', type, children }) => {
   return (
-    <div className=" w-full pt-48px lg:pt-70px py-48px ctm_effect_slider">
+    <div className=" w-full pt-14 lg:pt-20 ctm_effect_slider">
       <Container>
         {children}
         <div className="ctm_slider_block">

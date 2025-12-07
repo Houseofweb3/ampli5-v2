@@ -1,0 +1,80 @@
+import React from "react";
+import PrimaryButton from "../ui/PrimaryButton";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+export default function HeroBanner() {
+  const router = useRouter();
+  return (
+    <div
+      className="bg_hero_pattern relative overflow-hidden "
+      style={{ minHeight: "calc(100vh - 70px)" }}
+    >
+      <div className="absolute top-[5%] md:top-[10%] right-[35%] z-20">
+        <Image
+          className="w-8 h-8"
+          src={"/pattern/Star-pink.png"}
+          width={200}
+          height={200}
+          alt="icon2"
+          style={{ animationDelay: "1s" }}
+        />
+      </div>
+      <div className="absolute md:left-[18%] left-[-30px] top-[35%] z-20">
+        <Image
+          className="w-60px h-60px "
+          src={"/pattern/Star-blue.png"}
+          width={200}
+          height={200}
+          alt="icon"
+          style={{ animationDelay: "0s" }}
+        />
+      </div>
+      <div className="absolute z-20 top-[55%] right-[-30px] md:right-[10rem]">
+        <Image
+          className="w-60px h-60px"
+          src={"/pattern/Star-yellow.png"}
+          width={200}
+          height={200}
+          alt="icon"
+          style={{ animationDelay: "0.5s" }}
+        />
+      </div>
+      <div
+        className="relative z-20 flex flex-col items-center justify-around max-w-7xl mx-auto px-4 w-full h-full"
+        style={{ minHeight: "calc(100vh - 100px)" }}
+      >
+        <div className="md:mt-24 sm:mt-12 mt-6">
+          <h1 className="text-center mb-4 max-w-5xl mx-auto  uppercase">
+            AEO gives your brand the power to become the answer not an ad.
+          </h1>
+          <div className="hero_description pb-16px lg:pb-28px">
+            <h2 className="!font-medium">
+              Search is no longer typed, it's generated.{" "}
+            </h2>
+          </div>
+          <div className="pb-26px lg:pb-48px">
+            <PrimaryButton
+              onClick={() => router.push("/bounty-hunt")}
+              className="text-white mx-auto"
+            >
+              Get Started with AEO{" "}
+            </PrimaryButton>
+          </div>
+        </div>
+        <div>
+          <div className="hero_description  text-center">
+            <h3 className="!text-black">
+              Train LLMs to integrate your product as an answer to a query.{" "}
+            </h3>
+          </div>
+          <div className="hero_description pb-16px lg:pb-28px text-center ">
+            <p className="!text-dark-purple1-bg">
+              5X brand recall . 3X distribution . 10X organic lift
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

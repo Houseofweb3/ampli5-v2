@@ -132,6 +132,12 @@ export default function NavbarHome(): JSX.Element {
             <div className="flex items-center gap-2 sm:gap-4">
               <Link
                 href="/for-project"
+                className=" lg:text-xl font-medium capitalize  py-1 text-14 "
+              >
+                Case studies
+              </Link>
+              <Link
+                href="/for-project"
                 className="border border-solid rounded-4xl flex items-center justify-center lg:text-xl font-medium capitalize bg-white  text-blue-btn border-blue-btn s px-4 lg:px-7 py-1.5 lg:py-4 text-14 "
               >
                 For Projects
@@ -150,7 +156,8 @@ export default function NavbarHome(): JSX.Element {
                   signIn("twitter", { callbackUrl: "/api/user/verify" })
                 }
               >
-                Login/Signup
+                <span>Login</span>
+                <span className="sm:block hidden">/Signup</span>
               </PrimaryButton>
             </div>
           )}
