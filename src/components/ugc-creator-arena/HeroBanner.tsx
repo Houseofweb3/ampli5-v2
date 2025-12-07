@@ -45,31 +45,35 @@ export default function HeroBanner() {
         style={{ minHeight: "calc(100vh - 100px)" }}
       >
         <div className="md:mt-24 sm:mt-12 mt-6">
-          <h1 className="text-center mb-4 max-w-4xl mx-auto  uppercase">
-            80% ads have a CTR of less than 2% Most ads talk.
+          <h1 className=" text-center mb-4 max-w-6xl mx-auto  uppercase">
+            If your protocol does not live inside the right ecosystems, your
+            growth has already plateaued.
             <br />
-            <span className="text-[#7B46F8]">Your ads must dominate.</span>
           </h1>
+          <p className="mb-6 sm:mb-10 text-center text-xl font-semibold max-w-5xl mx-auto">
+            TVL grows when ecosystems collaborate, not when campaigns run.
+            Liquidity, users and credibility flow where partnerships exist.
+          </p>
 
           <div className="pb-26px lg:pb-48px">
             <PrimaryButton
               onClick={() => router.push("/bounty-hunt")}
               className="text-white mx-auto"
             >
-              Get Started with AI Videos
+              Build Your Ecosystem Strategy
             </PrimaryButton>
           </div>
         </div>
         <div>
           <div className="hero_description  text-center">
             <h3 className="!text-black !font-medium">
-              The scroll is the new battlefield. Ampli5 is your ammo.
+              Cross chain presence. Real integrations.<br/> Compounding network
+              effects.
             </h3>
           </div>
           <div className="hero_description pb-16px lg:pb-28px text-center max-w-4xl mx-auto">
             <p className="!text-dark-purple1-bg">
-              5X faster turnaround time. 10X output at the same cost.<br /> 100+ viral
-              hooks, zero chance of failure.
+              5 Partnerships. 10 M TVL. 45 Days
             </p>
           </div>
         </div>

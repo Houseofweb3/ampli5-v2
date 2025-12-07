@@ -46,9 +46,9 @@ export default function HeroBanner() {
       >
         <div className="md:mt-24 sm:mt-12 mt-6">
           <h1 className="text-center mb-4 max-w-4xl mx-auto  uppercase">
-            80% ads have a CTR of less than 2% Most ads talk.
+            The fastest growth channel today is the founder.
             <br />
-            <span className="text-[#7B46F8]">Your ads must dominate.</span>
+            <span className="text-[#7B46F8]">We help you turn it on.</span>
           </h1>
 
           <div className="pb-26px lg:pb-48px">
@@ -56,20 +56,20 @@ export default function HeroBanner() {
               onClick={() => router.push("/bounty-hunt")}
               className="text-white mx-auto"
             >
-              Get Started with AI Videos
+              Power Your Founder Brand
             </PrimaryButton>
           </div>
         </div>
         <div>
           <div className="hero_description  text-center">
             <h3 className="!text-black !font-medium">
-              The scroll is the new battlefield. Ampli5 is your ammo.
+              Founders move markets faster than brands. We help your voice do
+              the heavy lifting.
             </h3>
           </div>
           <div className="hero_description pb-16px lg:pb-28px text-center max-w-4xl mx-auto">
             <p className="!text-dark-purple1-bg">
-              5X faster turnaround time. 10X output at the same cost.<br /> 100+ viral
-              hooks, zero chance of failure.
+              5X ROI. 4X Brand Searches. 10X Recall.
             </p>
           </div>
         </div>

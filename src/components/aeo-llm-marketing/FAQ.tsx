@@ -13,25 +13,25 @@ const faqData = [
     number: 2,
     question: "How long does AEO take to show results?",
     answer:
-      "AEO results typically begin to appear within 2-4 weeks as AI models start to recognize and incorporate your brand signals. Full visibility and answer share dominance can take 3-6 months depending on your industry and competition.",
+      "Brands usually start seeing stronger online signals and early model recognition within the first 45 to 60 days.",
   },
   {
     number: 3,
     question: "Do you guarantee placement inside ChatGPT answers?",
     answer:
-      "While we cannot guarantee specific placements, our proven methodology significantly increases your chances of appearing in AI-generated answers. We track and report on answer share metrics to demonstrate progress.",
+      "No one can guarantee specific LLM outputs. What we guarantee is stronger signals, higher authority and improved model readiness which increases your chances significantly.",
   },
   {
     number: 4,
     question: "Is the content promotional?",
     answer:
-      "No, our content is designed to be educational and authoritative, not promotional. We focus on providing valuable information that AI models naturally reference, which builds trust and credibility for your brand.",
+      "No. AEO content is educational, neutral and clarity driven. Models prefer information that solves problems, not sales copy.",
   },
   {
     number: 5,
     question: "How do you measure success?",
     answer:
-      "We measure success through answer share tracking, which shows how often your brand appears in AI-generated responses. We also monitor brand mentions, narrative consistency, and visibility across different AI platforms.",
+      "Answer share, domain authority growth, brand search volume, creator distribution, and presence across model friendly environments.",
   },
 ];
 

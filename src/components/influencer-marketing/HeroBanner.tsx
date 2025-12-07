@@ -46,9 +46,11 @@ export default function HeroBanner() {
       >
         <div className="md:mt-24 sm:mt-12 mt-6">
           <h1 className="text-center mb-4 max-w-4xl mx-auto  uppercase">
-            80% ads have a CTR of less than 2% Most ads talk.
+            Agencies take days to respond.
             <br />
-            <span className="text-[#7B46F8]">Your ads must dominate.</span>
+            <span className="text-[#7B46F8]">
+              Ampli5 gives you a campaign in 5 minutes.
+            </span>
           </h1>
 
           <div className="pb-26px lg:pb-48px">
@@ -56,20 +58,21 @@ export default function HeroBanner() {
               onClick={() => router.push("/bounty-hunt")}
               className="text-white mx-auto"
             >
-              Get Started with AI Videos
+              Launch your Influencer Campaign{" "}
             </PrimaryButton>
           </div>
         </div>
         <div>
           <div className="hero_description  text-center">
             <h3 className="!text-black !font-medium">
-              The scroll is the new battlefield. Ampli5 is your ammo.
+              Select creators by niche, location, credibility score and
+              platform. Add to cart Get an instant proposal Launch without
+              waiting for anyone.
             </h3>
           </div>
           <div className="hero_description pb-16px lg:pb-28px text-center max-w-4xl mx-auto">
             <p className="!text-dark-purple1-bg">
-              5X faster turnaround time. 10X output at the same cost.<br /> 100+ viral
-              hooks, zero chance of failure.
+              72X faster. 1.5X Cheaper, 10X Effective
             </p>
           </div>
         </div>

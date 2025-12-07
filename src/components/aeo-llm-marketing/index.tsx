@@ -10,6 +10,7 @@ import Ecosystem from "./Ecosystem";
 import PricingPlans from "./PricingPlans";
 import FAQ from "./FAQ";
 import WaveContent from "./WaveContent";
+import EcosystemLoves from "./EcosystemLoves";
 
 export default function AeoLlmMarketing() {
   return (
@@ -20,6 +21,7 @@ export default function AeoLlmMarketing() {
       <BrandDeserves />
       <HowWork />
       <AeoVsSeo />
+      <EcosystemLoves/>
       <Ecosystem />
       <PricingPlans />
       <FAQ />

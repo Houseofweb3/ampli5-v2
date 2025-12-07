@@ -4,19 +4,20 @@ import Image from "next/image";
 
 const cardData = [
   {
-    number: "1. Your customers now ask before they search",
+    number: "1. High velocity content wins on every platform",
     description:
-      "If you are missing from the answer, you are missing from the consideration set. Presence is no longer optional.",
+      "Brands that ship more creative variations learn faster and scale faster.  Speed converts attention into distribution.",
     isHighlighted: false,
   },
   {
-    number: "2. Your category is being defined without you",
-    description: "If competitors shape the narrative, models will echo their version of the story.Silence has a cost.",
+    number: "2. Storytelling is now a performance engine",
+    description:
+      "Ads that feel like stories outperform traditional scripts. AI lets you test angles that humans would take weeks to produce.",
     isHighlighted: true,
   },
   {
-    number: "3. Your size no longer limits your visibility",
-    description: "LLMs treat strong signals from small brands the same way they treat signals from giants.This is the first time David can outrank Goliath through pure clarity and consistency.",
+    number: "3. You no longer need big budgets to launch cinematic ideas",
+    description:"AI compresses production, editing and scripting into minutes. Small teams can now compete with the largest studios.",
     isHighlighted: false,
   },
 ];
@@ -24,11 +25,9 @@ const cardData = [
 const BrandDeserves: React.FC = (): JSX.Element => {
   return (
     <div className="relative  bg-[#A609F0] py-14 lg:py-20 overflow-hidden">
-      
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-center text_pattern text-3xl sm:text-4xl lg:text-5xl font-extrabold !text-[#D6FFF6] mb-12 lg:mb-16">
-          Why Your Brand Deserves <br /> Love From LLMs?
+          Why Does Your Brand Deserve <br/> AI Powered Videos?
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-12 lg:mb-16 relative z-2">

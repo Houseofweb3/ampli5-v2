@@ -6,10 +6,9 @@ import NewVisibility from "./NewVisibility";
 import BrandDeserves from "./BrandDeserves";
 import AeoVsSeo from "./AeoVsSeo";
 import HowWork from "./HowWork";
-import Ecosystem from "./Ecosystem";
-import PricingPlans from "./PricingPlans";
 import FAQ from "./FAQ";
 import WaveContent from "./WaveContent";
+import EcosystemLoves from "./EcosystemLoves";
 
 export default function InfluencerMarketing() {
   return (
@@ -20,8 +19,8 @@ export default function InfluencerMarketing() {
       <BrandDeserves />
       <HowWork />
       <AeoVsSeo />
-      <Ecosystem />
-      <PricingPlans />
+      <EcosystemLoves/>
+      
       <FAQ />
       <WaveContent />
     </main>

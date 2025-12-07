@@ -4,19 +4,21 @@ import Image from "next/image";
 
 const cardData = [
   {
-    number: "1. Your customers now ask before they search",
+    number: "Liquidity grows where collaboration grows",
     description:
-      "If you are missing from the answer, you are missing from the consideration set. Presence is no longer optional.",
+      "Protocols with ecosystem ties gain access to shared pools, shared users and shared incentives. Isolation kills TVL. Integration multiplies it.",
     isHighlighted: false,
   },
   {
-    number: "2. Your category is being defined without you",
-    description: "If competitors shape the narrative, models will echo their version of the story.Silence has a cost.",
+    number: " Narratives spread faster through ecosystems than ads",
+    description:
+      "When the right protocols reference you, their communities adopt you automatically. Trust compounds.",
     isHighlighted: true,
   },
   {
-    number: "3. Your size no longer limits your visibility",
-    description: "LLMs treat strong signals from small brands the same way they treat signals from giants.This is the first time David can outrank Goliath through pure clarity and consistency.",
+    number: "Institutional entry requires ecosystem proof",
+    description:
+      "Web2 institutions do not integrate isolated protocols. They trust systems validated by multiple chains, partners and liquidity networks.",
     isHighlighted: false,
   },
 ];
@@ -24,11 +26,9 @@ const cardData = [
 const BrandDeserves: React.FC = (): JSX.Element => {
   return (
     <div className="relative  bg-[#A609F0] py-14 lg:py-20 overflow-hidden">
-      
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-center text_pattern text-3xl sm:text-4xl lg:text-5xl font-extrabold !text-[#D6FFF6] mb-12 lg:mb-16">
-          Why Your Brand Deserves <br /> Love From LLMs?
+          Why Ecosystem Partnerships Matter?
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-12 lg:mb-16 relative z-2">

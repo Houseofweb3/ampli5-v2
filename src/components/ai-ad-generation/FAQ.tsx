@@ -5,33 +5,34 @@ import { cn } from "../../lib/utils";
 const faqData = [
   {
     number: 1,
-    question: "What is the difference between AEO and SEO?",
+    question: "How fast do we receive the ads?",
     answer:
-      "SEO helps you rank on search engines. AEO helps you appear inside AI generated answers which is where most discovery is shifting.",
+      "Most ads are delivered within 72 hours once the narrative is locked.",
   },
   {
     number: 2,
-    question: "How long does AEO take to show results?",
+    question: "Do AI generated videos perform as well as filmed videos?",
     answer:
-      "AEO results typically begin to appear within 2-4 weeks as AI models start to recognize and incorporate your brand signals. Full visibility and answer share dominance can take 3-6 months depending on your industry and competition.",
+      "In many categories they outperform because of higher testing volume and stronger hook discovery.",
   },
   {
     number: 3,
-    question: "Do you guarantee placement inside ChatGPT answers?",
+    question:
+      "Can we use these videos for launches, campaigns and investor decks?",
     answer:
-      "While we cannot guarantee specific placements, our proven methodology significantly increases your chances of appearing in AI-generated answers. We track and report on answer share metrics to demonstrate progress.",
+      "Yes. Our strongest outputs have been launch explainers and narrative driven brand films.",
   },
   {
     number: 4,
-    question: "Is the content promotional?",
+    question: "Will these videos look AI generated?",
     answer:
-      "No, our content is designed to be educational and authoritative, not promotional. We focus on providing valuable information that AI models naturally reference, which builds trust and credibility for your brand.",
+      "No. They will look like the internet’s native language. Your audience does not care if it is AI or human made. They care if it grabs them, holds them and moves them.",
   },
   {
     number: 5,
-    question: "How do you measure success?",
+    question: "Can these AI videos match our brand guidelines?",
     answer:
-      "We measure success through answer share tracking, which shows how often your brand appears in AI-generated responses. We also monitor brand mentions, narrative consistency, and visibility across different AI platforms.",
+      "Absolutely. Tone, colors, pacing and personality are tailored to your brand system before production begins.",
   },
 ];
 

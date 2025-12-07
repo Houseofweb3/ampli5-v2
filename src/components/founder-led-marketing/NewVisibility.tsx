@@ -16,19 +16,19 @@ export default function NewVisibility() {
       </div>
       <div className="text-center">
         <h3 className="!text-[#7B46F8] text-20 sm:text-24 lg:text-32  pb-6">
-          The New Visibility Layer
+          The Old Founder Playbook <br/> No Longer Works{" "}
         </h3>
         <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-2xl mx-auto">
-          People have stopped typing long searches. They ask one question and
-          trust one answer. That answer is written by a model that has already
-          made up its mind about which brands matter.
+          Most founder marketing relies on outdated tactics. PR agencies push
+          founders into a few podcasts, post a couple of generic articles and
+          call it a strategy.
         </p>
 
-        <p className="sm:!text-18 !text-16 !font-normal !text-[#FE8616] ">
-          If you are still optimising for google search?
+        <p className=" text-2xl  !font-semibold !text-[#FE8616] ">
+          The result?
         </p>
         <p className="sm:!text-18 !text-16 !font-normal !text-[#FE8616] ">
-          Low visibility. Low discovery. Low growth.
+          The podcast gets less views Brand gets 0 ROI Waste of time.
         </p>
       </div>
     </div>

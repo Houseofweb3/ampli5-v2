@@ -7,6 +7,9 @@ import { Navigation } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import { NEW_CASE_STUDY_DATA } from "@/src/data/data";
 
+import "swiper/css";
+import "swiper/css/navigation";
+
 function BrandSlider() {
   const swiperRef = useRef<SwiperType | null>(null);
 

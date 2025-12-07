@@ -31,7 +31,7 @@ const WaveContent: React.FC = (): JSX.Element => {
         </div>
         <div className="relative z-10">
           <h2 className="h2 max-w-7xl mx-auto text-white pb-4">
-            See how AEO transforms <br /> your brand
+            Build Authority That Compounds. <br /> With Founder-Led Marketing.
           </h2>
 
           <div className=" mt-12 ">

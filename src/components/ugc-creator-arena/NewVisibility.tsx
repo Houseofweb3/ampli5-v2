@@ -16,19 +16,19 @@ export default function NewVisibility() {
       </div>
       <div className="text-center">
         <h3 className="!text-[#7B46F8] text-20 sm:text-24 lg:text-32  pb-6">
-          The New Visibility Layer
+          The New Connectivity Layer
         </h3>
-        <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-2xl mx-auto">
-          People have stopped typing long searches. They ask one question and
-          trust one answer. That answer is written by a model that has already
-          made up its mind about which brands matter.
+        <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-xl mx-auto">
+          Users no longer join protocols based on marketing. They join
+          ecosystems that already trust you. Every partner adds liquidity. Every
+          chain adds distribution. Every integration increases survival.
         </p>
 
-        <p className="sm:!text-18 !text-16 !font-normal !text-[#FE8616] ">
-          If you are still optimising for google search?
+        <p className="sm:!text-18 !text-16 !font-semibold !text-[#FE8616] ">
+          If your protocol lives alone?
         </p>
-        <p className="sm:!text-18 !text-16 !font-normal !text-[#FE8616] ">
-          Low visibility. Low discovery. Low growth.
+        <p className="sm:!text-18 !text-16 !font-semibold !text-[#FE8616] ">
+          Low trust. Low mobility. Low TVL.
         </p>
       </div>
     </div>

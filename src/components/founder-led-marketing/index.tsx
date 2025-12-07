@@ -3,13 +3,13 @@ import React from "react";
 import HeroBanner from "./HeroBanner";
 import BrandSlider from "./brandSlider";
 import NewVisibility from "./NewVisibility";
-import BrandDeserves from "./BrandDeserves";
 import AeoVsSeo from "./AeoVsSeo";
 import HowWork from "./HowWork";
 import Ecosystem from "./Ecosystem";
 import PricingPlans from "./PricingPlans";
 import FAQ from "./FAQ";
 import WaveContent from "./WaveContent";
+import EcosystemLoves from "./EcosystemLoves";
 
 export default function FounderLedMarketing() {
   return (
@@ -17,10 +17,10 @@ export default function FounderLedMarketing() {
       <HeroBanner />
       <BrandSlider />
       <NewVisibility />
-      <BrandDeserves />
-      <HowWork />
       <AeoVsSeo />
+      <HowWork />
       <Ecosystem />
+      <EcosystemLoves/>
       <PricingPlans />
       <FAQ />
       <WaveContent />

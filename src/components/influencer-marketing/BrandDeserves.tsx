@@ -4,34 +4,29 @@ import Image from "next/image";
 
 const cardData = [
   {
-    number: "1. Your customers now ask before they search",
+    number: "1. Why wait days for proposals when you can launch in 72 hours?",
     description:
-      "If you are missing from the answer, you are missing from the consideration set. Presence is no longer optional.",
+      "Our tech removes negotiation delays, back and forth and manual coordination. You choose creators, lock the budget and we guarantee execution within 72 hours of payment.",
     isHighlighted: false,
   },
   {
-    number: "2. Your category is being defined without you",
-    description: "If competitors shape the narrative, models will echo their version of the story.Silence has a cost.",
+    number:
+      "2. Why pay 30 percent more for middle layers when tech can cut that cost?",
+    description:
+      "No sales reps. No negotiations. No inflated influencer rates. Our platform gives you creator verified pricing without agency markup.",
     isHighlighted: true,
-  },
-  {
-    number: "3. Your size no longer limits your visibility",
-    description: "LLMs treat strong signals from small brands the same way they treat signals from giants.This is the first time David can outrank Goliath through pure clarity and consistency.",
-    isHighlighted: false,
   },
 ];
 
 const BrandDeserves: React.FC = (): JSX.Element => {
   return (
     <div className="relative  bg-[#A609F0] py-14 lg:py-20 overflow-hidden">
-      
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-center text_pattern text-3xl sm:text-4xl lg:text-5xl font-extrabold !text-[#D6FFF6] mb-12 lg:mb-16">
-          Why Your Brand Deserves <br /> Love From LLMs?
+          Why your influencer marketing <br /> needs a makeover?
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-12 lg:mb-16 relative z-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12 lg:mb-16 relative z-2">
           {cardData.map((card, index) => (
             <div
               key={index}

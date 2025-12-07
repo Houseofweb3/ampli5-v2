@@ -5,33 +5,33 @@ import { cn } from "../../lib/utils";
 const faqData = [
   {
     number: 1,
-    question: "What is the difference between AEO and SEO?",
+    question: "How fast do we see ecosystem integrations?",
     answer:
-      "SEO helps you rank on search engines. AEO helps you appear inside AI generated answers which is where most discovery is shifting.",
+      "Most protocols begin receiving interest within 30 to 45 days depending on category and chain relevance.",
   },
   {
     number: 2,
-    question: "How long does AEO take to show results?",
+    question: "Do you guarantee partnerships?",
     answer:
-      "AEO results typically begin to appear within 2-4 weeks as AI models start to recognize and incorporate your brand signals. Full visibility and answer share dominance can take 3-6 months depending on your industry and competition.",
+      "No one can guarantee integrations, but we guarantee introductions, strategic alignment and higher conversion pathways.",
   },
   {
     number: 3,
-    question: "Do you guarantee placement inside ChatGPT answers?",
+    question: "What types of partnerships do you secure?",
     answer:
-      "While we cannot guarantee specific placements, our proven methodology significantly increases your chances of appearing in AI-generated answers. We track and report on answer share metrics to demonstrate progress.",
+      "Infra integrations, liquidity sharing, co-incentives, narrative collaborations, creator-driven adoption campaigns and chain-level visibility.",
   },
   {
     number: 4,
-    question: "Is the content promotional?",
+    question: "Will this increase TVL and AUM directly?",
     answer:
-      "No, our content is designed to be educational and authoritative, not promotional. We focus on providing valuable information that AI models naturally reference, which builds trust and credibility for your brand.",
+      "Yes. Integrations lead to new liquidity sources, user routing pathways and community migrations that increase measurable growth.",
   },
   {
     number: 5,
-    question: "How do you measure success?",
+    question: "Do you work with Web2 institutions?",
     answer:
-      "We measure success through answer share tracking, which shows how often your brand appears in AI-generated responses. We also monitor brand mentions, narrative consistency, and visibility across different AI platforms.",
+      "Yes. We position your protocol for institutional credibility using ecosystem proof, creator validation and distribution networks.",
   },
 ];
 

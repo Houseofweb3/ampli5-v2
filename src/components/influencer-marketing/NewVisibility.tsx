@@ -16,19 +16,17 @@ export default function NewVisibility() {
       </div>
       <div className="text-center">
         <h3 className="!text-[#7B46F8] text-20 sm:text-24 lg:text-32  pb-6">
-          The New Visibility Layer
+          Agency model for Influencer Marketing is broken.
         </h3>
         <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-2xl mx-auto">
-          People have stopped typing long searches. They ask one question and
-          trust one answer. That answer is written by a model that has already
-          made up its mind about which brands matter.
+          BDs do not understand brief.
         </p>
-
-        <p className="sm:!text-18 !text-16 !font-normal !text-[#FE8616] ">
-          If you are still optimising for google search?
+        <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-2xl mx-auto">
+          You get a template list of influencers that do not work Current model
+          is outdated: Send a brief. Wait for replies.
         </p>
-        <p className="sm:!text-18 !text-16 !font-normal !text-[#FE8616] ">
-          Low visibility. Low discovery. Low growth.
+        <p className="sm:!text-18 !text-16 !font-semibold !text-[#FE8616] ">
+          Low volume. Low testing. Low performance.
         </p>
       </div>
     </div>

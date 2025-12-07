@@ -31,7 +31,8 @@ const WaveContent: React.FC = (): JSX.Element => {
         </div>
         <div className="relative z-10">
           <h2 className="h2 max-w-7xl mx-auto text-white pb-4">
-            See how AEO transforms <br /> your brand
+            Launch your next high
+            <br /> performance video in 72 hours
           </h2>
 
           <div className=" mt-12 ">

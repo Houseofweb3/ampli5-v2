@@ -1,25 +1,37 @@
 import React from "react";
 import { cn } from "../../lib/utils";
 import Image from "next/image";
-import Marquee from "react-fast-marquee";
 
 const cardData = [
   {
-    number: "Narrative Engineering",
+    number: "Narrative Extraction",
     description:
-      "We write articles like FAQ’s that resonate natural human queries on LLM not SEO optimised content",
+      "We decode your worldview, your principles and your category insights. This becomes a narrative playbook that you can use across platforms and formats.",
+    list: null,
+    summary: null,
     isHighlighted: false,
   },
+
   {
-    number: "Distributed Signal Building",
-    description:
-      "We deploy content across media outlets, Substack, Medium, Reddit, X and community platforms so your brand appears where it matters.",
+    number: "Multi Platform Distribution",
+    description: "We activate your voice across",
+    list: [
+      "Podcasts",
+      "YouTube",
+      "YouTube interviews",
+      "X and LinkedIn thought pieces",
+      "Panel appearances and community shows",
+    ],
+    summary:
+      " The goal is simple. Show up where the market already pays attention.",
     isHighlighted: true,
   },
   {
-    number: "Your size no longer limits your visibility",
+    number: "The Amplification Loop",
     description:
-      "Consistent signals across the internet translate into higher model recognition and a steady rise in organic visibility.",
+      "Creators pick up your ideas. Communities repeat them.",
+    list: null,
+    summary: null,
     isHighlighted: false,
   },
 ];
@@ -29,7 +41,7 @@ const HowWork: React.FC = (): JSX.Element => {
     <div className=" py-14 lg:py-20 relative ">
       <div className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-center  text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-12 lg:mb-16">
-          How AEO Works?
+          How Influencer Marketing <br /> Works on Ampli5?
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-12 lg:mb-16 ">
@@ -41,6 +53,16 @@ const HowWork: React.FC = (): JSX.Element => {
                 card.isHighlighted ? "bg-[#7B46F8] " : "bg-white"
               )}
             >
+              <div
+                className={cn(
+                  "text-sm font-semibold rounded-full px-3 py-0.5 w-fit",
+                  card.isHighlighted
+                    ? "text-[#7B46F8] bg-white"
+                    : "text-white bg-[#7B46F8]"
+                )}
+              >
+                Step {index + 1}
+              </div>
               <div
                 className={cn(
                   "sm:text-3xl text-2xl font-semibold mb-2",
@@ -65,16 +87,23 @@ const HowWork: React.FC = (): JSX.Element => {
               >
                 {card.description}
               </p>
+              {card.list && (
+                <ul className="list-disc list-inside text-white">
+                  {card.list.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+                </ul>
+              )}
+              {card.summary && (
+                <p className="text-base lg:text-lg leading-relaxed text-white">
+                  {card.summary}
+                </p>
+              )}
             </div>
           ))}
         </div>
       </div>
-      <Marquee>
-        <h2 className="text-center  text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-12 lg:mb-16 px-16">
-          Clarity is the new discoverability. If models decide attention, make
-          them choose you.{"         "}
-        </h2>
-      </Marquee>
+
       <div className="absolute sm:bottom-[-50px] bottom-[-25px] sm:right-[50px] right-[25px]  z-10">
         <Image
           className="sm:w-[100px] sm:h-[100px] w-[50px] h-[50px]"

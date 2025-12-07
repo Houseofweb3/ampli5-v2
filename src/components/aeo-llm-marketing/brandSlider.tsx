@@ -21,8 +21,8 @@ function BrandSlider() {
           <Image
             className="h-[80px] w-auto mx-auto z-1"
             src={"/images/ai-logo.png"}
-            width={200}
-            height={200}
+            width={1000}
+            height={1000}
             alt="icon"
             style={{ animationDelay: "0s" }}
           />

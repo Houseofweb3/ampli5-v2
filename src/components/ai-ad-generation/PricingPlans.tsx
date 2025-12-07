@@ -5,39 +5,38 @@ import { CheckListIcon } from "@/src/data/icon";
 const pricingPlans = [
   {
     title: "Starter Plan",
-    description: "Ideal for brands flirting with the AEO ecosystem.",
-    price: "$5,000",
+    description: "For teams that want to feel the power of AI done properly.",
+    price: "$2,500",
     period: "per month",
     features: [
-      "20 high clarity articles across trusted media platforms, Substack, Medium, X and Reddit",
-      "Complete narrative engineering",
-      "Monthly reporting with answer share insights",
+      "One 60 second ad built around a dominant hook",
+      "Multiple visual and voice variations",
+      "Delivered in 72 hours",
+      "Tested for retention and thumb stop value",
     ],
   },
   {
     title: "Growth Plan",
-    description: "Perfect for brands that want faster presence across models.",
-    price: "$10,000",
+    description: "For brands running real performance marketing.",
+    price: "$6,000",
     period: "per month",
     features: [
-      "30 articles across major platforms",
-      "10 AEO friendly content pieces on TikTok and Instagram",
-      "Stronger reinforcement loops across creator channels",
-      "Multi format distributions for better LLM retrieval",
+      "Three 60 second ads, each with a different creative thesis",
+      "Short form cuts for TikTok, Meta and YouTube",
+      "Thumbnail and title optimization",
+      "Ideation cycles based on audience psychology",
     ],
   },
   {
-    title: "Leadership Plan",
-    description:
-      "Built for brands that want to dominate answer share in their category.",
-    price: "$15,000",
+    title: "Flagship Brand Film",
+    description: "For launches, founder stories and product unveilings.",
+    price: "$5,000",
     period: "per month",
     features: [
-      "45 articles across media outlets",
-      "10 AEO friendly pieces for TikTok and Instagram",
-      "5 AEO focused YouTube explainers",
-      "Deep model friendly narrative architecture",
-      "Highest frequency signal building for maximum visibility",
+      "A 90 second cinematic narrative built to position your brand",
+      "Storyboard, script, emotion mapping, launch sequencing",
+      "Perfect for websites, PR and investor touchpoints",
+      
     ],
   },
 ];
@@ -48,7 +47,7 @@ const PricingPlans: React.FC = (): JSX.Element => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Title */}
         <h2 className="text-center text-3xl sm:text-4xl lg:text-5xl font-extrabold text-black mb-12 lg:mb-16">
-          Plan
+          Plans Designed for <br/> Velocity and Dominance
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-y-8 md:mt-[100px] md:border-[3px] border-[#7B46F8] md:rounded-xl">

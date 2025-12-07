@@ -5,33 +5,39 @@ import { cn } from "../../lib/utils";
 const faqData = [
   {
     number: 1,
-    question: "What is the difference between AEO and SEO?",
+    question: "Why should founders lead the narrative?",
     answer:
-      "SEO helps you rank on search engines. AEO helps you appear inside AI generated answers which is where most discovery is shifting.",
+      "Founders shape markets by explaining the problem better than anyone else. People trust the person behind the company more than the company itself.",
   },
   {
     number: 2,
-    question: "How long does AEO take to show results?",
+    question: "Do you script the founder?",
     answer:
-      "AEO results typically begin to appear within 2-4 weeks as AI models start to recognize and incorporate your brand signals. Full visibility and answer share dominance can take 3-6 months depending on your industry and competition.",
+      "No. We extract the founder’s natural voice and amplify it. The content sounds like them, not like an agency.",
   },
   {
     number: 3,
-    question: "Do you guarantee placement inside ChatGPT answers?",
+    question: "Is this just content creation with a fancy label?",
     answer:
-      "While we cannot guarantee specific placements, our proven methodology significantly increases your chances of appearing in AI-generated answers. We track and report on answer share metrics to demonstrate progress.",
+      "No. Content creation is output. Founder-led marketing is narrative ownership. We help you become the lens through which the market interprets your category.",
   },
   {
     number: 4,
-    question: "Is the content promotional?",
+    question: "Do I need a large audience for this to work?",
     answer:
-      "No, our content is designed to be educational and authoritative, not promotional. We focus on providing valuable information that AI models naturally reference, which builds trust and credibility for your brand.",
+      "No. Strong founder narratives build audiences. Your clarity is the engine. When you show up as the category’s cleanest thinker, the audience builds itself.",
   },
   {
     number: 5,
     question: "How do you measure success?",
     answer:
       "We measure success through answer share tracking, which shows how often your brand appears in AI-generated responses. We also monitor brand mentions, narrative consistency, and visibility across different AI platforms.",
+  },
+  {
+    number: 5,
+    question: "Why Ampli5 over a PR agency?",
+    answer:
+      "PR agencies chase visibility whereas we build authority. Visibility disappears but authority compounds.",
   },
 ];
 

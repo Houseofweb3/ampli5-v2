@@ -31,7 +31,7 @@ const WaveContent: React.FC = (): JSX.Element => {
         </div>
         <div className="relative z-10">
           <h2 className="h2 max-w-7xl mx-auto text-white pb-4">
-            See how AEO transforms <br /> your brand
+            Enter the ecosystem that <br /> lifts your protocol.
           </h2>
 
           <div className=" mt-12 ">
@@ -40,7 +40,7 @@ const WaveContent: React.FC = (): JSX.Element => {
               disabled={false}
               className="w-fit mx-auto"
             >
-              Book a Meeting{" "}
+              Book your partnership strategy call.{" "}
             </SecondaryButton>
           </div>
         </div>
