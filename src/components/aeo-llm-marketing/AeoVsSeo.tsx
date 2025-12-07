@@ -1,17 +1,11 @@
 import React from "react";
 import Image from "next/image";
 
-const aeoPoints = [
-  "AEO wins before the search begins.",
-  "AEO plays with credibility.",
-  "AEO improves answer share.",
-];
 
-const seoPoints = [
-  "SEO waits for people to search.",
-  "SEO plays with keywords.",
-  "SEO improves click traffic.",
-];
+;
+
+
+
 
 const AeoVsSeo: React.FC = (): JSX.Element => {
   return (

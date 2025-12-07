@@ -4,7 +4,6 @@ import React, { ReactNode } from "react";
 import Image from "next/image";
 import Container from "../ui/container";
 import Link from "next/link";
-import Marquee from "react-fast-marquee";
 import { cn } from "../../lib/utils";
 
 interface EffectItem {

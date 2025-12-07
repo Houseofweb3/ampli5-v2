@@ -211,7 +211,9 @@
   h5 {
     @apply text-14 font-normal text-black/45;
   }
-
+.hero_descript p {
+  @apply text-16 lg:text-2xl text-black/80 font-normal text-center;
+}
   .text_small {
     @apply text-12 leading-12 text-dampened-black-bg/45 font-semibold;
   }
@@ -225,8 +227,7 @@
   }
 
   .bg_square_bottom::before {
-    @apply content-[""] absolute bottom-0 md:bottom-10 lg:bottom-20 xl:bottom-118px right-0 bg-none lg:bg-[url('/pattern/square-bottom.png')] bg-contain bg-no-repeat bg-right w-full h-full max-w-600px;
-  }
+    @apply content-[""] absolute bottom-0 md:bottom-10 lg:bottom-20 xl:bottom-118px right-0 bg-none lg:bg-[url('/pattern/square-bottom.png')] bg-contain bg-no-repeat bg-right w-full h-full max-w-600px;  }
 
   .bg_hero_pattern::after {
     @apply content-[""] absolute bottom-[10%] z-10 left-0 bg-[url('/images/banner/hero-bg.png')] bg-contain bg-no-repeat bg-right w-full h-full aspect-video;

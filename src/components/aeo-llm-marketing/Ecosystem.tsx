@@ -1,6 +1,4 @@
 import React from "react";
-import { TopAttention } from "../../data/data";
-import CardImage from "../ui/CardImage";
 import Image from "next/image";
 
 export default function Ecosystem() {

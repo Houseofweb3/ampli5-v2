@@ -73,7 +73,7 @@ export default function AIEcosystemGrid() {
 }
 
 // Reusable Card Component
-function Card({ title, subtitle, img, wide, className = "" }: any) {
+function Card({ title, subtitle, img, className = "" }: any) {
   return (
     <div
       className={`group cursor-pointer transition-all duration-300 hover:-translate-y-3 ${className}`}

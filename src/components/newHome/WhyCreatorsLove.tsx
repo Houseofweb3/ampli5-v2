@@ -1,36 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import { cn } from "../../lib/utils";
 
-const cardData = [
-  {
-    title: "Launch A Bounty",
-    description:
-      "State your brief. Set your reward pool. Your challenge enters the Arena.",
-    image: "/images/grid-img1.png",
-    width: 297,
-    height: 257,
-    alt: "Launch A Bounty",
-  },
-  {
-    title: "Ampli5 Distributes It To Active Creators",
-    description:
-      "Creators looking to win; not just show up; start studying your brief.",
-    image: "/images/grid-img2.png",
-    width: 292,
-    height: 257,
-    alt: "Ampli5 Distributes",
-  },
-  {
-    title: "Creators Compete To Win The Leaderboard",
-    description:
-      "They submit their best collaboration video. They iterate. They fight to outperform others.",
-    image: "/images/grid-img3.png",
-    width: 297,
-    height: 257,
-    alt: "Creators Compete",
-  },
-];
+
 
 const WhyCreatorsLove: React.FC = (): JSX.Element => {
   return (
