@@ -1,8 +1,6 @@
 import Image from "next/image";
 import React from "react";
 
-
-
 const WhyCreatorsLove: React.FC = (): JSX.Element => {
   return (
     <div className="bg-[#FA51A2] relative pt-8 pb-30px md:pb-86px  bg_horizontal_pattern">
