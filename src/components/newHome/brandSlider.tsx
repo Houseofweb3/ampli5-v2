@@ -5,10 +5,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { GoArrowLeft, GoArrowRight, GoArrowUpRight } from "react-icons/go";
 import type { Swiper as SwiperType } from "swiper";
-
+import { Pagination } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 import Image from "next/image";
 
 function BrandSlider() {
@@ -75,59 +76,87 @@ function BrandSlider() {
             />
           </div>
           <Swiper
-            modules={[Navigation]}
-            slidesPerView="auto"
-            breakpoints={{
-              320: {
-                slidesPerView: 1,
-                spaceBetween: 16,
-              },
-              640: {
-                slidesPerView: 1.5,
-                spaceBetween: 24,
-              },
-              768: {
-                slidesPerView: 2,
-                spaceBetween: 24,
-              },
-              1024: {
-                slidesPerView: 2.5,
-                spaceBetween: 32,
-              },
-            }}
+          pagination={{
+            clickable: true,
+          }}
+            modules={[Navigation,Pagination]}
+            // slidesPerView="auto"
+            // breakpoints={{
+            //   320: {
+            //     slidesPerView: 1,
+            //     spaceBetween: 16,
+            //   },
+            //   640: {
+            //     slidesPerView: 1.5,
+            //     spaceBetween: 24,
+            //   },
+            //   768: {
+            //     slidesPerView: 2,
+            //     spaceBetween: 24,
+            //   },
+            //   1024: {
+            //     slidesPerView: 2.5,
+            //     spaceBetween: 32,
+            //   },
+            // }}
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
             }}
             className="case-study-slider"
           >
             {NEW_CASE_STUDY_DATA.map((brand, index) => (
-              <SwiperSlide key={index} className="min-w-300px">
-                <div className="p-4 overflow-hidden sm:p-8 w-full bg-white rounded-xl shadow-md flex flex-col items-start justify-between gap-8 h-full border-2 border-solid border-[#BDF522] group transition-all duration-300 ease-in-out">
-                  <div className="flex justify-between items-center w-full ">
+              <SwiperSlide key={index}>
+                <div className="relative z-10 mt-10">
+                  {/* <Image
+                    className="h-[80px] w-auto mx-auto z-1"
+                    src={"/images/flm.png"}
+                    width={1000}
+                    height={1000}
+                    alt="icon"
+                    style={{ animationDelay: "0s" }}
+                  /> */}
+                  <div className="flex justify-between items-center max-h-[150px] min-h-[100px] w-fit mx-auto z-1 ">
                     {brand.brandLogo}
                   </div>
-                  <div className="flex justify-stretch items-stretch w-full gap-2">
-                    <h3 className="bg-gray-500/10 rounded-xl p-3 overflow-hidden whitespace-nowrap grow">
-                      {brand.roi}{" "}
-                      <span className="text-black/80 text-12 sm:text-16 leading-tight font-normal text-left block">
-                        ROI
-                      </span>
-                    </h3>
-                    <h3 className="bg-gray-500/10 rounded-xl p-3 overflow-hidden whitespace-nowrap grow">
-                      {brand.mindshare}
-                      <span className="text-black/80 text-12 sm:text-16 leading-tight font-normal text-left block">
-                        in Kaito Mindshare
-                      </span>{" "}
-                    </h3>
-                    <h3 className="bg-gray-500/10 rounded-xl p-3 overflow-hidden whitespace-nowrap grow ">
-                      {brand.engagements}
-                      <span className="text-black/80 text-12 sm:text-16 leading-tight font-normal text-left block">
-                        Engagements
-                      </span>{" "}
-                    </h3>
-                    <button className="cursor-pointer w-0 h-0 group-hover:w-auto group-hover:h-auto group-hover:bg-dark-purple1-bg rounded-xl p-0  group-hover:p-3 sm:group-hover:p-6 transition-all duration-300 ease-in-out">
-                      <GoArrowUpRight className="text-white text-xl sm:text-3xl hidden group-hover:block" />
-                    </button>
+
+                  <div className="max-w-7xl mx-auto px-4 xl:px-0 py-12 lg:py-24">
+                    <div className="grid grid-cols-2 md:grid-cols-4 items-center gap-y-6">
+                      <div className="flex items-center justify-center flex-col sm:flex-row gap-4 border-r border-white px-2 sm:px-4 py-4">
+                        <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center ">
+                          <h2 className="font-medium leading-tight text-white">
+                            {brand.roi}{" "}
+                          </h2>
+                          <p className="!text-16 !font-light !text-white">
+                            ROI
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-center flex-col sm:flex-row  text-center gap-4 md:border-r border-white px-2 sm:px-4 py-4">
+                        <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold ">
+                          <h2 className="font-medium leading-tight text-white">
+                            {brand.mindshare}
+                          </h2>
+                          <p className="!text-16 !font-light !text-white">
+                            in Kaito Mindshare
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-center flex-col sm:flex-row gap-4 text-center border-r border-white px-2 sm:px-4 py-4">
+                        <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center">
+                          <h2 className="font-medium leading-tight text-white">
+                            {brand.engagements}
+                          </h2>
+                          <p className="!text-16 !font-light !text-white">
+                            Engagements{" "}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="px-2 sm:px-4 py-4 w-full flex justify-center items-center">
+                        <button className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit ">
+                          <GoArrowUpRight className="text-xl sm:text-3xl" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </SwiperSlide>

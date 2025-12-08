@@ -230,7 +230,7 @@
     @apply content-[""] absolute bottom-0 md:bottom-10 lg:bottom-20 xl:bottom-118px right-0 bg-none lg:bg-[url('/pattern/square-bottom.png')] bg-contain bg-no-repeat bg-right w-full h-full max-w-600px;  }
 
   .bg_hero_pattern::after {
-    @apply content-[""] absolute bottom-[10%] z-10 left-0 bg-[url('/images/banner/hero-bg.png')] bg-contain bg-no-repeat bg-right w-full h-full aspect-video;
+    @apply content-[""] absolute bottom-[10%] z-10 left-0 md:bg-[url('/images/banner/hero-bg.png')] bg-contain bg-no-repeat bg-right w-full h-full aspect-video;
   }
 
   .hue_aimation {
@@ -641,6 +641,7 @@
   @apply !h-auto;
 }
 
+
 /* Campaign Cards Slider Styles */
 .campaign-cards-swiper {
   width: 100%;
@@ -666,6 +667,20 @@
 
 .campaign-enters-swiper .swiper-pagination {
   bottom: 10px !important;
+}
+
+.case-study-slider .swiper-pagination-bullet {
+  background: white;
+  opacity: 0.5;
+  width: 10px;
+  height: 10px;
+}
+
+.case-study-slider .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #BDF522;
+  width: 12px;
+  height: 12px;
 }
 
 .campaign-enters-swiper .swiper-pagination-bullet {

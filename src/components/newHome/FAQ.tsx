@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import PrimaryButton from "../ui/PrimaryButton";
-import Image from "next/image";
+import { cn } from "@/src/lib/utils";
 
 const faqData = [
   {
@@ -26,62 +25,80 @@ const faqData = [
 ];
 
 const FAQ: React.FC = (): JSX.Element => {
-  const [showAll, setShowAll] = useState(false);
+  const [openIndex, setOpenIndex] = useState<number>(0); // First item open by default
+
+  const toggleItem = (index: number) => {
+    setOpenIndex(openIndex === index ? -1 : index);
+  };
 
   return (
-    <div className="relative overflow-hidden bg-white py-14 lg:py-20">
-      <div className="absolute left-[-30px]  top-12 lg:left-12 z-0 ">
-        <Image
-          className="w-[100px] h-[100px]"
-          src={"/pattern/Star-blue.png"}
-          width={200}
-          height={200}
-          alt="icon"
-          style={{ animationDelay: "0s" }}
-        />
-      </div>
-
-      <div className="absolute bottom-8 right-8 lg:bottom-12 lg:right-12 z-0 ">
-        <Image
-          className="w-[60px] h-[60px]"
-          src={"/pattern/Star-pink.png"}
-          width={200}
-          height={200}
-          alt="icon"
-          style={{ animationDelay: "0s" }}
-        />
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="relative py-14 lg:py-20 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Title */}
         <h2 className="text-center text-3xl sm:text-4xl lg:text-5xl font-extrabold text-black mb-12 lg:mb-16">
           Frequently Asked Questions
         </h2>
 
         {/* FAQ Items */}
-        <div className="space-y-10 lg:space-y-14 mb-12">
-          {faqData.map((faq, index) => (
-            <div key={index} className="space-y-4">
-              {/* Question */}
-              <div className="flex gap-2 items-start">
-                <span className="text-2xl sm:text-3xl font-extrabold text-black leading-none"></span>
-                <h3 className="text-xl sm:text-2xl  font-extrabold text-black flex-1 leading-tight">
-                  {faq.number}. {faq.question}
-                </h3>
-              </div>
-              <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed pl-8 ">
-                {faq.answer}
-              </p>
-            </div>
-          ))}
-        </div>
+        <div className="space-y-4">
+          {faqData.map((faq, index) => {
+            const isOpen = openIndex === index;
 
-        {/* Load More Button */}
-        <PrimaryButton
-          className="hover:text-white bg-white hover:bg-[#A609F0] text-sm sm:text-base px-2 sm:px-6 lg:px-12 py-1.5 sm:py-2 lg:py-4 mx-auto"
-          onClick={() => setShowAll(!showAll)}
-        >
-          Load more
-        </PrimaryButton>
+            return (
+              <div
+                key={index}
+                className={cn(
+                  "rounded-lg p-6 transition-all duration-300",
+                  isOpen
+                    ? "bg-white border-2 border-black"
+                    : "bg-[#EFE9FF] border-t-2 border-transparent"
+                )}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-black leading-tight">
+                      {faq.number}. {faq.question}
+                    </h3>
+
+                    {isOpen && (
+                      <p className="mt-4 text-base lg:text-lg text-gray-600 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() => toggleItem(index)}
+                    className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-lg border-2 border-gray-400 bg-white flex items-center justify-center hover:bg-gray-50 transition-colors"
+                    aria-label={isOpen ? "Collapse" : "Expand"}
+                  >
+                    <div
+                      className={cn(
+                        isOpen ? "rotate-[135deg]" : "rotate-0",
+                        "transition-all duration-300"
+                      )}
+                    >
+                      <svg
+                        className="w-4 h-4 sm:w-5 sm:h-5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12 5V19M5 12H19"
+                          stroke="black"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

@@ -228,17 +228,6 @@ export default function NavbarHome(): JSX.Element {
 
       {isServicesOpen && (
         <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 p-4 z-50 w-full max-w-[650px] px-2">
-          <Link
-            href="/case-studies"
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group  md:hidden "
-          >
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium !text-black group-hover:text-blue-btn transition-colors">
-                Case studies
-              </p>
-            </div>
-            <FiArrowUpRight />
-          </Link>
           <div className="grid sm:grid-cols-2 grid-cols-1 gap-3">
             {servicesData.map((service, index) => (
               <Link
@@ -266,7 +255,17 @@ export default function NavbarHome(): JSX.Element {
               </Link>
             ))}
           </div>
-
+          <Link
+            href="/case-studies"
+            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group  md:hidden  mt-4"
+          >
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium !text-black group-hover:text-blue-btn transition-colors">
+                Case studies
+              </p>
+            </div>
+            <FiArrowUpRight />
+          </Link>
           <div className="block w-full mt-4 md:hidden">
             {isAmpli5 ? (
               <PrimaryButton

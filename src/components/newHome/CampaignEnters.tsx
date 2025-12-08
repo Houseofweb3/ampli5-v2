@@ -88,10 +88,10 @@ const CampaignEnters: React.FC = (): JSX.Element => {
                   </div>
                   <div className="card_img mt-auto">
                     <Image
-                      className="w-auto  h-full object-contain mx-auto"
+                      className="w-full  h-full min-h-[300px] object-contain mx-auto aspect-square"
                       src={card.image}
-                      width={card.width}
-                      height={card.height}
+                      width={1000}
+                      height={1000}
                       alt={card.alt}
                     />
                   </div>

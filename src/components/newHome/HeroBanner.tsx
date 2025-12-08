@@ -21,7 +21,7 @@ export default function HeroBanner() {
           style={{ animationDelay: "0s" }}
         />
       </div>
-      <div className="absolute top-[38%] left-[5%] sm:left-[15%] z-20">
+      <div className="absolute top-[50%] left-[5%] sm:left-[15%] z-20">
         <Image
           className="w-50px h-50px lg:w-100px lg:h-100px animate-float"
           src={"/pattern/hero-floating-2.png"}
@@ -31,7 +31,7 @@ export default function HeroBanner() {
           style={{ animationDelay: "1s" }}
         />
       </div>
-      <div className="absolute z-20 md:top-[10rem] top-[8rem]  right-6 md:right-[10rem]">
+      <div className="absolute z-20 md:top-[10rem] top-[4rem]  right-6 md:right-[10rem]">
         <Image
           className="w-50px h-50px lg:w-100px lg:h-100px object-contain animate-float"
           src={"/pattern/hero-floating-3.png"}

@@ -263,33 +263,70 @@ export const BountiesType: Record<string, BountyTypeInfo> = {
   },
 };
 
+// export const TopAttention: TopAttentionItem[] = [
+//   {
+//     img: "/images/p1.png",
+//     title: "@ModestusOkoye",
+//   },
+//   {
+//     img: "/images/p2.png",
+//     title: "@ModestusOkoye",
+//   },
+//   {
+//     img: "/images/p3.png",
+//     title: "@ModestusOkoye",
+//   },
+//   {
+//     img: "/images/p4.png",
+//     title: "@ModestusOkoye",
+//   },
+//   {
+//     img: "/images/p5.png",
+//     title: "@ModestusOkoye",
+//   },
+//   {
+//     img: "/images/p6.png",
+//     title: "@ModestusOkoye",
+//   },
+// ];
 export const TopAttention: TopAttentionItem[] = [
   {
-    img: "/images/p1.png",
-    title: "@ModestusOkoye",
+    img: "/images/crypto-image-1.png",
+    title: "Wals",
   },
   {
-    img: "/images/p2.png",
-    title: "@ModestusOkoye",
+    img: "/images/crypto-image-2.png",
+    title: "Yashas Naik",
   },
   {
-    img: "/images/p3.png",
-    title: "@ModestusOkoye",
+    img: "/images/crypto-image-3.png",
+    title: "Dapp Centre",
   },
   {
-    img: "/images/p4.png",
-    title: "@ModestusOkoye",
+    img: "/images/crypto-image-4.png",
+    title: "Crypto GEMs",
   },
   {
-    img: "/images/p5.png",
-    title: "@ModestusOkoye",
+    img: "/images/crypto-image-5.png",
+    title: "DamiDefi",
   },
   {
-    img: "/images/p6.png",
-    title: "@ModestusOkoye",
+    img: "https://i.ibb.co/rRgdvqwn/wvi-Okz-OE-400x400.jpg",
+    title: "Senior",
+  },
+  {
+    img: "https://i.ibb.co/fVLWQrrN/Ed-Ncd-XKpj1-Phz1u-Ax-FIt-b-Z7-BCXO57-Wut-YQv9ykqgb7-LJ-ZHu-Q2hc-Hoy-BE10-Olce-Tj-Ib61vh-TUI-s160-c.jpg",
+    title: "CryptoRover",
+  },
+  {
+    img: "/images/crypto-image-8.png",
+    title: "Danjo Capital",
+  },
+  {
+    img: "https://i.ibb.co/n0rvxF1/Sm-Sdt0s-O-400x400.jpg",
+    title: "CyrilXBT",
   },
 ];
-
 export const nftNewsData: NewsItem[] = [
   {
     image: "/images/Nft-slide01.png",
