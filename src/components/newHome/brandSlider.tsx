@@ -76,9 +76,9 @@ function BrandSlider() {
             />
           </div>
           <Swiper
-          pagination={{
-            clickable: true,
-          }}
+            pagination={{
+              clickable: true,
+            }}
             modules={[Navigation,Pagination]}
             // slidesPerView="auto"
             // breakpoints={{
