@@ -38,17 +38,6 @@ const Why: React.FC = (): JSX.Element => {
         Why Your Brand Deserves <br /> Competition Not Collabs?
       </h2>
 
-      {/* <div className="absolute right-0 w-full bottom-[0%] z-10">
-        <Image
-          className="w-full h-full"
-          src={"/images/banner/brand-bg-1.png"}
-          width={200}
-          height={200}
-          alt="icon"
-          style={{ animationDelay: "0s" }}
-        />
-      </div> */}
-
       <div className="w-full">
         <Swiper
           modules={[EffectFade, Pagination, Autoplay]}

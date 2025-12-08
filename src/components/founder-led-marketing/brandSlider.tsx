@@ -19,7 +19,7 @@ function BrandSlider() {
 
         <div className="relative z-10 mt-10">
           <Image
-            className="h-[80px] w-auto mx-auto z-1"
+            className="h-auto w-[300px] md:w-[400px] lg:w-[500px] mx-auto z-1"
             src={"/images/flm.png"}
             width={1000}
             height={1000}

@@ -1,10 +1,8 @@
 import React from "react";
 import PrimaryButton from "../ui/PrimaryButton";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 export default function HeroBanner() {
-  const router = useRouter();
   return (
     <div
       className="bg_hero_pattern relative overflow-hidden "
@@ -46,18 +44,21 @@ export default function HeroBanner() {
       >
         <div className="md:mt-24 sm:mt-12 mt-6">
           <h1 className=" text-center mb-4 max-w-6xl mx-auto  uppercase">
-            If your protocol does not live inside the right ecosystems, your
-            growth has already plateaued.
-            <br />
+            Growth doesn’t come from campaigns alone.
           </h1>
           <p className="mb-6 sm:mb-10 text-center text-xl font-semibold max-w-5xl mx-auto">
-            TVL grows when ecosystems collaborate, not when campaigns run.
-            Liquidity, users and credibility flow where partnerships exist.
+            It comes from infra that makes your product easier, faster and
+            cheaper to use.
           </p>
 
           <div className="pb-26px lg:pb-48px">
             <PrimaryButton
-              onClick={() => router.push("/bounty-hunt")}
+              onClick={() =>
+                window.open(
+                  "https://calendly.com/partnerships-houseofweb3/30min",
+                  "_blank"
+                )
+              }
               className="text-white mx-auto"
             >
               Build Your Ecosystem Strategy
@@ -66,9 +67,10 @@ export default function HeroBanner() {
         </div>
         <div>
           <div className="hero_description  text-center">
-            <h3 className="!text-black !font-medium">
-              Cross chain presence. Real integrations.<br/> Compounding network
-              effects.
+            <h3 className="!text-black !font-medium text-xl md:text-2xl  max-w-3xl mx-auto">
+              Warm intros to the right partners and a GTM team that executes
+              them end-to-end. Institutional access. Liquidity routes. Infra
+              integrations.
             </h3>
           </div>
           <div className="hero_description pb-16px lg:pb-28px text-center max-w-4xl mx-auto">

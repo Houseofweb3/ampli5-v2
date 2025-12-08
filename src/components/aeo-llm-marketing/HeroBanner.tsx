@@ -1,10 +1,8 @@
 import React from "react";
 import PrimaryButton from "../ui/PrimaryButton";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 export default function HeroBanner() {
-  const router = useRouter();
   return (
     <div
       className="bg_hero_pattern relative overflow-hidden "
@@ -55,7 +53,12 @@ export default function HeroBanner() {
           </div>
           <div className="pb-26px lg:pb-48px">
             <PrimaryButton
-              onClick={() => router.push("/bounty-hunt")}
+              onClick={() =>
+                window.open(
+                  "https://calendly.com/partnerships-houseofweb3/30min",
+                  "_blank"
+                )
+              }
               className="text-white mx-auto"
             >
               Get Started with AEO{" "}
@@ -64,7 +67,7 @@ export default function HeroBanner() {
         </div>
         <div>
           <div className="hero_description  text-center">
-            <h3 className="!text-black">
+            <h3 className="!text-black !font-medium text-xl md:text-2xl  max-w-3xl mx-auto">
               Train LLMs to integrate your product as an answer to a query.{" "}
             </h3>
           </div>

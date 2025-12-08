@@ -17,6 +17,11 @@ import { cn } from "../lib/utils";
 
 const servicesData = [
   {
+    name: "Ampli5 Creators Arena",
+    href: "/",
+    icon: "/icons/6.png",
+  },
+  {
     name: "AEO LLM Marketing",
     href: "/services/aeo-llm-marketing",
     icon: "/icons/1.png",
@@ -87,7 +92,6 @@ export default function NavbarHome(): JSX.Element {
       setIsLoading(false);
     }
   };
-  console.log(pathname, "pathname");
 
   return (
     <header id="mainHeader" className="bg-white w-full fixed top-0 z-50">
@@ -227,38 +231,55 @@ export default function NavbarHome(): JSX.Element {
       </Container>
 
       {isServicesOpen && (
-        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 p-4 z-50 w-full max-w-[650px] px-2">
+        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 p-4 z-50 w-full max-w-[650px] px-2 max-h-[80vh] overflow-y-auto">
           <div className="grid sm:grid-cols-2 grid-cols-1 gap-3">
-            {servicesData.map((service, index) => (
-              <Link
-                key={index}
-                href={service.href}
-                className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
-              >
-                {service.icon ? (
-                  <div className="flex-shrink-0 sm:w-10 sm:h-10 w-8 h-8 flex items-center justify-center">
-                    <Image
-                      src={service.icon}
-                      alt={service.name}
-                      width={48}
-                      height={48}
-                      className="w-full h-full object-contain"
-                    />
+            {servicesData.map((service, index) => {
+              const isActive =
+                pathname === service.href ||
+                (service.href !== "/" && pathname.startsWith(service.href));
+              return (
+                <Link
+                  key={index}
+                  href={service.href}
+                  className={cn(
+                    "flex items-center gap-3 p-2 md:p-3 rounded-lg transition-colors group",
+                    isActive ? "bg-gray-100" : "hover:bg-gray-50"
+                  )}
+                >
+                  {service.icon ? (
+                    <div className="flex-shrink-0 sm:w-10 sm:h-10 w-8 h-8 flex items-center justify-center">
+                      <Image
+                        src={service.icon}
+                        alt={service.name}
+                        width={48}
+                        height={48}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  ) : null}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-black group-hover:text-blue-btn transition-colors">
+                      {service.name}
+                    </p>
                   </div>
-                ) : null}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-black group-hover:text-blue-btn transition-colors">
-                    {service.name}
-                  </p>
-                </div>
-                <FiArrowUpRight />
-              </Link>
-            ))}
+                  <FiArrowUpRight />
+                </Link>
+              );
+            })}
           </div>
           <Link
             href="/case-studies"
             className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group  md:hidden  mt-4"
           >
+            <div className="flex-shrink-0 sm:w-10 sm:h-10 w-8 h-8 flex items-center justify-center">
+              <Image
+                src="/icons/7.png"
+                alt="Case studies"
+                width={48}
+                height={48}
+                className="w-full h-full object-contain"
+              />
+            </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium !text-black group-hover:text-blue-btn transition-colors">
                 Case studies

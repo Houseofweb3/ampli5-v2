@@ -70,9 +70,13 @@ const HowWork: React.FC = (): JSX.Element => {
         </div>
       </div>
       <Marquee>
-        <h2 className="text-center  text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-12 lg:mb-16 px-16">
+        <h2 className="text-center  text-3xl font-extrabold mb-12 lg:mb-16 px-16">
           Clarity is the new discoverability. If models decide attention, make
-          them choose you.{"         "}
+          them choose you.{""}
+        </h2>
+        <h2 className="text-center  text-2xl md:text-3xl font-extrabold mb-12 lg:mb-16 px-16">
+          Clarity is the new discoverability. If models decide attention, make
+          them choose you.{""}
         </h2>
       </Marquee>
       <div className="absolute sm:bottom-[-50px] bottom-[-25px] sm:right-[50px] right-[25px]  z-10">

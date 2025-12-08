@@ -20,7 +20,7 @@ const cardData = [
     title: "Ampli5 Distributes It To Active Creators",
     description:
       "Creators looking to win; not just show up; start studying your brief.",
-    image: "/images/arina2.png",
+    image: "/images/slid2.png",
     width: 292,
     height: 257,
     alt: "Ampli5 Distributes",

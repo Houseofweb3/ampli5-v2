@@ -1,10 +1,8 @@
 import React from "react";
 import SecondaryButton from "../ui/SecondaryButton";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 const WaveContent: React.FC = (): JSX.Element => {
-  const router = useRouter();
   return (
     <div className=" bg-[#7B46F8]  py-14 lg:py-20 px-2 overflow-hidden">
       <div className="max-w-7xl mx-auto text-center relative">
@@ -37,7 +35,12 @@ const WaveContent: React.FC = (): JSX.Element => {
 
           <div className=" mt-12 ">
             <SecondaryButton
-              onClick={() => router.push("/bounty-hunt")}
+              onClick={() =>
+                window.open(
+                  "https://calendly.com/partnerships-houseofweb3/30min",
+                  "_blank"
+                )
+              }
               disabled={false}
               className="w-fit mx-auto"
             >

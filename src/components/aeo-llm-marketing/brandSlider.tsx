@@ -4,8 +4,8 @@ import { GoArrowUpRight } from "react-icons/go";
 
 function BrandSlider() {
   return (
-    <div>
-      <div className="bg-[#7B46F8] py-8 sm:py-14 lg:py-16 relative">
+    <div className="relative">
+      <div className="bg-[#7B46F8] py-14 lg:py-16 relative">
         <div className="absolute right-1/2 translate-x-1/2  -top-[60px]  z-1">
           <Image
             className="w-120px h-120px"
@@ -15,6 +15,31 @@ function BrandSlider() {
             alt="icon"
             style={{ animationDelay: "0s" }}
           />
+        </div>
+        <div>
+          <div className="flex justify-center items-start gap-4 w-full max-w-7xl mx-auto px-4 xl:px-0 relative">
+            <div className="w-full relative">
+              <h3 className="!text-white text- text-center text-24 lg:text-32 pb-8 text_pattern">
+                Case Studies
+              </h3>
+            </div>
+            <div className=" justify-center items-center gap-4 w-fit hidden md:flex absolute right-0 top-0">
+              {/* <button
+              onClick={() => swiperRef.current?.slidePrev()}
+              className="bg-[#A762FE] rounded-xl p-1 px-3"
+              aria-label="Previous slide"
+            >
+              <GoArrowLeft className="w-6 h-6 text-white" />
+            </button> */}
+              {/* <button
+              onClick={() => swiperRef.current?.slideNext()}
+              className=" bg-[#A762FE] rounded-xl p-1 px-3"
+              aria-label="Next slide"
+            >
+              <GoArrowRight className="w-6 h-6 text-white" />
+            </button> */}
+            </div>
+          </div>
         </div>
 
         <div className="relative z-10 mt-10">
@@ -64,7 +89,6 @@ function BrandSlider() {
           </div>
         </div>
       </div>
-     
     </div>
   );
 }

@@ -11,6 +11,8 @@ import FAQ from "./FAQ";
 import CampaignEnters from "./CampaignEnters";
 import LatestPerforming from "./latestPerforming";
 import HeroBanner from "./HeroBanner";
+import NewVisibility from "./NewVisibility";
+import BrandSliderContent from "./BrandSliderContent";
 
 export default function NewHome() {
 
@@ -18,6 +20,8 @@ export default function NewHome() {
     <main className="bg-[#F8F8F8]">
       <HeroBanner></HeroBanner>
       <BrandSlider></BrandSlider>
+      <BrandSliderContent></BrandSliderContent>
+      <NewVisibility></NewVisibility>
       <Why></Why>
       <CampaignEnters></CampaignEnters>
       <Outperforms></Outperforms>

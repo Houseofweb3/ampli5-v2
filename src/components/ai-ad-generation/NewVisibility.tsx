@@ -3,7 +3,7 @@ import React from "react";
 
 export default function NewVisibility() {
   return (
-    <div className="max-w-7xl mx-auto px-4 xl:px-0 py-8 sm:py-14 lg:py-16 min-h-[450px] flex items-center justify-center relative">
+    <div className="max-w-7xl mx-auto px-4 xl:px-0 py-8 sm:py-14 lg:py-16 min-h-[350px] flex items-center justify-center relative">
       <div className="absolute sm:bottom-[-50px] bottom-[-25px] sm:left-[-45px] left-[-22px] z-10 ">
         <Image
           className="sm:w-100px sm:h-100px w-50px h-50px"

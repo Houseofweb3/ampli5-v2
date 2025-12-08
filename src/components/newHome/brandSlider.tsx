@@ -16,89 +16,45 @@ function BrandSlider() {
   const swiperRef = useRef<SwiperType | null>(null);
 
   return (
-    <div className="bg-[#7B46F8] py-8 sm:py-14 lg:py-16 relative overflow-hidden">
-      <div className="absolute md:right-[15%] -right-[25px] bottom-[25%]  z-10">
+    <div className="bg-[#7B46F8] py-14 lg:py-16 relative ">
+      <div className="absolute right-1/2 translate-x-1/2  -top-[60px]  z-1">
         <Image
-          className="w-50px h-50px md:w-100px md:h-100px"
-          src={"/pattern/Isolation_Mode_big.png"}
+          className="w-120px h-120px"
+          src={"/pattern/group-star.png"}
           width={200}
           height={200}
           alt="icon"
           style={{ animationDelay: "0s" }}
         />
       </div>
-
       <div className="relative z-[11]">
-        <div>
-          <div className="flex justify-center items-start gap-4 w-full max-w-7xl mx-auto px-4 xl:px-0">
-            <div className="w-full relative">
-              <div className="absolute left-0 block md:hidden top-[20px]  -z-10">
-                <Image
-                  className="w-50px h-50px "
-                  src={"/pattern/nested-star.png"}
-                  width={200}
-                  height={200}
-                  alt="icon"
-                  style={{ animationDelay: "0s" }}
-                />
-              </div>
-              <h3 className="!text-white text-center text-20 sm:text-24 lg:text-32 pb-8">
-                Presenting Ampli5 Creators Arena
-              </h3>
-            </div>
-            <div className=" justify-center items-center gap-4 w-fit hidden md:flex">
-              <button
-                onClick={() => swiperRef.current?.slidePrev()}
-                className="bg-[#A762FE] rounded-xl p-1 px-3"
-                aria-label="Previous slide"
-              >
-                <GoArrowLeft className="w-6 h-6 text-white" />
-              </button>
-              <button
-                onClick={() => swiperRef.current?.slideNext()}
-                className=" bg-[#A762FE] rounded-xl p-1 px-3"
-                aria-label="Next slide"
-              >
-                <GoArrowRight className="w-6 h-6 text-white" />
-              </button>
-            </div>
+        <div className="flex justify-center items-start gap-4 w-full max-w-7xl mx-auto px-4 xl:px-0 relative">
+          <h3 className="!text-white text-center text-20 sm:text-24 lg:text-32 pb-8 text_pattern">
+            Presenting Ampli5 Creators Arena
+          </h3>
+          <div className=" justify-center items-center gap-4 w-fit hidden md:flex absolute right-0 top-0">
+            <button
+              onClick={() => swiperRef.current?.slidePrev()}
+              className="bg-[#A762FE] rounded-xl p-1 px-3"
+              aria-label="Previous slide"
+            >
+              <GoArrowLeft className="w-6 h-6 text-white" />
+            </button>
+            <button
+              onClick={() => swiperRef.current?.slideNext()}
+              className=" bg-[#A762FE] rounded-xl p-1 px-3"
+              aria-label="Next slide"
+            >
+              <GoArrowRight className="w-6 h-6 text-white" />
+            </button>
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-4 relative">
-          <div className="absolute -left-[30px] md:block hidden -bottom-[50px]  -z-10">
-            <Image
-              className="w-50px h-50px md:w-100px md:h-100px"
-              src={"/pattern/nested-star.png"}
-              width={200}
-              height={200}
-              alt="icon"
-              style={{ animationDelay: "0s" }}
-            />
-          </div>
           <Swiper
             pagination={{
               clickable: true,
             }}
-            modules={[Navigation,Pagination]}
-            // slidesPerView="auto"
-            // breakpoints={{
-            //   320: {
-            //     slidesPerView: 1,
-            //     spaceBetween: 16,
-            //   },
-            //   640: {
-            //     slidesPerView: 1.5,
-            //     spaceBetween: 24,
-            //   },
-            //   768: {
-            //     slidesPerView: 2,
-            //     spaceBetween: 24,
-            //   },
-            //   1024: {
-            //     slidesPerView: 2.5,
-            //     spaceBetween: 32,
-            //   },
-            // }}
+            modules={[Navigation, Pagination]}
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
             }}
@@ -107,14 +63,6 @@ function BrandSlider() {
             {NEW_CASE_STUDY_DATA.map((brand, index) => (
               <SwiperSlide key={index}>
                 <div className="relative z-10 mt-10">
-                  {/* <Image
-                    className="h-[80px] w-auto mx-auto z-1"
-                    src={"/images/flm.png"}
-                    width={1000}
-                    height={1000}
-                    alt="icon"
-                    style={{ animationDelay: "0s" }}
-                  /> */}
                   <div className="flex justify-between items-center max-h-[150px] min-h-[100px] w-fit mx-auto z-1 ">
                     {brand.brandLogo}
                   </div>
@@ -163,33 +111,7 @@ function BrandSlider() {
             ))}
           </Swiper>
         </div>
-        <div className="max-w-7xl mx-auto px-4 xl:px-0 py-12 lg:py-24">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 md:gap-6">
-            <div className="flex items-center justify-center flex-col sm:flex-row gap-4">
-              <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center ">
-                <h2 className="font-medium leading-tight text-white">124+</h2>
-                <p className="!text-16 !font-light !text-white">
-                  Brand Campaigns
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center justify-center flex-col sm:flex-row gap-4">
-              <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center">
-                <h2 className="font-medium leading-tight text-white">1 MIL+</h2>
-                <p className="!text-16 !font-light !text-white">DAUs</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-center flex-col sm:flex-row gap-4">
-              <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center">
-                <h2 className="font-medium leading-tight text-white">25+</h2>
-                <p className="!text-16 !font-light !text-white">
-                  Token Pre Sales
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="max-w-7xl mx-auto px-4 xl:px-0 text-center">
+        {/* <div className="max-w-7xl mx-auto px-4 xl:px-0 text-center">
           <h3 className="!text-white text-20 sm:text-24 lg:text-32  pb-4 sm:pb-6">
             Influencer Marketing Is Broken.{" "}
           </h3>
@@ -206,7 +128,7 @@ function BrandSlider() {
           <p className="sm:!text-18 !text-16 !font-normal !text-white pb-4 sm:pb-8">
             Low effort. Low accountability. Low ROI.
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

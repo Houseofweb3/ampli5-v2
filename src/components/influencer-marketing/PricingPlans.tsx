@@ -48,7 +48,7 @@ const PricingPlans: React.FC = (): JSX.Element => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Title */}
         <h2 className="text-center text-3xl sm:text-4xl lg:text-5xl font-extrabold text-black mb-12 lg:mb-16">
-          Plan
+          Pricing Plans
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-y-8 md:mt-[100px] md:border-[3px] border-[#7B46F8] md:rounded-xl">

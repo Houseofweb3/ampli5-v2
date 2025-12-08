@@ -1,6 +1,7 @@
 import React from "react";
 import { cn } from "../../lib/utils";
 import { CheckListIcon } from "@/src/data/icon";
+import PrimaryButton from "../ui/PrimaryButton";
 
 const pricingPlans = [
   {
@@ -48,7 +49,7 @@ const PricingPlans: React.FC = (): JSX.Element => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Title */}
         <h2 className="text-center text-3xl sm:text-4xl lg:text-5xl font-extrabold text-black mb-12 lg:mb-16">
-          Plan
+          Pricing Plans
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-y-8 md:mt-[100px] md:border-[3px] border-[#7B46F8] md:rounded-xl">
@@ -90,6 +91,19 @@ const PricingPlans: React.FC = (): JSX.Element => {
                   </li>
                 ))}
               </ul>
+              <div className="mt-auto w-full">
+                <PrimaryButton
+                  className=" !text-white py-2 px-4 mt-4 w-full "
+                  onClick={() =>
+                    window.open(
+                      "https://calendly.com/partnerships-houseofweb3/30min",
+                      "_blank"
+                    )
+                  }
+                >
+                  Get Started
+                </PrimaryButton>
+              </div>
             </div>
           ))}
         </div>
