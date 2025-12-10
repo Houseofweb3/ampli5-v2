@@ -44,7 +44,7 @@ export default function Footer(): JSX.Element {
           </div>
           <div className="flex  flex-col sm:flex-row gap-5 sm:gap-7 justify-between items-center">
             <div className="text-14 sm:text-18 font-medium">
-              @{new Date().getFullYear()} Supa Limited. All rights reserved.
+              @{new Date().getFullYear()} HOW3 PTE LTD. All rights reserved.
             </div>
             <div className="flex items-center gap-4">
               <Link target="_blank" href="https://x.com/nomo_nomaya">
