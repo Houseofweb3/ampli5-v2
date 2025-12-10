@@ -12,6 +12,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from "next/image";
 import { StoopidCatsIcon } from "@/public/icons";
+import Link from "next/link";
 
 export const NEW_CASE_STUDY_DATA = [
   {
@@ -24,7 +25,7 @@ export const NEW_CASE_STUDY_DATA = [
     engagements: "10,000+",
     edata: "unique wallet participation",
     s3_url:
-      "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Stoopid+Cats.pdf",
+      "https://www.figma.com/slides/77cXdKKz5klo5VarUU5nre/Ampli5-x-Sonic?node-id=16-1113&t=k9w2BcytCiJ1BAaL-1 ",
   },
   {
     brandLogo: <StoopidCatsIcon />,
@@ -36,9 +37,8 @@ export const NEW_CASE_STUDY_DATA = [
     engagements: "1,000+",
     edata: "SOL raised",
     s3_url:
-      "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Stoopid+Cats.pdf",
+      "https://www.figma.com/slides/X3loKETs3GTTWf5ea1KKfK/Ampli5-x-Stoopid-Cats?node-id=1-42&t=LpqX1fSphKXj5pUJ-0",
   },
-  0,
 ];
 
 function BrandSlider() {
@@ -141,9 +141,13 @@ function BrandSlider() {
                         </div>
                       </div>
                       <div className="px-2 sm:px-4 py-4 w-full flex justify-center items-center">
-                        <button className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit ">
+                        <Link
+                          href={brand.s3_url}
+                          target="_blank"
+                          className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit "
+                        >
                           <GoArrowUpRight className="text-xl sm:text-3xl" />
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>

@@ -21,7 +21,7 @@ export const NEW_CASE_STUDY_DATA = [
     mindshare: "₹110 vs avg ₹4,000+",
     mdata: "CPM ",
     s3_url:
-      "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+X+Router.pdf",
+      "https://www.figma.com/slides/KuJ4bC2ThJttp8Puu18b4u/Untitled?node-id=1-42&t=C6BmFjJoc9HJwRfn-0",
   },
   {
     brandLogo: null,
@@ -31,7 +31,7 @@ export const NEW_CASE_STUDY_DATA = [
     mindshare: null,
     mdata: null,
     s3_url:
-      "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+X+Router.pdf",
+      "#",
   },
   {
     brandLogo: null,
@@ -41,7 +41,7 @@ export const NEW_CASE_STUDY_DATA = [
     mindshare: null,
     mdata: null,
     s3_url:
-      "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+X+Router.pdf",
+      "https://www.figma.com/slides/8Off2hngI8mPdOW6jq1fBY/Ampli5-x-Cabbage?node-id=1-42&t=iJlCDp4jTQlI9h8p-1",
   },
 ];
 function BrandSlider() {

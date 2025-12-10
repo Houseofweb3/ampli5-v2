@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { GoArrowUpRight } from "react-icons/go";
+import Link from "next/link";
 
 function BrandSlider() {
   return (
@@ -81,9 +82,9 @@ function BrandSlider() {
                 </div>
               </div>
               <div className="px-2 sm:px-4 py-4 w-full flex justify-center items-center">
-                <button className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit ">
+                <Link href={`https://docs.google.com/presentation/d/1KeQH9UnwyZu9bUhDvMsVROYoWiHBxIms7otugRqBj7M/edit?slide=id.g33ff661f342_0_247#slide=id.g33ff661f342_0_247`} target="_blank" className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit ">
                   <GoArrowUpRight className="text-xl sm:text-3xl" />
-                </button>
+                </Link>
               </div>
             </div>
           </div>

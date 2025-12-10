@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { GoArrowUpRight } from "react-icons/go";
+import Link from "next/link";
 
 function BrandSlider() {
   return (
@@ -79,9 +80,13 @@ function BrandSlider() {
                 </div>
               </div>
               <div className="px-2 sm:px-4 py-4 w-full flex justify-center items-center">
-                <button className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit ">
+                <Link
+                  href={`https://www.figma.com/slides/i8h2IqPK3kquq9aiR3Yr06/Ampli5-Campaign-Case-Study---Router-Protocol?t=BVyUEXdFiJNKkErC-0 `}
+                  target="_blank"
+                  className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit "
+                >
                   <GoArrowUpRight className="text-xl sm:text-3xl" />
-                </button>
+                </Link>
               </div>
             </div>
           </div>

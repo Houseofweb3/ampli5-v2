@@ -11,6 +11,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from "next/image";
+import Link from "next/link";
 
 function BrandSlider() {
   const swiperRef = useRef<SwiperType | null>(null);
@@ -100,9 +101,13 @@ function BrandSlider() {
                         </div>
                       </div>
                       <div className="px-2 sm:px-4 py-4 w-full flex justify-center items-center">
-                        <button className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit ">
+                        <Link
+                          href={brand.s3_url}
+                          target="_blank"
+                          className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit "
+                        >
                           <GoArrowUpRight className="text-xl sm:text-3xl" />
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>

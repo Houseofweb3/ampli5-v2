@@ -176,7 +176,7 @@ export default function NavbarHome(): JSX.Element {
             <div>
               <div className="items-center gap-2 sm:gap-4 hidden md:flex">
                 <Link
-                  href="/for-project"
+                  href="/case-studies"
                   className=" lg:text-xl font-medium capitalize  py-1 text-14 !text-black"
                 >
                   Case studies
