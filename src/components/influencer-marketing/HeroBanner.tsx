@@ -1,8 +1,10 @@
 import React from "react";
 import PrimaryButton from "../ui/PrimaryButton";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function HeroBanner() {
+  const router = useRouter();
   return (
     <div
       className="bg_hero_pattern relative overflow-hidden "
@@ -54,12 +56,7 @@ export default function HeroBanner() {
           <div className="pb-26px lg:pb-48px">
             <PrimaryButton
               className="text-white mx-auto"
-              onClick={() =>
-                window.open(
-                  "https://calendly.com/partnerships-houseofweb3/30min",
-                  "_blank"
-                )
-              }
+              onClick={() => router.push("/dashboard")}
             >
               Launch your Influencer Campaign{" "}
             </PrimaryButton>
