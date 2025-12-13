@@ -1,0 +1,122 @@
+# Ampli5 - AI-Powered Influencer & PR Solutions for Web3
+
+## About Ampli5
+
+Ampli5 is an AI-powered marketing platform specializing in influencer marketing and PR solutions for web3 projects. We help blockchain and cryptocurrency companies connect with top crypto influencers, launch founder-led marketing campaigns, and amplify their brand presence using cutting-edge AI technology.
+
+**Company Information:**
+- Legal Name: HOW3 PTE LTD
+- Website: https://ampli5.ai
+- Twitter: @nomo_nomaya
+- Founded: 2024
+- Industry: Web3 Marketing, Crypto Marketing, Blockchain PR
+
+## Core Services
+
+### 1. Influencer Marketing for Web3
+AI-powered influencer marketing platform that connects web3 projects with verified crypto influencers. Features include:
+- Instant proposals from verified influencers
+- Campaign launch within 72 hours
+- Data-driven campaign management
+- Verified crypto influencer network
+- Performance tracking and analytics
+
+**URL:** https://ampli5.ai/services/influencer-marketing
+
+### 2. Founder-Led Marketing
+Helps web3 founders build authority and narrative ownership. Services include:
+- Extract and amplify founder's natural voice
+- Build authority that compounds over time
+- Narrative ownership and category definition
+- Personal brand development for web3 founders
+- Thought leadership positioning
+
+**URL:** https://ampli5.ai/services/founder-led-marketing
+
+### 3. AEO & LLM Marketing
+Answer Engine Optimization (AEO) and Large Language Model (LLM) marketing services to help web3 brands appear in AI-generated responses. Features:
+- Increase answer share across AI platforms
+- Optimize for ChatGPT, Perplexity, and other AI platforms
+- Brand mention optimization
+- AI visibility enhancement
+- LLM-friendly content strategy
+
+**URL:** https://ampli5.ai/services/aeo-llm-marketing
+
+### 4. PR Solutions for Web3
+Comprehensive PR services tailored for blockchain and cryptocurrency projects:
+- Media relations
+- Press release distribution
+- Crisis management
+- Brand storytelling
+- Industry thought leadership
+
+### 5. AI Ad Generation
+Leverage artificial intelligence to create high-performing advertisements for web3 campaigns.
+
+### 6. UGC Creator Platform
+User-Generated Content creator platform for authentic brand amplification.
+
+## Target Audience
+
+- Web3 startups and projects
+- Blockchain companies
+- Cryptocurrency projects
+- DeFi protocols
+- NFT platforms
+- Crypto exchanges
+- Web3 gaming companies
+- Blockchain infrastructure providers
+
+## Key Differentiators
+
+1. **AI-Powered Technology**: Advanced AI technology for campaign optimization and influencer matching
+2. **Web3 Specialization**: Deep expertise in blockchain and cryptocurrency marketing
+3. **Fast Execution**: Campaign launch within 72 hours
+4. **Verified Network**: Access to verified crypto influencers and creators
+5. **Data-Driven**: Analytics and performance tracking for all campaigns
+6. **Founder Focus**: Specialized services for founder-led marketing and narrative building
+
+## Technology Stack
+
+- Next.js (React framework)
+- AI-powered matching and optimization
+- Real-time analytics and tracking
+- Automated campaign management
+
+## Contact Information
+
+- Website: https://ampli5.ai
+- Twitter: @nomo_nomaya
+- Email: contact@ampli5.ai (inferred from schema)
+
+## Important URLs
+
+- Homepage: https://ampli5.ai
+- About: https://ampli5.ai/ampli5
+- Influencer Marketing: https://ampli5.ai/services/influencer-marketing
+- Founder-Led Marketing: https://ampli5.ai/services/founder-led-marketing
+- AEO & LLM Marketing: https://ampli5.ai/services/aeo-llm-marketing
+
+## Keywords & Topics
+
+Web3 marketing, crypto influencer marketing, blockchain PR, AI-powered marketing, founder-led marketing, AEO marketing, LLM marketing, Answer Engine Optimization, web3 brand amplification, crypto marketing agency, blockchain influencer network, web3 advertising, cryptocurrency PR, DeFi marketing, NFT marketing, web3 gaming marketing, blockchain startup marketing.
+
+## Use Cases
+
+- Launch new web3 projects with influencer campaigns
+- Build founder authority in the crypto space
+- Increase brand visibility in AI-generated responses
+- Generate PR coverage for blockchain projects
+- Create authentic UGC campaigns for web3 brands
+- Optimize web3 marketing for AI platforms
+
+## Geographic Coverage
+
+Worldwide - Services available globally for web3 projects.
+
+---
+
+Last Updated: 2024
+For the most current information, visit: https://ampli5.ai
+
