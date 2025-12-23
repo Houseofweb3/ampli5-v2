@@ -10,38 +10,29 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from "next/image";
-import { cn } from "@/src/lib/utils";
-import Link from "next/link";
 
 export const NEW_CASE_STUDY_DATA = [
   {
     brandLogo: null,
-    img: "/images/brand/img6.png",
-    roi: "₹17 vs avg ₹680+",
-    rdata: "CAC",
-    mindshare: "₹110 vs avg ₹4,000+",
-    mdata: "CPM ",
-    s3_url:
-      "https://www.figma.com/slides/KuJ4bC2ThJttp8Puu18b4u/Untitled?node-id=1-42&t=C6BmFjJoc9HJwRfn-0",
+    video: '/video/cabbage by stader labs.mov',
+    ctaLink: "https://drive.google.com/file/d/1yvB2iJ4D4KqjB0mM5_6rusJrhK4o__4x/view?usp=drive_link",
   },
   {
     brandLogo: null,
-    img: "/images/brand/img8.png",
-    roi: "20%",
-    rdata: "more inbound leads",
-    mindshare: null,
-    mdata: null,
-    s3_url: "#",
+    video: '/video/Crypto Kitty.mp4',
+    ctaLink: "https://drive.google.com/file/d/1pzBB_nK6Es2KiNE3XgeU6YQwJpClAThk/view?usp=drive_link",
   },
   {
     brandLogo: null,
-    img: "/images/brand/img7.png",
-    roi: "5%",
-    rdata: "ER",
-    mindshare: null,
-    mdata: null,
-    s3_url:
-      "https://www.figma.com/slides/8Off2hngI8mPdOW6jq1fBY/Ampli5-x-Cabbage?node-id=1-42&t=iJlCDp4jTQlI9h8p-1",
+    video: '/video/Delta Ai Video.mp4',
+    ctaLink:
+      "https://drive.google.com/file/d/1HZ0FaRpSNuLkI_VdX6UJAbBuOiRwusRZ/view?usp=drive_link",
+  },
+  {
+    brandLogo: null,
+    video: '/video/Quill Audit.mp4',
+    ctaLink:
+      "https://drive.google.com/file/d/19DXW1B0jgyQkf6vZpi_rDZp1yEOl2x7F/view?usp=drive_link",
   },
 ];
 function BrandSlider() {
@@ -63,7 +54,7 @@ function BrandSlider() {
       <div className="relative z-[11] ">
         <div className="flex justify-center items-start gap-4 w-full max-w-7xl mx-auto px-4 xl:px-0 relative">
           <h3 className="!text-white text-center text-24 lg:text-32 pb-8 text_pattern">
-            Sample Work 
+            Sample Work
           </h3>
           {/* <div className=" justify-center items-center gap-4 w-fit hidden md:flex absolute right-0 top-0">
             <button
@@ -96,73 +87,28 @@ function BrandSlider() {
           >
             {NEW_CASE_STUDY_DATA.map((brand, index) => (
               <SwiperSlide key={index}>
-                <div className="relative z-10 mt-10">
-                  {brand.img ? (
-                    <div
-                      className={cn(
-                        "flex justify-between items-center h-auto max-w-[320px] w-full mx-auto z-1 ",
-                        index !== 2 ? "bg-white rounded-xl p-2" : ""
-                      )}
+                <div className="relative z-10 py-10">
+                  <div className="max-w-[520px] w-full mx-auto ">
+                    <video
+                      controls
+                      playsInline
+                      className="w-full h-auto rounded-xl bg-black aspect-video"
                     >
-                      <Image
-                        src={brand.img}
-                        alt="brand"
-                        width={320}
-                        height={80}
-                        className="object-contain"
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex justify-between items-center  w-[200px] mx-auto z-1 ">
-                      {brand.brandLogo}
-                    </div>
-                  )}
-
-                  <div className="max-w-7xl mx-auto px-4 xl:px-0 py-12 lg:py-24">
-                    <div
-                      className={cn(
-                        "grid  items-center gap-y-6",
-                        brand.mindshare
-                          ? "grid-cols-2 md:grid-cols-3"
-                          : "grid-cols-2"
-                      )}
+                      <source src={brand.video} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                  <div className="px-2 sm:px-4 py-4 w-full flex justify-center items-center">
+                    <a
+                      href={encodeURI(brand.ctaLink || '#')}
+                      target={"_blank"}
+                      rel={"noopener noreferrer"}
+                      aria-label={'Open case study'}
+                      className="cursor-pointer text-white hover:text-black bg-[#7B46F8] hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl px-4 py-2 w-fit mx-auto h-fit flex items-center gap-2"
                     >
-                      {brand.roi ? (
-                        <div className="flex items-center justify-center flex-col sm:flex-row gap-4 border-r border-white px-2 sm:px-4 py-4">
-                          <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center ">
-                            <h2 className="font-medium leading-tight text-white">
-                              {brand.roi}{" "}
-                            </h2>
-                            <p className="!text-16 !font-light !text-white">
-                              {brand.rdata}
-                            </p>
-                          </div>
-                        </div>
-                      ) : null}
-                      {brand.mindshare ? (
-                        <div className="flex items-center justify-center flex-col sm:flex-row  text-center gap-4 md:border-r border-white px-2 sm:px-4 py-4">
-                          <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold ">
-                            <h2 className="font-medium leading-tight text-white">
-                              {brand.mindshare}
-                            </h2>
-                            <p className="!text-16 !font-light !text-white">
-                              {brand.mdata}
-                            </p>
-                          </div>
-                        </div>
-                      ) : null}
-
-                      <div className="px-2 sm:px-4 py-4 w-full flex justify-center items-center">
-                        <Link
-                          href={brand.s3_url}
-                          target="_blank"
-                          className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit "
-                        >
-                          {" "}
-                          <GoArrowUpRight className="text-xl sm:text-3xl" />
-                        </Link>
-                      </div>
-                    </div>
+                      <span className="text-sm">{'View Sample'}</span>
+                      <GoArrowUpRight className="text-xl sm:text-3xl" />
+                    </a>
                   </div>
                 </div>
               </SwiperSlide>
