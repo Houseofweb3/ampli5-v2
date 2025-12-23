@@ -18,7 +18,7 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
             <h2 className="text_pattern"> vs</h2>
             <div className="mt-10">
               <Image
-                src="/pattern/Star-white.png "
+                src="/pattern/Star-white.png"
                 alt="aeo-vs-seo"
                 width={100}
                 height={100}

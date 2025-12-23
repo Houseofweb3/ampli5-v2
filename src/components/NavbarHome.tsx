@@ -32,7 +32,7 @@ const servicesData = [
     icon: "/icons/2.png",
   },
   {
-    name: "Partnership as a service",
+    name: "GTM service",
     href: "/services/ugc-creator-arena",
     icon: "/icons/3.png",
   },
@@ -58,6 +58,8 @@ export default function NavbarHome(): JSX.Element {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [isServicesOpen, setIsServicesOpen] = useState<boolean>(false);
   const profileRef = useRef<HTMLDivElement>(null);
+  const servicesHamBurBtn = useRef<HTMLButtonElement | null>(null);
+  const servicesHamBur = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setIsServicesOpen(false);
@@ -77,6 +79,25 @@ export default function NavbarHome(): JSX.Element {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutsideServices = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (
+        servicesHamBurBtn.current &&
+        servicesHamBur.current &&
+        !servicesHamBurBtn.current.contains(target) &&
+        !servicesHamBur.current.contains(target)
+      ) {
+        setIsServicesOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutsideServices);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideServices);
     };
   }, []);
 
@@ -218,6 +239,7 @@ export default function NavbarHome(): JSX.Element {
               <button
                 className="md:hidden text-20"
                 onClick={() => setIsServicesOpen((pre) => !pre)}
+                ref={servicesHamBurBtn}
               >
                 {isServicesOpen ? (
                   <FiX className="text-32" />
@@ -231,7 +253,7 @@ export default function NavbarHome(): JSX.Element {
       </Container>
 
       {isServicesOpen && (
-        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 p-4 z-50 w-full max-w-[650px] px-2 max-h-[80vh] overflow-y-auto">
+        <div ref={servicesHamBur} className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 p-4 z-50 w-full max-w-[650px] px-2 max-h-[80vh] overflow-y-auto">
           <div className="grid sm:grid-cols-2 grid-cols-1 gap-3">
             {servicesData.map((service, index) => {
               const isActive =

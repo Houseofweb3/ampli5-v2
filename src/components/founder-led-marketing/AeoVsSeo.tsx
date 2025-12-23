@@ -26,7 +26,7 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
             <h2 className="text_pattern"> vs</h2>
             <div className="mt-10">
               <Image
-                src="/pattern/Star-white.png "
+                src="/pattern/Star-white.png"
                 alt="aeo-vs-seo"
                 width={100}
                 height={100}
@@ -35,7 +35,7 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
             </div>
           </div>
           <div className="h-full text-center ">
-            <h2 className="text_pattern"> Traditional Agencies</h2>
+            <h2 className="text_pattern">Traditional</h2>
             <div className="sm:space-y-8 space-y-4 mt-10">
               <p className="text-white">
                 Traditional agencies get on you on panels and create linkedin

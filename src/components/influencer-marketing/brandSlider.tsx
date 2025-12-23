@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { GoArrowLeft, GoArrowRight, GoArrowUpRight } from "react-icons/go";
+import { GoArrowUpRight } from "react-icons/go";
 import type { Swiper as SwiperType } from "swiper";
 import { Pagination } from "swiper/modules";
 
@@ -61,7 +61,7 @@ function BrandSlider() {
           <h3 className="!text-white text-center text-20 sm:text-24 lg:text-32 pb-8 text_pattern">
             Case Studies
           </h3>
-          <div className=" justify-center items-center gap-4 w-fit hidden md:flex absolute right-0 top-0">
+          {/* <div className=" justify-center items-center gap-4 w-fit hidden md:flex absolute right-0 top-0">
             <button
               onClick={() => swiperRef.current?.slidePrev()}
               className="bg-[#A762FE] rounded-xl p-1 px-3"
@@ -76,7 +76,7 @@ function BrandSlider() {
             >
               <GoArrowRight className="w-6 h-6 text-white" />
             </button>
-          </div>
+          </div> */}
         </div>
         <div className="max-w-7xl mx-auto px-4 relative">
           <Swiper

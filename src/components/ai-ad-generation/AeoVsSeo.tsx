@@ -29,7 +29,7 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
             </div>
           </div>
           <div className="h-full text-center ">
-            <h2 className="text_pattern"> Traditional Production</h2>
+            <h2 className="text_pattern"> Traditional</h2>
             <div className="sm:space-y-8 space-y-4 mt-10">
               <p className="text-white">Traditional teams give one idea.</p>
               <p className="text-white">
