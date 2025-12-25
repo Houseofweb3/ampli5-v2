@@ -450,6 +450,7 @@ export const CASE_STUDY_DATA = [
       "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Cabbage.pdf",
   },
 ];
+
 export const NEW_CASE_STUDY_DATA = [
   {
     brandLogo: <RouterLogo />,

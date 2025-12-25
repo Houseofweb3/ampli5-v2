@@ -33,7 +33,22 @@ const WaveContent: React.FC = (): JSX.Element => {
             <br /> performance video in 72 hours
           </h2>
 
-          <div className=" mt-12 ">
+          <div className=" mt-12  flex flex-col md:flex-row gap-4  justify-center items-center">
+            <SecondaryButton
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = '/brochure/ampli5_ai-ad-generation.png';
+                link.download = 'ampli5_ai-ad-generation.png';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+              }}
+              disabled={false}
+              className="w-fit"
+              aria-label="Download brochure"
+            >
+              Download Brochure
+            </SecondaryButton>
             <SecondaryButton
               onClick={() =>
                 window.open(
@@ -42,9 +57,9 @@ const WaveContent: React.FC = (): JSX.Element => {
                 )
               }
               disabled={false}
-              className="w-fit mx-auto"
+              className="w-fit"
             >
-              Book a Meeting{" "}
+              Launch Bounty
             </SecondaryButton>
           </div>
         </div>

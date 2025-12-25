@@ -1,5 +1,4 @@
 "use client";
-import { NEW_CASE_STUDY_DATA } from "../../data/data";
 import React, { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -12,6 +11,50 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from "next/image";
 import Link from "next/link";
+import { CabbageCatsIcon, MultipliCatsIcon, RouterLogo, SonicIcon, StoopidCatsIcon } from "@/src/data/icon";
+
+export const NEW_CASE_STUDY_DATA = [
+  {
+    brandLogo: <RouterLogo />,
+    roi:'50x',
+    mindshare:'Top 20',
+    engagements:"13,000+",
+    s3_url:
+      "/case_studies/Ampli5+X+Router.pdf",
+  },
+  {
+    brandLogo: <SonicIcon />,
+    roi:'30x',
+    mindshare:'Top 10',
+    engagements:"10,000+",
+    s3_url:
+      "/case_studies/Ampli5+x+Sonic.pdf",
+  },
+  {
+    brandLogo: <StoopidCatsIcon />,
+    roi:'20x',
+    mindshare:'Top 5',
+    engagements:"8,000+",
+    s3_url:
+      "/case_studies/Ampli5+x+Stoopid+Cats.pdf",
+  },
+  {
+    brandLogo: <MultipliCatsIcon />,
+    roi:'15x',
+    mindshare:'Top 3',
+    engagements:"6,000+",
+    s3_url:
+      "/case_studies/Ampli5+x+Multipli+Case+study.pdf",
+  },
+  {
+    brandLogo: <CabbageCatsIcon />,
+    roi:'10x',
+    mindshare:'Top 1',
+    engagements:"4,000+",
+    s3_url:
+      "/case_studies/Ampli5+x+Cabbage.pdf",
+  },
+];
 
 function BrandSlider() {
   const swiperRef = useRef<SwiperType | null>(null);

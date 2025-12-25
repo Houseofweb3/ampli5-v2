@@ -32,7 +32,22 @@ const WaveContent: React.FC = (): JSX.Element => {
             Enter the ecosystem that <br /> lifts your protocol.
           </h2>
 
-          <div className=" mt-12 ">
+          <div className=" mt-12  flex flex-col md:flex-row gap-4  justify-center items-center">
+            <SecondaryButton
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = '/brochure/ampli5-gtm-service.png';
+                link.download = 'ampli5-gtm-service.png';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+              }}
+              disabled={false}
+              className="w-fit"
+              aria-label="Download brochure"
+            >
+              Download Brochure
+            </SecondaryButton>
             <SecondaryButton
               onClick={() =>
                 window.open(
@@ -41,9 +56,9 @@ const WaveContent: React.FC = (): JSX.Element => {
                 )
               }
               disabled={false}
-              className="w-fit mx-auto"
+              className="w-fit"
             >
-              Book your partnership strategy call.{" "}
+              Launch Bounty
             </SecondaryButton>
           </div>
         </div>

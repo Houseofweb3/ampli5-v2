@@ -58,7 +58,7 @@ function BrandSlider() {
               </div>
               <div className="px-2 sm:px-4 py-4 w-full flex justify-center items-center">
                 <Link
-                  href={`https://docs.google.com/presentation/d/1bT3CEKZGyzWwR7-126ka5sce3zBHIJ946BR-Pn6D-jM/edit?slide=id.g24a20e1ca4a_0_761#slide=id.g24a20e1ca4a_0_761`}
+                  href={`case_studies/Founder-Led-Marketing-Deck.pdf`}
                   target="_blank"
                   className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit "
                 >

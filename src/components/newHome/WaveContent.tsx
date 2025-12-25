@@ -35,7 +35,22 @@ const WaveContent: React.FC = (): JSX.Element => {
             Start a competition and watch creators battle to give your brand the
             best content.
           </p>
-          <div className=" mt-12 ">
+          <div className=" mt-12  flex flex-col md:flex-row gap-4  justify-center items-center">
+            <SecondaryButton
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = '/brochure/ampli5-creatore-arena.png';
+                link.download = 'ampli5-creatore-arena.png';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+              }}
+              disabled={false}
+              className="w-fit"
+              aria-label="Download brochure"
+            >
+              Download Brochure
+            </SecondaryButton>
             <SecondaryButton
               onClick={() =>
                 window.open(
@@ -44,7 +59,7 @@ const WaveContent: React.FC = (): JSX.Element => {
                 )
               }
               disabled={false}
-              className="w-fit mx-auto"
+              className="w-fit"
             >
               Launch Bounty
             </SecondaryButton>

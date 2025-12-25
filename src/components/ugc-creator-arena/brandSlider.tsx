@@ -57,7 +57,7 @@ function BrandSlider() {
                     325,800
                   </h2>
                   <p className="!text-16 !font-light !text-white">
-                    YouTube views from partner creators
+                    YouTube views
                   </p>
                 </div>
               </div>
@@ -67,7 +67,7 @@ function BrandSlider() {
                     10,683
                   </h2>
                   <p className="!text-16 !font-light !text-white">
-                    referrals (exceeding the 5,000 target)
+                    referrals 
                   </p>
                 </div>
               </div>
@@ -75,13 +75,13 @@ function BrandSlider() {
                 <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center">
                   <h2 className="font-medium leading-tight text-white">500 </h2>
                   <p className="!text-16 !font-light !text-white">
-                    SOL raised in 48 hours during presale
+                    SOL
                   </p>
                 </div>
               </div>
               <div className="px-2 sm:px-4 py-4 w-full flex justify-center items-center">
                 <Link
-                  href={`https://www.figma.com/slides/i8h2IqPK3kquq9aiR3Yr06/Ampli5-Campaign-Case-Study---Router-Protocol?t=BVyUEXdFiJNKkErC-0 `}
+                  href={`/case_studies/Ampli5+X+Router.pdf`}
                   target="_blank"
                   className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit "
                 >

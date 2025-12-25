@@ -25,7 +25,7 @@ export const NEW_CASE_STUDY_DATA = [
     engagements: "10,000+",
     edata: "unique wallet participation",
     s3_url:
-      "https://www.figma.com/slides/77cXdKKz5klo5VarUU5nre/Ampli5-x-Sonic?node-id=16-1113&t=k9w2BcytCiJ1BAaL-1 ",
+      "/case_studies/Ampli5+x+Sonic.pdf",
   },
   {
     brandLogo: <StoopidCatsIcon />,
@@ -37,7 +37,7 @@ export const NEW_CASE_STUDY_DATA = [
     engagements: "1,000+",
     edata: "SOL raised",
     s3_url:
-      "https://www.figma.com/slides/X3loKETs3GTTWf5ea1KKfK/Ampli5-x-Stoopid-Cats?node-id=1-42&t=LpqX1fSphKXj5pUJ-0",
+      "/case_studies/Ampli5+x+Stoopid+Cats.pdf",
   },
 ];
 

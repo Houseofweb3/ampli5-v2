@@ -13,7 +13,7 @@ const caseStudies = [
       { value: "11%", label: "engagement", hasBox: true },
       { value: "10,000+", label: "unique wallet participation", hasBox: true },
     ],
-    link: "https://www.figma.com/slides/77cXdKKz5klo5VarUU5nre/Ampli5-x-Sonic?node-id=16-1113&t=k9w2BcytCiJ1BAaL-1 ",
+    link: "/case_studies/Ampli5+x+Stoopid+Cats.pdf",
   },
   {
     name: "STOOPID CATS",
@@ -23,7 +23,17 @@ const caseStudies = [
       { value: "500,000", label: "impressions", hasBox: true },
       { value: "1,000+", label: "SOL raised", hasBox: true },
     ],
-    link: "https://www.figma.com/slides/X3loKETs3GTTWf5ea1KKfK/Ampli5-x-Stoopid-Cats?node-id=1-42&t=LpqX1fSphKXj5pUJ-0",
+    link: "/case_studies/Ampli5+x+Stoopid+Cats.pdf",
+  },
+  {
+    name: "img1.png",
+    img: "/images/brand/img1.png",
+    metrics: [
+      { value: "325,800", label: "YouTube views", hasBox: true },
+      { value: "10,683", label: "referrals", hasBox: true },
+      { value: "500 ", label: "SOL raised", hasBox: true },
+    ],
+    link: "/case_studies/Ampli5+x+Multipli+Case+study.pdf",
   },
   {
     name: "> router",
@@ -45,7 +55,7 @@ const caseStudies = [
         hasBox: false,
       },
     ],
-    link: "https://www.figma.com/slides/i8h2IqPK3kquq9aiR3Yr06/Ampli5-Campaign-Case-Study---Router-Protocol?t=BVyUEXdFiJNKkErC-0 ",
+    link: "/case_studies/Ampli5+X+Router.pdf",
   },
   {
     name: "Delta. Exchange",
@@ -54,7 +64,7 @@ const caseStudies = [
       { value: "₹17 vs avg ₹680+", label: "CPC", hasBox: false },
       { value: "₹110 vs avg ₹4,000+", label: "CPM", hasBox: false },
     ],
-    link: "https://www.figma.com/slides/KuJ4bC2ThJttp8Puu18b4u/Untitled?node-id=1-42&t=C6BmFjJoc9HJwRfn-0",
+    link: "/case_studies/Ampli5+x+Cabbage.pdf",
   },
   {
     name: "QuillAudits",
@@ -69,7 +79,7 @@ const caseStudies = [
       { value: "5%", label: "ER", hasBox: false },
       { value: "2%", label: "CTR", hasBox: false },
     ],
-    link: "https://www.figma.com/slides/8Off2hngI8mPdOW6jq1fBY/Ampli5-x-Cabbage?node-id=1-42&t=iJlCDp4jTQlI9h8p-1",
+    link: "/case_studies/Ampli5+x+Cabbage.pdf",
   },
 ];
 
