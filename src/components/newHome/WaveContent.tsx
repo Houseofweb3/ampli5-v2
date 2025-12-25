@@ -39,8 +39,8 @@ const WaveContent: React.FC = (): JSX.Element => {
             <SecondaryButton
               onClick={() => {
                 const link = document.createElement('a');
-                link.href = '/brochure/ampli5-creatore-arena.png';
-                link.download = 'ampli5-creatore-arena.png';
+                link.href = '/brochure/ampli5-creator-arena.png';
+                link.download = 'ampli5-creator-arena.png';
                 document.body.appendChild(link);
                 link.click();
                 link.remove();
