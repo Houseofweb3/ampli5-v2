@@ -18,7 +18,7 @@ import { cn } from "../lib/utils";
 const servicesData = [
   {
     name: "Ampli5 Creators Arena",
-    href: "/",
+    href: "/services/creators-arena",
     icon: "/icons/6.png",
   },
   {

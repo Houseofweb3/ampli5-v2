@@ -44,7 +44,7 @@ const HowWork: React.FC = (): JSX.Element => {
           How Influencer Marketing <br /> Works on Ampli5?
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-12 lg:mb-16 ">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mb-12 lg:mb-16 ">
           {cardData.map((card, index) => (
             <div
               key={index}

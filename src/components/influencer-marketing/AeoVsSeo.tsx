@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const AeoVsSeo: React.FC = (): JSX.Element => {
   return (
-    <div className="relative bg-[#FA51A2]  overflow-hidden min-h-[450px]">
+    <div className="relative bg-[#FA51A2]  overflow-hidden min-h-[450px] py-14">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-14 lg:py-20">
         <div className="h-full w-full flex  items-stretch justify-evenly">
           <div className="h-full text-center">
@@ -47,7 +47,6 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
           </div>
         </div>
       </div>
-      
     </div>
   );
 };

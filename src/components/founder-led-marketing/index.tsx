@@ -14,16 +14,36 @@ import EcosystemLoves from "./EcosystemLoves";
 export default function FounderLedMarketing() {
   return (
     <main className="bg-[#F8F8F8]">
-      <HeroBanner />
-      <BrandSlider />
-      <NewVisibility />
-      <AeoVsSeo />
-      <HowWork />
-      <Ecosystem />
-      <EcosystemLoves/>
-      <PricingPlans />
-      <FAQ />
-      <WaveContent />
+      <div className="sticky top-0 z-0  w-full min-h-screen">
+        <HeroBanner />
+      </div>
+      <div className="relative z-0">
+        <BrandSlider />
+      </div>
+      <div className="sticky top-0 z-0  w-full bg-white py-8 md:py-16">
+        <NewVisibility />
+      </div>
+      <div className="relative z-0">
+        <AeoVsSeo />
+      </div>
+      <div className=" relative md:sticky top-0 z-0  w-full bg-white py-8 md:py-16">
+        <HowWork />
+      </div>
+      <div className="md:relative  sticky top-0 z-0 ">
+        <Ecosystem />
+      </div>
+      <div className=" relative md:sticky top-0 z-0  w-full bg-white py-8 md:py-16">
+        <EcosystemLoves />
+      </div>
+      <div className="md:relative top-0  sticky z-0 bg-white py-16 md:py-0">
+        <PricingPlans />
+      </div>
+      <div className="relative z-0 bg-white">
+        <FAQ />
+      </div>
+      <div className="relative z-0 bg-white">
+        <WaveContent />
+      </div>
     </main>
   );
 }
