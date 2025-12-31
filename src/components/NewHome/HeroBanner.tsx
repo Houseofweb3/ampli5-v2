@@ -45,7 +45,7 @@ export default function HeroBanner() {
         style={{ minHeight: "calc(100vh - 100px)" }}
       >
         <div className="md:mt-24 sm:mt-12 mt-6">
-          <h1 className="text-center mb-4 max-w-5xl mx-auto  uppercase">
+          <h1 className="text-center mb-4 max-w-5xl mx-auto  uppercase !leading-tight sm:leading-normal">
             Visibility isn’t about posting more. It’s about how often your story
             repeats.
           </h1>

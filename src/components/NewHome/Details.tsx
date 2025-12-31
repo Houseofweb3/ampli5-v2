@@ -21,12 +21,14 @@ export default function Details() {
           <div className="w-full">
             <div className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-8 w-full">
               <p className="text-base font-normal max-w-96 mr-auto">
-                Long-form conversations.Founder and team perspectives.Clear
-                explanations in natural language.
+                We start with long-form conversations.
+              </p>
+              <p className="text-base font-semibold max-w-96 mr-auto !text-[#A609F0] ">
+                This is not content for virality.It is content created for
+                extraction.
               </p>
               <p className="text-base font-normal max-w-96 mr-auto">
-                Clips are extracted from what already exists.Nothing scripted.
-                Nothing manufactured.
+                Podcasts meets personal branding.
               </p>
             </div>
             <div className="bg-[#7847FA]  w-full h-full py-12 px-4 md:px-12">
@@ -57,12 +59,12 @@ export default function Details() {
           <div className="w-full">
             <div className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-12 w-full">
               <p className="text-base font-normal max-w-96 mr-auto">
-                Long-forms become high-retention clips. Built to repeat without
-                fatigue.
+                The internet rewards moments, not length. We extract what
+                already earns attention.
               </p>
               <div className="space-y-4">
-                <p className="text-base font-semibold max-w-96 mr-auto">
-                  Distributed across:
+                <p className="text-base ">
+                  <i> This is how depth becomes frequency.</i>
                 </p>
                 <div className="flex gap-8 justify-between max-w-72">
                   <Image
@@ -90,19 +92,13 @@ export default function Details() {
                     height={40}
                   />
                 </div>
-                <p className="text-base  max-w-96 mr-auto">
-                  Stories stay present.
-                </p>
               </div>
             </div>
             <div className="bg-[#7847FA]  w-full h-full py-12 px-4 md:px-12">
               <h4 className="!text-white">Cost: </h4>
               <h3 className="!text-white font-normal">
-                $2,000 for extracting 5 clip
+                $2,000 for 5 high-impact clips
               </h3>
-              <p className="!text-white font-thin">
-                with hooks and re-edits / mashups{" "}
-              </p>
             </div>
           </div>
         </div>
@@ -124,40 +120,46 @@ export default function Details() {
             </p>
           </div>
           <div className="w-full">
-            <div className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-8 w-full">
+            <div className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-6 w-full">
               <p className="text-base font-normal max-w-96 mr-auto">
-                Clips are deployed through 25+ clipping channels. Channels
-                already have attention.Attention compounds.
+                We distribute to build repetition, not reach.
               </p>
+              <p className="text-base font-semibold max-w-96 mr-auto">
+                Clips are deployed through 25+ clipping channels.
+              </p>
+              <div>
+                <p className="text-base  max-w-96 mr-auto">
+                  Channels already have attention.
+                </p>
+                <p className="text-base  max-w-96 mr-auto">
+                  Attention compounds.
+                </p>
+              </div>
               <div className="space-y-2">
                 <p className="text-base font-semibold max-w-96 mr-auto">
-                  Monthly Outcomes
+                  Monthly Outcomes{" "}
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-4  ">
-                  <div className="border-r-2 border-gray-400  px-4 py-2 my-auto text-center">
+                  <div className="border-r-2 border-gray-400 px-4 py-2 my-auto text-center">
                     <h4 className="font-semibold text-[#7B46F8]">10M+</h4>
                     <h5 className="text-black">impressions</h5>
                   </div>
-                  <div className="sm:border-r-2 border-gray-400  px-4 py-2 my-auto text-center">
-                    <h4 className="font-semibold text-[#7B46F8]">10M+</h4>
-                    <h5 className="text-black">impressions</h5>
-                  </div>
-                  <div className="border-r-2 sm:border-r-0 border-gray-400  px-4 py-2 my-auto text-center">
+                  <div className="sm:border-r-2 border-gray-400 px-4 py-2 my-auto text-center">
                     <h4 className="font-semibold text-[#7B46F8]">1M+</h4>
                     <h5 className="text-black">views</h5>
                   </div>
-                  <div className="sm:border-r-2 border-gray-400  px-4 py-2 my-auto text-center">
+                  <div className=" border-r-2 sm:border-r-0 border-gray-400  px-4 py-2 my-auto text-center">
                     <h4 className="font-semibold text-[#7B46F8]">50,000</h4>
                     <h5 className="text-black">Average View </h5>
-                    <p className="text-black/45 text-xs">
+                    <p className="text-black/45 text-[10px]">
                       per short form content
                     </p>
                   </div>
-                  <div className="border-r-2 border-gray-400  px-4 py-2 my-auto text-center">
+                  <div className="sm:border-r-2 border-gray-400 px-4 py-2 my-auto text-center">
                     <h4 className="font-semibold text-[#7B46F8]">~1%</h4>
                     <h5 className="text-black">CTR</h5>
                   </div>
-                  <div className=" px-4 py-2 my-auto text-center">
+                  <div className="border-r-2 border-gray-400  px-4 py-2 my-auto text-center">
                     <h4 className="font-semibold text-[#7B46F8] ">0.015</h4>
                     <h5 className="text-black">CPV</h5>
                   </div>
@@ -167,7 +169,7 @@ export default function Details() {
             <div className="bg-[#7847FA]  w-full h-full py-12 px-4 md:px-12">
               <h4 className="!text-white">Cost: </h4>
               <h3 className="!text-white font-normal">
-                $15,000 for distribution
+                $15,000 for 2 clips each across 25 channels
               </h3>
             </div>
           </div>
@@ -195,10 +197,11 @@ export default function Details() {
             <div className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-4 w-full">
               <div className="space-y-3">
                 <div>
-                  <p className="text-base font-semibold mr-auto">
-                    After people see you
+                  <p className="text-base  mr-auto">
+                    We extend stories beyond the feed. AI search is the new
+                    discovery layer. This is where visibility lasts.
                   </p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-4">
+                  {/* <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-4">
                     <div className="border-r-2 border-gray-400  px-2 sm:px-4 py-2 my-auto text-center flex items-center gap-2">
                       <Image
                         src="/icons/search.png"
@@ -226,7 +229,7 @@ export default function Details() {
                       />
                       <h5 className="text-black">They ask AI</h5>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div>
@@ -282,7 +285,7 @@ export default function Details() {
                     </div>
                   </div>
                 </div>
-                <div>
+                {/* <div>
                   <h4>Written as answers. Not backlinks.</h4>
                   <p className="text-base font-normal max-w-96 mr-auto">
                     This builds context memory. So your name belongs in the
@@ -311,15 +314,14 @@ export default function Details() {
                       <h5 className="text-black">CTR </h5>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="bg-[#7847FA]  w-full h-full py-12 px-4 md:px-12">
               <h4 className="!text-white">Cost: </h4>
               <h3 className="!text-white font-normal">
-                Cost: $5,000 for producing 5 clips
+                $5,000 for 20 content pieces
               </h3>
-              <p className="!text-white font-thin"> with hooks</p>
             </div>
           </div>
         </div>
