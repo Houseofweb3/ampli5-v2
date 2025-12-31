@@ -17,34 +17,39 @@ import { cn } from "../lib/utils";
 
 const servicesData = [
   {
-    name: "Ampli5 Creators Arena",
+    name: "Distribution through Podcasts",
+    href: "/services/founder-led-marketing",
+    icon: "/icons/5.png",
+  },
+  {
+    name: "Distribution through Ampli5 creators arena",
     href: "/services/creators-arena",
     icon: "/icons/6.png",
   },
   {
-    name: "AEO LLM Marketing",
-    href: "/services/aeo-llm-marketing",
-    icon: "/icons/1.png",
-  },
-  {
-    name: "AI Video Generation",
-    href: "/services/ai-ad-generation",
-    icon: "/icons/2.png",
-  },
-  {
-    name: "GTM service",
-    href: "/services/ugc-creator-arena",
-    icon: "/icons/3.png",
-  },
-  {
-    name: "Influencer Marketing",
+    name: "Distribution through Influencer marketing",
     href: "/services/influencer-marketing",
     icon: "/icons/4.png",
   },
   {
-    name: "Founder Led Marketing",
-    href: "/services/founder-led-marketing",
-    icon: "/icons/5.png",
+    name: "Distribution through Clipping",
+    href: "/services/distribution-through-clipping",
+    icon: "/icons/1.png",
+  },
+  {
+    name: "Distribution through AEO",
+    href: "/services/aeo-llm-marketing",
+    icon: "/icons/1.png",
+  },
+  {
+    name: "GTM services",
+    href: "/services/ugc-creator-arena",
+    icon: "/icons/3.png",
+  },
+  {
+    name: "AI generated video marketing",
+    href: "/services/ai-ad-generation",
+    icon: "/icons/2.png",
   },
 ];
 
@@ -280,7 +285,7 @@ export default function NavbarHome(): JSX.Element {
                     </div>
                   ) : null}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-black group-hover:text-blue-btn transition-colors">
+                    <p className="text-sm font-medium text-black group-hover:text-blue-btn transition-colors capitalize">
                       {service.name}
                     </p>
                   </div>
