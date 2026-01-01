@@ -156,7 +156,7 @@ export default function Details() {
                     </p>
                   </div>
                   <div className="sm:border-r-2 border-gray-400 px-4 py-2 my-auto text-center">
-                    <h4 className="font-semibold text-[#7B46F8]">~1%</h4>
+                    <h4 className="font-semibold text-[#7B46F8]">1%</h4>
                     <h5 className="text-black">CTR</h5>
                   </div>
                   <div className="border-r-2 border-gray-400  px-4 py-2 my-auto text-center">

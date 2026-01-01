@@ -39,7 +39,7 @@ export default function HeroBanner() {
         />
       </div>
       <div
-        className="relative z-20 flex flex-col items-center justify-around max-w-7xl mx-auto px-4 w-full h-full"
+        className="relative z-20 flex flex-col items-center justify-center space-y-12 max-w-7xl mx-auto px-4 w-full h-full"
         style={{ minHeight: "calc(100vh - 100px)" }}
       >
         <div className="md:mt-24 sm:mt-12 mt-6">
@@ -52,28 +52,28 @@ export default function HeroBanner() {
               Stop buying posts. Start buying performance.
             </h2>
           </div>
-          <div className="pb-26px lg:pb-48px">
-            <PrimaryButton
-              onClick={() =>
-                window.open(
-                  "https://calendly.com/partnerships-houseofweb3/30min",
-                  "_blank"
-                )
-              }
-              className="text-white mx-auto"
-            >
-              Launch Bounty
-            </PrimaryButton>
-          </div>
+        </div>
+        <div className="pb-26px lg:pb-48px">
+          <PrimaryButton
+            onClick={() =>
+              window.open(
+                "https://calendly.com/partnerships-houseofweb3/30min",
+                "_blank"
+              )
+            }
+            className="text-white mx-auto"
+          >
+            Launch Bounty
+          </PrimaryButton>
         </div>
         <div>
-          <div className="hero_description  text-center">
-            <h3 className="!text-black !font-medium text-xl md:text-2xl  max-w-3xl mx-auto">
+          <div className="hero_description  text-center mt-4">
+            <h3 className="!text-black !font-medium text-xl md:text-2xl  max-w-96 md:max-w-3xl mx-auto">
               Why hire 10 influencers when 100 creators will compete for you?
             </h3>
           </div>
           <div className="hero_description pb-16px lg:pb-28px text-center ">
-            <p className="!text-dark-purple1-bg">5× Output · 7× ROI</p>
+            <h3 className="!text-dark-purple1-bg">5× Output · 7× ROI</h3>
           </div>
         </div>
       </div>

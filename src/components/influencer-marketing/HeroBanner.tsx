@@ -41,7 +41,7 @@ export default function HeroBanner() {
         />
       </div>
       <div
-        className="relative z-20 flex flex-col items-center justify-around max-w-7xl mx-auto px-4 w-full h-full"
+        className="relative z-20 flex flex-col items-center justify-center space-y-12 max-w-7xl mx-auto px-4 w-full h-full"
         style={{ minHeight: "calc(100vh - 100px)" }}
       >
         <div className="md:mt-24 sm:mt-12 mt-6">
@@ -52,28 +52,25 @@ export default function HeroBanner() {
               Ampli5 gives you a campaign in 5 minutes.
             </span>
           </h1>
-
-          <div className="pb-26px lg:pb-48px">
-            <PrimaryButton
-              className="text-white mx-auto"
-              onClick={() => router.push("/dashboard")}
-            >
-              Launch your Influencer Campaign{" "}
-            </PrimaryButton>
-          </div>
+        </div>
+        <div className="pb-26px lg:pb-48px">
+          <PrimaryButton
+            className="text-white mx-auto"
+            onClick={() => router.push("/dashboard")}
+          >
+            Launch your Influencer Campaign{" "}
+          </PrimaryButton>
         </div>
         <div>
-          <div className="hero_description  text-center">
+          <div className="hero_description  text-center mt-4">
             <h3 className="!text-black !font-medium text-xl md:text-2xl  max-w-3xl mx-auto">
-              Select creators by niche, location, credibility score and
-              platform. Add to cart Get an instant proposal Launch without
-              waiting for anyone.
+              Instant proposal, No waiting, No sales rep required! AI-powere
             </h3>
           </div>
           <div className="hero_description pb-16px lg:pb-28px text-center max-w-4xl mx-auto">
-            <p className="!text-dark-purple1-bg">
+            <h3 className="!text-dark-purple1-bg">
               72X faster. 1.5X Cheaper, 10X Effective
-            </p>
+            </h3>
           </div>
         </div>
       </div>

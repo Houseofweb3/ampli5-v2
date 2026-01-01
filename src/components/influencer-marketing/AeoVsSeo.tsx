@@ -34,7 +34,7 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
             </div>
           </div>
           <div className="h-full text-center ">
-            <h2 className="text_pattern"> Traditional Agencies</h2>
+            <h2 className="text_pattern"> Agencies</h2>
             <div className="sm:space-y-8 space-y-4 mt-10">
               <p className="text-white">Agencies take days to respond.</p>
               <p className="text-white">

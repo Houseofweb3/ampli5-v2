@@ -10,7 +10,7 @@ export default function HeroBanner() {
       className="bg_hero_pattern relative overflow-hidden "
       style={{ minHeight: "calc(100vh - 70px)" }}
     >
-      <div className="absolute top-[5%] md:top-[10%] right-[35%] z-20">
+      <div className="absolute top-[5%] md:top-[10%] right-[35%]">
         <Image
           className="w-8 h-8"
           src={"/pattern/Star-pink.png"}
@@ -20,7 +20,7 @@ export default function HeroBanner() {
           style={{ animationDelay: "1s" }}
         />
       </div>
-      <div className="absolute md:left-[18%] left-[-30px] top-[35%] z-20">
+      <div className="absolute  left-[-30px] top-[35%] ">
         <Image
           className="w-60px h-60px "
           src={"/pattern/Star-blue.png"}
@@ -41,37 +41,40 @@ export default function HeroBanner() {
         />
       </div>
       <div
-        className="relative z-20 flex flex-col items-center justify-around max-w-7xl mx-auto px-4 w-full h-full"
+        className="relative z-20 flex flex-col items-center justify-center space-y-12 max-w-7xl mx-auto px-4 w-full h-full"
         style={{ minHeight: "calc(100vh - 100px)" }}
       >
         <div className="md:mt-24 sm:mt-12 mt-6">
           <h1 className="text-center mb-4 max-w-5xl mx-auto  uppercase !leading-tight sm:leading-normal">
-            Visibility isn’t about posting more. It’s about how often your story
-            repeats.
+            Visibility isn’t about posting more.
+            <br />
+            <span className="text-[#7B46F8]">
+              It’s about how often your story repeats.
+            </span>
           </h1>
           <div className="hero_description  text-center mb-4">
             <h3 className="!text-black !font-medium  max-w-4xl mx-auto">
               Clipping turns your best long-form into repeat exposure.
             </h3>
           </div>
-          <div className="pb-26px lg:pb-48px">
-            <PrimaryButton
-              className="text-white mx-auto"
-              onClick={() => router.push("/dashboard")}
-            >
-              How Ampli5 works
-            </PrimaryButton>
-          </div>
+        </div>
+        <div className="pb-26px lg:pb-48px">
+          <PrimaryButton
+            className="text-white mx-auto"
+            onClick={() => router.push("/dashboard")}
+          >
+            How Ampli5 works
+          </PrimaryButton>
         </div>
         <div>
-          <div className="hero_description pb-16px lg:pb-28px text-center max-w-4xl mx-auto">
-            <p className="!text-dark-purple1-bg">
-               10M+ impressions · 1M+ views · ~1% CTR
-            </p>
-          </div>
-          <div className="hero_description  text-center">
+          <div className="hero_description mt-4 pb-16px lg:pb-28px text-center max-w-4xl mx-auto">
             <h3 className="!text-black !font-medium text-xl md:text-2xl  max-w-3xl mx-auto">
               Delivered through networks we own.
+            </h3>
+          </div>
+          <div className="hero_description  text-center">
+            <h3 className="!text-dark-purple1-bg">
+               10M+ impressions · 1M+ views · 1% CTR
             </h3>
           </div>
         </div>
