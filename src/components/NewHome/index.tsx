@@ -14,7 +14,7 @@ import Details from "./Details";
 export default function NewHome() {
   return (
     <main className="bg-[#F8F8F8]">
-      <div className="sticky top-0 z-0  w-full min-h-screen">
+      <div className="sticky top-0 z-0  w-full min-h-[110vh]">
         <HeroBanner />
       </div>
       <div className="relative z-0">
