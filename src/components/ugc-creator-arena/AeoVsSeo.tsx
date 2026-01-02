@@ -7,14 +7,17 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-14 lg:py-20">
         <div className="h-full w-full flex  items-stretch justify-evenly">
           <div className="h-full text-center">
-            <h2 className="text_pattern"> ECOSYSTEM PARTNERSHIPS</h2>
+            <h2 className="text_pattern">
+              {" "}
+              ECOSYSTEM <br /> PARTNERSHIPS
+            </h2>
             <div className="sm:space-y-8 space-y-4 mt-10">
               <p className="text-white">
                 Warm intros via creators and founders
               </p>
               <p className="text-white">
-                Narrative-led pitches ecosystems resonate with Faster
-                integrations
+                Narrative-led pitches ecosystems resonate
+                <br/>with Faster integrations
               </p>
               <p className="text-white">
                 Network effects that build TVL and AUM
@@ -34,7 +37,10 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
             </div>
           </div>
           <div className="h-full text-center ">
-            <h2 className="text_pattern ml-2"> TRADITIONAL BD</h2>
+            <h2 className="text_pattern ml-2">
+              {" "}
+              TRADITIONAL <br /> BD
+            </h2>
             <div className="sm:space-y-8 space-y-4 mt-10">
               <p className="text-white">Cold outreach</p>
               <p className="text-white">Long cycles</p>
@@ -44,7 +50,6 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
           </div>
         </div>
       </div>
-     
     </div>
   );
 };

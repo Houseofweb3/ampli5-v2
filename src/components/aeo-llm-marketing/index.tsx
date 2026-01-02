@@ -27,13 +27,13 @@ export default function AeoLlmMarketing() {
       <div className="relative z-0">
         <BrandDeserves />
       </div>
-      <div className="sticky top-0 z-0  w-full  bg-white py-14 lg:py-16">
+      <div className="relative md:sticky top-0 z-0  w-full  bg-white py-14 lg:py-16">
         <HowWork />
       </div>
-      <div className="relative z-0">
+      <div className="sticky md:relative top-0 z-0  w-full  bg-white pt-14 md:pt-0">
         <AeoVsSeo />
       </div>
-      <div className="sticky top-0 z-0  w-full  bg-white py-14 lg:py-16">
+      <div className="relative md:sticky top-0 z-0  w-full  bg-white py-14 lg:py-16">
         <EcosystemLoves />
       </div>
       <div className="relative z-0">

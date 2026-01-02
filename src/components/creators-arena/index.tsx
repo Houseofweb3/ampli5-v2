@@ -35,7 +35,7 @@ export default function CreatorsArena() {
       <div className="relative z-0 bg-white">
         <CampaignEnters></CampaignEnters>
       </div>
-      <div className="sticky top-0 z-0  w-full  bg-[#F5F5F5] py-14 lg:py-16">
+      <div className="relative md:sticky top-0 z-0  w-full  bg-[#F5F5F5] py-14 lg:py-16">
         <Outperforms></Outperforms>
       </div>
       <div className="relative z-0 bg-white">
@@ -47,7 +47,7 @@ export default function CreatorsArena() {
       <div className="relative z-0 bg-white">
         <TopPerforming></TopPerforming>
       </div>
-      <div className="sticky top-0 z-0  w-full  bg-white py-14 lg:py-16">
+      <div className="relative md:sticky top-0 z-0  w-full  bg-white py-14 lg:py-16">
         <FAQ></FAQ>
       </div>
       <div className="relative z-0 bg-white">

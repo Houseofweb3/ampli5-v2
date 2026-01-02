@@ -27,13 +27,13 @@ export default function AiAdGeneration() {
       <div className="relative z-0">
         <BrandDeserves />
       </div>
-      <div className="sticky top-0 z-0  w-full bg-white pt-8 lg:pt-12">
+      <div className="relative md:sticky top-0 z-0  w-full bg-white pt-8 lg:pt-12">
         <HowWork />
       </div>
-      <div className="relative z-0">
+      <div className="md:relative sticky top-0 z-0  w-full bg-white pt-12 md:pt-0">
         <AeoVsSeo />
       </div>
-      <div className="sticky top-0 z-0  w-full bg-white pt-8 lg:pt-12">
+      <div className="relative md:sticky top-0 z-0  w-full bg-white pt-8 lg:pt-12">
         <EcosystemLoves />
       </div>
       <div className="relative z-0">

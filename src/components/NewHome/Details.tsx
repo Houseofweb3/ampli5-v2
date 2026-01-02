@@ -1,5 +1,6 @@
 import Image from "next/image";
-import React from "react";
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 export default function Details() {
   return (
@@ -19,7 +20,9 @@ export default function Details() {
             <p className="text-base font-normal">We start where trust forms.</p>
           </div>
           <div className="w-full">
-            <div className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-8 w-full">
+            <AnimatedSection
+              className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-8 w-full"
+            >
               <p className="text-base font-normal max-w-96 mr-auto">
                 We start with long-form conversations.
               </p>
@@ -30,13 +33,16 @@ export default function Details() {
               <p className="text-base font-normal max-w-96 mr-auto">
                 Podcasts meets personal branding.
               </p>
-            </div>
-            <div className="bg-[#7847FA]  w-full h-full py-12 px-4 md:px-12">
+            </AnimatedSection>
+            <AnimatedSection
+              className="bg-[#7847FA] w-full h-full py-12 px-4 md:px-12"
+              delay={0.2}
+            >
               <h4 className="!text-white">Cost: </h4>
               <h3 className="!text-white font-normal">
                 $10,000 for 3 podcasts *
               </h3>
-            </div>
+            </AnimatedSection>
           </div>
         </div>
       </div>
@@ -57,7 +63,9 @@ export default function Details() {
             </p>
           </div>
           <div className="w-full">
-            <div className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-12 w-full">
+            <AnimatedSection
+              className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-12 w-full"
+            >
               <p className="text-base font-normal max-w-96 mr-auto">
                 The internet rewards moments, not length. We extract what
                 already earns attention.
@@ -93,13 +101,16 @@ export default function Details() {
                   />
                 </div>
               </div>
-            </div>
-            <div className="bg-[#7847FA]  w-full h-full py-12 px-4 md:px-12">
+            </AnimatedSection>
+            <AnimatedSection
+              className="bg-[#7847FA] w-full h-full py-12 px-4 md:px-12"
+              delay={0.2}
+            >
               <h4 className="!text-white">Cost: </h4>
               <h3 className="!text-white font-normal">
                 $2,000 for 5 high-impact clips
               </h3>
-            </div>
+            </AnimatedSection>
           </div>
         </div>
       </div>
@@ -120,7 +131,9 @@ export default function Details() {
             </p>
           </div>
           <div className="w-full">
-            <div className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-6 w-full">
+            <AnimatedSection
+              className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-6 w-full"
+            >
               <p className="text-base font-normal max-w-96 mr-auto">
                 We distribute to build repetition, not reach.
               </p>
@@ -165,13 +178,16 @@ export default function Details() {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="bg-[#7847FA]  w-full h-full py-12 px-4 md:px-12">
+            </AnimatedSection>
+            <AnimatedSection
+              className="bg-[#7847FA] w-full h-full py-12 px-4 md:px-12"
+              delay={0.2}
+            >
               <h4 className="!text-white">Cost: </h4>
               <h3 className="!text-white font-normal">
                 $15,000 for 2 clips each across 25 channels
               </h3>
-            </div>
+            </AnimatedSection>
           </div>
         </div>
       </div>
@@ -194,7 +210,9 @@ export default function Details() {
             </p>
           </div>
           <div className="w-full">
-            <div className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-4 w-full">
+            <AnimatedSection
+              className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-4 w-full"
+            >
               <div className="space-y-3">
                 <div>
                   <p className="text-base  mr-auto">
@@ -316,16 +334,51 @@ export default function Details() {
                   </div>
                 </div> */}
               </div>
-            </div>
-            <div className="bg-[#7847FA]  w-full h-full py-12 px-4 md:px-12">
+            </AnimatedSection>
+            <AnimatedSection
+              className="bg-[#7847FA] w-full h-full py-12 px-4 md:px-12"
+              delay={0.2}
+            >
               <h4 className="!text-white">Cost: </h4>
               <h3 className="!text-white font-normal">
                 $5,000 for 20 content pieces
               </h3>
-            </div>
+            </AnimatedSection>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+// Animated Section Component using Framer Motion
+interface AnimatedSectionProps {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}
+
+function AnimatedSection({ children, className = "", delay = 0 }: AnimatedSectionProps) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, {
+    once: true,
+    amount: 0.2,
+    margin: "0px 0px -50px 0px",
+  });
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial={{ opacity: 0, y: 32 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
+      transition={{
+        duration: 0.7,
+        delay: delay,
+        ease: [0.25, 0.1, 0.25, 1],
+      }}
+    >
+      {children}
+    </motion.div>
   );
 }
