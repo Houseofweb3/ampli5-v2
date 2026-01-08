@@ -23,6 +23,7 @@ export interface FiltersData {
   platformsWithContentTypes: PlatformData[];
   niches: string[];
   credibilityScores: string[];
+  industries: string[];
 }
 
 const FilterSection = () => {
@@ -38,6 +39,8 @@ const FilterSection = () => {
     setCredibility,
     niche,
     setNiche,
+    industry,
+    setIndustry,
   } = useFilter();
 
   const how3 = useHow3client();
@@ -88,7 +91,7 @@ const FilterSection = () => {
         prev.filter((type) => allContentTypes.includes(type))
       );
     }
-  }, [platforms, filters?.platformsWithContentTypes,setContentTypes]);
+  }, [platforms, filters?.platformsWithContentTypes, setContentTypes]);
 
   // Check if required filters are selected (all except credibility)
   const isRequiredFiltersSelected = () => {
@@ -124,7 +127,7 @@ const FilterSection = () => {
   };
 
   // Required label component
-  const RequiredLabel = ({ label }:{label:string}) => (
+  const RequiredLabel = ({ label }: { label: string }) => (
     <div className="flex items-center gap-1">
       <span>{label}</span>
       <span className="text-red-500">*</span>
@@ -134,6 +137,16 @@ const FilterSection = () => {
   return (
     <div className="w-full px-4 md:px-12 flex items-center justify-center mb-16">
       <div className="flex flex-col gap-4 max-w-esm w-full items-center">
+        <div className="flex flex-col gap-2 w-full items-start">
+          <span>Industry</span>
+          <MultiSelect
+            options={filters?.industries || []}
+            selectedOptions={industry}
+            setSelectedOptions={setIndustry}
+            placeholder="Industry"
+          />
+        </div>
+
         <div className="flex flex-col gap-2 w-full items-start">
           <RequiredLabel label="Platforms" />
           <MultiSelect
@@ -158,7 +171,7 @@ const FilterSection = () => {
           </div>
         )}
         <div className="flex flex-col gap-2 w-full items-start">
-          <RequiredLabel label="Niche" />
+          <RequiredLabel label="Category" />
           <MultiSelect
             options={filters?.niches || []}
             selectedOptions={niche}

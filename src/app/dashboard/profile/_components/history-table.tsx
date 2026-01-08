@@ -30,7 +30,7 @@ interface DataRow {
 const Heading: string[] = [
   "Influencers",
   "Platform",
-  "Niche",
+  "Category",
   "Date",
   "Country",
   "ER",

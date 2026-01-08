@@ -149,7 +149,7 @@ const Filters: React.FC<FilterProp> = ({
 
   return (
     <div className="space-y-4 w-full pb-8">
-      <div className="grid grid-cols-1 grid-flow-row-dense items-center md:grid-cols-6 gap-4">
+      <div className="grid grid-cols-1 grid-flow-row-dense items-center  gap-4">
         <div className="col-span-4 px-4 flex gap-2 rounded-xl justify-center items-center py-3 border border-gray-300 ">
           <Search />
           <input
@@ -160,14 +160,14 @@ const Filters: React.FC<FilterProp> = ({
           />
         </div>
 
-        <div className="w-full col-span-2 md:block hidden">
+        {/* <div className="w-full col-span-2 md:block hidden">
           <AiButton
             isAI={isAI}
             setIsAi={setIsAi}
             fetchInfluencers={fetchInfluencers}
             fetchUserInfluencers={fetchUserInfluencers}
           />
-        </div>
+        </div> */}
       </div>
       <div className="grid grid-cols-1 grid-flow-row-dense items-center md:grid-cols-4 gap-4">
         <div className="">
@@ -194,7 +194,7 @@ const Filters: React.FC<FilterProp> = ({
             options={filters?.niches!}
             selectedOptions={niche}
             setSelectedOptions={setNiche}
-            placeholder="Niche"
+            placeholder="Category "
           />
         </div>
         <div className="">
@@ -234,7 +234,7 @@ const Filters: React.FC<FilterProp> = ({
                       onClick={() => removeFilter("Platform", platform)}
                       className="text-gray-400 hover:text-gray-600"
                     >
-                     <FilterCross/>
+                      <FilterCross />
                     </button>
                   </div>
                 ))}
@@ -249,7 +249,7 @@ const Filters: React.FC<FilterProp> = ({
                       onClick={() => removeFilter("contentType", contentType)}
                       className="text-gray-400 hover:text-gray-600"
                     >
-                     <FilterCross/>
+                      <FilterCross />
                     </button>
                   </div>
                 ))}
@@ -264,7 +264,7 @@ const Filters: React.FC<FilterProp> = ({
                       onClick={() => removeFilter("Niche", n)}
                       className="text-gray-400 hover:text-gray-600"
                     >
-                     <FilterCross/>
+                      <FilterCross />
                     </button>
                   </div>
                 ))}
@@ -279,7 +279,7 @@ const Filters: React.FC<FilterProp> = ({
                       onClick={() => removeFilter("Credibility", score)}
                       className="text-gray-400 hover:text-gray-600"
                     >
-                     <FilterCross/>
+                      <FilterCross />
                     </button>
                   </div>
                 ))}

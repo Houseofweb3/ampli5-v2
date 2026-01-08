@@ -22,6 +22,8 @@ interface FilterContextType {
   setCredibility: React.Dispatch<React.SetStateAction<string[]>>;
   price: string[];
   setPrice: React.Dispatch<React.SetStateAction<string[]>>;
+  industry: string[];
+  setIndustry: React.Dispatch<React.SetStateAction<string[]>>;
   resetFilters: () => void;
 }
 
@@ -53,6 +55,9 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
   const [price, setPrice] = useState<string[]>(() =>
     typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("price") || "[]") : []
   );
+  const [industry, setIndustry] = useState<string[]>(() =>
+    typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("industry") || "[]") : []
+  );
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -63,8 +68,9 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
       localStorage.setItem("contentTypes", JSON.stringify(contentTypes));
       localStorage.setItem("credibility", JSON.stringify(credibility));
       localStorage.setItem("price", JSON.stringify(price));
+      localStorage.setItem("industry", JSON.stringify(industry));
     }
-  }, [filterQueries, platforms, niche, er, contentTypes, credibility, price]);
+  }, [filterQueries, platforms, niche, er, contentTypes, credibility, price, industry]);
 
   const resetFilters = () => {
     setFilterQueries("");
@@ -74,6 +80,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
     setContentTypes([]);
     setCredibility([]);
     setPrice([]);
+    setIndustry([]);
   };
 
   const value = {
@@ -91,6 +98,8 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
     setCredibility,
     price,
     setPrice,
+    industry,
+    setIndustry,
     resetFilters,
   };
 

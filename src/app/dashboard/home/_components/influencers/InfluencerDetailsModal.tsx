@@ -89,7 +89,7 @@ export const InfluencerDetailModal: React.FC<InfluencerDetailModalProps> = ({
                 <DetailCard
                   key={index}
                   icon={<NicheIcon />}
-                  title={`Niche ${index + 1}`}
+                  title={`Category ${index + 1}`}
                   value={name.trim()}
                 />
               ))}

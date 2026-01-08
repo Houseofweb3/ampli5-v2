@@ -209,11 +209,9 @@ const TableRow: React.FC<TableRowProps> = React.memo(
             <PlatformIcon platform={data.platform} />
           </TableCell>
           <TableCell id="ContentType">
-            <span className="text-sm text-[#757575]">
-              {data?.contentType}
-            </span>
+            <span className="text-sm text-[#757575]">{data?.contentType}</span>
           </TableCell>
-          <TableCell id="Niche">
+          <TableCell id="Category">
             <span className="text-sm text-[#757575]">{data.niche}</span>
           </TableCell>
           <TableCell id="ER">
@@ -264,7 +262,7 @@ const TableRow: React.FC<TableRowProps> = React.memo(
                     <DetailCard
                       key={index}
                       icon={<NicheIcon />}
-                      title={`Niche ${index + 1}`}
+                      title={`Category ${index + 1}`}
                       value={name}
                     />
                   );

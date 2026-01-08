@@ -272,7 +272,7 @@ export const HEADINGS = [
   "Influencers",
   "Platform",
   "ContentType",
-  "Niche",
+  "Category",
   "ER",
   "Credibility Score",
   "Price",
@@ -296,7 +296,7 @@ export const HEADINGS_WIDTH_MAPPING = [
     width: "12%",
   },
   {
-    id: "Niche",
+    id: "Category",
     width: "12%",
   },
   {
