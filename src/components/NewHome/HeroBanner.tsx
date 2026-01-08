@@ -46,17 +46,12 @@ export default function HeroBanner() {
       >
         <div className="md:mt-24 sm:mt-12 mt-6">
           <h1 className="text-center mb-4 max-w-5xl mx-auto  uppercase !leading-tight sm:leading-normal">
-            Visibility isn’t about posting more.
-            <br />
+            1 long-form conversation. Clipped into{" "}
             <span className="text-[#7B46F8]">
-              It’s about how often your story repeats.
-            </span>
+              10 high-signal clips.Repeatedly distributed across 100 networks{" "}
+            </span>{" "}
+            until recall sets in.
           </h1>
-          <div className="hero_description  text-center mb-4">
-            <h3 className="!text-black !font-medium  max-w-4xl mx-auto">
-              Clipping turns your best long-form into repeat exposure.
-            </h3>
-          </div>
         </div>
         <div className="pb-26px lg:pb-48px">
           <PrimaryButton
@@ -67,11 +62,6 @@ export default function HeroBanner() {
           </PrimaryButton>
         </div>
         <div>
-          <div className="hero_description mt-4 pb-16px lg:pb-28px text-center max-w-4xl mx-auto">
-            <h3 className="!text-black !font-medium text-xl md:text-2xl  max-w-3xl mx-auto">
-              Delivered through networks we own.
-            </h3>
-          </div>
           <div className="hero_description  text-center">
             <h3 className="!text-dark-purple1-bg">
                10M+ impressions · 1M+ views · 1% CTR

@@ -39,13 +39,16 @@ const BrandDeserves: React.FC = (): JSX.Element => {
       const elementCenter = rect.top + rect.height / 2;
 
       // Check if element center is within 20% of viewport center
-      const isInCenter = Math.abs(elementCenter - viewportCenter) < viewportHeight * 0.2;
+      const isInCenter =
+        Math.abs(elementCenter - viewportCenter) < viewportHeight * 0.2;
 
       // Check if element is below the center (scrolled down past center)
-      const isBelowCenter = elementCenter > viewportCenter + viewportHeight * 0.2;
+      const isBelowCenter =
+        elementCenter > viewportCenter + viewportHeight * 0.2;
 
       // Check if element is above the center (scrolled up past center)
-      const isAboveCenter = elementCenter < viewportCenter - viewportHeight * 0.2;
+      const isAboveCenter =
+        elementCenter < viewportCenter - viewportHeight * 0.2;
 
       if (isInCenter) {
         // Mark that it has reached center and highlight it
@@ -103,9 +106,9 @@ const BrandDeserves: React.FC = (): JSX.Element => {
           <h2 className="text-center text_pattern text-3xl sm:text-4xl lg:text-5xl font-semibold !text-white mb-4">
             The Current Landscape
           </h2>
-          <p className="text-white">
+          <h3 className="text-[#BDF522] font-light">
             Your story is not the problem. Your distribution layer is.
-          </p>
+          </h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12 lg:mb-16 relative z-2">
@@ -113,10 +116,10 @@ const BrandDeserves: React.FC = (): JSX.Element => {
             const isSecondCard = index === 1;
             // First card is highlighted when second card is NOT in center
             // Second card is highlighted when it IS in center
-            const shouldHighlight = isSecondCard 
-              ? isSecondCardInCenter 
+            const shouldHighlight = isSecondCard
+              ? isSecondCardInCenter
               : !isSecondCardInCenter;
-            
+
             return (
               <div
                 key={index}
@@ -131,9 +134,7 @@ const BrandDeserves: React.FC = (): JSX.Element => {
                 <div
                   className={cn(
                     "text-xl font-semibold mb-2",
-                    shouldHighlight
-                      ? "text-[#7B46F8]"
-                      : "text-white"
+                    shouldHighlight ? "text-[#7B46F8]" : "text-white"
                   )}
                 >
                   {card.number}
@@ -142,18 +143,14 @@ const BrandDeserves: React.FC = (): JSX.Element => {
                 <div
                   className={cn(
                     "h-0.5 w-full mb-4",
-                    shouldHighlight
-                      ? "bg-[#7B46F8]"
-                      : "bg-white"
+                    shouldHighlight ? "bg-[#7B46F8]" : "bg-white"
                   )}
                 ></div>
 
                 <ul
                   className={cn(
                     "list-disc list-inside text-base lg:text-lg leading-relaxed",
-                    shouldHighlight
-                      ? "text-black"
-                      : "text-white"
+                    shouldHighlight ? "text-black" : "text-white"
                   )}
                 >
                   {card.description.map((item, index) => (
@@ -174,6 +171,9 @@ const BrandDeserves: React.FC = (): JSX.Element => {
             />
           </div>
         </div>
+        <p className="text-white text-center text-lg font-light">
+          Visibility breaks after creation.
+        </p>
       </div>
     </div>
   );

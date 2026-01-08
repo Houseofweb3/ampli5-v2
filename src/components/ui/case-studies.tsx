@@ -13,7 +13,7 @@ const caseStudies = [
       { value: "11%", label: "engagement", hasBox: true },
       { value: "10,000+", label: "unique wallet participation", hasBox: true },
     ],
-    link: "/case_studies/Ampli5+x+Stoopid+Cats.pdf",
+    link: "/case_studies/Ampli5+x+Sonic.pdf",
   },
   {
     name: "STOOPID CATS",
@@ -64,7 +64,7 @@ const caseStudies = [
       { value: "₹17 vs avg ₹680+", label: "CPC", hasBox: false },
       { value: "₹110 vs avg ₹4,000+", label: "CPM", hasBox: false },
     ],
-    link: "/case_studies/Ampli5+x+Cabbage.pdf",
+    link: "/case_studies/Delta+Exchange.pdf",
   },
   {
     name: "QuillAudits",

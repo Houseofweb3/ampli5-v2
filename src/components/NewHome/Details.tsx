@@ -20,9 +20,7 @@ export default function Details() {
             <p className="text-base font-normal">We start where trust forms.</p>
           </div>
           <div className="w-full">
-            <AnimatedSection
-              className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-8 w-full"
-            >
+            <AnimatedSection className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-8 w-full">
               <p className="text-base font-normal max-w-96 mr-auto">
                 We start with long-form conversations.
               </p>
@@ -63,9 +61,7 @@ export default function Details() {
             </p>
           </div>
           <div className="w-full">
-            <AnimatedSection
-              className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-12 w-full"
-            >
+            <AnimatedSection className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-12 w-full">
               <p className="text-base font-normal max-w-96 mr-auto">
                 The internet rewards moments, not length. We extract what
                 already earns attention.
@@ -74,30 +70,27 @@ export default function Details() {
                 <p className="text-base ">
                   <i> This is how depth becomes frequency.</i>
                 </p>
-                <div className="flex gap-8 justify-between max-w-72">
+                <div className="flex gap-8 justify-evenly max-w-80">
                   <Image
-                    src="/socialMedia/instagram.png"
+                    src="/socials/1.png"
                     alt="icon"
-                    width={40}
-                    height={40}
+                    width={100}
+                    height={100}
+                    className="h-[40px] w-auto"
                   />
                   <Image
-                    src="/socialMedia/youtube.png"
+                    src="/socials/2.png"
                     alt="icon"
-                    width={40}
-                    height={40}
+                    width={100}
+                    height={100}
+                    className="h-[40px] w-auto"
                   />
                   <Image
-                    src="/socialMedia/x.png"
+                    src="/socials/3.png"
                     alt="icon"
-                    width={40}
-                    height={40}
-                  />
-                  <Image
-                    src="/socialMedia/tiktok.png"
-                    alt="icon"
-                    width={40}
-                    height={40}
+                    width={100}
+                    height={100}
+                    className="h-[40px] w-auto"
                   />
                 </div>
               </div>
@@ -131,9 +124,7 @@ export default function Details() {
             </p>
           </div>
           <div className="w-full">
-            <AnimatedSection
-              className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-6 w-full"
-            >
+            <AnimatedSection className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-6 w-full">
               <p className="text-base font-normal max-w-96 mr-auto">
                 We distribute to build repetition, not reach.
               </p>
@@ -172,10 +163,10 @@ export default function Details() {
                     <h4 className="font-semibold text-[#7B46F8]">1%</h4>
                     <h5 className="text-black">CTR</h5>
                   </div>
-                  <div className="border-r-2 border-gray-400  px-4 py-2 my-auto text-center">
+                  {/* <div className="border-r-2 border-gray-400  px-4 py-2 my-auto text-center">
                     <h4 className="font-semibold text-[#7B46F8] ">0.015</h4>
                     <h5 className="text-black">CPV</h5>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </AnimatedSection>
@@ -210,9 +201,7 @@ export default function Details() {
             </p>
           </div>
           <div className="w-full">
-            <AnimatedSection
-              className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-4 w-full"
-            >
+            <AnimatedSection className="bg-[#E9E7E7] py-12 px-4 md:px-12 space-y-4 w-full">
               <div className="space-y-3">
                 <div>
                   <p className="text-base  mr-auto">
@@ -271,14 +260,6 @@ export default function Details() {
                     </div>
                     <div className=" px-2 sm:px-4 py-2">
                       <Image
-                        src="/icons/Rectangle.png"
-                        alt="icon"
-                        width={100}
-                        height={40}
-                      />
-                    </div>
-                    <div className=" px-2 sm:px-4 py-2">
-                      <Image
                         src="/icons/quora.png"
                         alt="icon"
                         width={100}
@@ -295,7 +276,7 @@ export default function Details() {
                     </div>
                     <div className=" px-2 sm:px-4 py-2">
                       <Image
-                        src="/icons/Publications.png"
+                        src="/icons/Rectangle.png"
                         alt="icon"
                         width={100}
                         height={40}
@@ -358,7 +339,11 @@ interface AnimatedSectionProps {
   delay?: number;
 }
 
-function AnimatedSection({ children, className = "", delay = 0 }: AnimatedSectionProps) {
+function AnimatedSection({
+  children,
+  className = "",
+  delay = 0,
+}: AnimatedSectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, {
     once: true,
