@@ -9,21 +9,36 @@ export default function Footer(): JSX.Element {
       <Container className="pt-14 pb-4 sm:py-14">
         <div>
           <div className="flex flex-col sm:flex-row gap-5 sm:gap-7 justify-between items-center mb-5 sm:mb-9">
-            <Link href="/">
-              <Image
-                alt="Logo"
-                width={1000}
-                height={1000}
-                className="w-91px lg:w-115px h-full"
-                src="/logo/ampli5.png"
-              />
-            </Link>
-            <div className="flex items-center gap-4 text-14 sm:text-18 font-medium ">
+
+            <div className="min-w-91px lg:min-w-115px">
+              <Link href="/">
+                <Image
+                  alt="Logo"
+                  width={1000}
+                  height={1000}
+                  className="w-91px lg:w-115px h-full"
+                  src="/logo/ampli5.png"
+                />
+              </Link>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 text-14 sm:text-18 font-medium ">
+              <Link
+                href="/brand-intake-form"
+                className="hover:text-primary transition-colors duration-200"
+              >
+                Brand Intake Form
+              </Link>
+              <Link
+                href="/creator-onboarding"
+                className="hover:text-primary transition-colors duration-200"
+              >
+                Creator Onboarding
+              </Link>
               <Link
                 href="/blogs"
                 className="hover:text-primary transition-colors duration-200"
               >
-               Blogs
+                Blogs
               </Link>
               <Link
                 target="_blank"
