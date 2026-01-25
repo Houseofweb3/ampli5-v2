@@ -47,11 +47,9 @@ export default function Footer(): JSX.Element {
                 Privacy Policy
               </Link>
               <Link
-                target="_blank"
-                href="https://www.houseofweb3.com/legal/termsOfUse"
+                href="/terms-of-service"
                 className="hover:text-primary transition-colors duration-200"
               >
-                {" "}
                 Terms of Service
               </Link>
             </div>
