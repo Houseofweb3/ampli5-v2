@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import Image from 'next/image';
+
 
 export default function BrandIntakeSuccessPage() {
   const router = useRouter();

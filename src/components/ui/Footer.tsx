@@ -41,8 +41,7 @@ export default function Footer(): JSX.Element {
                 Blogs
               </Link>
               <Link
-                target="_blank"
-                href="https://www.houseofweb3.com/legal/privacyPolicy"
+                href="/privacy-policy"
                 className="hover:text-primary transition-colors duration-200"
               >
                 Privacy Policy

@@ -3,8 +3,9 @@ import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import CryptoJS from "crypto-js";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req) {
-  console.log(req,"req")
   const cookieKey = '__Secure-authjs.session-token'
   const token = await getToken({
     req,
@@ -12,7 +13,7 @@ export async function GET(req) {
     salt: cookieKey,
     cookieName: cookieKey
   });
-  console.log(token, "token");
+
 
   if (!token) {
     const url = new URL("auth", process.env.NEXTAUTH_URL);

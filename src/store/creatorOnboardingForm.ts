@@ -60,6 +60,7 @@ interface CreatorOnboardingFormData {
 
 interface CreatorOnboardingFormState {
   formData: CreatorOnboardingFormData;
+  // eslint-disable-next-line no-unused-vars
   updateFormData: (data: Partial<CreatorOnboardingFormData>) => void;
   resetForm: () => void;
 }

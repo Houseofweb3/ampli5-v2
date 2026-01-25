@@ -39,6 +39,7 @@ interface BrandIntakeFormData {
 
 interface BrandIntakeFormState {
   formData: BrandIntakeFormData;
+  // eslint-disable-next-line no-unused-vars
   updateFormData: (data: Partial<BrandIntakeFormData>) => void;
   resetForm: () => void;
 }
