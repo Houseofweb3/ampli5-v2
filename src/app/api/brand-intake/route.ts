@@ -189,7 +189,7 @@ export async function POST(request: Request) {
     // For append operations, you can use the sheet name with column range
     // If the sheet name doesn't exist, it will fail. Use the actual sheet name from your Google Sheet
     // You can also set this via environment variable: SPREAD_SHEET_NAME
-    const sheetName = process.env.SPREAD_SHEET_NAME || "Sheet1";
+    const sheetName = process.env.SPREAD_SHEET_NAME || "brand-intake-form";
     const range = `${sheetName}!A:Z`;
 
     await sheets.spreadsheets.values.append({

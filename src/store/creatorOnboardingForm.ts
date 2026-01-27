@@ -53,9 +53,41 @@ interface CreatorOnboardingFormData {
   availabilityStatus: string;
   preferredCollaborationTypes: string[];
 
+  // Step 7: Payment Terms
+  paymentTerms: string;
+
+  // Step 8: Turnaround & Reliability
+  turnaroundTimes: string[];
+
+  // Step 9: Previous Collaborations
+  // First slide - three images
+  firstCollaborationImage1: string; // URL as string for Excel export
+  firstCollaborationImage2: string; // URL as string for Excel export
+  firstCollaborationImage3: string; // URL as string for Excel export
+  firstCollaborationImage1PublicId?: string; // PublicId for deletion
+  firstCollaborationImage2PublicId?: string; // PublicId for deletion
+  firstCollaborationImage3PublicId?: string; // PublicId for deletion
+  // Second slide - links to previous content
+  xLink: string; // X (Twitter) link
+  instagramLink: string; // Instagram link
+  youtubeLink: string; // YouTube link
+  tiktokLink: string; // TikTok link
+  newsletterLink: string; // Newsletter link
+
+  // Step 10: Final Confirmation
+  finalConfirmation: boolean;
+
   // Step 7: Portfolio & Additional Info
   portfolioLink: string;
   portfolioAdditionalInfo: string;
+
+  // Step 6: Audience Proof (Images)
+  ageScreenshot: string; // URL as string for Excel export
+  genderScreenshot: string; // URL as string for Excel export
+  topCountriesScreenshot: string; // URL as string for Excel export
+  ageScreenshotPublicId?: string; // PublicId for deletion
+  genderScreenshotPublicId?: string; // PublicId for deletion
+  topCountriesScreenshotPublicId?: string; // PublicId for deletion
 }
 
 interface CreatorOnboardingFormState {
@@ -97,8 +129,28 @@ const initialFormData: CreatorOnboardingFormData = {
   baseRate: '',
   availabilityStatus: '',
   preferredCollaborationTypes: [],
+  paymentTerms: '',
+  turnaroundTimes: [],
+  firstCollaborationImage1: '',
+  firstCollaborationImage2: '',
+  firstCollaborationImage3: '',
+  firstCollaborationImage1PublicId: '',
+  firstCollaborationImage2PublicId: '',
+  firstCollaborationImage3PublicId: '',
+  xLink: '',
+  instagramLink: '',
+  youtubeLink: '',
+  tiktokLink: '',
+  newsletterLink: '',
+  finalConfirmation: false,
   portfolioLink: '',
   portfolioAdditionalInfo: '',
+  ageScreenshot: '',
+  genderScreenshot: '',
+  topCountriesScreenshot: '',
+  ageScreenshotPublicId: '',
+  genderScreenshotPublicId: '',
+  topCountriesScreenshotPublicId: '',
 };
 
 export const useCreatorOnboardingFormStore = create<CreatorOnboardingFormState>()(

@@ -77,8 +77,7 @@ export default function TermsOfServicePage() {
           <p className="leading-relaxed text-gray-700">
             All deliverables and timelines, shall be defined only in written
             proposals, invoices, statements of work, or written confirmations
-            issued by the Company recorded whether formally or informally over
-            emails or messaging platforms.
+            issued by the Company.
           </p>
           <p className="leading-relaxed text-gray-700">
             Any service not expressly listed in writing is excluded.
