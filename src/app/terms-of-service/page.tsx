@@ -68,14 +68,17 @@ export default function TermsOfServicePage() {
             <li>
               Community engagement tools including Zealy or equivalent platforms
             </li>
-            <li>KOL identification, outreach, introductions, or coordination</li>
+            <li>
+              KOL identification, outreach, introductions, or coordination
+            </li>
             <li>PR outreach, press pitching, or placement efforts</li>
             <li>Campaign strategy frameworks and execution plans</li>
           </ul>
           <p className="leading-relaxed text-gray-700">
-            All deliverables, timelines, and quantities shall be defined only in
-            written proposals, invoices, statements of work, or written
-            confirmations issued by the Company.
+            All deliverables and timelines, shall be defined only in written
+            proposals, invoices, statements of work, or written confirmations
+            issued by the Company recorded whether formally or informally over
+            emails or messaging platforms.
           </p>
           <p className="leading-relaxed text-gray-700">
             Any service not expressly listed in writing is excluded.
@@ -173,12 +176,15 @@ export default function TermsOfServicePage() {
             Where the Client fails to provide feedback, objections, or approvals
             within five (5) calendar days of delivery or request, such
             deliverables shall be deemed approved and accepted for all purposes.
+            Any such deliverables shall be deemed as final and irrevocable for
+            which all payments shall be due and payable, including any advances
+            already paid.
           </p>
           <p className="leading-relaxed text-gray-700">
-            Creative quality, stylistic preference, or subjective dissatisfaction
-            shall not constitute grounds for refund, rework, non-payment,
-            chargeback, or dispute once execution has commenced or deemed
-            approval has occurred.
+            Creative quality, stylistic preference, or subjective
+            dissatisfaction shall not constitute grounds for refund, rework,
+            non-payment, chargeback, or dispute once execution has commenced or
+            deemed approval has occurred.
           </p>
         </section>
 
@@ -197,7 +203,8 @@ export default function TermsOfServicePage() {
           <ul className="list-disc pl-6 space-y-2 text-gray-700">
             <li>Fees are non-refundable once services have commenced</li>
             <li>
-              Free, bonus, or goodwill services do not create ongoing obligations
+              Free, bonus, or goodwill services do not create ongoing
+              obligations
             </li>
             <li>Delayed Client feedback does not suspend payment obligations</li>
           </ul>
@@ -213,8 +220,8 @@ export default function TermsOfServicePage() {
             8. Dispute Notice and Resolution
           </h2>
           <p className="leading-relaxed text-gray-700">
-            Any dispute must be raised in writing within fifteen (15) calendar
-            days from the date the issue arises.
+            Any dispute must be raised in writing within ten (10) calendar days
+            from the date the issue arises.
           </p>
           <p className="leading-relaxed text-gray-700">
             For the avoidance of doubt, this refers strictly to calendar days,
@@ -226,8 +233,15 @@ export default function TermsOfServicePage() {
             of services and waiver of claims.
           </p>
           <p className="leading-relaxed text-gray-700">
-            All disputes shall first be attempted to be resolved in good faith.
-            If unresolved, disputes shall be resolved exclusively by arbitration.
+            All disputes shall first be attempted to be resolved in good faith
+            between the parties. If unresolved, disputes shall be resolved
+            exclusively by mediation, whereby a neutral mediator shall be
+            appointed by the Company, for which costs are to be borne jointly
+            between the Client and the Company. Any disputes unresolved by
+            mediation shall be referred to arbitration, whereby a sole
+            arbitrator shall be appointed by the Company, from the Singapore
+            International Arbitration Centre panel, for which costs are to be
+            borne jointly between the Client and the Company.
           </p>
           <ul className="list-disc pl-6 space-y-2 text-gray-700">
             <li>Governing law: Singapore</li>
@@ -249,16 +263,16 @@ export default function TermsOfServicePage() {
           <p className="leading-relaxed text-gray-700">
             To the maximum extent permitted by applicable law, the total
             cumulative liability of HOW3 Pte Ltd, whether arising in contract,
-            tort, negligence, statute, or otherwise, shall be strictly limited to
-            the lower of:
+            tort, negligence, statute, or otherwise, shall be strictly limited
+            to the lower of:
           </p>
           <p className="leading-relaxed text-gray-700 pl-4">
             (a) the value of the most recent invoice actually paid by the Client
             to the Company, or
             <br />
             (b) the total fees actually paid by the Client to the Company during
-            the fifteen (15) calendar days immediately preceding the event giving
-            rise to the claim.
+            the fifteen (15) calendar days immediately preceding the event
+            giving rise to the claim.
           </p>
           <p className="leading-relaxed text-gray-700">
             For the avoidance of doubt:
@@ -275,7 +289,8 @@ export default function TermsOfServicePage() {
             </li>
             <li>
               The Client expressly waives any right to aggregate claims across
-              multiple invoices, campaigns, billing cycles, or statements of work
+              multiple invoices, campaigns, billing cycles, or statements of
+              work
             </li>
           </ul>
           <p className="leading-relaxed text-gray-700">
@@ -299,8 +314,8 @@ export default function TermsOfServicePage() {
               Token markets are volatile, speculative, and sentiment-driven
             </li>
             <li>
-              Token price, liquidity, volume, and holder behavior are outside the
-              Company's control
+              Token price, liquidity, volume, and holder behavior are outside
+              the Company's control
             </li>
             <li>
               Any liquidity actions, burns, mints, unlocks, vesting, treasury
@@ -346,8 +361,8 @@ export default function TermsOfServicePage() {
             12. Confidentiality
           </h2>
           <p className="leading-relaxed text-gray-700">
-            All non-public information exchanged shall be treated as confidential
-            unless disclosure is required by law or regulation.
+            All non-public information exchanged shall be treated as
+            confidential unless disclosure is required by law or regulation.
           </p>
         </section>
 
@@ -359,7 +374,8 @@ export default function TermsOfServicePage() {
           </h2>
           <p className="leading-relaxed text-gray-700">
             These Terms constitute the entire agreement between the parties and
-            supersede all prior discussions, communications, or representations.
+            supersede all prior discussions, communications, or
+            representations.
           </p>
           <p className="leading-relaxed text-gray-700">
             No amendment shall be valid unless made in writing by the Company.
@@ -383,6 +399,32 @@ export default function TermsOfServicePage() {
             <li>Liability is strictly limited as set out herein</li>
             <li>Disputes are governed exclusively by these Terms</li>
           </ul>
+          <div className="space-y-4 text-gray-700 leading-relaxed">
+            <p>
+              This document is issued in reference to the Ampli5 Terms &
+              Conditions, available at:{" "}
+              <a
+                href="https://www.ampli5.ai/terms-of-service"
+                className="text-blue-600 hover:text-blue-800 underline"
+              >
+                https://www.ampli5.ai/terms-of-service
+              </a>
+            </p>
+            <p>
+              To ensure clarity and consistency, the Ampli5 Terms & Conditions
+              apply to the services outlined herein and shall prevail in the
+              event of any inconsistency.
+            </p>
+            <p>
+              Continued engagement, review, confirmation, or payment indicates
+              acceptance of the Ampli5 Terms & Conditions, including applicable
+              limitations of liability and dispute resolution provisions.
+            </p>
+            <p>
+              Any variations or additional understandings, if required, will be
+              confirmed in writing via email by both parties.
+            </p>
+          </div>
         </section>
 
         <hr className="border-gray-300" />
