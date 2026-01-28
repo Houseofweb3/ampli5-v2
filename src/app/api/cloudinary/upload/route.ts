@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 
+// Cloudinary SDK requires Node.js runtime (not Edge)
+export const runtime = 'nodejs';
+
 // Configure API route timeout (300 seconds = 5 minutes)
 export const maxDuration = 300;
 
@@ -14,6 +17,30 @@ cloudinary.config({
 
 export async function POST(request: Request) {
   try {
+    // Fail fast on missing Cloudinary env in production
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+    const apiKey = process.env.CLOUDINARY_API_KEY;
+    const apiSecret =
+      process.env.CLOUDINARY_SECRETE ||
+      process.env.CLOUDINARY_API_SECRET ||
+      process.env.CLOUDINARY_SECRET;
+
+    if (!cloudName || !apiKey || !apiSecret) {
+      return NextResponse.json(
+        {
+          message:
+            'Server configuration error: Cloudinary environment variables are missing.',
+          missing: {
+            CLOUDINARY_CLOUD_NAME: !cloudName,
+            CLOUDINARY_API_KEY: !apiKey,
+            CLOUDINARY_API_SECRET: !apiSecret,
+          },
+          error: 'CLOUDINARY_CONFIG_MISSING',
+        },
+        { status: 500 }
+      );
+    }
+
     const formData = await request.formData();
     const file = formData.get('file') as File;
 
@@ -119,16 +146,24 @@ export async function POST(request: Request) {
     if (error?.http_code) {
       return NextResponse.json(
         { 
-          message: `Upload failed: ${error.message || 'Unknown error'}`,
+          message: `Upload failed: ${error?.error?.message || error.message || 'Unknown error'}`,
           error: error.name || 'UPLOAD_ERROR'
         },
         { status: error.http_code || 500 }
       );
     }
 
+    // Cloudinary sometimes nests useful details under `error.error`
+    const nestedMessage =
+      error?.error?.message ||
+      error?.cause?.message ||
+      (typeof error === 'string' ? error : undefined);
+
     return NextResponse.json(
       { 
-        message: 'Error uploading image to Cloudinary. Please try again.',
+        message:
+          nestedMessage ||
+          'Error uploading image to Cloudinary. Please try again.',
         error: 'UPLOAD_ERROR'
       },
       { status: 500 }
