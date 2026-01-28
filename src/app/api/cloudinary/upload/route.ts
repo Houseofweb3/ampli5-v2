@@ -6,7 +6,12 @@ export const runtime = 'nodejs';
 
 // Configure API route timeout (300 seconds = 5 minutes)
 export const maxDuration = 300;
-
+const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+const apiKey = process.env.CLOUDINARY_API_KEY;
+const apiSecret =
+  process.env.CLOUDINARY_SECRETE ||
+  process.env.CLOUDINARY_API_SECRET ||
+  process.env.CLOUDINARY_SECRET;
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -18,12 +23,7 @@ cloudinary.config({
 export async function POST(request: Request) {
   try {
     // Fail fast on missing Cloudinary env in production
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-    const apiKey = process.env.CLOUDINARY_API_KEY;
-    const apiSecret =
-      process.env.CLOUDINARY_SECRETE ||
-      process.env.CLOUDINARY_API_SECRET ||
-      process.env.CLOUDINARY_SECRET;
+  
 
     if (!cloudName || !apiKey || !apiSecret) {
       return NextResponse.json(
@@ -34,6 +34,9 @@ export async function POST(request: Request) {
             CLOUDINARY_CLOUD_NAME: !cloudName,
             CLOUDINARY_API_KEY: !apiKey,
             CLOUDINARY_API_SECRET: !apiSecret,
+            cloudName,
+            apiKey,
+            apiSecret,
           },
           error: 'CLOUDINARY_CONFIG_MISSING',
         },
