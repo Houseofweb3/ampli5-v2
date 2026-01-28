@@ -605,10 +605,10 @@ export default function ProposalPage({
 
         {/* Mobile Card View */}
         {!showBillingForm && (
-          <div className="md:hidden space-y-4 mb-8">
+          <div className="md:hidden space-y-4 mb-8 w-full">
             {proposal?.influencerItems?.map((item) => (
-              <div key={item.id} className="bg-white rounded-lg shadow-sm p-4">
-                <div className="flex items-start space-x-4">
+              <div key={item.id} className="bg-white rounded-lg shadow-sm p-4 w-full">
+                <div className="flex flex-col items-start space-y-4">
                   <div className="flex-shrink-0">
                     <Image
                       src={item.influencer.dpLink || "/placeholder-avatar.png"}
@@ -618,7 +618,7 @@ export default function ProposalPage({
                       className="rounded-full object-cover"
                     />
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 w-full">
                     <div className="text-base font-semibold text-gray-900 mb-2">
                       {item.influencer.name.trim() || "Unknown"}
                     </div>
@@ -630,7 +630,7 @@ export default function ProposalPage({
                         </span>
                       </div>
                       <div className="flex justify-start items-center gap-2">
-                        <span className="font-medium">Platform:</span>{" "}
+                        <span className="font-semibold">Platform:</span>{" "}
                         <a
                           href={item.influencer.socialMediaLink}
                           target="_blank"
@@ -641,21 +641,32 @@ export default function ProposalPage({
                         </a>
                       </div>
                       <div>
-                        <span className="font-medium">Content Type:</span>{" "}
-                        <span className="font-semibold">
+                        <span className="font-semibold">Content Type:</span>{" "}
+                        <span className="font-medium">
                           {item.influencer.contentType}
                         </span>
                       </div>
                       {item.note && (
                         <div>
-                          <span className="font-medium">Note:</span>{" "}
-                          <span className="font-semibold">{item.note}</span>
+                          <span className="font-semibold">Note:</span>{" "}
+                          <span className="font-medium break-all">{item.note}</span>
                         </div>
                       )}
                       {item.profOfWork && (
                         <div>
-                          <span className="font-medium">Prof of Work:</span>{" "}
-                          <span className="font-semibold">{item.profOfWork}</span>
+                          <span className="font-semibold">Prof of Work:</span>{" "}
+                          {/^https?:\/\//i.test(item.profOfWork.trim()) ? (
+                            <a
+                              href={item.profOfWork.trim()}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-medium text-blue-600 hover:underline break-all"
+                            >
+                              {item.profOfWork}
+                            </a>
+                          ) : (
+                            <span className="font-medium">{item.profOfWork}</span>
+                          )}
                         </div>
                       )}
                     </div>
