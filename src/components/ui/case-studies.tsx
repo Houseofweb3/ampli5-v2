@@ -29,9 +29,9 @@ const caseStudies = [
     name: "img1.png",
     img: "/images/brand/img1.png",
     metrics: [
-      { value: "325,800", label: "YouTube views", hasBox: true },
-      { value: "10,683", label: "referrals", hasBox: true },
-      { value: "500 ", label: "SOL raised", hasBox: true },
+      { value: "$1M+", label: "TVL Generated", hasBox: true },
+      { value: "50×", label: "ROI on $20K Spend", hasBox: true },
+      { value: "236K+ ", label: "High-Intent Impressions", hasBox: true },
     ],
     link: "/case_studies/Ampli5+x+Multipli+Case+study.pdf",
   },
@@ -40,18 +40,18 @@ const caseStudies = [
     img: "/images/brand/img3.png",
     metrics: [
       {
-        value: "325,800",
-        label: "YouTube views from partner creators",
+        value: "$500K+",
+        label: "Volume Influenced",
         hasBox: false,
       },
       {
-        value: "10,683",
-        label: "referrals (exceeding the 5,000 target)",
+        value: "48 Hours",
+        label: "Campaign Velocity",
         hasBox: false,
       },
       {
-        value: "500+",
-        label: "SOL raised in 48 hours during presale",
+        value: "10K+",
+        label: "Qualified Referrals",
         hasBox: false,
       },
     ],
