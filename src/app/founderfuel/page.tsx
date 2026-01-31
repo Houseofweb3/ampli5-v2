@@ -3,7 +3,6 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Container from "../../components/ui/container";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -295,391 +294,391 @@ const FounderInquiryForm: React.FC = () => {
 
   const renderStepContent = () => {
     switch (currentStep) {
-      case 1:
-        return (
-          <div>
-            <div className="flex items-center gap-2 mb-6">
-              {diamond}
-              <h2 className="text-2xl font-semibold text-gray-900">Basic Info</h2>
+    case 1:
+      return (
+        <div>
+          <div className="flex items-center gap-2 mb-6">
+            {diamond}
+            <h2 className="text-2xl font-semibold text-gray-900">Basic Info</h2>
+          </div>
+          <div className="space-y-6">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                {diamond}
+                <label className={labelClass}>1. What&apos;s your full name? <span className="text-red-500">*</span></label>
+              </div>
+              <input
+                type="text"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
+                placeholder="Enter your full name"
+                className={inputClass(!!errors.fullName)}
+              />
+              {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
             </div>
-            <div className="space-y-6">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  {diamond}
-                  <label className={labelClass}>1. What&apos;s your full name? <span className="text-red-500">*</span></label>
-                </div>
-                <input
-                  type="text"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  placeholder="Enter your full name"
-                  className={inputClass(!!errors.fullName)}
-                />
-                {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                {diamond}
+                <label className={labelClass}>2. Startup name <span className="text-red-500">*</span></label>
               </div>
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  {diamond}
-                  <label className={labelClass}>2. Startup name <span className="text-red-500">*</span></label>
-                </div>
-                <input
-                  type="text"
-                  name="startupName"
-                  value={formData.startupName}
-                  onChange={handleChange}
-                  placeholder="Startup name"
-                  className={inputClass(!!errors.startupName)}
-                />
-                {errors.startupName && <p className="text-red-500 text-sm mt-1">{errors.startupName}</p>}
+              <input
+                type="text"
+                name="startupName"
+                value={formData.startupName}
+                onChange={handleChange}
+                placeholder="Startup name"
+                className={inputClass(!!errors.startupName)}
+              />
+              {errors.startupName && <p className="text-red-500 text-sm mt-1">{errors.startupName}</p>}
+            </div>
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                {diamond}
+                <label className={labelClass}>3. Startup website link <span className="text-red-500">*</span></label>
               </div>
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  {diamond}
-                  <label className={labelClass}>3. Startup website link <span className="text-red-500">*</span></label>
-                </div>
-                <input
-                  type="url"
-                  name="startupWebsite"
-                  value={formData.startupWebsite}
-                  onChange={handleChange}
-                  placeholder="https://yourstartup.com"
-                  className={inputClass(!!errors.startupWebsite)}
-                />
-                {errors.startupWebsite && <p className="text-red-500 text-sm mt-1">{errors.startupWebsite}</p>}
-              </div>
+              <input
+                type="url"
+                name="startupWebsite"
+                value={formData.startupWebsite}
+                onChange={handleChange}
+                placeholder="https://yourstartup.com"
+                className={inputClass(!!errors.startupWebsite)}
+              />
+              {errors.startupWebsite && <p className="text-red-500 text-sm mt-1">{errors.startupWebsite}</p>}
             </div>
           </div>
-        );
+        </div>
+      );
 
-      case 2: {
-        const stageOptions = ["Pre-seed (some revenue / MVP live)", "Seed (steady revenue & small team)", "Series A (scaling operations)"];
-        const revenueOptions = ["Yes, consistently", "Yes, but irregular", "Not yet"];
-        const monthlyOptions = ["< $10 K", "$10 K – $50 K", "$50 K – $200 K", "$200 K +"];
-        return (
-          <div>
-            <style dangerouslySetInnerHTML={{
-              __html: `
-                .founderfuel-step2-slider .swiper { width: 100%; overflow: hidden; }
-                .founderfuel-step2-slider .swiper-slide { height: auto; box-sizing: border-box; }
-                .founderfuel-step2-slider .swiper-pagination { position: relative; margin-top: 24px; display: flex; justify-content: center; gap: 8px; }
-                .founderfuel-step2-slider .swiper-pagination-bullet { background: #D1D5DB; width: 8px; height: 8px; opacity: 1; margin: 0 4px; }
-                .founderfuel-step2-slider .swiper-pagination-bullet-active { background: #7B46F8; }
-              `,
-            }} />
-            <div className="flex items-center gap-2 mb-6">
-              {diamond}
-              <h2 className="text-2xl font-semibold text-gray-900">Stage & Revenue</h2>
-            </div>
-            <Swiper
-              modules={[Pagination]}
-              spaceBetween={24}
-              slidesPerView={1}
-              pagination={{ clickable: true }}
-              className="founderfuel-step2-slider"
-            >
-              {/* Slide 1: Question 4 - Stage */}
-              <SwiperSlide>
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    {diamond}
-                    <h3 className="text-lg font-semibold text-gray-900">4. What stage are you currently at? <span className="text-red-500">*</span></h3>
-                  </div>
-                  <div className="space-y-3">
-                    {stageOptions.map((opt) => (
-                      <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.stage === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                        <input type="radio" name="stage" value={opt} checked={formData.stage === opt} onChange={handleChange} className="sr-only" />
-                        <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.stage === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                          {formData.stage === opt && <div className="w-2 h-2 rounded-full bg-white" />}
-                        </div>
-                        <span className="text-sm font-medium text-gray-700">{opt}</span>
-                      </label>
-                    ))}
-                  </div>
-                  {errors.stage && <p className="text-red-500 text-sm mt-2">{errors.stage}</p>}
-                </div>
-              </SwiperSlide>
-              {/* Slide 2: Question 5 - Generating revenue */}
-              <SwiperSlide>
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    {diamond}
-                    <h3 className="text-lg font-semibold text-gray-900">5. Are you currently generating revenue? <span className="text-red-500">*</span></h3>
-                  </div>
-                  <div className="space-y-3">
-                    {revenueOptions.map((opt) => (
-                      <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.generatingRevenue === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                        <input type="radio" name="generatingRevenue" value={opt} checked={formData.generatingRevenue === opt} onChange={handleChange} className="sr-only" />
-                        <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.generatingRevenue === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                          {formData.generatingRevenue === opt && <div className="w-2 h-2 rounded-full bg-white" />}
-                        </div>
-                        <span className="text-sm font-medium text-gray-700">{opt}</span>
-                      </label>
-                    ))}
-                  </div>
-                  {errors.generatingRevenue && <p className="text-red-500 text-sm mt-2">{errors.generatingRevenue}</p>}
-                </div>
-              </SwiperSlide>
-              {/* Slide 3: Question 6 - Monthly revenue range */}
-              <SwiperSlide>
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    {diamond}
-                    <h3 className="text-lg font-semibold text-gray-900">6. What&apos;s your current monthly revenue range? <span className="text-red-500">*</span></h3>
-                  </div>
-                  <div className="space-y-3">
-                    {monthlyOptions.map((opt) => (
-                      <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.monthlyRevenue === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                        <input type="radio" name="monthlyRevenue" value={opt} checked={formData.monthlyRevenue === opt} onChange={handleChange} className="sr-only" />
-                        <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.monthlyRevenue === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                          {formData.monthlyRevenue === opt && <div className="w-2 h-2 rounded-full bg-white" />}
-                        </div>
-                        <span className="text-sm font-medium text-gray-700">{opt}</span>
-                      </label>
-                    ))}
-                  </div>
-                  {errors.monthlyRevenue && <p className="text-red-500 text-sm mt-2">{errors.monthlyRevenue}</p>}
-                </div>
-              </SwiperSlide>
-            </Swiper>
+    case 2: {
+      const stageOptions = ["Pre-seed (some revenue / MVP live)", "Seed (steady revenue & small team)", "Series A (scaling operations)"];
+      const revenueOptions = ["Yes, consistently", "Yes, but irregular", "Not yet"];
+      const monthlyOptions = ["< $10 K", "$10 K – $50 K", "$50 K – $200 K", "$200 K +"];
+      return (
+        <div>
+          <style dangerouslySetInnerHTML={{
+            __html: `
+              .founderfuel-step2-slider .swiper { width: 100%; overflow: hidden; }
+              .founderfuel-step2-slider .swiper-slide { height: auto; box-sizing: border-box; }
+              .founderfuel-step2-slider .swiper-pagination { position: relative; margin-top: 24px; display: flex; justify-content: center; gap: 8px; }
+              .founderfuel-step2-slider .swiper-pagination-bullet { background: #D1D5DB; width: 8px; height: 8px; opacity: 1; margin: 0 4px; }
+              .founderfuel-step2-slider .swiper-pagination-bullet-active { background: #7B46F8; }
+            `,
+          }} />
+          <div className="flex items-center gap-2 mb-6">
+            {diamond}
+            <h2 className="text-2xl font-semibold text-gray-900">Stage & Revenue</h2>
           </div>
-        );
-      }
+          <Swiper
+            modules={[Pagination]}
+            spaceBetween={24}
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            className="founderfuel-step2-slider"
+          >
+            {/* Slide 1: Question 4 - Stage */}
+            <SwiperSlide>
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  {diamond}
+                  <h3 className="text-lg font-semibold text-gray-900">4. What stage are you currently at? <span className="text-red-500">*</span></h3>
+                </div>
+                <div className="space-y-3">
+                  {stageOptions.map((opt) => (
+                    <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.stage === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
+                      <input type="radio" name="stage" value={opt} checked={formData.stage === opt} onChange={handleChange} className="sr-only" />
+                      <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.stage === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
+                        {formData.stage === opt && <div className="w-2 h-2 rounded-full bg-white" />}
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{opt}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors.stage && <p className="text-red-500 text-sm mt-2">{errors.stage}</p>}
+              </div>
+            </SwiperSlide>
+            {/* Slide 2: Question 5 - Generating revenue */}
+            <SwiperSlide>
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  {diamond}
+                  <h3 className="text-lg font-semibold text-gray-900">5. Are you currently generating revenue? <span className="text-red-500">*</span></h3>
+                </div>
+                <div className="space-y-3">
+                  {revenueOptions.map((opt) => (
+                    <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.generatingRevenue === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
+                      <input type="radio" name="generatingRevenue" value={opt} checked={formData.generatingRevenue === opt} onChange={handleChange} className="sr-only" />
+                      <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.generatingRevenue === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
+                        {formData.generatingRevenue === opt && <div className="w-2 h-2 rounded-full bg-white" />}
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{opt}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors.generatingRevenue && <p className="text-red-500 text-sm mt-2">{errors.generatingRevenue}</p>}
+              </div>
+            </SwiperSlide>
+            {/* Slide 3: Question 6 - Monthly revenue range */}
+            <SwiperSlide>
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  {diamond}
+                  <h3 className="text-lg font-semibold text-gray-900">6. What&apos;s your current monthly revenue range? <span className="text-red-500">*</span></h3>
+                </div>
+                <div className="space-y-3">
+                  {monthlyOptions.map((opt) => (
+                    <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.monthlyRevenue === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
+                      <input type="radio" name="monthlyRevenue" value={opt} checked={formData.monthlyRevenue === opt} onChange={handleChange} className="sr-only" />
+                      <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.monthlyRevenue === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
+                        {formData.monthlyRevenue === opt && <div className="w-2 h-2 rounded-full bg-white" />}
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{opt}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors.monthlyRevenue && <p className="text-red-500 text-sm mt-2">{errors.monthlyRevenue}</p>}
+              </div>
+            </SwiperSlide>
+          </Swiper>
+        </div>
+      );
+    }
 
-      case 3: {
-        const conversationTopicsList = [
-          "Mental health & burnout",
-          "Fundraising pressure",
-          "Hiring / firing / leadership",
-          "Loneliness & founder guilt",
-          "Product-market fit struggles",
-          "Relationships / life balance",
-        ];
-        return (
-          <div>
-            <style dangerouslySetInnerHTML={{
-              __html: `
-                .founderfuel-step3-slider .swiper { width: 100%; overflow: hidden; }
-                .founderfuel-step3-slider .swiper-slide { height: auto; box-sizing: border-box; }
-                .founderfuel-step3-slider .swiper-pagination { position: relative; margin-top: 24px; display: flex; justify-content: center; gap: 8px; }
-                .founderfuel-step3-slider .swiper-pagination-bullet { background: #D1D5DB; width: 8px; height: 8px; opacity: 1; margin: 0 4px; }
-                .founderfuel-step3-slider .swiper-pagination-bullet-active { background: #7B46F8; }
-              `,
-            }} />
-            <div className="flex items-center gap-2 mb-6">
-              {diamond}
-              <h2 className="text-2xl font-semibold text-gray-900">Conversations</h2>
-            </div>
-            <Swiper
-              modules={[Pagination]}
-              spaceBetween={24}
-              slidesPerView={1}
-              pagination={{ clickable: true }}
-              className="founderfuel-step3-slider"
-            >
-              <SwiperSlide>
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    {diamond}
-                    <h3 className="text-lg font-semibold text-gray-900">7. What kind of conversations do you wish you could have with other founders? <span className="text-red-500">*</span> <span className="text-gray-500 font-normal">(choose up to 3)</span></h3>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {conversationTopicsList.map((topic) => (
-                      <label
-                        key={topic}
-                        className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${formData.conversationTopics.includes(topic) ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}
-                      >
-                        <input type="checkbox" value={topic} checked={formData.conversationTopics.includes(topic)} onChange={handleCheckboxChange} className="sr-only" />
-                        <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${formData.conversationTopics.includes(topic) ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}>
-                          {formData.conversationTopics.includes(topic) && (
-                            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                            </svg>
-                          )}
-                        </div>
-                        <span className="text-sm font-medium text-gray-700">{topic}</span>
-                      </label>
-                    ))}
-                  </div>
-                  <div className="mt-3">
-                    <label className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${formData.conversationTopics.includes("Something else") ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}>
-                      <input type="checkbox" value="Something else" checked={formData.conversationTopics.includes("Something else")} onChange={handleCheckboxChange} className="sr-only" />
-                      <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${formData.conversationTopics.includes("Something else") ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}>
-                        {formData.conversationTopics.includes("Something else") && (
+    case 3: {
+      const conversationTopicsList = [
+        "Mental health & burnout",
+        "Fundraising pressure",
+        "Hiring / firing / leadership",
+        "Loneliness & founder guilt",
+        "Product-market fit struggles",
+        "Relationships / life balance",
+      ];
+      return (
+        <div>
+          <style dangerouslySetInnerHTML={{
+            __html: `
+              .founderfuel-step3-slider .swiper { width: 100%; overflow: hidden; }
+              .founderfuel-step3-slider .swiper-slide { height: auto; box-sizing: border-box; }
+              .founderfuel-step3-slider .swiper-pagination { position: relative; margin-top: 24px; display: flex; justify-content: center; gap: 8px; }
+              .founderfuel-step3-slider .swiper-pagination-bullet { background: #D1D5DB; width: 8px; height: 8px; opacity: 1; margin: 0 4px; }
+              .founderfuel-step3-slider .swiper-pagination-bullet-active { background: #7B46F8; }
+            `,
+          }} />
+          <div className="flex items-center gap-2 mb-6">
+            {diamond}
+            <h2 className="text-2xl font-semibold text-gray-900">Conversations</h2>
+          </div>
+          <Swiper
+            modules={[Pagination]}
+            spaceBetween={24}
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            className="founderfuel-step3-slider"
+          >
+            <SwiperSlide>
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  {diamond}
+                  <h3 className="text-lg font-semibold text-gray-900">7. What kind of conversations do you wish you could have with other founders? <span className="text-red-500">*</span> <span className="text-gray-500 font-normal">(choose up to 3)</span></h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {conversationTopicsList.map((topic) => (
+                    <label
+                      key={topic}
+                      className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${formData.conversationTopics.includes(topic) ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}
+                    >
+                      <input type="checkbox" value={topic} checked={formData.conversationTopics.includes(topic)} onChange={handleCheckboxChange} className="sr-only" />
+                      <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${formData.conversationTopics.includes(topic) ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}>
+                        {formData.conversationTopics.includes(topic) && (
                           <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                           </svg>
                         )}
                       </div>
-                      <span className="text-sm font-medium text-gray-700">Something else</span>
+                      <span className="text-sm font-medium text-gray-700">{topic}</span>
                     </label>
-                    {formData.conversationTopics.includes("Something else") && (
-                      <>
-                        <input type="text" name="otherTopic" value={formData.otherTopic} onChange={handleChange} placeholder="Please specify" className={`mt-2 ${inputClass(!!errors.otherTopic)}`} />
-                        {errors.otherTopic && <p className="text-red-500 text-sm mt-1">{errors.otherTopic}</p>}
-                      </>
-                    )}
-                  </div>
-                  {errors.conversationTopics && <p className="text-red-500 text-sm mt-2">{errors.conversationTopics}</p>}
+                  ))}
                 </div>
-              </SwiperSlide>
-              <SwiperSlide>
+                <div className="mt-3">
+                  <label className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${formData.conversationTopics.includes("Something else") ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}>
+                    <input type="checkbox" value="Something else" checked={formData.conversationTopics.includes("Something else")} onChange={handleCheckboxChange} className="sr-only" />
+                    <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${formData.conversationTopics.includes("Something else") ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}>
+                      {formData.conversationTopics.includes("Something else") && (
+                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </div>
+                    <span className="text-sm font-medium text-gray-700">Something else</span>
+                  </label>
+                  {formData.conversationTopics.includes("Something else") && (
+                    <>
+                      <input type="text" name="otherTopic" value={formData.otherTopic} onChange={handleChange} placeholder="Please specify" className={`mt-2 ${inputClass(!!errors.otherTopic)}`} />
+                      {errors.otherTopic && <p className="text-red-500 text-sm mt-1">{errors.otherTopic}</p>}
+                    </>
+                  )}
+                </div>
+                {errors.conversationTopics && <p className="text-red-500 text-sm mt-2">{errors.conversationTopics}</p>}
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  {diamond}
+                  <label className={labelClass}>8. What do you hate about most founder groups today? <span className="text-red-500">*</span></label>
+                </div>
+                <textarea
+                  name="hateAboutGroups"
+                  value={formData.hateAboutGroups}
+                  onChange={handleChange}
+                  placeholder="Be honest — this helps us keep the vibe right. (min 10 words)"
+                  rows={4}
+                  maxLength={500}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent bg-[#FAFAFA] ${errors.hateAboutGroups ? "border-red-500" : "border-gray-300"}`}
+                />
+                {errors.hateAboutGroups && <p className="text-red-500 text-sm mt-1">{errors.hateAboutGroups}</p>}
+                <p className="text-xs text-gray-400 mt-1">{formData.hateAboutGroups.length}/500 characters</p>
+              </div>
+            </SwiperSlide>
+          </Swiper>
+        </div>
+      );
+    }
+
+    case 4: {
+      const yearsOptions = ["< 1 year", "1 – 3 years", "3 – 5 years", "5 + years"];
+      const matchingOptions = ["Yes", "Maybe, depends on schedule", "No, prefer group convos only"];
+      return (
+        <div>
+          <style dangerouslySetInnerHTML={{
+            __html: `
+              .founderfuel-step4-slider .swiper { width: 100%; overflow: hidden; }
+              .founderfuel-step4-slider .swiper-slide { height: auto; box-sizing: border-box; }
+              .founderfuel-step4-slider .swiper-pagination { position: relative; margin-top: 24px; display: flex; justify-content: center; gap: 8px; }
+              .founderfuel-step4-slider .swiper-pagination-bullet { background: #D1D5DB; width: 8px; height: 8px; opacity: 1; margin: 0 4px; }
+              .founderfuel-step4-slider .swiper-pagination-bullet-active { background: #7B46F8; }
+            `,
+          }} />
+          <div className="flex items-center gap-2 mb-6">
+            {diamond}
+            <h2 className="text-2xl font-semibold text-gray-900">Details & Contact</h2>
+          </div>
+          <Swiper
+            modules={[Pagination]}
+            spaceBetween={24}
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            className="founderfuel-step4-slider"
+          >
+            <SwiperSlide>
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  {diamond}
+                  <h3 className="text-lg font-semibold text-gray-900">9. How many years have you been building this startup? <span className="text-red-500">*</span></h3>
+                </div>
+                <div className="space-y-3">
+                  {yearsOptions.map((opt) => (
+                    <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.yearsBuilding === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
+                      <input type="radio" name="yearsBuilding" value={opt} checked={formData.yearsBuilding === opt} onChange={handleChange} className="sr-only" />
+                      <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.yearsBuilding === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
+                        {formData.yearsBuilding === opt && <div className="w-2 h-2 rounded-full bg-white" />}
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{opt}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors.yearsBuilding && <p className="text-red-500 text-sm mt-2">{errors.yearsBuilding}</p>}
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  {diamond}
+                  <h3 className="text-lg font-semibold text-gray-900">10. Would you be open to being matched 1:1 with another founder for a private conversation every 2 weeks?</h3>
+                </div>
+                <div className="space-y-3">
+                  {matchingOptions.map((opt) => (
+                    <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.openToMatching === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
+                      <input type="radio" name="openToMatching" value={opt} checked={formData.openToMatching === opt} onChange={handleChange} className="sr-only" />
+                      <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.openToMatching === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
+                        {formData.openToMatching === opt && <div className="w-2 h-2 rounded-full bg-white" />}
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{opt}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors.openToMatching && <p className="text-red-500 text-sm mt-2">{errors.openToMatching}</p>}
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="space-y-6">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     {diamond}
-                    <label className={labelClass}>8. What do you hate about most founder groups today? <span className="text-red-500">*</span></label>
+                    <label className="text-lg font-semibold text-gray-900">11. What city are you based in? <span className="text-red-500">*</span></label>
                   </div>
-                  <textarea
-                    name="hateAboutGroups"
-                    value={formData.hateAboutGroups}
-                    onChange={handleChange}
-                    placeholder="Be honest — this helps us keep the vibe right. (min 10 words)"
-                    rows={4}
-                    maxLength={500}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent bg-[#FAFAFA] ${errors.hateAboutGroups ? "border-red-500" : "border-gray-300"}`}
-                  />
-                  {errors.hateAboutGroups && <p className="text-red-500 text-sm mt-1">{errors.hateAboutGroups}</p>}
-                  <p className="text-xs text-gray-400 mt-1">{formData.hateAboutGroups.length}/500 characters</p>
+                  <input type="text" name="city" value={formData.city} onChange={handleChange} placeholder="Enter your city" className={inputClass(!!errors.city)} />
+                  {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
                 </div>
-              </SwiperSlide>
-            </Swiper>
-          </div>
-        );
-      }
-
-      case 4: {
-        const yearsOptions = ["< 1 year", "1 – 3 years", "3 – 5 years", "5 + years"];
-        const matchingOptions = ["Yes", "Maybe, depends on schedule", "No, prefer group convos only"];
-        return (
-          <div>
-            <style dangerouslySetInnerHTML={{
-              __html: `
-                .founderfuel-step4-slider .swiper { width: 100%; overflow: hidden; }
-                .founderfuel-step4-slider .swiper-slide { height: auto; box-sizing: border-box; }
-                .founderfuel-step4-slider .swiper-pagination { position: relative; margin-top: 24px; display: flex; justify-content: center; gap: 8px; }
-                .founderfuel-step4-slider .swiper-pagination-bullet { background: #D1D5DB; width: 8px; height: 8px; opacity: 1; margin: 0 4px; }
-                .founderfuel-step4-slider .swiper-pagination-bullet-active { background: #7B46F8; }
-              `,
-            }} />
-            <div className="flex items-center gap-2 mb-6">
-              {diamond}
-              <h2 className="text-2xl font-semibold text-gray-900">Details & Contact</h2>
-            </div>
-            <Swiper
-              modules={[Pagination]}
-              spaceBetween={24}
-              slidesPerView={1}
-              pagination={{ clickable: true }}
-              className="founderfuel-step4-slider"
-            >
-              <SwiperSlide>
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    {diamond}
+                    <label className="text-lg font-semibold text-gray-900">12. How did you hear about us? <span className="text-red-500">*</span></label>
+                  </div>
+                  <input type="text" name="heardAbout" value={formData.heardAbout} onChange={handleChange} placeholder="Tell us how you found us" className={inputClass(!!errors.heardAbout)} />
+                  {errors.heardAbout && <p className="text-red-500 text-sm mt-1">{errors.heardAbout}</p>}
+                </div>
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="space-y-6">
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     {diamond}
-                    <h3 className="text-lg font-semibold text-gray-900">9. How many years have you been building this startup? <span className="text-red-500">*</span></h3>
+                    <h3 className="text-lg font-semibold text-gray-900">13. Preferred mode to communicate? <span className="text-red-500">*</span></h3>
                   </div>
                   <div className="space-y-3">
-                    {yearsOptions.map((opt) => (
-                      <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.yearsBuilding === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                        <input type="radio" name="yearsBuilding" value={opt} checked={formData.yearsBuilding === opt} onChange={handleChange} className="sr-only" />
-                        <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.yearsBuilding === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                          {formData.yearsBuilding === opt && <div className="w-2 h-2 rounded-full bg-white" />}
+                    {["WhatsApp", "Slack"].map((opt) => (
+                      <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.preferredMode === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
+                        <input type="radio" name="preferredMode" value={opt} checked={formData.preferredMode === opt} onChange={handleChange} className="sr-only" />
+                        <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.preferredMode === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
+                          {formData.preferredMode === opt && <div className="w-2 h-2 rounded-full bg-white" />}
                         </div>
                         <span className="text-sm font-medium text-gray-700">{opt}</span>
                       </label>
                     ))}
                   </div>
-                  {errors.yearsBuilding && <p className="text-red-500 text-sm mt-2">{errors.yearsBuilding}</p>}
+                  {errors.preferredMode && <p className="text-red-500 text-sm mt-2">{errors.preferredMode}</p>}
                 </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    {diamond}
-                    <h3 className="text-lg font-semibold text-gray-900">10. Would you be open to being matched 1:1 with another founder for a private conversation every 2 weeks?</h3>
-                  </div>
-                  <div className="space-y-3">
-                    {matchingOptions.map((opt) => (
-                      <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.openToMatching === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                        <input type="radio" name="openToMatching" value={opt} checked={formData.openToMatching === opt} onChange={handleChange} className="sr-only" />
-                        <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.openToMatching === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                          {formData.openToMatching === opt && <div className="w-2 h-2 rounded-full bg-white" />}
-                        </div>
-                        <span className="text-sm font-medium text-gray-700">{opt}</span>
+                {formData.preferredMode && (
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      {diamond}
+                      <label className={labelClass}>
+                        {formData.preferredMode === "WhatsApp" ? "WhatsApp Phone Number" : "Slack Email"} <span className="text-red-500">*</span>
                       </label>
-                    ))}
+                    </div>
+                    <input
+                      name="contactDetail"
+                      type={formData.preferredMode === "WhatsApp" ? "tel" : "email"}
+                      value={formData.contactDetail}
+                      onChange={handleChange}
+                      placeholder={formData.preferredMode === "WhatsApp" ? "e.g. +1 234 567 8900" : "e.g. founder@startup.com"}
+                      className={inputClass(!!errors.contactDetail)}
+                    />
+                    {errors.contactDetail && <p className="text-red-500 text-sm mt-1">{errors.contactDetail}</p>}
                   </div>
-                  {errors.openToMatching && <p className="text-red-500 text-sm mt-2">{errors.openToMatching}</p>}
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="space-y-6">
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      {diamond}
-                      <label className="text-lg font-semibold text-gray-900">11. What city are you based in? <span className="text-red-500">*</span></label>
-                    </div>
-                    <input type="text" name="city" value={formData.city} onChange={handleChange} placeholder="Enter your city" className={inputClass(!!errors.city)} />
-                    {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      {diamond}
-                      <label className="text-lg font-semibold text-gray-900">12. How did you hear about us? <span className="text-red-500">*</span></label>
-                    </div>
-                    <input type="text" name="heardAbout" value={formData.heardAbout} onChange={handleChange} placeholder="Tell us how you found us" className={inputClass(!!errors.heardAbout)} />
-                    {errors.heardAbout && <p className="text-red-500 text-sm mt-1">{errors.heardAbout}</p>}
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="space-y-6">
-                  <div>
-                    <div className="flex items-center gap-2 mb-4">
-                      {diamond}
-                      <h3 className="text-lg font-semibold text-gray-900">13. Preferred mode to communicate? <span className="text-red-500">*</span></h3>
-                    </div>
-                    <div className="space-y-3">
-                      {["WhatsApp", "Slack"].map((opt) => (
-                        <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.preferredMode === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                          <input type="radio" name="preferredMode" value={opt} checked={formData.preferredMode === opt} onChange={handleChange} className="sr-only" />
-                          <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.preferredMode === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                            {formData.preferredMode === opt && <div className="w-2 h-2 rounded-full bg-white" />}
-                          </div>
-                          <span className="text-sm font-medium text-gray-700">{opt}</span>
-                        </label>
-                      ))}
-                    </div>
-                    {errors.preferredMode && <p className="text-red-500 text-sm mt-2">{errors.preferredMode}</p>}
-                  </div>
-                  {formData.preferredMode && (
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        {diamond}
-                        <label className={labelClass}>
-                          {formData.preferredMode === "WhatsApp" ? "WhatsApp Phone Number" : "Slack Email"} <span className="text-red-500">*</span>
-                        </label>
-                      </div>
-                      <input
-                        name="contactDetail"
-                        type={formData.preferredMode === "WhatsApp" ? "tel" : "email"}
-                        value={formData.contactDetail}
-                        onChange={handleChange}
-                        placeholder={formData.preferredMode === "WhatsApp" ? "e.g. +1 234 567 8900" : "e.g. founder@startup.com"}
-                        className={inputClass(!!errors.contactDetail)}
-                      />
-                      {errors.contactDetail && <p className="text-red-500 text-sm mt-1">{errors.contactDetail}</p>}
-                    </div>
-                  )}
-                </div>
-              </SwiperSlide>
-            </Swiper>
-          </div>
-        );
-      }
+                )}
+              </div>
+            </SwiperSlide>
+          </Swiper>
+        </div>
+      );
+    }
 
-      default:
-        return null;
+    default:
+      return null;
     }
   };
 
@@ -744,14 +743,14 @@ const FounderInquiryForm: React.FC = () => {
                     >
                       <div
                         className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${isActive ? "bg-[#7B46F8] border-2 border-[#7B46F8]" : isCompleted ? "bg-[#7B46F8] border-2 border-[#7B46F8]" : "bg-[#F8F8F8] border-2 border-gray-300 border-dashed"
-                          }`}
+                        }`}
                       >
                         {isActive && <div className="w-3 h-3 bg-white rounded-full" />}
                       </div>
                       <div className="flex-1 pt-1">
                         <h3
                           className={`text-lg font-medium ${isActive ? "text-[#7B46F8] font-semibold" : isCompleted ? "text-gray-900 font-medium" : "text-gray-600 font-normal"
-                            }`}
+                          }`}
                         >
                           {step.title}
                         </h3>

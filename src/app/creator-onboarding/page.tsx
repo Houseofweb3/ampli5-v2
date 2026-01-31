@@ -119,7 +119,7 @@ export default function CreatorOnboardingForm() {
     });
     // Step 4 only completed when platform is selected AND (no inventory options for platform OR user selected items with valid rates)
     if (platformStep4 && (optionsStep4.length === 0 || (selectedForPlatformStep4.length > 0 && allRatesValidStep4))) completed.add(4);
-    if (formData.primaryAudienceGeography && formData.primaryAudienceGeography.length > 0) completed.add(5);
+    if (formData.primaryAudienceGeography && formData.primaryAudienceGeography.length > 0 && formData.secondaryAudienceGeography && formData.secondaryAudienceGeography.length > 0) completed.add(5);
     // Step 6: Audience Proof - check if at least one image is uploaded
     if (formData.ageScreenshot || formData.genderScreenshot || formData.topCountriesScreenshot) completed.add(6);
     // Step 7: Payment Terms - check if payment term is selected
@@ -231,6 +231,9 @@ export default function CreatorOnboardingForm() {
     case 5:
       if (!formData.primaryAudienceGeography || formData.primaryAudienceGeography.length === 0) {
         newErrors.primaryAudienceGeography = 'Please select at least one primary audience region';
+      }
+      if (!formData.secondaryAudienceGeography || formData.secondaryAudienceGeography.length === 0) {
+        newErrors.secondaryAudienceGeography = 'Please select at least one secondary audience region';
       }
       break;
     case 6:
@@ -1249,7 +1252,7 @@ export default function CreatorOnboardingForm() {
                 <div className="max-w-full box-border">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                    <h3 className="text-lg font-semibold text-gray-900">Primary Audience Regions</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">Primary Audience Regions <span className="text-red-500">*</span></h3>
                   </div>
                   <div className="space-y-3">
                     {geographyOptions.map((option) => {
@@ -1297,7 +1300,7 @@ export default function CreatorOnboardingForm() {
                 <div className="max-w-full box-border">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                    <h3 className="text-lg font-semibold text-gray-900">Secondary Audience Regions</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">Secondary Audience Regions <span className="text-red-500">*</span></h3>
                   </div>
                   <div className="space-y-3">
                     {geographyOptions.map((option) => {
