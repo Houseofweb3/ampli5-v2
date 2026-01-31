@@ -88,10 +88,37 @@ export default function CreatorOnboardingForm() {
     // Check which steps have data - will be updated as we implement each step
     if (formData.channelBrandName && formData.primaryContactEmail && formData.telegramId && formData.whatsappNumber && formData.primaryCountry && formData.primaryTimezone && formData.platforms && formData.platforms.length > 0) completed.add(1);
     if (formData.industries && formData.industries.length > 0) completed.add(2);
-    if (formData.categories && formData.categories.length > 0) completed.add(3);
+    const industryCategoryMapCompleted: Record<string, string[]> = {
+      'Crypto': ['DeFi', 'Infrastructure', 'Trading & Prediction Markets', 'Memecoins', 'Podcasters', 'Clippers'],
+      'AI': ['AI Products & Tools Review', 'AI Education', 'AI News & Releases', 'Podcasters', 'Clippers'],
+      'Startups': ['Startup News & Media', 'Startup Product Reviews', 'Business & Tech Explainers', 'Growth & Marketing', 'Podcasters', 'Clippers'],
+      'Fintech': ['News & Trends', 'Fintech Product Reviews', 'Podcasters', 'Clippers'],
+      'Robotics & Hardware': ['Tech & Gadget Creators', 'Lifestyle Tech Creators', 'Product Reviews', 'Innovation & Future Tech', 'Podcasters', 'Clippers'],
+      'Motivation / Mindset': ['Motivational Speakers', 'Mindset & Discipline', 'Entrepreneur Motivation', 'Stoicism & Philosophy', 'Podcasters', 'Clippers'],
+      'Health & Fitness': ['Physical Fitness', 'Diet & Nutrition', 'Biohacking', 'Podcasters', 'Clippers'],
+    };
+    const selInd = formData.industries?.[0];
+    const hasCats = selInd && (industryCategoryMapCompleted[selInd]?.length ?? 0) > 0;
+    if (formData.industries?.length === 1 && (!hasCats || (formData.categories && formData.categories.length > 0))) completed.add(3);
+    const platformInventoryMapCompleted: Record<string, string[]> = {
+      'X': ['Single tweet', 'Thread (5–7 tweets)', 'Quote tweet', 'Pinned tweet (7 days)', 'AMA (X Spaces – 60 mins)', 'Article'],
+      'Youtube': ['Integrated video (≤3 mins)', 'Sponsored-by tag', 'Dedicated review / breakdown video', 'Streams/Live trading video', 'Shorts'],
+      'Instagram': ['IG Reel – Original (Creator produces content) ( 24 hours )', 'IG Reel – Adapted (Brand provides content)( 24 hours )', 'IG Reel – Repost (Brand provides content) ( 24h )', 'IG Reel – Original (Creator produces content) ( 7 hours )', 'IG Reel – Adapted (Brand provides content)( 7 hours )', 'IG Reel – Repost (Brand provides content) ( 7h )', 'Carousel (3–5 slides)', 'Story sequence (3 slides)', 'Link in bio placement (7 days)', 'Reel pinned (7 days)', 'TikTok pinned (7 days)', 'IG Reel – Original (Creator produces content)'],
+      'TikTok': ['IG Reel – Original (Creator produces content) ( 24 hours )', 'IG Reel – Adapted (Brand provides content)( 24 hours )', 'IG Reel – Repost (Brand provides content) ( 24h )', 'IG Reel – Original (Creator produces content) ( 7 hours )', 'IG Reel – Adapted (Brand provides content)( 7 hours )', 'IG Reel – Repost (Brand provides content) ( 7h )', 'Carousel (3–5 slides)', 'Story sequence (3 slides)', 'Link in bio placement (7 days)', 'Reel pinned (7 days)', 'TikTok pinned (7 days)', 'IG Reel – Original (Creator produces content)'],
+      'Newsletter': ['Sponsored-by mention (top)', 'Sponsored-by mention (footer)', 'Contextual integration within main content'],
+      'PR/Editorial': ['Organic PR with backlink', 'Thematic article (brand included in narrative)'],
+      'Spotify': ['Dedicated podcast episode', 'Podcast sponsored mention', 'Short clips distribution (IG / Shorts / TikTok)', 'Short virtual podcast (IG / Shorts / TikTok)'],
+    };
+    const platformStep4 = formData.platforms?.[0];
+    const optionsStep4 = platformStep4 ? (platformInventoryMapCompleted[platformStep4] ?? []) : [];
     const inventoryItems = formData.inventoryItems || {};
-    const selectedInventoryItems = Object.entries(inventoryItems).filter(([, item]) => item.selected);
-    if (selectedInventoryItems.length > 0 && selectedInventoryItems.every(([, item]) => item.rate && item.rate.trim() !== '')) completed.add(4);
+    const selectedForPlatformStep4 = optionsStep4.filter((item: string) => inventoryItems[item]?.selected);
+    const allRatesValidStep4 = selectedForPlatformStep4.every((item: string) => {
+      const r = inventoryItems[item]?.rate?.trim() ?? '';
+      return r !== '' && r !== '0';
+    });
+    // Step 4 only completed when platform is selected AND (no inventory options for platform OR user selected items with valid rates)
+    if (platformStep4 && (optionsStep4.length === 0 || (selectedForPlatformStep4.length > 0 && allRatesValidStep4))) completed.add(4);
     if (formData.primaryAudienceGeography && formData.primaryAudienceGeography.length > 0) completed.add(5);
     // Step 6: Audience Proof - check if at least one image is uploaded
     if (formData.ageScreenshot || formData.genderScreenshot || formData.topCountriesScreenshot) completed.add(6);
@@ -147,32 +174,60 @@ export default function CreatorOnboardingForm() {
         newErrors.primaryTimezone = 'Primary Timezone is required';
       }
       if (!formData.platforms || formData.platforms.length === 0) {
-        newErrors.platforms = 'Please select at least one platform';
+        newErrors.platforms = 'Please select one platform';
       }
       break;
     case 2:
       if (!formData.industries || formData.industries.length === 0) {
-        newErrors.industries = 'Please select at least one industry';
+        newErrors.industries = 'Please select one industry';
       }
       break;
-    case 3:
-      if (!formData.categories || formData.categories.length === 0) {
+    case 3: {
+      const industryCategoryMap: Record<string, string[]> = {
+        'Crypto': ['DeFi', 'Infrastructure', 'Trading & Prediction Markets', 'Memecoins', 'Podcasters', 'Clippers'],
+        'AI': ['AI Products & Tools Review', 'AI Education', 'AI News & Releases', 'Podcasters', 'Clippers'],
+        'Startups': ['Startup News & Media', 'Startup Product Reviews', 'Business & Tech Explainers', 'Growth & Marketing', 'Podcasters', 'Clippers'],
+        'Fintech': ['News & Trends', 'Fintech Product Reviews', 'Podcasters', 'Clippers'],
+        'Robotics & Hardware': ['Tech & Gadget Creators', 'Lifestyle Tech Creators', 'Product Reviews', 'Innovation & Future Tech', 'Podcasters', 'Clippers'],
+        'Motivation / Mindset': ['Motivational Speakers', 'Mindset & Discipline', 'Entrepreneur Motivation', 'Stoicism & Philosophy', 'Podcasters', 'Clippers'],
+        'Health & Fitness': ['Physical Fitness', 'Diet & Nutrition', 'Biohacking', 'Podcasters', 'Clippers'],
+      };
+      const selectedInd = formData.industries?.[0];
+      const hasCategories = selectedInd && (industryCategoryMap[selectedInd]?.length ?? 0) > 0;
+      if (hasCategories && (!formData.categories || formData.categories.length === 0)) {
         newErrors.categories = 'Please select at least one category';
       }
       break;
-    case 4:
-      const inventoryItems = formData.inventoryItems || {};
-      const selectedInventoryItems = Object.entries(inventoryItems).filter(([, item]) => item.selected);
-      if (selectedInventoryItems.length === 0) {
-        newErrors.inventoryItems = 'Please select at least one inventory item';
-      } else {
-        // Check if all selected items have rates
-        const itemsWithoutRates = selectedInventoryItems.filter(([, item]) => !item.rate || item.rate.trim() === '');
-        if (itemsWithoutRates.length > 0) {
-          newErrors.inventoryItems = 'Please enter rates for all selected inventory items';
+    }
+    case 4: {
+      const platformInventoryMap: Record<string, string[]> = {
+        'X': ['Single tweet', 'Thread (5–7 tweets)', 'Quote tweet', 'Pinned tweet (7 days)', 'AMA (X Spaces – 60 mins)', 'Article'],
+        'Youtube': ['Integrated video (≤3 mins)', 'Sponsored-by tag', 'Dedicated review / breakdown video', 'Streams/Live trading video', 'Shorts'],
+        'Instagram': ['IG Reel – Original (Creator produces content) ( 24 hours )', 'IG Reel – Adapted (Brand provides content)( 24 hours )', 'IG Reel – Repost (Brand provides content) ( 24h )', 'IG Reel – Original (Creator produces content) ( 7 hours )', 'IG Reel – Adapted (Brand provides content)( 7 hours )', 'IG Reel – Repost (Brand provides content) ( 7h )', 'Carousel (3–5 slides)', 'Story sequence (3 slides)', 'Link in bio placement (7 days)', 'Reel pinned (7 days)', 'TikTok pinned (7 days)', 'IG Reel – Original (Creator produces content)'],
+        'TikTok': ['IG Reel – Original (Creator produces content) ( 24 hours )', 'IG Reel – Adapted (Brand provides content)( 24 hours )', 'IG Reel – Repost (Brand provides content) ( 24h )', 'IG Reel – Original (Creator produces content) ( 7 hours )', 'IG Reel – Adapted (Brand provides content)( 7 hours )', 'IG Reel – Repost (Brand provides content) ( 7h )', 'Carousel (3–5 slides)', 'Story sequence (3 slides)', 'Link in bio placement (7 days)', 'Reel pinned (7 days)', 'TikTok pinned (7 days)', 'IG Reel – Original (Creator produces content)'],
+        'Newsletter': ['Sponsored-by mention (top)', 'Sponsored-by mention (footer)', 'Contextual integration within main content'],
+        'PR/Editorial': ['Organic PR with backlink', 'Thematic article (brand included in narrative)'],
+        'Spotify': ['Dedicated podcast episode', 'Podcast sponsored mention', 'Short clips distribution (IG / Shorts / TikTok)', 'Short virtual podcast (IG / Shorts / TikTok)'],
+      };
+      const platform = formData.platforms?.[0];
+      const optionsForPlatform = platform ? (platformInventoryMap[platform] ?? []) : [];
+      if (optionsForPlatform.length > 0) {
+        const inventoryItems = formData.inventoryItems || {};
+        const selectedForPlatform = optionsForPlatform.filter(item => inventoryItems[item]?.selected);
+        if (selectedForPlatform.length === 0) {
+          newErrors.inventoryItems = 'Please select at least one inventory item';
+        } else {
+          const itemsWithoutValidRate = selectedForPlatform.filter(item => {
+            const rate = inventoryItems[item]?.rate?.trim() ?? '';
+            return !rate || rate === '0';
+          });
+          if (itemsWithoutValidRate.length > 0) {
+            newErrors.inventoryItems = 'Please enter a rate greater than 0 for all selected inventory items';
+          }
         }
       }
       break;
+    }
     case 5:
       if (!formData.primaryAudienceGeography || formData.primaryAudienceGeography.length === 0) {
         newErrors.primaryAudienceGeography = 'Please select at least one primary audience region';
@@ -266,7 +321,11 @@ export default function CreatorOnboardingForm() {
 
   const isStepCompleted = (stepId: number) => completedSteps.has(stepId);
   const isStepActive = (stepId: number) => stepId === currentStep;
-  const isStepClickable = (stepId: number) => isStepCompleted(stepId) || isStepActive(stepId);
+  // Only allow clicking: current step, any previous step, or the immediate next step when current is completed (all fields required, no jumping ahead)
+  const isStepClickable = (stepId: number) =>
+    stepId === currentStep ||
+    stepId < currentStep ||
+    (stepId === currentStep + 1 && isStepCompleted(currentStep));
 
 
   const renderStepContent = () => {
@@ -276,9 +335,7 @@ export default function CreatorOnboardingForm() {
 
       const handlePlatformChange = (platform: string) => {
         const currentPlatforms = formData.platforms || [];
-        const newPlatforms = currentPlatforms.includes(platform)
-          ? currentPlatforms.filter(p => p !== platform)
-          : [...currentPlatforms, platform];
+        const newPlatforms = currentPlatforms.includes(platform) ? [] : [platform];
         updateFormData({ platforms: newPlatforms });
         if (errors.platforms) {
           setErrors(prev => ({ ...prev, platforms: '' }));
@@ -497,7 +554,7 @@ export default function CreatorOnboardingForm() {
                   <div>
                     <div className="flex items-center gap-2 mb-4">
                       <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                      <h3 className="text-lg font-semibold text-gray-900">Platform You're Active On</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">Platform You're Active On <span className="text-red-500">*</span></h3>
                     </div>
                     <div className="space-y-3">
                       {platformOptions.map((platform) => {
@@ -511,19 +568,18 @@ export default function CreatorOnboardingForm() {
                             }`}
                           >
                             <input
-                              type="checkbox"
+                              type="radio"
+                              name="platform-selection"
                               checked={isSelected}
                               onChange={() => handlePlatformChange(platform)}
                               className="sr-only"
                             />
-                            <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${isSelected
+                            <div className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 ${isSelected
                               ? 'bg-[#7B46F8] border-[#7B46F8]'
                               : 'bg-white border-gray-300'
                             }`}>
                               {isSelected && (
-                                <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                </svg>
+                                <div className="w-2 h-2 rounded-full bg-white" />
                               )}
                             </div>
                             <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'
@@ -713,7 +769,7 @@ export default function CreatorOnboardingForm() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                <h3 className="text-lg font-semibold text-gray-900">Platform You're Active On</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Platform You're Active On <span className="text-red-500">*</span></h3>
               </div>
               <div className="space-y-3">
                 {platformOptions.map((platform) => {
@@ -727,19 +783,18 @@ export default function CreatorOnboardingForm() {
                       }`}
                     >
                       <input
-                        type="checkbox"
+                        type="radio"
+                        name="platform-selection-mobile"
                         checked={isSelected}
                         onChange={() => handlePlatformChange(platform)}
                         className="sr-only"
                       />
-                      <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${isSelected
+                      <div className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 ${isSelected
                         ? 'bg-[#7B46F8] border-[#7B46F8]'
                         : 'bg-white border-gray-300'
                       }`}>
                         {isSelected && (
-                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                          </svg>
+                          <div className="w-2 h-2 rounded-full bg-white" />
                         )}
                       </div>
                       <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'
@@ -766,15 +821,12 @@ export default function CreatorOnboardingForm() {
         'Robotics & Hardware',
         'Motivation / Mindset',
         'Health & Fitness',
-        'Entertainment'
       ];
 
       const handleIndustryChange = (industry: string) => {
         const currentIndustries = formData.industries || [];
-        const newIndustries = currentIndustries.includes(industry)
-          ? currentIndustries.filter(i => i !== industry)
-          : [...currentIndustries, industry];
-        updateFormData({ industries: newIndustries });
+        const newIndustries = currentIndustries.includes(industry) ? [] : [industry];
+        updateFormData({ industries: newIndustries, categories: [] });
         if (errors.industries) {
           setErrors(prev => ({ ...prev, industries: '' }));
         }
@@ -790,7 +842,7 @@ export default function CreatorOnboardingForm() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                <h3 className="text-lg font-semibold text-gray-900">Select The Industries You Operate In</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Select The Industry You Operate In <span className="text-red-500">*</span></h3>
               </div>
               <div className="space-y-3">
                 {industries.map((industry) => {
@@ -804,19 +856,18 @@ export default function CreatorOnboardingForm() {
                       }`}
                     >
                       <input
-                        type="checkbox"
+                        type="radio"
+                        name="industry-selection"
                         checked={isSelected}
                         onChange={() => handleIndustryChange(industry)}
                         className="sr-only"
                       />
-                      <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${isSelected
+                      <div className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 ${isSelected
                         ? 'bg-[#7B46F8] border-[#7B46F8]'
                         : 'bg-white border-gray-300'
                       }`}>
                         {isSelected && (
-                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                          </svg>
+                          <div className="w-2 h-2 rounded-full bg-white" />
                         )}
                       </div>
                       <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'
@@ -834,15 +885,19 @@ export default function CreatorOnboardingForm() {
           </div>
         </div>
       );
-    case 3:
-      const categoryOptions = [
-        'Defi',
-        'Infrastructure',
-        'Trading & prediction markets',
-        'Memecoins',
-        'Podcasters',
-        'Clippers'
-      ];
+    case 3: {
+      const INDUSTRY_CATEGORY_OPTIONS: Record<string, string[]> = {
+        'Crypto': ['DeFi', 'Infrastructure', 'Trading & Prediction Markets', 'Memecoins', 'Podcasters', 'Clippers'],
+        'AI': ['AI Products & Tools Review', 'AI Education', 'AI News & Releases', 'Podcasters', 'Clippers'],
+        'Startups': ['Startup News & Media', 'Startup Product Reviews', 'Business & Tech Explainers', 'Growth & Marketing', 'Podcasters', 'Clippers'],
+        'Fintech': ['News & Trends', 'Fintech Product Reviews', 'Podcasters', 'Clippers'],
+        'Robotics & Hardware': ['Tech & Gadget Creators', 'Lifestyle Tech Creators', 'Product Reviews', 'Innovation & Future Tech', 'Podcasters', 'Clippers'],
+        'Motivation / Mindset': ['Motivational Speakers', 'Mindset & Discipline', 'Entrepreneur Motivation', 'Stoicism & Philosophy', 'Podcasters', 'Clippers'],
+        'Health & Fitness': ['Physical Fitness', 'Diet & Nutrition', 'Biohacking', 'Podcasters', 'Clippers'],
+      };
+
+      const selectedIndustry = formData.industries?.[0];
+      const categoryOptions = selectedIndustry ? (INDUSTRY_CATEGORY_OPTIONS[selectedIndustry] ?? []) : [];
 
       const handleCategoryChange = (category: string) => {
         const currentCategories = formData.categories || [];
@@ -859,49 +914,57 @@ export default function CreatorOnboardingForm() {
         <div>
           <div className="flex items-center gap-2 mb-6">
             <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-            <h2 className="text-2xl font-semibold text-gray-900">Category Selection</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">Category Selection <span className="text-red-500">*</span></h2>
           </div>
           <div className="space-y-6">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                <h3 className="text-lg font-semibold text-gray-900">Select Category</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Select categories for {selectedIndustry || 'your industry'}
+                </h3>
               </div>
-              <div className="space-y-3">
-                {categoryOptions.map((category) => {
-                  const isSelected = formData.categories?.includes(category) || false;
-                  return (
-                    <label
-                      key={category}
-                      className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${isSelected
-                        ? 'border-[#7B46F8] bg-white'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isSelected}
-                        onChange={() => handleCategoryChange(category)}
-                        className="sr-only"
-                      />
-                      <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${isSelected
-                        ? 'bg-[#7B46F8] border-[#7B46F8]'
-                        : 'bg-white border-gray-300'
-                      }`}>
-                        {isSelected && (
-                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
-                      </div>
-                      <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'
-                      }`}>
-                        {category}
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
+              {!selectedIndustry ? (
+                <p className="text-sm text-gray-500">Please complete Step 2 (Industry selection) first.</p>
+              ) : categoryOptions.length === 0 ? (
+                <p className="text-sm text-gray-500">No categories for this industry. You can proceed to the next step.</p>
+              ) : (
+                <div className="space-y-3">
+                  {categoryOptions.map((category) => {
+                    const isSelected = formData.categories?.includes(category) || false;
+                    return (
+                      <label
+                        key={category}
+                        className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${isSelected
+                          ? 'border-[#7B46F8] bg-white'
+                          : 'border-gray-200 bg-white hover:border-gray-300'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => handleCategoryChange(category)}
+                          className="sr-only"
+                        />
+                        <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${isSelected
+                          ? 'bg-[#7B46F8] border-[#7B46F8]'
+                          : 'bg-white border-gray-300'
+                        }`}>
+                          {isSelected && (
+                            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </div>
+                        <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'
+                        }`}>
+                          {category}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
               {errors.categories && (
                 <p className="mt-2 text-sm text-red-500">{errors.categories}</p>
               )}
@@ -909,14 +972,71 @@ export default function CreatorOnboardingForm() {
           </div>
         </div>
       );
-    case 4:
-      const inventoryOptions = [
-        'Single tweet',
-        'Thread (5-7 tweets)',
-        'Quote tweet',
-        'Pinned tweet (7 days)',
-        'AMA (X Spaces - 60 mins)'
-      ];
+    }
+    case 4: {
+      const PLATFORM_INVENTORY_OPTIONS: Record<string, string[]> = {
+        'X': [
+          'Single tweet',
+          'Thread (5–7 tweets)',
+          'Quote tweet',
+          'Pinned tweet (7 days)',
+          'AMA (X Spaces – 60 mins)',
+          'Article',
+        ],
+        'Youtube': [
+          'Integrated video (≤3 mins)',
+          'Sponsored-by tag',
+          'Dedicated review / breakdown video',
+          'Streams/Live trading video',
+          'Shorts',
+        ],
+        'Instagram': [
+          'IG Reel – Original (Creator produces content) ( 24 hours )',
+          'IG Reel – Adapted (Brand provides content)( 24 hours )',
+          'IG Reel – Repost (Brand provides content) ( 24h )',
+          'IG Reel – Original (Creator produces content) ( 7 hours )',
+          'IG Reel – Adapted (Brand provides content)( 7 hours )',
+          'IG Reel – Repost (Brand provides content) ( 7h )',
+          'Carousel (3–5 slides)',
+          'Story sequence (3 slides)',
+          'Link in bio placement (7 days)',
+          'Reel pinned (7 days)',
+          'TikTok pinned (7 days)',
+          'IG Reel – Original (Creator produces content)',
+        ],
+        'TikTok': [
+          'IG Reel – Original (Creator produces content) ( 24 hours )',
+          'IG Reel – Adapted (Brand provides content)( 24 hours )',
+          'IG Reel – Repost (Brand provides content) ( 24h )',
+          'IG Reel – Original (Creator produces content) ( 7 hours )',
+          'IG Reel – Adapted (Brand provides content)( 7 hours )',
+          'IG Reel – Repost (Brand provides content) ( 7h )',
+          'Carousel (3–5 slides)',
+          'Story sequence (3 slides)',
+          'Link in bio placement (7 days)',
+          'Reel pinned (7 days)',
+          'TikTok pinned (7 days)',
+          'IG Reel – Original (Creator produces content)',
+        ],
+        'Newsletter': [
+          'Sponsored-by mention (top)',
+          'Sponsored-by mention (footer)',
+          'Contextual integration within main content',
+        ],
+        'PR/Editorial': [
+          'Organic PR with backlink',
+          'Thematic article (brand included in narrative)',
+        ],
+        'Spotify': [
+          'Dedicated podcast episode',
+          'Podcast sponsored mention',
+          'Short clips distribution (IG / Shorts / TikTok)',
+          'Short virtual podcast (IG / Shorts / TikTok)',
+        ],
+      };
+
+      const selectedPlatform = formData.platforms?.[0];
+      const inventoryOptions = selectedPlatform ? (PLATFORM_INVENTORY_OPTIONS[selectedPlatform] ?? []) : [];
 
       const handleInventoryChange = (item: string) => {
         const currentItems = formData.inventoryItems || {};
@@ -951,7 +1071,12 @@ export default function CreatorOnboardingForm() {
       };
 
       const resetInventory = () => {
-        updateFormData({ inventoryItems: {} });
+        const currentItems = formData.inventoryItems || {};
+        const newItems: Record<string, { selected: boolean; rate: string }> = {};
+        Object.entries(currentItems).forEach(([k, v]) => {
+          if (!inventoryOptions.includes(k) && v) newItems[k] = v;
+        });
+        updateFormData({ inventoryItems: newItems });
       };
 
       return (
@@ -965,70 +1090,81 @@ export default function CreatorOnboardingForm() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                  <h3 className="text-lg font-semibold text-gray-900">Select Inventory Selection & Rates</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Select Inventory & Rates for {selectedPlatform || 'your platform'}
+                  </h3>
                 </div>
-                <button
-                  onClick={resetInventory}
-                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                  </svg>
+                {inventoryOptions.length > 0 && (
+                  <button
+                    onClick={resetInventory}
+                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
                     Reset
-                </button>
+                  </button>
+                )}
               </div>
-              <div className="space-y-3">
-                {inventoryOptions.map((item) => {
-                  const inventoryItem = formData.inventoryItems?.[item] || { selected: false, rate: '' };
-                  const isSelected = inventoryItem.selected;
-                  return (
-                    <div
-                      key={item}
-                      className={`flex items-center gap-4 p-4 rounded-lg transition-all border-2 ${isSelected
-                        ? 'border-[#7B46F8] bg-white'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
-                      }`}
-                    >
-                      <label className="flex items-center cursor-pointer flex-1">
-                        <input
-                          type="checkbox"
-                          checked={isSelected}
-                          onChange={() => handleInventoryChange(item)}
-                          className="sr-only"
-                        />
-                        <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${isSelected
-                          ? 'bg-[#7B46F8] border-[#7B46F8]'
-                          : 'bg-white border-gray-300'
-                        }`}>
-                          {isSelected && (
-                            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                            </svg>
-                          )}
+              {!selectedPlatform ? (
+                <p className="text-sm text-gray-500">Please complete Step 1 (Platform You're Active On) first.</p>
+              ) : inventoryOptions.length === 0 ? (
+                <p className="text-sm text-gray-500">No inventory options for this platform.</p>
+              ) : (
+                <div className="space-y-3">
+                  {inventoryOptions.map((item) => {
+                    const inventoryItem = formData.inventoryItems?.[item] || { selected: false, rate: '' };
+                    const isSelected = inventoryItem.selected;
+                    const rateTrimmed = inventoryItem.rate?.trim() ?? '';
+                    const hasInvalidRate = isSelected && (!rateTrimmed || rateTrimmed === '0');
+                    return (
+                      <div
+                        key={item}
+                        className={`flex items-center gap-4 p-4 rounded-lg transition-all border-2 ${isSelected
+                          ? 'border-[#7B46F8] bg-white'
+                          : 'border-gray-200 bg-white hover:border-gray-300'
+                        }`}
+                      >
+                        <label className="flex items-center cursor-pointer flex-1 min-w-0">
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() => handleInventoryChange(item)}
+                            className="sr-only"
+                          />
+                          <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${isSelected
+                            ? 'bg-[#7B46F8] border-[#7B46F8]'
+                            : 'bg-white border-gray-300'
+                          }`}>
+                            {isSelected && (
+                              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                              </svg>
+                            )}
+                          </div>
+                          <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'} break-words`}>
+                            {item}
+                          </span>
+                        </label>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <span className="text-sm text-gray-600">$</span>
+                          <input
+                            type="text"
+                            value={inventoryItem.rate}
+                            onChange={(e) => {
+                              const value = e.target.value.replace(/[^0-9]/g, '');
+                              handleInventoryRateChange(item, value);
+                            }}
+                            placeholder="0"
+                            className={`w-24 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent text-sm ${hasInvalidRate ? 'border-red-500' : 'border-gray-300'
+                            }`}
+                          />
                         </div>
-                        <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'
-                        }`}>
-                          {item}
-                        </span>
-                      </label>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-600">$</span>
-                        <input
-                          type="text"
-                          value={inventoryItem.rate}
-                          onChange={(e) => {
-                            const value = e.target.value.replace(/[^0-9]/g, '');
-                            handleInventoryRateChange(item, value);
-                          }}
-                          placeholder="0"
-                          className={`w-24 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent text-sm ${errors.inventoryItems ? 'border-red-500' : 'border-gray-300'
-                          }`}
-                        />
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
               {errors.inventoryItems && (
                 <p className="mt-2 text-sm text-red-500">{errors.inventoryItems}</p>
               )}
@@ -1036,6 +1172,7 @@ export default function CreatorOnboardingForm() {
           </div>
         </div>
       );
+    }
     case 5:
       const geographyOptions = ['US & Canada', 'UK', 'EU', 'India', 'MENA (includes Pakistan)', 'SEA', 'LATAM'];
 
@@ -2357,7 +2494,7 @@ export default function CreatorOnboardingForm() {
           {/* Right Content Area */}
           <div className='bg-[#F8F8F8] h-full  py-12 px-4 sm:px-8 min-h-[600px] pb-24 md:pb-12 w-screen lg:w-[calc(100vw_-_415px)]'>
             <div className="rounded-lg flex flex-col justify-between h-full w-full">
-              <div className='sm:p-8 p-4 bg-white rounded-lg'>
+              <div key={currentStep} className='sm:p-8 p-4 bg-white rounded-lg'>
                 {renderStepContent()}
               </div>
 
@@ -2399,14 +2536,11 @@ export default function CreatorOnboardingForm() {
                         const data = await response.json();
 
                         if (response.ok) {
-                          setCompletedSteps(prev => {
-                            const newSet = new Set(prev);
-                            newSet.add(currentStep);
-                            return newSet;
-                          });
-                          // Reset form data
+                          // Reset all UI state first so form shows step 1 and empty before redirect
+                          setCurrentStep(1);
+                          setCompletedSteps(new Set());
+                          setErrors({});
                           resetForm();
-                          // Redirect to thank you page
                           router.push('/creator-onboarding/success');
                         } else {
                           toast.error(data.message || 'Failed to submit form. Please try again.');

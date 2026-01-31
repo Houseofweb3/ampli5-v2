@@ -174,10 +174,14 @@ export async function POST(request: Request) {
     const sheets = google.sheets({ version: "v4", auth: client });
     const spreadsheetId = process.env.SPREAD_SHEET_ID_FOR_CREATOR_ONBOARDING;
 
-    // Format inventory items
+    // Format inventory items: only selected items with a non-empty, non-zero rate
     const inventoryItemsStr = body.inventoryItems
       ? Object.entries(body.inventoryItems)
-        .filter(([, item]) => item.selected)
+        .filter(([, item]) => {
+          if (!item.selected) return false;
+          const rate = item.rate != null ? String(item.rate).trim() : "";
+          return rate !== "" && rate !== "0";
+        })
         .map(([key, item]) => `${key}: $${item.rate}`)
         .join("; ")
       : "";

@@ -518,7 +518,7 @@ export default function BrandIntakeForm() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                <h3 className="text-lg font-semibold text-gray-900">Select The Category</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Select The Category <span className="text-red-500">*</span></h3>
               </div>
               <div className="space-y-3">
                 {categories.map((category) => {
@@ -574,7 +574,7 @@ export default function BrandIntakeForm() {
         <div>
           <div className="flex items-center gap-2 mb-6">
             <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-            <h2 className="text-2xl font-semibold text-gray-900">Primary Campaign Goal</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">Primary Campaign Goal <span className="text-red-500">*</span></h2>
           </div>
           <div className="space-y-3">
             {campaignGoals.map((goal) => {
@@ -651,7 +651,7 @@ export default function BrandIntakeForm() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                <h3 className="text-lg font-semibold text-gray-900">Monetization Model</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Monetization Model <span className="text-red-500">*</span></h3>
               </div>
               <div className="space-y-3">
                 {monetizationModels.map((model) => {
@@ -757,7 +757,7 @@ export default function BrandIntakeForm() {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                      <h3 className="text-lg font-semibold text-gray-900">Primary Audience Geography</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">Primary Audience Geography <span className="text-red-500">*</span></h3>
                     </div>
                     <button
                       onClick={resetGeography}
@@ -816,7 +816,7 @@ export default function BrandIntakeForm() {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                      <h3 className="text-lg font-semibold text-gray-900">Primary Audience Age Range</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">Primary Audience Age Range <span className="text-red-500">*</span></h3>
                     </div>
                     <button
                       onClick={resetAgeRange}
@@ -874,7 +874,7 @@ export default function BrandIntakeForm() {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                      <h3 className="text-lg font-semibold text-gray-900">Gender Skew (Best Estimate)</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">Gender Skew (Best Estimate) <span className="text-red-500">*</span></h3>
                     </div>
                     <button
                       onClick={resetGenderSkew}
@@ -949,7 +949,7 @@ export default function BrandIntakeForm() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                <h3 className="text-lg font-semibold text-gray-900">+ Campaign Start Timeline</h3>
+                <h3 className="text-lg font-semibold text-gray-900">+ Campaign Start Timeline <span className="text-red-500">*</span></h3>
               </div>
               <div className="space-y-3">
                 {timelineOptions.map((option) => {
@@ -1000,13 +1000,13 @@ export default function BrandIntakeForm() {
         <div>
           <div className="flex items-center gap-2 mb-6">
             <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-            <h2 className="text-2xl font-semibold text-gray-900">Custom Brief</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">Custom Brief <span className="text-red-500">*</span></h2>
           </div>
           <div className="space-y-6">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                <h3 className="text-lg font-semibold text-gray-900">+ Please Provide Custom Brief</h3>
+                <h3 className="text-lg font-semibold text-gray-900">+ Please Provide Custom Brief <span className="text-red-500">*</span></h3>
               </div>
               <textarea
                 value={formData.customBrief}

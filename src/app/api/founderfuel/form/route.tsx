@@ -35,6 +35,24 @@ export async function POST(request: Request) {
       );
     }
 
+    // Get date and time
+    const date = new Date();
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    const formattedDate = `${day}/${month}/${year}`;
+
+    const options: Intl.DateTimeFormatOptions = {
+      timeZone: "Asia/Kolkata",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    };
+    const indiaTime = new Intl.DateTimeFormat("en-US", options).format(
+      new Date()
+    );
+
     // Check if Google Sheets environment variables are set
     const hasGoogleConfig =
       process.env.SPREAD_SHEET_EMAIL &&
@@ -54,9 +72,11 @@ export async function POST(request: Request) {
 
         const sheets = google.sheets({ version: "v4", auth });
 
-        // Prepare the data to append
+        // Prepare the data to append (Date, Time, then form fields)
         const values = [
           [
+            formattedDate,
+            indiaTime,
             formData.fullName,
             formData.startupName,
             formData.startupWebsite,
@@ -75,9 +95,9 @@ export async function POST(request: Request) {
           ],
         ];
 
-        // Append to Google Sheet
+        // Append to Google Sheet (columns A–Q: Date, Time + 15 form fields)
         const spreadsheetId = process.env.SPREAD_SHEET_ID;
-        const range = "Sheet1!A1:N1"; // Fixed: Added exclamation mark
+        const range = "Sheet1!A:Q";
 
         await sheets.spreadsheets.values.append({
           spreadsheetId,
