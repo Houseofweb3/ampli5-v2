@@ -683,7 +683,7 @@ const FounderInquiryForm: React.FC = () => {
   };
 
   return (
-    <div className="relative bg-white min-h-screen ">
+    <div className="relative bg-white ">
       <div className="bg-[#7B46F8] relative py-24">
         <div className="absolute top-0 right-0 z-10">
           <Image src="/icons/hero-arrow.png" width={100} height={100} alt="" className="w-full h-[100px] md:h-[150px] object-cover" />
