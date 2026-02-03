@@ -23,6 +23,12 @@ export default function Footer(): JSX.Element {
             </div>
             <div className="flex flex-wrap items-center gap-4 text-14 sm:text-18 font-medium ">
               <Link
+                href="/founderfuel"
+                className="hover:text-primary transition-colors duration-200 "
+              >
+                Founder Fuel
+              </Link>
+              <Link
                 href="/brand-intake-form"
                 className="hover:text-primary transition-colors duration-200"
               >
