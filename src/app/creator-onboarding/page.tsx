@@ -836,6 +836,7 @@ export default function CreatorOnboardingForm() {
         'Robotics & Hardware',
         'Motivation / Mindset',
         'Health & Fitness',
+        "Mental Health"
       ];
 
       const handleIndustryChange = (industry: string) => {
@@ -1004,6 +1005,7 @@ export default function CreatorOnboardingForm() {
           'Dedicated review / breakdown video',
           'Streams/Live trading video',
           'Shorts',
+          
         ],
         'Instagram': [
           'IG Reel – Original (Creator produces content) ( 24 hours )',
@@ -1197,7 +1199,7 @@ export default function CreatorOnboardingForm() {
       );
     }
     case 5:
-      const geographyOptions = ['US & Canada', 'UK', 'EU', 'India', 'MENA (includes Pakistan)', 'SEA', 'LATAM'];
+      const geographyOptions = ['US & Canada', 'UK', 'EU', 'South Asia', 'MENA (includes Pakistan)', 'SEA', 'LATAM'];
 
       const handlePrimaryGeographyChange = (option: string) => {
         const currentGeography = formData.primaryAudienceGeography || [];
