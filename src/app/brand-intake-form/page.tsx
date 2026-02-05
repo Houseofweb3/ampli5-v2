@@ -1,21 +1,22 @@
 "use client";
 import Image from 'next/image'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper/modules'
+import type { Swiper as SwiperType } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { useBrandIntakeFormStore } from '@/src/store/brandIntakeForm'
 
 interface Step {
-    id: number;
-    title: string;
-    description: string;
+  id: number;
+  title: string;
+  description: string;
 }
 
 const STEPS: Step[] = [
@@ -56,6 +57,15 @@ const STEPS: Step[] = [
   }
 ];
 
+// Step 1: slide 0 = brandProductName, websiteLink; slide 1 = primaryContactEmail, telegramId, whatsappNumber
+const BRAND_STEP1_FIELD_TO_SLIDE: Record<string, number> = {
+  brandProductName: 0, websiteLink: 0, primaryContactEmail: 1, telegramId: 1, whatsappNumber: 1,
+};
+// Step 5: slide 0 = primaryAudienceGeography, 1 = ageRange, 2 = genderSkew
+const BRAND_STEP5_FIELD_TO_SLIDE: Record<string, number> = {
+  primaryAudienceGeography: 0, ageRange: 1, genderSkew: 2,
+};
+
 export default function BrandIntakeForm() {
   const router = useRouter();
   const { formData, updateFormData, resetForm } = useBrandIntakeFormStore();
@@ -64,6 +74,10 @@ export default function BrandIntakeForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [numberPickupCountry] = useState<string>('us');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [pendingSlideToField, setPendingSlideToField] = useState<string | null>(null);
+  const brandSwiperRef = useRef<SwiperType | null>(null);
+  const demographicsSwiperRef = useRef<SwiperType | null>(null);
+  const stepContentRef = useRef<HTMLDivElement | null>(null);
 
   // Load completed steps from formData
   useEffect(() => {
@@ -85,7 +99,8 @@ export default function BrandIntakeForm() {
     }
   };
 
-  const validateStep = (step: number): boolean => {
+  type ValidateResult = { valid: true; firstErrorMessage?: undefined; firstErrorKey?: undefined } | { valid: false; firstErrorMessage: string; firstErrorKey: string };
+  const validateStep = (step: number): ValidateResult => {
     const newErrors: Record<string, string> = {};
 
     switch (step) {
@@ -154,12 +169,29 @@ export default function BrandIntakeForm() {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const keys = Object.keys(newErrors);
+    if (keys.length === 0) return { valid: true as const, firstErrorMessage: undefined, firstErrorKey: undefined };
+    return { valid: false as const, firstErrorMessage: newErrors[keys[0]], firstErrorKey: keys[0] };
   };
 
+  // When validation fails, slide to the field's slide (if step has Swiper) and scroll step into view
+  useEffect(() => {
+    if (!pendingSlideToField || !currentStep) return;
+    const step = currentStep;
+    if (step === 1 && BRAND_STEP1_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
+      brandSwiperRef.current?.slideTo(BRAND_STEP1_FIELD_TO_SLIDE[pendingSlideToField]);
+    } else if (step === 5 && BRAND_STEP5_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
+      demographicsSwiperRef.current?.slideTo(BRAND_STEP5_FIELD_TO_SLIDE[pendingSlideToField]);
+    }
+    stepContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    setPendingSlideToField(null);
+  }, [currentStep, pendingSlideToField]);
+
   const handleNext = () => {
-    if (!validateStep(currentStep)) {
-      toast.error('Please fill in all required fields');
+    const result = validateStep(currentStep);
+    if (!result.valid) {
+      toast.error(result.firstErrorMessage ?? 'Please fill in all required fields');
+      if (result.firstErrorKey) setPendingSlideToField(result.firstErrorKey);
       return;
     }
 
@@ -209,6 +241,7 @@ export default function BrandIntakeForm() {
           </div>
           <div className="hidden md:block w-full overflow-hidden">
             <Swiper
+              onSwiper={(swiper) => { brandSwiperRef.current = swiper; }}
               modules={[Pagination]}
               spaceBetween={24}
               slidesPerView={1}
@@ -220,7 +253,7 @@ export default function BrandIntakeForm() {
                 <div className="space-y-6 w-full">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Brand Product Name <span className="text-red-500">*</span>
+                        Brand Product Name <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -241,7 +274,7 @@ export default function BrandIntakeForm() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Website / Landing / Podcast Page Link <span className="text-red-500">*</span>
+                        Website / Landing / Podcast Page Link <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -267,7 +300,7 @@ export default function BrandIntakeForm() {
                 <div className="space-y-6 w-full">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Primary Contact Email <span className="text-red-500">*</span>
+                        Primary Contact Email <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="email"
@@ -288,7 +321,7 @@ export default function BrandIntakeForm() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Telegram ID <span className="text-red-500">*</span>
+                        Telegram ID <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -309,7 +342,7 @@ export default function BrandIntakeForm() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                WhatsApp Number <span className="text-red-500">*</span>
+                        WhatsApp Number <span className="text-red-500">*</span>
                     </label>
                     <PhoneInput
                       country={numberPickupCountry}
@@ -358,7 +391,7 @@ export default function BrandIntakeForm() {
           <div className="md:hidden space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Brand Product Name <span className="text-red-500">*</span>
+                  Brand Product Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -379,7 +412,7 @@ export default function BrandIntakeForm() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Website / Landing / Podcast Page Link <span className="text-red-500">*</span>
+                  Website / Landing / Podcast Page Link <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -400,7 +433,7 @@ export default function BrandIntakeForm() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Primary Contact Email <span className="text-red-500">*</span>
+                  Primary Contact Email <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
@@ -421,7 +454,7 @@ export default function BrandIntakeForm() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Telegram ID <span className="text-red-500">*</span>
+                  Telegram ID <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -442,7 +475,7 @@ export default function BrandIntakeForm() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    WhatsApp Number <span className="text-red-500">*</span>
+                  WhatsApp Number <span className="text-red-500">*</span>
               </label>
               <PhoneInput
                 country={numberPickupCountry}
@@ -696,7 +729,7 @@ export default function BrandIntakeForm() {
         </div>
       );
     case 5:
-      const geographyOptions = ['US & Canada', 'UK', 'EU', 'India', 'Mena', 'SEA', 'LATAM'];
+      const geographyOptions = ['US & Canada', 'UK', 'EU', 'South Asia', 'Mena', 'SEA', 'LATAM'];
       const ageRangeOptions = ['18 - 24', '25 - 45', '45 - 60'];
       const genderSkewOptions = ['Skewed male', 'Balanced', 'Skewed Female'];
 
@@ -743,8 +776,10 @@ export default function BrandIntakeForm() {
             <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
             <h2 className="text-2xl font-semibold text-gray-900">Demographics</h2>
           </div>
-          <div className="w-full">
+          {/* Desktop: slider */}
+          <div className="hidden md:block w-full">
             <Swiper
+              onSwiper={(swiper) => { demographicsSwiperRef.current = swiper; }}
               modules={[Pagination]}
               spaceBetween={24}
               slidesPerView={1}
@@ -766,7 +801,7 @@ export default function BrandIntakeForm() {
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                       </svg>
-                                                Reset
+                        Reset
                     </button>
                   </div>
                   <div className="space-y-3">
@@ -825,7 +860,7 @@ export default function BrandIntakeForm() {
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                       </svg>
-                                                Reset
+                        Reset
                     </button>
                   </div>
                   <div className="space-y-3">
@@ -883,7 +918,7 @@ export default function BrandIntakeForm() {
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                       </svg>
-                                                Reset
+                        Reset
                     </button>
                   </div>
                   <div className="space-y-3">
@@ -926,6 +961,90 @@ export default function BrandIntakeForm() {
                 </div>
               </SwiperSlide>
             </Swiper>
+          </div>
+          {/* Mobile: single step - all sections stacked */}
+          <div className="md:hidden space-y-8">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
+                  <h3 className="text-lg font-semibold text-gray-900">Primary Audience Geography <span className="text-red-500">*</span></h3>
+                </div>
+                <button type="button" onClick={resetGeography} className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                    Reset
+                </button>
+              </div>
+              <div className="space-y-3">
+                {geographyOptions.map((option) => {
+                  const isSelected = formData.primaryAudienceGeography?.includes(option) || false;
+                  return (
+                    <label key={option} className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${isSelected ? 'border-[#7B46F8] bg-white' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
+                      <input type="checkbox" checked={isSelected} onChange={() => handleGeographyChange(option)} className="sr-only" />
+                      <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${isSelected ? 'bg-[#7B46F8] border-[#7B46F8]' : 'bg-white border-gray-300'}`}>
+                        {isSelected && <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
+                      </div>
+                      <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'}`}>{option}</span>
+                    </label>
+                  );
+                })}
+              </div>
+              {errors.primaryAudienceGeography && <p className="mt-2 text-sm text-red-500">{errors.primaryAudienceGeography}</p>}
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
+                  <h3 className="text-lg font-semibold text-gray-900">Primary Audience Age Range <span className="text-red-500">*</span></h3>
+                </div>
+                <button type="button" onClick={resetAgeRange} className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                    Reset
+                </button>
+              </div>
+              <div className="space-y-3">
+                {ageRangeOptions.map((option) => {
+                  const isSelected = formData.ageRange === option;
+                  return (
+                    <label key={option} className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${isSelected ? 'border-[#7B46F8] bg-white' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
+                      <input type="radio" name="ageRange-mobile" checked={isSelected} onChange={() => handleAgeRangeChange(option)} className="sr-only" />
+                      <div className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 ${isSelected ? 'bg-[#7B46F8] border-[#7B46F8]' : 'bg-white border-gray-300'}`}>
+                        {isSelected && <div className="w-2 h-2 bg-white rounded-full"></div>}
+                      </div>
+                      <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'}`}>{option}</span>
+                    </label>
+                  );
+                })}
+              </div>
+              {errors.ageRange && <p className="mt-2 text-sm text-red-500">{errors.ageRange}</p>}
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
+                  <h3 className="text-lg font-semibold text-gray-900">Gender Skew (Best Estimate) <span className="text-red-500">*</span></h3>
+                </div>
+                <button type="button" onClick={resetGenderSkew} className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                    Reset
+                </button>
+              </div>
+              <div className="space-y-3">
+                {genderSkewOptions.map((option) => {
+                  const isSelected = formData.genderSkew === option;
+                  return (
+                    <label key={option} className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${isSelected ? 'border-[#7B46F8] bg-white' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
+                      <input type="radio" name="genderSkew-mobile" checked={isSelected} onChange={() => handleGenderSkewChange(option)} className="sr-only" />
+                      <div className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 ${isSelected ? 'bg-[#7B46F8] border-[#7B46F8]' : 'bg-white border-gray-300'}`}>
+                        {isSelected && <div className="w-2 h-2 bg-white rounded-full"></div>}
+                      </div>
+                      <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'}`}>{option}</span>
+                    </label>
+                  );
+                })}
+              </div>
+              {errors.genderSkew && <p className="mt-2 text-sm text-red-500">{errors.genderSkew}</p>}
+            </div>
           </div>
         </div>
       );
@@ -1199,9 +1318,9 @@ export default function BrandIntakeForm() {
           </div>
 
           {/* Right Content Area */}
-          <div className='bg-[#F8F8F8] h-full  py-12 px-4 sm:px-8 min-h-[600px] pb-24 md:pb-12 w-screen lg:w-[calc(100vw_-_415px)]'>
+          <div className='bg-[#F8F8F8] h-full  py-12 px-4 sm:px-8 pb-24 md:pb-12 w-screen lg:w-[calc(100vw_-_415px)]'>
             <div className="rounded-lg flex flex-col justify-between h-full w-full">
-              <div className='sm:p-8 p-4 bg-white rounded-lg'>
+              <div className='sm:p-8 p-4 bg-white rounded-lg' ref={stepContentRef}>
                 {renderStepContent()}
               </div>
 
@@ -1212,7 +1331,7 @@ export default function BrandIntakeForm() {
                     onClick={handleBack}
                     className="px-6 py-3 bg-white text-[#7B46F8] border-2 border-[#7B46F8] rounded-lg hover:bg-[#7B46F8] hover:text-white transition-colors font-medium"
                   >
-                                        Back
+                    Back
                   </button>
                 )}
                 {currentStep < STEPS.length ? (
@@ -1220,13 +1339,15 @@ export default function BrandIntakeForm() {
                     onClick={handleNext}
                     className="px-6 py-3 bg-[#7B46F8] text-white rounded-lg hover:bg-[#6B3EE8] transition-colors shadow-md font-medium"
                   >
-                                        Next
+                    Next
                   </button>
                 ) : (
                   <button
                     onClick={async () => {
-                      if (!validateStep(currentStep)) {
-                        toast.error('Please fill in all required fields');
+                      const result = validateStep(currentStep);
+                      if (!result.valid) {
+                        toast.error(result.firstErrorMessage ?? 'Please fill in all required fields');
+                        if (result.firstErrorKey) setPendingSlideToField(result.firstErrorKey);
                         return;
                       }
 

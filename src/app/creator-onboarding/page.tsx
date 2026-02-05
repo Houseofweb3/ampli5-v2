@@ -7,6 +7,7 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper/modules'
+import type { Swiper as SwiperType } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -71,6 +72,20 @@ const STEPS: Step[] = [
   }
 ];
 
+// Step 1: slide 0 = channelBrandName, primaryContactEmail; 1 = telegramId, whatsappNumber; 2 = primaryCountry, primaryTimezone; 3 = platforms
+const CREATOR_STEP1_FIELD_TO_SLIDE: Record<string, number> = {
+  channelBrandName: 0, primaryContactEmail: 0, telegramId: 1, whatsappNumber: 1, primaryCountry: 2, primaryTimezone: 2, platforms: 3,
+};
+// Step 5: slide 0 = primaryAudienceGeography, 1 = secondaryAudienceGeography
+const CREATOR_STEP5_FIELD_TO_SLIDE: Record<string, number> = {
+  primaryAudienceGeography: 0, secondaryAudienceGeography: 1,
+};
+// Step 9: slide 0 = images, 1 = links
+const CREATOR_STEP9_FIELD_TO_SLIDE: Record<string, number> = {
+  firstCollaborationImage1: 0, firstCollaborationImage2: 0, firstCollaborationImage3: 0,
+  xLink: 1, instagramLink: 1, youtubeLink: 1, tiktokLink: 1, newsletterLink: 1,
+};
+
 export default function CreatorOnboardingForm() {
   const router = useRouter();
   const { formData, updateFormData, resetForm } = useCreatorOnboardingFormStore();
@@ -81,6 +96,11 @@ export default function CreatorOnboardingForm() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [uploadingFields, setUploadingFields] = useState<Set<string>>(new Set());
   const [isResetting, setIsResetting] = useState<boolean>(false);
+  const [pendingSlideToField, setPendingSlideToField] = useState<string | null>(null);
+  const creatorStep1SwiperRef = useRef<SwiperType | null>(null);
+  const audienceGeoSwiperRef = useRef<SwiperType | null>(null);
+  const collaborationSwiperRef = useRef<SwiperType | null>(null);
+  const stepContentRef = useRef<HTMLDivElement | null>(null);
 
   // Load completed steps from formData
   useEffect(() => {
@@ -131,8 +151,8 @@ export default function CreatorOnboardingForm() {
     if (formData.turnaroundTimes && formData.turnaroundTimes.length > 0) completed.add(8);
     // Step 9: Previous Collaborations - check if all three images and all five links are provided
     if (
-      formData.firstCollaborationImage1 && 
-      formData.firstCollaborationImage2 && 
+      formData.firstCollaborationImage1 &&
+      formData.firstCollaborationImage2 &&
       formData.firstCollaborationImage3 &&
       formData.xLink &&
       formData.instagramLink &&
@@ -151,7 +171,8 @@ export default function CreatorOnboardingForm() {
     }
   };
 
-  const validateStep = (step: number): boolean => {
+  type ValidateResult = { valid: true; firstErrorMessage?: undefined; firstErrorKey?: undefined } | { valid: false; firstErrorMessage: string; firstErrorKey: string };
+  const validateStep = (step: number): ValidateResult => {
     const newErrors: Record<string, string> = {};
 
     switch (step) {
@@ -301,12 +322,31 @@ export default function CreatorOnboardingForm() {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const keys = Object.keys(newErrors);
+    if (keys.length === 0) return { valid: true as const, firstErrorMessage: undefined, firstErrorKey: undefined };
+    return { valid: false as const, firstErrorMessage: newErrors[keys[0]], firstErrorKey: keys[0] };
   };
 
+  // When validation fails, slide to the field's slide (if step has Swiper) and scroll step into view
+  useEffect(() => {
+    if (!pendingSlideToField || !currentStep) return;
+    const step = currentStep;
+    if (step === 1 && CREATOR_STEP1_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
+      creatorStep1SwiperRef.current?.slideTo(CREATOR_STEP1_FIELD_TO_SLIDE[pendingSlideToField]);
+    } else if (step === 5 && CREATOR_STEP5_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
+      audienceGeoSwiperRef.current?.slideTo(CREATOR_STEP5_FIELD_TO_SLIDE[pendingSlideToField]);
+    } else if (step === 9 && CREATOR_STEP9_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
+      collaborationSwiperRef.current?.slideTo(CREATOR_STEP9_FIELD_TO_SLIDE[pendingSlideToField]);
+    }
+    stepContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    setPendingSlideToField(null);
+  }, [currentStep, pendingSlideToField]);
+
   const handleNext = () => {
-    if (!validateStep(currentStep)) {
-      toast.error('Please fill in all required fields');
+    const result = validateStep(currentStep);
+    if (!result.valid) {
+      toast.error(result.firstErrorMessage ?? 'Please fill in all required fields');
+      if (result.firstErrorKey) setPendingSlideToField(result.firstErrorKey);
       return;
     }
 
@@ -361,6 +401,7 @@ export default function CreatorOnboardingForm() {
           </div>
           <div className="hidden md:block w-full overflow-hidden">
             <Swiper
+              onSwiper={(swiper) => { creatorStep1SwiperRef.current = swiper; }}
               modules={[Pagination]}
               spaceBetween={24}
               slidesPerView={1}
@@ -937,7 +978,7 @@ export default function CreatorOnboardingForm() {
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Select categories for {selectedIndustry || 'your industry'}
+                    Select categories for {selectedIndustry || 'your industry'}
                 </h3>
               </div>
               {!selectedIndustry ? (
@@ -1005,7 +1046,7 @@ export default function CreatorOnboardingForm() {
           'Dedicated review / breakdown video',
           'Streams/Live trading video',
           'Shorts',
-          
+
         ],
         'Instagram': [
           'IG Reel – Original (Creator produces content) ( 24 hours )',
@@ -1126,7 +1167,7 @@ export default function CreatorOnboardingForm() {
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                           </svg>
-                          Reset
+                            Reset
                         </button>
                       )}
                     </div>
@@ -1231,7 +1272,8 @@ export default function CreatorOnboardingForm() {
             <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
             <h2 className="text-2xl font-semibold text-gray-900">Audience & GEO</h2>
           </div>
-          <div className="w-full overflow-hidden">
+          {/* Desktop: slider */}
+          <div className="hidden md:block w-full overflow-hidden">
             <style jsx global>{`
                                 .audience-geo-slider .swiper {
                                     width: 100%;
@@ -1263,6 +1305,7 @@ export default function CreatorOnboardingForm() {
                                 }
                             `}</style>
             <Swiper
+              onSwiper={(swiper) => { audienceGeoSwiperRef.current = swiper; }}
               modules={[Pagination]}
               spaceBetween={24}
               slidesPerView={1}
@@ -1366,6 +1409,51 @@ export default function CreatorOnboardingForm() {
               </SwiperSlide>
             </Swiper>
           </div>
+          {/* Mobile: single step - both geography sections stacked */}
+          <div className="md:hidden space-y-8">
+            <div className="max-w-full box-border">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
+                <h3 className="text-lg font-semibold text-gray-900">Primary Audience Regions <span className="text-red-500">*</span></h3>
+              </div>
+              <div className="space-y-3">
+                {geographyOptions.map((option) => {
+                  const isSelected = formData.primaryAudienceGeography?.includes(option) || false;
+                  return (
+                    <label key={option} className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${isSelected ? 'border-[#7B46F8] bg-white' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
+                      <input type="checkbox" checked={isSelected} onChange={() => handlePrimaryGeographyChange(option)} className="sr-only" />
+                      <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${isSelected ? 'bg-[#7B46F8] border-[#7B46F8]' : 'bg-white border-gray-300'}`}>
+                        {isSelected && <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
+                      </div>
+                      <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'}`}>{option}</span>
+                    </label>
+                  );
+                })}
+              </div>
+              {errors.primaryAudienceGeography && <p className="mt-2 text-sm text-red-500">{errors.primaryAudienceGeography}</p>}
+            </div>
+            <div className="max-w-full box-border">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
+                <h3 className="text-lg font-semibold text-gray-900">Secondary Audience Regions <span className="text-red-500">*</span></h3>
+              </div>
+              <div className="space-y-3">
+                {geographyOptions.map((option) => {
+                  const isSelected = formData.secondaryAudienceGeography?.includes(option) || false;
+                  return (
+                    <label key={option} className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${isSelected ? 'border-[#7B46F8] bg-white' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
+                      <input type="checkbox" checked={isSelected} onChange={() => handleSecondaryGeographyChange(option)} className="sr-only" />
+                      <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${isSelected ? 'bg-[#7B46F8] border-[#7B46F8]' : 'bg-white border-gray-300'}`}>
+                        {isSelected && <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
+                      </div>
+                      <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'}`}>{option}</span>
+                    </label>
+                  );
+                })}
+              </div>
+              {errors.secondaryAudienceGeography && <p className="mt-2 text-sm text-red-500">{errors.secondaryAudienceGeography}</p>}
+            </div>
+          </div>
         </div>
       );
     case 6:
@@ -1408,7 +1496,7 @@ export default function CreatorOnboardingForm() {
           const data = await response.json();
           // Store URL directly in form data for Excel export
           // Also store publicId in a separate field for deletion if needed
-          updateFormData({ 
+          updateFormData({
             [field]: data.url, // Store URL as string for Excel
             [`${field}PublicId`]: data.publicId // Store publicId separately for deletion
           });
@@ -1452,7 +1540,7 @@ export default function CreatorOnboardingForm() {
             });
 
             if (response.ok) {
-              updateFormData({ 
+              updateFormData({
                 [field]: '',
                 [publicIdField]: ''
               });
@@ -1462,7 +1550,7 @@ export default function CreatorOnboardingForm() {
             }
           } else {
             // If no publicId, just clear from form
-            updateFormData({ 
+            updateFormData({
               [field]: '',
               [publicIdField]: ''
             });
@@ -1471,7 +1559,7 @@ export default function CreatorOnboardingForm() {
           console.error('Error deleting image:', error);
           // If error, just clear the fields
           const publicIdField = `${field}PublicId` as keyof typeof formData;
-          updateFormData({ 
+          updateFormData({
             [field]: '',
             [publicIdField]: ''
           });
@@ -1482,7 +1570,7 @@ export default function CreatorOnboardingForm() {
       const getImageData = (field: 'ageScreenshot' | 'genderScreenshot' | 'topCountriesScreenshot') => {
         const data = formData[field];
         if (!data) return null;
-        
+
         // Handle backward compatibility - check if it's JSON string
         try {
           const parsed = JSON.parse(data);
@@ -1492,20 +1580,20 @@ export default function CreatorOnboardingForm() {
         } catch {
           // Not JSON, treat as URL string
         }
-        
+
         // New format: URL is stored as string, publicId in separate field
         const publicIdField = `${field}PublicId` as keyof typeof formData;
         const publicId = formData[publicIdField] as string;
         return { url: data, publicId: publicId || null };
       };
 
-      const ImageUploadField = ({ 
-        field, 
-        label 
-      }: { 
-        field: 'ageScreenshot' | 'genderScreenshot' | 'topCountriesScreenshot'; 
-        label: string;
-      }) => {
+      const ImageUploadField = ({
+        field,
+        label
+      }: {
+          field: 'ageScreenshot' | 'genderScreenshot' | 'topCountriesScreenshot';
+          label: string;
+        }) => {
         const imageData = getImageData(field);
         const hasImage = !!imageData?.url;
         const isUploading = uploadingFields.has(field);
@@ -1516,7 +1604,7 @@ export default function CreatorOnboardingForm() {
         const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const files = e.target.files;
           if (!files || files.length === 0) return;
-          
+
           // Only allow single file upload
           if (files.length > 1) {
             toast.error('Please upload only one image at a time');
@@ -1525,7 +1613,7 @@ export default function CreatorOnboardingForm() {
             }
             return;
           }
-          
+
           const file = files[0];
           if (file) {
             handleImageUpload(field, file);
@@ -1560,7 +1648,7 @@ export default function CreatorOnboardingForm() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
-                  Delete Image
+                    Delete Image
                 </button>
               </div>
             ) : (
@@ -1578,12 +1666,11 @@ export default function CreatorOnboardingForm() {
                 />
                 <label
                   htmlFor={`file-input-${field}`}
-                  className={`w-full px-4 py-3 rounded-lg flex items-center justify-between cursor-pointer transition-all ${
-                    isUploading
-                      ? 'opacity-50 cursor-not-allowed bg-gray-50 border border-gray-200'
-                      : isFocused || (field === 'ageScreenshot' && !hasImage)
-                        ? 'border-2 border-[#7B46F8] bg-white'
-                        : 'bg-gray-50 border border-gray-200 hover:border-gray-300'
+                  className={`w-full px-4 py-3 rounded-lg flex items-center justify-between cursor-pointer transition-all ${isUploading
+                    ? 'opacity-50 cursor-not-allowed bg-gray-50 border border-gray-200'
+                    : isFocused || (field === 'ageScreenshot' && !hasImage)
+                      ? 'border-2 border-[#7B46F8] bg-white'
+                      : 'bg-gray-50 border border-gray-200 hover:border-gray-300'
                   }`}
                 >
                   <span className="text-sm font-medium text-gray-700">
@@ -1636,7 +1723,7 @@ export default function CreatorOnboardingForm() {
                     );
 
                     const results = await Promise.allSettled(deletePromises);
-                    
+
                     // Check if all deletions were successful
                     const allSuccessful = results.every(
                       result => result.status === 'fulfilled' && result.value.ok
@@ -1665,10 +1752,9 @@ export default function CreatorOnboardingForm() {
                 setIsResetting(false);
               }}
               disabled={isResetting}
-              className={`flex items-center gap-2 text-sm transition-colors ${
-                isResetting
-                  ? 'text-gray-400 cursor-not-allowed'
-                  : 'text-gray-600 hover:text-gray-900'
+              className={`flex items-center gap-2 text-sm transition-colors ${isResetting
+                ? 'text-gray-400 cursor-not-allowed'
+                : 'text-gray-600 hover:text-gray-900'
               }`}
             >
               {isResetting ? (
@@ -1694,21 +1780,21 @@ export default function CreatorOnboardingForm() {
               <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
               <h3 className="text-lg font-semibold text-gray-900">Upload Audience Demographics Screenshot</h3>
             </div>
-            
+
             <div className="space-y-4">
-              <ImageUploadField 
-                field="ageScreenshot" 
-                label="Upload Age screenshot" 
+              <ImageUploadField
+                field="ageScreenshot"
+                label="Upload Age screenshot"
               />
-              
-              <ImageUploadField 
-                field="genderScreenshot" 
-                label="Upload gender screenshot" 
+
+              <ImageUploadField
+                field="genderScreenshot"
+                label="Upload gender screenshot"
               />
-              
-              <ImageUploadField 
-                field="topCountriesScreenshot" 
-                label="Upload top countries screenshot" 
+
+              <ImageUploadField
+                field="topCountriesScreenshot"
+                label="Upload top countries screenshot"
               />
             </div>
           </div>
@@ -1748,10 +1834,9 @@ export default function CreatorOnboardingForm() {
                   return (
                     <label
                       key={term}
-                      className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${
-                        isSelected
-                          ? 'border-[#7B46F8] bg-white'
-                          : 'border-gray-200 bg-white hover:border-gray-300'
+                      className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${isSelected
+                        ? 'border-[#7B46F8] bg-white'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
                       }`}
                     >
                       <input
@@ -1762,17 +1847,15 @@ export default function CreatorOnboardingForm() {
                         onChange={() => handlePaymentTermChange(term)}
                         className="sr-only"
                       />
-                      <div className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 flex-shrink-0 ${
-                        isSelected
-                          ? 'bg-[#7B46F8] border-[#7B46F8]'
-                          : 'bg-white border-gray-300'
+                      <div className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 flex-shrink-0 ${isSelected
+                        ? 'bg-[#7B46F8] border-[#7B46F8]'
+                        : 'bg-white border-gray-300'
                       }`}>
                         {isSelected && (
                           <div className="w-2.5 h-2.5 bg-white rounded-full"></div>
                         )}
                       </div>
-                      <span className={`text-sm font-medium flex-1 ${
-                        isSelected ? 'text-gray-900' : 'text-gray-700'
+                      <span className={`text-sm font-medium flex-1 ${isSelected ? 'text-gray-900' : 'text-gray-700'
                       }`}>
                         {term}
                       </span>
@@ -1830,10 +1913,9 @@ export default function CreatorOnboardingForm() {
                   return (
                     <label
                       key={time}
-                      className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${
-                        isSelected
-                          ? 'border-[#7B46F8] bg-white'
-                          : 'border-gray-200 bg-white hover:border-gray-300'
+                      className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${isSelected
+                        ? 'border-[#7B46F8] bg-white'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
                       }`}
                     >
                       <input
@@ -1842,10 +1924,9 @@ export default function CreatorOnboardingForm() {
                         onChange={() => handleTurnaroundTimeChange(time)}
                         className="sr-only"
                       />
-                      <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${
-                        isSelected
-                          ? 'bg-[#7B46F8] border-[#7B46F8]'
-                          : 'bg-white border-gray-300'
+                      <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${isSelected
+                        ? 'bg-[#7B46F8] border-[#7B46F8]'
+                        : 'bg-white border-gray-300'
                       }`}>
                         {isSelected && (
                           <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1853,8 +1934,7 @@ export default function CreatorOnboardingForm() {
                           </svg>
                         )}
                       </div>
-                      <span className={`text-sm font-medium flex-1 ${
-                        isSelected ? 'text-gray-900' : 'text-gray-700'
+                      <span className={`text-sm font-medium flex-1 ${isSelected ? 'text-gray-900' : 'text-gray-700'
                       }`}>
                         {time}
                       </span>
@@ -1907,7 +1987,7 @@ export default function CreatorOnboardingForm() {
           }
 
           const data = await response.json();
-          updateFormData({ 
+          updateFormData({
             [field]: data.url,
             [`${field}PublicId`]: data.publicId
           });
@@ -1950,7 +2030,7 @@ export default function CreatorOnboardingForm() {
             });
 
             if (response.ok) {
-              updateFormData({ 
+              updateFormData({
                 [field]: '',
                 [publicIdField]: ''
               });
@@ -1959,7 +2039,7 @@ export default function CreatorOnboardingForm() {
               toast.error('Failed to delete image');
             }
           } else {
-            updateFormData({ 
+            updateFormData({
               [field]: '',
               [publicIdField]: ''
             });
@@ -1967,7 +2047,7 @@ export default function CreatorOnboardingForm() {
         } catch (error) {
           console.error('Error deleting image:', error);
           const publicIdField = `${field}PublicId` as keyof typeof formData;
-          updateFormData({ 
+          updateFormData({
             [field]: '',
             [publicIdField]: ''
           });
@@ -1978,7 +2058,7 @@ export default function CreatorOnboardingForm() {
       const getCollaborationImageData = (field: 'firstCollaborationImage1' | 'firstCollaborationImage2' | 'firstCollaborationImage3') => {
         const data = formData[field];
         if (!data) return null;
-        
+
         try {
           const parsed = JSON.parse(data);
           if (parsed.url) {
@@ -1987,21 +2067,21 @@ export default function CreatorOnboardingForm() {
         } catch {
           // Not JSON, treat as URL string
         }
-        
+
         const publicIdField = `${field}PublicId` as keyof typeof formData;
         const publicId = formData[publicIdField] as string;
         return { url: data, publicId: publicId || null };
       };
 
-      const CollaborationImageField = ({ 
-        field, 
+      const CollaborationImageField = ({
+        field,
         label,
         showAsterisk = false
-      }: { 
-        field: 'firstCollaborationImage1' | 'firstCollaborationImage2' | 'firstCollaborationImage3'; 
-        label: string;
-        showAsterisk?: boolean;
-      }) => {
+      }: {
+          field: 'firstCollaborationImage1' | 'firstCollaborationImage2' | 'firstCollaborationImage3';
+          label: string;
+          showAsterisk?: boolean;
+        }) => {
         const imageData = getCollaborationImageData(field);
         const hasImage = !!imageData?.url;
         const isUploading = uploadingFields.has(field);
@@ -2012,7 +2092,7 @@ export default function CreatorOnboardingForm() {
         const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const files = e.target.files;
           if (!files || files.length === 0) return;
-          
+
           // Only allow single file upload
           if (files.length > 1) {
             toast.error('Please upload only one image at a time');
@@ -2021,7 +2101,7 @@ export default function CreatorOnboardingForm() {
             }
             return;
           }
-          
+
           const file = files[0];
           if (file) {
             handleCollaborationImageUpload(field, file);
@@ -2061,7 +2141,7 @@ export default function CreatorOnboardingForm() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
-                  Delete Image
+                    Delete Image
                 </button>
               </div>
             ) : (
@@ -2079,12 +2159,11 @@ export default function CreatorOnboardingForm() {
                 />
                 <label
                   htmlFor={`collab-file-input-${field}`}
-                  className={`w-full px-4 py-3 rounded-lg flex items-center justify-between cursor-pointer transition-all ${
-                    isUploading
-                      ? 'opacity-50 cursor-not-allowed bg-gray-50 border border-gray-200'
-                      : isFocused
-                        ? 'border-2 border-[#7B46F8] bg-white'
-                        : 'bg-gray-50 border border-gray-200 hover:border-gray-300'
+                  className={`w-full px-4 py-3 rounded-lg flex items-center justify-between cursor-pointer transition-all ${isUploading
+                    ? 'opacity-50 cursor-not-allowed bg-gray-50 border border-gray-200'
+                    : isFocused
+                      ? 'border-2 border-[#7B46F8] bg-white'
+                      : 'bg-gray-50 border border-gray-200 hover:border-gray-300'
                   }`}
                 >
                   <span className="text-sm font-medium text-gray-700">
@@ -2119,7 +2198,8 @@ export default function CreatorOnboardingForm() {
               <h3 className="text-lg font-semibold text-gray-900">Upload Proof Of Work</h3>
             </div>
              */}
-            <div className="w-full overflow-hidden">
+            {/* Desktop: slider */}
+            <div className="hidden md:block w-full overflow-hidden">
               <style jsx global>{`
                 .collaboration-slider .swiper {
                   width: 100%;
@@ -2149,6 +2229,7 @@ export default function CreatorOnboardingForm() {
                 }
               `}</style>
               <Swiper
+                onSwiper={(swiper) => { collaborationSwiperRef.current = swiper; }}
                 modules={[Pagination]}
                 spaceBetween={24}
                 slidesPerView={1}
@@ -2161,19 +2242,19 @@ export default function CreatorOnboardingForm() {
                       <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
                       <h3 className="text-lg font-semibold text-gray-900">Upload Proof Of Work</h3>
                     </div>
-                    <CollaborationImageField 
-                      field="firstCollaborationImage1" 
-                      label="Upload screenshots" 
+                    <CollaborationImageField
+                      field="firstCollaborationImage1"
+                      label="Upload screenshots"
                       showAsterisk={true}
                     />
-                    <CollaborationImageField 
-                      field="firstCollaborationImage2" 
-                      label="Upload screenshots" 
+                    <CollaborationImageField
+                      field="firstCollaborationImage2"
+                      label="Upload screenshots"
                       showAsterisk={true}
                     />
-                    <CollaborationImageField 
-                      field="firstCollaborationImage3" 
-                      label="Upload screenshots" 
+                    <CollaborationImageField
+                      field="firstCollaborationImage3"
+                      label="Upload screenshots"
                       showAsterisk={true}
                     />
                     <p className="mt-2 text-xs text-gray-500">Post screenshots, analytics screenshots</p>
@@ -2188,7 +2269,7 @@ export default function CreatorOnboardingForm() {
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          X <span className="text-red-500">*</span>
+                            X <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -2199,8 +2280,7 @@ export default function CreatorOnboardingForm() {
                               setErrors(prev => ({ ...prev, xLink: '' }));
                             }
                           }}
-                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                            errors.xLink ? 'border-red-500' : 'border-gray-300'
+                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.xLink ? 'border-red-500' : 'border-gray-300'
                           }`}
                           placeholder="X"
                         />
@@ -2210,7 +2290,7 @@ export default function CreatorOnboardingForm() {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Instagram <span className="text-red-500">*</span>
+                            Instagram <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -2221,8 +2301,7 @@ export default function CreatorOnboardingForm() {
                               setErrors(prev => ({ ...prev, instagramLink: '' }));
                             }
                           }}
-                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                            errors.instagramLink ? 'border-red-500' : 'border-gray-300'
+                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.instagramLink ? 'border-red-500' : 'border-gray-300'
                           }`}
                           placeholder="Instagram"
                         />
@@ -2232,7 +2311,7 @@ export default function CreatorOnboardingForm() {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Youtube <span className="text-red-500">*</span>
+                            Youtube <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -2243,8 +2322,7 @@ export default function CreatorOnboardingForm() {
                               setErrors(prev => ({ ...prev, youtubeLink: '' }));
                             }
                           }}
-                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                            errors.youtubeLink ? 'border-red-500' : 'border-gray-300'
+                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.youtubeLink ? 'border-red-500' : 'border-gray-300'
                           }`}
                           placeholder="Youtube"
                         />
@@ -2254,7 +2332,7 @@ export default function CreatorOnboardingForm() {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          TikTok <span className="text-red-500">*</span>
+                            TikTok <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -2265,8 +2343,7 @@ export default function CreatorOnboardingForm() {
                               setErrors(prev => ({ ...prev, tiktokLink: '' }));
                             }
                           }}
-                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                            errors.tiktokLink ? 'border-red-500' : 'border-gray-300'
+                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.tiktokLink ? 'border-red-500' : 'border-gray-300'
                           }`}
                           placeholder="TikTok"
                         />
@@ -2276,7 +2353,7 @@ export default function CreatorOnboardingForm() {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Newsletter links <span className="text-red-500">*</span>
+                            Newsletter links <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -2287,8 +2364,7 @@ export default function CreatorOnboardingForm() {
                               setErrors(prev => ({ ...prev, newsletterLink: '' }));
                             }
                           }}
-                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                            errors.newsletterLink ? 'border-red-500' : 'border-gray-300'
+                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.newsletterLink ? 'border-red-500' : 'border-gray-300'
                           }`}
                           placeholder="Newsletter links"
                         />
@@ -2300,6 +2376,52 @@ export default function CreatorOnboardingForm() {
                   </div>
                 </SwiperSlide>
               </Swiper>
+            </div>
+            {/* Mobile: single step - images + links stacked */}
+            <div className="md:hidden space-y-8">
+              <div className="max-w-full box-border space-y-4">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
+                  <h3 className="text-lg font-semibold text-gray-900">Upload Proof Of Work</h3>
+                </div>
+                <CollaborationImageField field="firstCollaborationImage1" label="Upload screenshots" showAsterisk={true} />
+                <CollaborationImageField field="firstCollaborationImage2" label="Upload screenshots" showAsterisk={true} />
+                <CollaborationImageField field="firstCollaborationImage3" label="Upload screenshots" showAsterisk={true} />
+                <p className="mt-2 text-xs text-gray-500">Post screenshots, analytics screenshots</p>
+              </div>
+              <div className="max-w-full box-border">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
+                  <h3 className="text-lg font-semibold text-gray-900">Links To Previous Branded / Sponsored Content</h3>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">X <span className="text-red-500">*</span></label>
+                    <input type="text" value={formData.xLink} onChange={(e) => { updateFormData({ xLink: e.target.value }); if (errors.xLink) setErrors(prev => ({ ...prev, xLink: '' })); }} className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.xLink ? 'border-red-500' : 'border-gray-300'}`} placeholder="X" />
+                    {errors.xLink && <p className="mt-1 text-sm text-red-500">{errors.xLink}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Instagram <span className="text-red-500">*</span></label>
+                    <input type="text" value={formData.instagramLink} onChange={(e) => { updateFormData({ instagramLink: e.target.value }); if (errors.instagramLink) setErrors(prev => ({ ...prev, instagramLink: '' })); }} className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.instagramLink ? 'border-red-500' : 'border-gray-300'}`} placeholder="Instagram" />
+                    {errors.instagramLink && <p className="mt-1 text-sm text-red-500">{errors.instagramLink}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Youtube <span className="text-red-500">*</span></label>
+                    <input type="text" value={formData.youtubeLink} onChange={(e) => { updateFormData({ youtubeLink: e.target.value }); if (errors.youtubeLink) setErrors(prev => ({ ...prev, youtubeLink: '' })); }} className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.youtubeLink ? 'border-red-500' : 'border-gray-300'}`} placeholder="Youtube" />
+                    {errors.youtubeLink && <p className="mt-1 text-sm text-red-500">{errors.youtubeLink}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">TikTok <span className="text-red-500">*</span></label>
+                    <input type="text" value={formData.tiktokLink} onChange={(e) => { updateFormData({ tiktokLink: e.target.value }); if (errors.tiktokLink) setErrors(prev => ({ ...prev, tiktokLink: '' })); }} className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.tiktokLink ? 'border-red-500' : 'border-gray-300'}`} placeholder="TikTok" />
+                    {errors.tiktokLink && <p className="mt-1 text-sm text-red-500">{errors.tiktokLink}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Newsletter links <span className="text-red-500">*</span></label>
+                    <input type="text" value={formData.newsletterLink} onChange={(e) => { updateFormData({ newsletterLink: e.target.value }); if (errors.newsletterLink) setErrors(prev => ({ ...prev, newsletterLink: '' })); }} className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.newsletterLink ? 'border-red-500' : 'border-gray-300'}`} placeholder="Newsletter links" />
+                    {errors.newsletterLink && <p className="mt-1 text-sm text-red-500">{errors.newsletterLink}</p>}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2321,10 +2443,9 @@ export default function CreatorOnboardingForm() {
           <div className="space-y-6">
             <div>
               <label
-                className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${
-                  formData.finalConfirmation
-                    ? 'border-[#7B46F8] bg-white'
-                    : 'border-gray-200 bg-white hover:border-gray-300'
+                className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${formData.finalConfirmation
+                  ? 'border-[#7B46F8] bg-white'
+                  : 'border-gray-200 bg-white hover:border-gray-300'
                 }`}
               >
                 <input
@@ -2333,10 +2454,9 @@ export default function CreatorOnboardingForm() {
                   onChange={(e) => handleConfirmationChange(e.target.checked)}
                   className="sr-only"
                 />
-                <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${
-                  formData.finalConfirmation
-                    ? 'bg-[#7B46F8] border-[#7B46F8]'
-                    : 'bg-white border-gray-300'
+                <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${formData.finalConfirmation
+                  ? 'bg-[#7B46F8] border-[#7B46F8]'
+                  : 'bg-white border-gray-300'
                 }`}>
                   {formData.finalConfirmation && (
                     <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2344,10 +2464,9 @@ export default function CreatorOnboardingForm() {
                     </svg>
                   )}
                 </div>
-                <span className={`text-sm font-medium flex-1 ${
-                  formData.finalConfirmation ? 'text-gray-900' : 'text-gray-700'
+                <span className={`text-sm font-medium flex-1 ${formData.finalConfirmation ? 'text-gray-900' : 'text-gray-700'
                 }`}>
-                  I confirm that all information, rates, screenshots, and links shared are accurate.
+                    I confirm that all information, rates, screenshots, and links shared are accurate.
                 </span>
               </label>
               {errors.finalConfirmation && (
@@ -2426,7 +2545,7 @@ export default function CreatorOnboardingForm() {
                     background: #7B46F8;
                 }
             `}} />
-      <div className='bg-white relative min-h-screen'>
+      <div className='bg-white relative'>
         <div className='bg-[#7B46F8] relative py-24'>
           <div className='absolute top-0 right-0 z-10'>
             <Image src={"/icons/hero-arrow.png"} width={100} height={100} alt="bg" className='w-full h-[100px] md:h-[150px] object-cover' />
@@ -2517,9 +2636,9 @@ export default function CreatorOnboardingForm() {
           </div>
 
           {/* Right Content Area */}
-          <div className='bg-[#F8F8F8] h-full  py-12 px-4 sm:px-8 min-h-[600px] pb-24 md:pb-12 w-screen lg:w-[calc(100vw_-_415px)]'>
+          <div className='bg-[#F8F8F8] h-full  py-12 px-4 sm:px-8 pb-24 md:pb-12 w-screen lg:w-[calc(100vw_-_415px)]'>
             <div className="rounded-lg flex flex-col justify-between h-full w-full">
-              <div key={currentStep} className='sm:p-8 p-4 bg-white rounded-lg'>
+              <div key={currentStep} className='sm:p-8 p-4 bg-white rounded-lg' ref={stepContentRef}>
                 {renderStepContent()}
               </div>
 
@@ -2543,8 +2662,10 @@ export default function CreatorOnboardingForm() {
                 ) : (
                   <button
                     onClick={async () => {
-                      if (!validateStep(currentStep)) {
-                        toast.error('Please fill in all required fields');
+                      const result = validateStep(currentStep);
+                      if (!result.valid) {
+                        toast.error(result.firstErrorMessage ?? 'Please fill in all required fields');
+                        if (result.firstErrorKey) setPendingSlideToField(result.firstErrorKey);
                         return;
                       }
 
