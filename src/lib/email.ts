@@ -37,7 +37,7 @@ export async function sendNewEntryNotification(
 ): Promise<{ sent: boolean; error?: string }> {
   const transporter = getTransporter();
   if (!transporter) {
-    console.warn("Email not configured: BOUNTY_EMAIL_USER / BOUNTY_EMAIL_PASS not set");
+    console.warn("Email not configured: EMAIL_USER / EMAIL_PASS not set");
     return { sent: false, error: "Email not configured" };
   }
   if (NOTIFY_RECIPIENTS.length === 0) {
@@ -46,7 +46,7 @@ export async function sendNewEntryNotification(
   }
 
   try {
-    const from = process.env.BOUNTY_EMAIL_USER;
+    const from = process.env.EMAIL_USER;
     await transporter.sendMail({
       from: from || "noreply@ampli5.com",
       to: NOTIFY_RECIPIENTS.join(", "),
