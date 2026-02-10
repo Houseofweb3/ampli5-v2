@@ -10,6 +10,8 @@ interface CreatorOnboardingFormData {
   primaryCountry: string;
   primaryTimezone: string;
   platforms: string[];
+  /** Profile/channel URL per platform (Step 1, fourth slide). Key = platform name e.g. 'X', 'Youtube'. */
+  platformUrls: Record<string, string>;
 
   // Step 2: Industry selection
   industries: string[];
@@ -18,7 +20,7 @@ interface CreatorOnboardingFormData {
   categories: string[];
 
   // Step 4: Inventory selection & Rates
-  inventoryItems: Record<string, { selected: boolean; rate: string }>;
+  inventoryItems: Record<string, { selected: boolean; rate: string; averageViews: string }>;
 
   // Step 5: Audience & GEO
   primaryAudienceGeography: string[];
@@ -105,6 +107,7 @@ const initialFormData: CreatorOnboardingFormData = {
   primaryCountry: '',
   primaryTimezone: '',
   platforms: [],
+  platformUrls: {},
   industries: [],
   categories: [],
   inventoryItems: {},

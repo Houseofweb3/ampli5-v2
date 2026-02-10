@@ -1,30 +1,37 @@
 import { NextResponse } from "next/server";
 import { google } from "googleapis";
+import { sendNewEntryNotification } from "@/src/lib/email";
 
 interface BrandIntakeFormData {
     // Step 1: Brand Snapshot
     brandProductName: string;
     websiteLink: string;
-    primaryContactEmail: string;
-    telegramId: string;
-    whatsappNumber: string;
+    primaryContactEmail?: string;
+    telegramId?: string;
+    whatsappNumber?: string;
 
     // Step 2: Market & Audience Readiness
     categories: string[];
+    audienceReadinessLevel?: string;
 
     // Step 3: Campaign Goal
     campaignGoals: string[];
 
     // Step 4: Revenue Model & Market focus
     monetizationModel: string[];
+    revenueModel?: string;
+    marketFocus?: string;
 
     // Step 5: Demographics
     primaryAudienceGeography: string[];
     ageRange: string;
     genderSkew: string;
+    geographicLocation?: string;
 
     // Step 6: Timeline
     campaignStartTimeline: string;
+    campaignStartDate?: string;
+    campaignEndDate?: string;
 
     // Step 7: Custom Brief
     customBrief: string;
@@ -161,10 +168,12 @@ export async function POST(request: Request) {
     const sheets = google.sheets({ version: "v4", auth: client });
     const spreadsheetId = process.env.SPREAD_SHEET_ID_FOR_BRABD_INTAKE;
 
-    // Prepare values array - ONLY fields that exist in the form UI
-    // Column order: Date, Time, Brand Product Name, Website Link, Primary Contact Email, 
-    // Telegram ID, WhatsApp Number, Categories, Campaign Goals, Monetization Model,
-    // Primary Audience Geography, Age Range, Gender Skew, Campaign Start Timeline, Custom Brief
+    // Prepare values array - all form data for sheet (match store fields)
+    // Column order: Date, Time, Brand Product Name, Website Link, Primary Contact Email,
+    // Telegram ID, WhatsApp Number, Categories, Target Market, Audience Readiness Level,
+    // Campaign Goals, Monetization Model, Revenue Model, Market Focus,
+    // Primary Audience Geography, Age Range, Gender Skew, Geographic Location,
+    // Campaign Start Timeline, Campaign Start Date, Campaign End Date, Custom Brief
     const values = [
       [
         formattedDate, // Date
@@ -197,6 +206,20 @@ export async function POST(request: Request) {
       range,
       valueInputOption: "RAW",
       requestBody: { values },
+    });
+
+    // Notify team after successful sheet save
+    const summary = [
+      `New Brand Intake entry`,
+      `Brand/Product: ${body.brandProductName || "-"}`,
+      `Website: ${body.websiteLink || "-"}`,
+      `Email: ${body.primaryContactEmail || "-"}`,
+      `Submitted at: ${formattedDate} ${indiaTime}`,
+    ].join("\n");
+    await sendNewEntryNotification({
+      formType: "brand",
+      subject: "New Brand Intake – " + (body.brandProductName || "New entry"),
+      summary,
     });
 
     return NextResponse.json({ status: 200, message: "Form submitted successfully!" });

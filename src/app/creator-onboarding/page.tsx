@@ -12,6 +12,8 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { useCreatorOnboardingFormStore } from '@/src/store/creatorOnboardingForm'
+import Select from 'react-select'
+import type { StylesConfig } from 'react-select'
 
 interface Step {
   id: number;
@@ -72,9 +74,9 @@ const STEPS: Step[] = [
   }
 ];
 
-// Step 1: slide 0 = channelBrandName, primaryContactEmail; 1 = telegramId, whatsappNumber; 2 = primaryCountry, primaryTimezone; 3 = platforms
+// Step 1: slide 0 = channelBrandName, primaryContactEmail; 1 = telegramId, whatsappNumber, telegramOrWhatsApp; 2 = primaryCountry, primaryTimezone; 3 = platforms + platformUrls
 const CREATOR_STEP1_FIELD_TO_SLIDE: Record<string, number> = {
-  channelBrandName: 0, primaryContactEmail: 0, telegramId: 1, whatsappNumber: 1, primaryCountry: 2, primaryTimezone: 2, platforms: 3,
+  channelBrandName: 0, primaryContactEmail: 0, telegramId: 1, whatsappNumber: 1, telegramOrWhatsApp: 1, primaryCountry: 2, primaryTimezone: 2, platforms: 3,
 };
 // Step 5: slide 0 = primaryAudienceGeography, 1 = secondaryAudienceGeography
 const CREATOR_STEP5_FIELD_TO_SLIDE: Record<string, number> = {
@@ -85,6 +87,84 @@ const CREATOR_STEP9_FIELD_TO_SLIDE: Record<string, number> = {
   firstCollaborationImage1: 0, firstCollaborationImage2: 0, firstCollaborationImage3: 0,
   xLink: 1, instagramLink: 1, youtubeLink: 1, tiktokLink: 1, newsletterLink: 1,
 };
+
+const COUNTRY_OPTIONS = [
+  'Afghanistan', 'Albania', 'Algeria', 'Argentina', 'Australia', 'Austria', 'Bangladesh', 'Belgium', 'Brazil', 'Bulgaria',
+  'Canada', 'Chile', 'China', 'Colombia', 'Croatia', 'Czech Republic', 'Denmark', 'Egypt', 'Estonia', 'Finland',
+  'France', 'Germany', 'Ghana', 'Greece', 'Hong Kong', 'Hungary', 'India', 'Indonesia', 'Iran', 'Ireland',
+  'Israel', 'Italy', 'Japan', 'Kenya', 'South Korea', 'Malaysia', 'Mexico', 'Morocco', 'Netherlands', 'New Zealand',
+  'Nigeria', 'Norway', 'Pakistan', 'Philippines', 'Poland', 'Portugal', 'Romania', 'Russia', 'Saudi Arabia', 'Singapore',
+  'South Africa', 'Spain', 'Sweden', 'Switzerland', 'Taiwan', 'Thailand', 'Turkey', 'Ukraine', 'United Arab Emirates', 'United Kingdom',
+  'United States', 'Vietnam', 'Other',
+];
+
+const TIMEZONE_OPTIONS = [
+  'GMT-12', 'GMT-11', 'GMT-10', 'GMT-9', 'GMT-8', 'GMT-7', 'GMT-6', 'GMT-5', 'GMT-4', 'GMT-3', 'GMT-2', 'GMT-1',
+  'GMT', 'GMT+1', 'GMT+2', 'GMT+3', 'GMT+4', 'GMT+5', 'GMT+5:30', 'GMT+6', 'GMT+7', 'GMT+8', 'GMT+9', 'GMT+9:30', 'GMT+10', 'GMT+11', 'GMT+12', 'GMT+13', 'GMT+14',
+];
+
+const countrySelectOptions = COUNTRY_OPTIONS.map((c) => ({ value: c, label: c }));
+const timezoneSelectOptions = TIMEZONE_OPTIONS.map((tz) => ({ value: tz, label: tz }));
+
+function isValidUrl(value: string): boolean {
+  const trimmed = (value || '').trim();
+  if (!trimmed) return false;
+  try {
+    const withProtocol = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+    new URL(withProtocol);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+type SelectOption = { value: string; label: string };
+type ControlState = { isFocused?: boolean; selectProps?: { menuIsOpen?: boolean } };
+type OptionState = { isSelected?: boolean; isFocused?: boolean };
+
+function getSelectStyles(hasError: boolean, withIcon = false): StylesConfig<SelectOption, false> {
+  return {
+    control: (base: Record<string, unknown>, state: ControlState) => ({
+      ...base,
+      minHeight: 48,
+      paddingLeft: 16,
+      paddingRight: withIcon ? 40 : 16,
+      borderRadius: 8,
+      borderColor: hasError ? '#ef4444' : state.isFocused ? '#7B46F8' : '#d1d5db',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(123, 70, 248, 0.2)' : 'none',
+      '&:hover': { borderColor: hasError ? '#ef4444' : '#9ca3af' },
+    }),
+    placeholder: (base: Record<string, unknown>) => ({ ...base, color: '#9ca3af' }),
+    singleValue: (base: Record<string, unknown>) => ({ ...base, color: '#111827' }),
+    input: (base: Record<string, unknown>) => ({ ...base, margin: 0, padding: 0 }),
+    indicatorSeparator: () => ({ display: 'none' }),
+    dropdownIndicator: (base: Record<string, unknown>, state: ControlState) => ({
+      ...base,
+      color: '#9ca3af',
+      padding: 8,
+      '&:hover': { color: '#6b7280' },
+      transform: state.selectProps?.menuIsOpen ? 'rotate(180deg)' : undefined,
+    }),
+    menu: (base: Record<string, unknown>) => ({
+      ...base,
+      borderRadius: 8,
+      border: '1px solid #e5e7eb',
+      boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)',
+    }),
+    option: (base: Record<string, unknown>, state: OptionState) => ({
+      ...base,
+      backgroundColor: state.isSelected ? '#ede9fe' : state.isFocused ? '#f5f3ff' : 'white',
+      color: state.isSelected ? '#7B46F8' : '#111827',
+    }),
+  };
+}
+
+const LocationPinIcon = () => (
+  <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+);
 
 export default function CreatorOnboardingForm() {
   const router = useRouter();
@@ -101,21 +181,23 @@ export default function CreatorOnboardingForm() {
   const audienceGeoSwiperRef = useRef<SwiperType | null>(null);
   const collaborationSwiperRef = useRef<SwiperType | null>(null);
   const stepContentRef = useRef<HTMLDivElement | null>(null);
+  const [stepSlideIndex, setStepSlideIndex] = useState<Record<number, number>>({});
 
   // Load completed steps from formData
   useEffect(() => {
     const completed = new Set<number>();
     // Check which steps have data - will be updated as we implement each step
-    if (formData.channelBrandName && formData.primaryContactEmail && formData.telegramId && formData.whatsappNumber && formData.primaryCountry && formData.primaryTimezone && formData.platforms && formData.platforms.length > 0) completed.add(1);
+    const step1PlatformsOk = formData.platforms && formData.platforms.length > 0;
+    const step1PlatformUrlsOk = step1PlatformsOk && (formData.platformUrls && formData.platforms.every((p: string) => (formData.platformUrls?.[p] ?? '').trim().length > 0));
+    if (formData.channelBrandName && formData.primaryContactEmail && (formData.telegramId?.trim() || formData.whatsappNumber?.trim()) && formData.primaryCountry && formData.primaryTimezone && step1PlatformsOk && step1PlatformUrlsOk) completed.add(1);
     if (formData.industries && formData.industries.length > 0) completed.add(2);
     const industryCategoryMapCompleted: Record<string, string[]> = {
-      'Crypto': ['DeFi', 'Infrastructure', 'Trading & Prediction Markets', 'Memecoins', 'Podcasters', 'Clippers'],
-      'AI': ['AI Products & Tools Review', 'AI Education', 'AI News & Releases', 'Podcasters', 'Clippers'],
-      'Startups': ['Startup News & Media', 'Startup Product Reviews', 'Business & Tech Explainers', 'Growth & Marketing', 'Podcasters', 'Clippers'],
-      'Fintech': ['News & Trends', 'Fintech Product Reviews', 'Podcasters', 'Clippers'],
-      'Robotics & Hardware': ['Tech & Gadget Creators', 'Lifestyle Tech Creators', 'Product Reviews', 'Innovation & Future Tech', 'Podcasters', 'Clippers'],
-      'Motivation / Mindset': ['Motivational Speakers', 'Mindset & Discipline', 'Entrepreneur Motivation', 'Stoicism & Philosophy', 'Podcasters', 'Clippers'],
-      'Health & Fitness': ['Physical Fitness', 'Diet & Nutrition', 'Biohacking', 'Podcasters', 'Clippers'],
+      'Crypto': ['Crypto DeFi', 'Crypto Infrastructure', 'Crypto Trading & Prediction Market', 'Crypto Memecoin', 'Crypto Podcaster', 'Crypto Clippers'],
+      'AI': ['AI product Tools Review', 'AI education', 'AI news & releases', 'AI Podcasts', 'AI clippers'],
+      'Startups': ['Startup News & Media', 'Startup Product Reviews', 'Startup Business Explainer', 'Startup Growth & Marketing', 'Startup Podcast', 'Startup Clippers'],
+      'Trading & Fintech': ['Fintech Traders', 'Fintech news & trends', 'Fintech product reviews', 'Fintech Podcasters', 'Fintech clippers'],
+      'Robotics & Hardware': ['R&H Tech & Gadget creators', 'R&H lifestyle creators', 'R&H product reviews', 'R&H innovation & future tech', 'R&H podcasters', 'R&H clippers'],
+      'Health & Fitness': ['Motivation - Clippers', 'Health & Fitness - Physical Fitness', 'Health & Fitness - Diet & Nutrition', 'Health & Fitness - Biohacking', 'Health & Fitness - Mental Health', 'Health & Fitness - Podcasters', 'Health & Fitness - Clippers'],
     };
     const selInd = formData.industries?.[0];
     const hasCats = selInd && (industryCategoryMapCompleted[selInd]?.length ?? 0) > 0;
@@ -138,7 +220,8 @@ export default function CreatorOnboardingForm() {
       if (selectedForPlatform.length === 0) return false;
       return selectedForPlatform.every((item: string) => {
         const r = inventoryItems[item]?.rate?.trim() ?? '';
-        return r !== '' && r !== '0';
+        const avgViews = (inventoryItems[item]?.averageViews ?? '').trim();
+        return r !== '' && r !== '0' && avgViews !== '';
       });
     });
     if (step4Complete) completed.add(4);
@@ -185,11 +268,10 @@ export default function CreatorOnboardingForm() {
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.primaryContactEmail)) {
         newErrors.primaryContactEmail = 'Please enter a valid email address';
       }
-      if (!formData.telegramId.trim()) {
-        newErrors.telegramId = 'Telegram ID is required';
-      }
-      if (!formData.whatsappNumber.trim()) {
-        newErrors.whatsappNumber = 'WhatsApp Number is required';
+      const hasTelegram = formData.telegramId?.trim();
+      const hasWhatsApp = formData.whatsappNumber?.trim();
+      if (!hasTelegram && !hasWhatsApp) {
+        newErrors.telegramOrWhatsApp = 'Please provide at least one: Telegram ID or WhatsApp Number';
       }
       if (!formData.primaryCountry.trim()) {
         newErrors.primaryCountry = 'Primary Country is required';
@@ -199,6 +281,19 @@ export default function CreatorOnboardingForm() {
       }
       if (!formData.platforms || formData.platforms.length === 0) {
         newErrors.platforms = 'Please select at least one platform';
+      } else {
+        const platformUrls = formData.platformUrls || {};
+        for (const p of formData.platforms) {
+          const url = (platformUrls[p] ?? '').trim();
+          if (!url) {
+            newErrors[`platformUrl_${p}`] = `Please enter your ${p} profile URL`;
+            break;
+          }
+          if (!isValidUrl(url)) {
+            newErrors[`platformUrl_${p}`] = `Please enter a valid URL for ${p}`;
+            break;
+          }
+        }
       }
       break;
     case 2:
@@ -208,13 +303,12 @@ export default function CreatorOnboardingForm() {
       break;
     case 3: {
       const industryCategoryMap: Record<string, string[]> = {
-        'Crypto': ['DeFi', 'Infrastructure', 'Trading & Prediction Markets', 'Memecoins', 'Podcasters', 'Clippers'],
-        'AI': ['AI Products & Tools Review', 'AI Education', 'AI News & Releases', 'Podcasters', 'Clippers'],
-        'Startups': ['Startup News & Media', 'Startup Product Reviews', 'Business & Tech Explainers', 'Growth & Marketing', 'Podcasters', 'Clippers'],
-        'Fintech': ['News & Trends', 'Fintech Product Reviews', 'Podcasters', 'Clippers'],
-        'Robotics & Hardware': ['Tech & Gadget Creators', 'Lifestyle Tech Creators', 'Product Reviews', 'Innovation & Future Tech', 'Podcasters', 'Clippers'],
-        'Motivation / Mindset': ['Motivational Speakers', 'Mindset & Discipline', 'Entrepreneur Motivation', 'Stoicism & Philosophy', 'Podcasters', 'Clippers'],
-        'Health & Fitness': ['Physical Fitness', 'Diet & Nutrition', 'Biohacking', 'Podcasters', 'Clippers'],
+        'Crypto': ['Crypto DeFi', 'Crypto Infrastructure', 'Crypto Trading & Prediction Market', 'Crypto Memecoin', 'Crypto Podcaster', 'Crypto Clippers'],
+        'AI': ['AI product Tools Review', 'AI education', 'AI news & releases', 'AI Podcasts', 'AI clippers'],
+        'Startups': ['Startup News & Media', 'Startup Product Reviews', 'Startup Business Explainer', 'Startup Growth & Marketing', 'Startup Podcast', 'Startup Clippers'],
+        'Trading & Fintech': ['Fintech Traders', 'Fintech news & trends', 'Fintech product reviews', 'Fintech Podcasters', 'Fintech clippers'],
+        'Robotics & Hardware': ['R&H Tech & Gadget creators', 'R&H lifestyle creators', 'R&H product reviews', 'R&H innovation & future tech', 'R&H podcasters', 'R&H clippers'],
+        'Health & Fitness': ['Motivation - Clippers', 'Health & Fitness - Physical Fitness', 'Health & Fitness - Diet & Nutrition', 'Health & Fitness - Biohacking', 'Health & Fitness - Mental Health', 'Health & Fitness - Podcasters', 'Health & Fitness - Clippers'],
       };
       const selectedInd = formData.industries?.[0];
       const hasCategories = selectedInd && (industryCategoryMap[selectedInd]?.length ?? 0) > 0;
@@ -251,6 +345,14 @@ export default function CreatorOnboardingForm() {
             newErrors.inventoryItems = 'Please enter a rate greater than 0 for all selected inventory items.';
             break;
           }
+          const itemsWithoutAverageViews = selectedForPlatform.filter(item => {
+            const avgViews = (inventoryItems[item]?.averageViews ?? '').trim();
+            return !avgViews;
+          });
+          if (itemsWithoutAverageViews.length > 0) {
+            newErrors.inventoryItems = 'Please enter average views (last 5 posts) for all selected inventory items.';
+            break;
+          }
         }
       }
       break;
@@ -258,9 +360,13 @@ export default function CreatorOnboardingForm() {
     case 5:
       if (!formData.primaryAudienceGeography || formData.primaryAudienceGeography.length === 0) {
         newErrors.primaryAudienceGeography = 'Please select at least one primary audience region';
+      } else if (formData.primaryAudienceGeography.length > 2) {
+        newErrors.primaryAudienceGeography = 'Select at most 2 target geographies for primary audience';
       }
       if (!formData.secondaryAudienceGeography || formData.secondaryAudienceGeography.length === 0) {
         newErrors.secondaryAudienceGeography = 'Please select at least one secondary audience region';
+      } else if (formData.secondaryAudienceGeography.length > 2) {
+        newErrors.secondaryAudienceGeography = 'Select at most 2 target geographies for secondary audience';
       }
       break;
     case 6:
@@ -331,8 +437,9 @@ export default function CreatorOnboardingForm() {
   useEffect(() => {
     if (!pendingSlideToField || !currentStep) return;
     const step = currentStep;
-    if (step === 1 && CREATOR_STEP1_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
-      creatorStep1SwiperRef.current?.slideTo(CREATOR_STEP1_FIELD_TO_SLIDE[pendingSlideToField]);
+    if (step === 1) {
+      const slideIndex = CREATOR_STEP1_FIELD_TO_SLIDE[pendingSlideToField] ?? (pendingSlideToField.startsWith('platformUrl_') ? 3 : undefined);
+      if (slideIndex !== undefined) creatorStep1SwiperRef.current?.slideTo(slideIndex);
     } else if (step === 5 && CREATOR_STEP5_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
       audienceGeoSwiperRef.current?.slideTo(CREATOR_STEP5_FIELD_TO_SLIDE[pendingSlideToField]);
     } else if (step === 9 && CREATOR_STEP9_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
@@ -362,11 +469,23 @@ export default function CreatorOnboardingForm() {
   };
 
   const handleBack = () => {
-    if (currentStep > 1) {
+    const stepsWithSwiper: Record<number, React.RefObject<SwiperType | null>> = {
+      1: creatorStep1SwiperRef,
+      5: audienceGeoSwiperRef,
+      9: collaborationSwiperRef,
+    };
+    const ref = stepsWithSwiper[currentStep];
+    const currentSlide = stepSlideIndex[currentStep] ?? 0;
+    if (ref?.current && currentSlide > 0) {
+      ref.current.slideTo(currentSlide - 1);
+      setStepSlideIndex((prev) => ({ ...prev, [currentStep]: currentSlide - 1 }));
+    } else {
       setCurrentStep(currentStep - 1);
       setErrors({});
     }
   };
+
+  const showBackButton = currentStep > 1 || (currentStep === 1 && (stepSlideIndex[1] ?? 0) > 0);
 
   const isStepCompleted = (stepId: number) => completedSteps.has(stepId);
   const isStepActive = (stepId: number) => stepId === currentStep;
@@ -384,13 +503,15 @@ export default function CreatorOnboardingForm() {
 
       const handlePlatformChange = (platform: string) => {
         const currentPlatforms = formData.platforms || [];
-        const newPlatforms = currentPlatforms.includes(platform)
+        const isRemoving = currentPlatforms.includes(platform);
+        const newPlatforms = isRemoving
           ? currentPlatforms.filter((p) => p !== platform)
           : [...currentPlatforms, platform];
-        updateFormData({ platforms: newPlatforms });
-        if (errors.platforms) {
-          setErrors(prev => ({ ...prev, platforms: '' }));
-        }
+        const newPlatformUrls = { ...(formData.platformUrls || {}) };
+        if (isRemoving) delete newPlatformUrls[platform];
+        updateFormData({ platforms: newPlatforms, platformUrls: newPlatformUrls });
+        if (errors.platforms) setErrors(prev => ({ ...prev, platforms: '' }));
+        if (errors[`platformUrl_${platform}`]) setErrors(prev => ({ ...prev, [`platformUrl_${platform}`]: '' }));
       };
 
       return (
@@ -402,13 +523,14 @@ export default function CreatorOnboardingForm() {
           <div className="hidden md:block w-full overflow-hidden">
             <Swiper
               onSwiper={(swiper) => { creatorStep1SwiperRef.current = swiper; }}
+              onSlideChangeTransitionEnd={(swiper) => setStepSlideIndex((prev) => ({ ...prev, 1: swiper.activeIndex }))}
               modules={[Pagination]}
               spaceBetween={24}
               slidesPerView={1}
               pagination={{ clickable: true }}
+              noSwipingClass="creator-step1-no-swipe"
               className="brand-snapshot-slider"
             >
-              {/* First Slide: Channel / Brand Name and Primary Contact Email */}
               <SwiperSlide>
                 <div className="space-y-6 w-full">
                   <div>
@@ -466,14 +588,15 @@ export default function CreatorOnboardingForm() {
                   </div>
                 </div>
               </SwiperSlide>
-              {/* Second Slide: Telegram ID and WhatsApp Number */}
+              {/* Second Slide: Telegram ID and WhatsApp Number (at least one required) */}
               <SwiperSlide>
                 <div className="space-y-6 w-full">
+                  <p className="text-sm text-gray-500">At least one required</p>
                   <div>
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
                       <label className="block text-sm font-medium text-gray-700">
-                          Telegram ID <span className="text-red-500">*</span>
+                          Telegram ID
                       </label>
                     </div>
                     <input
@@ -481,23 +604,20 @@ export default function CreatorOnboardingForm() {
                       value={formData.telegramId}
                       onChange={(e) => {
                         updateFormData({ telegramId: e.target.value });
-                        if (errors.telegramId) {
-                          setErrors(prev => ({ ...prev, telegramId: '' }));
+                        if (errors.telegramOrWhatsApp) {
+                          setErrors(prev => ({ ...prev, telegramOrWhatsApp: '' }));
                         }
                       }}
-                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.telegramId ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.telegramOrWhatsApp ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder="XXX XXX XXXX"
                     />
-                    {errors.telegramId && (
-                      <p className="mt-1 text-sm text-red-500">{errors.telegramId}</p>
-                    )}
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
                       <label className="block text-sm font-medium text-gray-700">
-                          WhatsApp Number <span className="text-red-500">*</span>
+                          WhatsApp Number
                       </label>
                     </div>
                     <PhoneInput
@@ -505,8 +625,8 @@ export default function CreatorOnboardingForm() {
                       value={formData.whatsappNumber}
                       onChange={(value: string) => {
                         updateFormData({ whatsappNumber: value });
-                        if (errors.whatsappNumber) {
-                          setErrors(prev => ({ ...prev, whatsappNumber: '' }));
+                        if (errors.telegramOrWhatsApp) {
+                          setErrors(prev => ({ ...prev, telegramOrWhatsApp: '' }));
                         }
                       }}
                       enableLongNumbers
@@ -515,7 +635,7 @@ export default function CreatorOnboardingForm() {
                         width: '100%',
                         height: '48px',
                         padding: '14px 60px',
-                        border: errors.whatsappNumber ? '2px solid #ef4444' : '2px solid #D1D5DB',
+                        border: errors.telegramOrWhatsApp ? '2px solid #ef4444' : '2px solid #D1D5DB',
                         borderRadius: '8px',
                         fontSize: '16px',
                         backgroundColor: '#fff',
@@ -525,7 +645,7 @@ export default function CreatorOnboardingForm() {
                         width: '100%',
                       }}
                       buttonStyle={{
-                        border: errors.whatsappNumber ? '2px solid #ef4444' : '2px solid #D1D5DB',
+                        border: errors.telegramOrWhatsApp ? '2px solid #ef4444' : '2px solid #D1D5DB',
                         borderRadius: '8px 0 0 8px',
                         backgroundColor: '#fff',
                       }}
@@ -535,15 +655,18 @@ export default function CreatorOnboardingForm() {
                         borderRadius: '8px',
                       }}
                     />
-                    {errors.whatsappNumber && (
-                      <p className="mt-1 text-sm text-red-500">{errors.whatsappNumber}</p>
+                    {errors.telegramOrWhatsApp && (
+                      <p className="mt-1 text-sm text-red-500">{errors.telegramOrWhatsApp}</p>
                     )}
                   </div>
                 </div>
               </SwiperSlide>
               {/* Third Slide: Primary Country and Primary Timezone */}
               <SwiperSlide>
-                <div className="space-y-6 w-full">
+                <div
+                  className="space-y-6 w-full creator-step1-no-swipe"
+                  onMouseDown={(e) => e.stopPropagation()}
+                >
                   <div>
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
@@ -552,23 +675,20 @@ export default function CreatorOnboardingForm() {
                       </label>
                     </div>
                     <div className="relative">
-                      <input
-                        type="text"
-                        value={formData.primaryCountry}
-                        onChange={(e) => {
-                          updateFormData({ primaryCountry: e.target.value });
-                          if (errors.primaryCountry) {
-                            setErrors(prev => ({ ...prev, primaryCountry: '' }));
-                          }
-                        }}
-                        className={`w-full px-4 py-3 pr-10 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.primaryCountry ? 'border-red-500' : 'border-gray-300'
-                        }`}
+                      <Select<SelectOption>
+                        isClearable
+                        isSearchable
                         placeholder="Select Country"
+                        options={countrySelectOptions}
+                        value={formData.primaryCountry ? { value: formData.primaryCountry, label: formData.primaryCountry } : null}
+                        onChange={(opt: SelectOption | null) => {
+                          updateFormData({ primaryCountry: opt?.value ?? '' });
+                          if (errors.primaryCountry) setErrors(prev => ({ ...prev, primaryCountry: '' }));
+                        }}
+                        styles={getSelectStyles(!!errors.primaryCountry, true)}
+                        classNamePrefix="creator-country-select"
                       />
-                      <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
+                      <LocationPinIcon />
                     </div>
                     {errors.primaryCountry && (
                       <p className="mt-1 text-sm text-red-500">{errors.primaryCountry}</p>
@@ -581,18 +701,18 @@ export default function CreatorOnboardingForm() {
                           Primary Timezone <span className="text-red-500">*</span>
                       </label>
                     </div>
-                    <input
-                      type="text"
-                      value={formData.primaryTimezone}
-                      onChange={(e) => {
-                        updateFormData({ primaryTimezone: e.target.value });
-                        if (errors.primaryTimezone) {
-                          setErrors(prev => ({ ...prev, primaryTimezone: '' }));
-                        }
-                      }}
-                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.primaryTimezone ? 'border-red-500' : 'border-gray-300'
-                      }`}
+                    <Select<SelectOption>
+                      isClearable
+                      isSearchable
                       placeholder="GMT+"
+                      options={timezoneSelectOptions}
+                      value={formData.primaryTimezone ? { value: formData.primaryTimezone, label: formData.primaryTimezone } : null}
+                      onChange={(opt: SelectOption | null) => {
+                        updateFormData({ primaryTimezone: opt?.value ?? '' });
+                        if (errors.primaryTimezone) setErrors(prev => ({ ...prev, primaryTimezone: '' }));
+                      }}
+                      styles={getSelectStyles(!!errors.primaryTimezone)}
+                      classNamePrefix="creator-timezone-select"
                     />
                     {errors.primaryTimezone && (
                       <p className="mt-1 text-sm text-red-500">{errors.primaryTimezone}</p>
@@ -600,53 +720,98 @@ export default function CreatorOnboardingForm() {
                   </div>
                 </div>
               </SwiperSlide>
-              {/* Fourth Slide: Platform You're Active On */}
+              {/* Fourth Slide: Platform You're Active On + URL per platform (inventory-style row) */}
               <SwiperSlide>
                 <div className="space-y-6 w-full">
                   <div>
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                      <h3 className="text-lg font-semibold text-gray-900">Platform You're Active On <span className="text-red-500">*</span></h3>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
+                        <h3 className="text-lg font-semibold text-gray-900">Platform You're Active On <span className="text-red-500">*</span></h3>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          updateFormData({ platforms: [], platformUrls: {} });
+                          setErrors(prev => {
+                            const next = { ...prev };
+                            platformOptions.forEach((p) => delete next[`platformUrl_${p}`]);
+                            delete next.platforms;
+                            return next;
+                          });
+                        }}
+                        className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Reset
+                      </button>
                     </div>
+                    <p className="text-sm text-gray-500 mb-3">Select platforms and enter your profile/channel URL in the box. Required when checked.</p>
                     <div className="space-y-3">
                       {platformOptions.map((platform) => {
                         const isSelected = formData.platforms?.includes(platform) || false;
+                        const url = (formData.platformUrls || {})[platform] ?? '';
+                        const errKey = `platformUrl_${platform}`;
+                        const hasError = !!errors[errKey];
                         return (
-                          <label
+                          <div
                             key={platform}
-                            className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${isSelected
+                            className={`flex items-center gap-4 p-4 rounded-lg transition-all border-2 ${isSelected
                               ? 'border-[#7B46F8] bg-white'
                               : 'border-gray-200 bg-white hover:border-gray-300'
                             }`}
                           >
-                            <input
-                              type="checkbox"
-                              name="platform-selection"
-                              checked={isSelected}
-                              onChange={() => handlePlatformChange(platform)}
-                              className="sr-only"
-                            />
-                            <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${isSelected
-                              ? 'bg-[#7B46F8] border-[#7B46F8]'
-                              : 'bg-white border-gray-300'
-                            }`}>
-                              {isSelected && (
-                                <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                </svg>
-                              )}
+                            <label className="flex items-center cursor-pointer flex-1 min-w-0">
+                              <input
+                                type="checkbox"
+                                name="platform-selection"
+                                checked={isSelected}
+                                onChange={() => handlePlatformChange(platform)}
+                                className="sr-only"
+                              />
+                              <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${isSelected
+                                ? 'bg-[#7B46F8] border-[#7B46F8]'
+                                : 'bg-white border-gray-300'
+                              }`}>
+                                {isSelected && (
+                                  <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                  </svg>
+                                )}
+                              </div>
+                              <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'} break-words`}>
+                                {platform}
+                              </span>
+                            </label>
+                            <div className="flex items-center gap-2 flex-shrink-0 w-full max-w-[280px]" onClick={(e) => e.stopPropagation()}>
+                              <span className="text-sm text-gray-500 whitespace-nowrap">URL</span>
+                              <input
+                                type="url"
+                                value={url}
+                                onChange={(e) => {
+                                  updateFormData({
+                                    platformUrls: { ...(formData.platformUrls || {}), [platform]: e.target.value },
+                                  });
+                                  if (errors[errKey]) setErrors(prev => ({ ...prev, [errKey]: '' }));
+                                }}
+                                placeholder="Enter URL"
+                                disabled={!isSelected}
+                                className={`flex-1 min-w-0 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-70 ${hasError ? 'border-red-500' : 'border-gray-300'}`}
+                              />
                             </div>
-                            <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'
-                            }`}>
-                              {platform}
-                            </span>
-                          </label>
+                          </div>
                         );
                       })}
                     </div>
                     {errors.platforms && (
                       <p className="mt-2 text-sm text-red-500">{errors.platforms}</p>
                     )}
+                    {(() => {
+                      const urlErrorKey = Object.keys(errors).find((k) => k.startsWith('platformUrl_'));
+                      return urlErrorKey ? <p className="mt-2 text-sm text-red-500">{errors[urlErrorKey]}</p> : null;
+                    })()}
                   </div>
                 </div>
               </SwiperSlide>
@@ -702,11 +867,12 @@ export default function CreatorOnboardingForm() {
                 <p className="mt-1 text-sm text-red-500">{errors.primaryContactEmail}</p>
               )}
             </div>
+            <p className="text-sm text-gray-500">At least one required</p>
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
                 <label className="block text-sm font-medium text-gray-700">
-                    Telegram ID <span className="text-red-500">*</span>
+                    Telegram ID
                 </label>
               </div>
               <input
@@ -714,23 +880,20 @@ export default function CreatorOnboardingForm() {
                 value={formData.telegramId}
                 onChange={(e) => {
                   updateFormData({ telegramId: e.target.value });
-                  if (errors.telegramId) {
-                    setErrors(prev => ({ ...prev, telegramId: '' }));
+                  if (errors.telegramOrWhatsApp) {
+                    setErrors(prev => ({ ...prev, telegramOrWhatsApp: '' }));
                   }
                 }}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.telegramId ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.telegramOrWhatsApp ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="XXX XXX XXXX"
               />
-              {errors.telegramId && (
-                <p className="mt-1 text-sm text-red-500">{errors.telegramId}</p>
-              )}
             </div>
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
                 <label className="block text-sm font-medium text-gray-700">
-                    WhatsApp Number <span className="text-red-500">*</span>
+                    WhatsApp Number
                 </label>
               </div>
               <PhoneInput
@@ -738,8 +901,8 @@ export default function CreatorOnboardingForm() {
                 value={formData.whatsappNumber}
                 onChange={(value: string) => {
                   updateFormData({ whatsappNumber: value });
-                  if (errors.whatsappNumber) {
-                    setErrors(prev => ({ ...prev, whatsappNumber: '' }));
+                  if (errors.telegramOrWhatsApp) {
+                    setErrors(prev => ({ ...prev, telegramOrWhatsApp: '' }));
                   }
                 }}
                 enableLongNumbers
@@ -748,7 +911,7 @@ export default function CreatorOnboardingForm() {
                   width: '100%',
                   height: '48px',
                   padding: '14px 60px',
-                  border: errors.whatsappNumber ? '2px solid #ef4444' : '2px solid #D1D5DB',
+                  border: errors.telegramOrWhatsApp ? '2px solid #ef4444' : '2px solid #D1D5DB',
                   borderRadius: '8px',
                   fontSize: '16px',
                   backgroundColor: '#fff',
@@ -758,7 +921,7 @@ export default function CreatorOnboardingForm() {
                   width: '100%',
                 }}
                 buttonStyle={{
-                  border: errors.whatsappNumber ? '2px solid #ef4444' : '2px solid #D1D5DB',
+                  border: errors.telegramOrWhatsApp ? '2px solid #ef4444' : '2px solid #D1D5DB',
                   borderRadius: '8px 0 0 8px',
                   backgroundColor: '#fff',
                 }}
@@ -768,8 +931,8 @@ export default function CreatorOnboardingForm() {
                   borderRadius: '8px',
                 }}
               />
-              {errors.whatsappNumber && (
-                <p className="mt-1 text-sm text-red-500">{errors.whatsappNumber}</p>
+              {errors.telegramOrWhatsApp && (
+                <p className="mt-1 text-sm text-red-500">{errors.telegramOrWhatsApp}</p>
               )}
             </div>
             <div>
@@ -779,19 +942,22 @@ export default function CreatorOnboardingForm() {
                     Primary Country <span className="text-red-500">*</span>
                 </label>
               </div>
-              <input
-                type="text"
-                value={formData.primaryCountry}
-                onChange={(e) => {
-                  updateFormData({ primaryCountry: e.target.value });
-                  if (errors.primaryCountry) {
-                    setErrors(prev => ({ ...prev, primaryCountry: '' }));
-                  }
-                }}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.primaryCountry ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="Select Country"
-              />
+              <div className="relative">
+                <Select<SelectOption>
+                  isClearable
+                  isSearchable
+                  placeholder="Select Country"
+                  options={countrySelectOptions}
+                  value={formData.primaryCountry ? { value: formData.primaryCountry, label: formData.primaryCountry } : null}
+                  onChange={(opt: SelectOption | null) => {
+                    updateFormData({ primaryCountry: opt?.value ?? '' });
+                    if (errors.primaryCountry) setErrors(prev => ({ ...prev, primaryCountry: '' }));
+                  }}
+                  styles={getSelectStyles(!!errors.primaryCountry, true)}
+                  classNamePrefix="creator-country-select-mobile"
+                />
+                <LocationPinIcon />
+              </div>
               {errors.primaryCountry && (
                 <p className="mt-1 text-sm text-red-500">{errors.primaryCountry}</p>
               )}
@@ -803,67 +969,112 @@ export default function CreatorOnboardingForm() {
                     Primary Timezone <span className="text-red-500">*</span>
                 </label>
               </div>
-              <input
-                type="text"
-                value={formData.primaryTimezone}
-                onChange={(e) => {
-                  updateFormData({ primaryTimezone: e.target.value });
-                  if (errors.primaryTimezone) {
-                    setErrors(prev => ({ ...prev, primaryTimezone: '' }));
-                  }
-                }}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.primaryTimezone ? 'border-red-500' : 'border-gray-300'
-                }`}
+              <Select<SelectOption>
+                isClearable
+                isSearchable
                 placeholder="GMT+"
+                options={timezoneSelectOptions}
+                value={formData.primaryTimezone ? { value: formData.primaryTimezone, label: formData.primaryTimezone } : null}
+                onChange={(opt: SelectOption | null) => {
+                  updateFormData({ primaryTimezone: opt?.value ?? '' });
+                  if (errors.primaryTimezone) setErrors(prev => ({ ...prev, primaryTimezone: '' }));
+                }}
+                styles={getSelectStyles(!!errors.primaryTimezone)}
+                classNamePrefix="creator-timezone-select-mobile"
               />
               {errors.primaryTimezone && (
                 <p className="mt-1 text-sm text-red-500">{errors.primaryTimezone}</p>
               )}
             </div>
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                <h3 className="text-lg font-semibold text-gray-900">Platform You're Active On <span className="text-red-500">*</span></h3>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
+                  <h3 className="text-lg font-semibold text-gray-900">Platform You're Active On <span className="text-red-500">*</span></h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    updateFormData({ platforms: [], platformUrls: {} });
+                    setErrors(prev => {
+                      const next = { ...prev };
+                      platformOptions.forEach((p) => delete next[`platformUrl_${p}`]);
+                      delete next.platforms;
+                      return next;
+                    });
+                  }}
+                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  Reset
+                </button>
               </div>
+              <p className="text-sm text-gray-500 mb-3">Select platforms and enter your profile/channel URL in the box. Required when checked.</p>
               <div className="space-y-3">
                 {platformOptions.map((platform) => {
                   const isSelected = formData.platforms?.includes(platform) || false;
+                  const url = (formData.platformUrls || {})[platform] ?? '';
+                  const errKey = `platformUrl_${platform}`;
+                  const hasError = !!errors[errKey];
                   return (
-                    <label
+                    <div
                       key={platform}
-                      className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${isSelected
+                      className={`flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-lg transition-all border-2 ${isSelected
                         ? 'border-[#7B46F8] bg-white'
                         : 'border-gray-200 bg-white hover:border-gray-300'
                       }`}
                     >
-                      <input
-                        type="checkbox"
-                        name="platform-selection-mobile"
-                        checked={isSelected}
-                        onChange={() => handlePlatformChange(platform)}
-                        className="sr-only"
-                      />
-                      <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${isSelected
-                        ? 'bg-[#7B46F8] border-[#7B46F8]'
-                        : 'bg-white border-gray-300'
-                      }`}>
-                        {isSelected && (
-                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
+                      <label className="flex items-center cursor-pointer flex-1 min-w-0">
+                        <input
+                          type="checkbox"
+                          name="platform-selection-mobile"
+                          checked={isSelected}
+                          onChange={() => handlePlatformChange(platform)}
+                          className="sr-only"
+                        />
+                        <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${isSelected
+                          ? 'bg-[#7B46F8] border-[#7B46F8]'
+                          : 'bg-white border-gray-300'
+                        }`}>
+                          {isSelected && (
+                            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </div>
+                        <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'} break-words`}>
+                          {platform}
+                        </span>
+                      </label>
+                      <div className="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto sm:min-w-[200px]" onClick={(e) => e.stopPropagation()}>
+                        <span className="text-sm text-gray-500 whitespace-nowrap">URL</span>
+                        <input
+                          type="url"
+                          value={url}
+                          onChange={(e) => {
+                            updateFormData({
+                              platformUrls: { ...(formData.platformUrls || {}), [platform]: e.target.value },
+                            });
+                            if (errors[errKey]) setErrors(prev => ({ ...prev, [errKey]: '' }));
+                          }}
+                          placeholder="Enter URL"
+                          disabled={!isSelected}
+                          className={`flex-1 min-w-0 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-70 ${hasError ? 'border-red-500' : 'border-gray-300'}`}
+                        />
                       </div>
-                      <span className={`text-sm font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'
-                      }`}>
-                        {platform}
-                      </span>
-                    </label>
+                    </div>
                   );
                 })}
               </div>
               {errors.platforms && (
                 <p className="mt-2 text-sm text-red-500">{errors.platforms}</p>
               )}
+              {(() => {
+                const urlErrorKey = Object.keys(errors).find((k) => k.startsWith('platformUrl_'));
+                return urlErrorKey ? <p className="mt-2 text-sm text-red-500">{errors[urlErrorKey]}</p> : null;
+              })()}
             </div>
           </div>
         </div>
@@ -872,12 +1083,10 @@ export default function CreatorOnboardingForm() {
       const industries = [
         'Crypto',
         'AI',
+        'Trading & Fintech',
         'Startups',
-        'Fintech',
         'Robotics & Hardware',
-        'Motivation / Mindset',
         'Health & Fitness',
-        "Mental Health"
       ];
 
       const handleIndustryChange = (industry: string) => {
@@ -944,13 +1153,12 @@ export default function CreatorOnboardingForm() {
       );
     case 3: {
       const INDUSTRY_CATEGORY_OPTIONS: Record<string, string[]> = {
-        'Crypto': ['DeFi', 'Infrastructure', 'Trading & Prediction Markets', 'Memecoins', 'Podcasters', 'Clippers'],
-        'AI': ['AI Products & Tools Review', 'AI Education', 'AI News & Releases', 'Podcasters', 'Clippers'],
-        'Startups': ['Startup News & Media', 'Startup Product Reviews', 'Business & Tech Explainers', 'Growth & Marketing', 'Podcasters', 'Clippers'],
-        'Fintech': ['News & Trends', 'Fintech Product Reviews', 'Podcasters', 'Clippers'],
-        'Robotics & Hardware': ['Tech & Gadget Creators', 'Lifestyle Tech Creators', 'Product Reviews', 'Innovation & Future Tech', 'Podcasters', 'Clippers'],
-        'Motivation / Mindset': ['Motivational Speakers', 'Mindset & Discipline', 'Entrepreneur Motivation', 'Stoicism & Philosophy', 'Podcasters', 'Clippers'],
-        'Health & Fitness': ['Physical Fitness', 'Diet & Nutrition', 'Biohacking', 'Podcasters', 'Clippers'],
+        'Crypto': ['Crypto DeFi', 'Crypto Infrastructure', 'Crypto Trading & Prediction Market', 'Crypto Memecoin', 'Crypto Podcaster', 'Crypto Clippers'],
+        'AI': ['AI product Tools Review', 'AI education', 'AI news & releases', 'AI Podcasts', 'AI clippers'],
+        'Startups': ['Startup News & Media', 'Startup Product Reviews', 'Startup Business Explainer', 'Startup Growth & Marketing', 'Startup Podcast', 'Startup Clippers'],
+        'Trading & Fintech': ['Fintech Traders', 'Fintech news & trends', 'Fintech product reviews', 'Fintech Podcasters', 'Fintech clippers'],
+        'Robotics & Hardware': ['R&H Tech & Gadget creators', 'R&H lifestyle creators', 'R&H product reviews', 'R&H innovation & future tech', 'R&H podcasters', 'R&H clippers'],
+        'Health & Fitness': ['Motivation - Clippers', 'Health & Fitness - Physical Fitness', 'Health & Fitness - Diet & Nutrition', 'Health & Fitness - Biohacking', 'Health & Fitness - Mental Health', 'Health & Fitness - Podcasters', 'Health & Fitness - Clippers'],
       };
 
       const selectedIndustry = formData.industries?.[0];
@@ -1095,14 +1303,17 @@ export default function CreatorOnboardingForm() {
 
       const selectedPlatforms = formData.platforms || [];
 
+      const defaultInventoryItem = () => ({ selected: false, rate: '', averageViews: '' });
+
       const handleInventoryChange = (item: string) => {
         const currentItems = formData.inventoryItems || {};
-        const currentItem = currentItems[item] || { selected: false, rate: '' };
+        const currentItem = currentItems[item] || defaultInventoryItem();
         const newItems = {
           ...currentItems,
           [item]: {
             selected: !currentItem.selected,
-            rate: currentItem.rate
+            rate: currentItem.rate,
+            averageViews: currentItem.averageViews ?? ''
           }
         };
         updateFormData({ inventoryItems: newItems });
@@ -1113,12 +1324,30 @@ export default function CreatorOnboardingForm() {
 
       const handleInventoryRateChange = (item: string, rate: string) => {
         const currentItems = formData.inventoryItems || {};
-        const currentItem = currentItems[item] || { selected: false, rate: '' };
+        const currentItem = currentItems[item] || defaultInventoryItem();
         const newItems = {
           ...currentItems,
           [item]: {
             selected: currentItem.selected,
-            rate: rate
+            rate,
+            averageViews: currentItem.averageViews ?? ''
+          }
+        };
+        updateFormData({ inventoryItems: newItems });
+        if (errors.inventoryItems) {
+          setErrors(prev => ({ ...prev, inventoryItems: '' }));
+        }
+      };
+
+      const handleInventoryAverageViewsChange = (item: string, averageViews: string) => {
+        const currentItems = formData.inventoryItems || {};
+        const currentItem = currentItems[item] || defaultInventoryItem();
+        const newItems = {
+          ...currentItems,
+          [item]: {
+            selected: currentItem.selected,
+            rate: currentItem.rate,
+            averageViews
           }
         };
         updateFormData({ inventoryItems: newItems });
@@ -1132,7 +1361,7 @@ export default function CreatorOnboardingForm() {
         const currentItems = formData.inventoryItems || {};
         const newItems = { ...currentItems };
         optionsForPlatform.forEach((k) => {
-          newItems[k] = { selected: false, rate: '' };
+          newItems[k] = defaultInventoryItem();
         });
         updateFormData({ inventoryItems: newItems });
       };
@@ -1176,14 +1405,16 @@ export default function CreatorOnboardingForm() {
                     ) : (
                       <div className="space-y-3">
                         {inventoryOptions.map((item) => {
-                          const inventoryItem = formData.inventoryItems?.[item] || { selected: false, rate: '' };
+                          const inventoryItem = formData.inventoryItems?.[item] || defaultInventoryItem();
                           const isSelected = inventoryItem.selected;
                           const rateTrimmed = inventoryItem.rate?.trim() ?? '';
+                          const avgViewsTrimmed = (inventoryItem.averageViews ?? '').trim();
                           const hasInvalidRate = isSelected && (!rateTrimmed || rateTrimmed === '0');
+                          const hasInvalidAverageViews = isSelected && !avgViewsTrimmed;
                           return (
                             <div
                               key={item}
-                              className={`flex items-center gap-4 p-4 rounded-lg transition-all border-2 ${isSelected
+                              className={`flex flex-col md:flex-row md:items-center gap-3 md:gap-4 p-4 rounded-lg transition-all border-2 ${isSelected
                                 ? 'border-[#7B46F8] bg-white'
                                 : 'border-gray-200 bg-white hover:border-gray-300'
                               }`}
@@ -1219,8 +1450,24 @@ export default function CreatorOnboardingForm() {
                                     handleInventoryRateChange(item, value);
                                   }}
                                   placeholder="0"
-                                  className={`w-24 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent text-sm ${hasInvalidRate ? 'border-red-500' : 'border-gray-300'
+                                  disabled={!isSelected}
+                                  className={`w-24 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-70 ${hasInvalidRate ? 'border-red-500' : 'border-gray-300'
                                   }`}
+                                />
+                              </div>
+                              <div className="flex items-center gap-2 flex-shrink-0">
+                                <span className="text-sm text-gray-600 whitespace-nowrap" title="Average Views of last 5 posts">Avg views (last 5) {isSelected && <span className="text-red-500">*</span>}</span>
+                                <input
+                                  type="text"
+                                  value={inventoryItem.averageViews ?? ''}
+                                  onChange={(e) => {
+                                    const value = e.target.value.replace(/[^0-9]/g, '');
+                                    handleInventoryAverageViewsChange(item, value);
+                                  }}
+                                  placeholder="0"
+                                  title="Average Views of last 5 posts"
+                                  disabled={!isSelected}
+                                  className={`w-24 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-70 ${hasInvalidAverageViews ? 'border-red-500' : 'border-gray-300'}`}
                                 />
                               </div>
                             </div>
@@ -1242,12 +1489,19 @@ export default function CreatorOnboardingForm() {
     case 5:
       const geographyOptions = ['US & Canada', 'UK', 'EU', 'South Asia', 'MENA (includes Pakistan)', 'SEA', 'LATAM'];
 
+      const MAX_GEOGRAPHY_SELECTIONS = 2;
+
       const handlePrimaryGeographyChange = (option: string) => {
         const currentGeography = formData.primaryAudienceGeography || [];
-        const newGeography = currentGeography.includes(option)
-          ? currentGeography.filter(g => g !== option)
-          : [...currentGeography, option];
-        updateFormData({ primaryAudienceGeography: newGeography });
+        if (currentGeography.includes(option)) {
+          const newGeography = currentGeography.filter(g => g !== option);
+          updateFormData({ primaryAudienceGeography: newGeography });
+        } else if (currentGeography.length < MAX_GEOGRAPHY_SELECTIONS) {
+          updateFormData({ primaryAudienceGeography: [...currentGeography, option] });
+        } else {
+          toast.error('Select your target geography (only 2 allowed)');
+          return;
+        }
         if (errors.primaryAudienceGeography) {
           setErrors(prev => ({ ...prev, primaryAudienceGeography: '' }));
         }
@@ -1255,10 +1509,15 @@ export default function CreatorOnboardingForm() {
 
       const handleSecondaryGeographyChange = (option: string) => {
         const currentGeography = formData.secondaryAudienceGeography || [];
-        const newGeography = currentGeography.includes(option)
-          ? currentGeography.filter(g => g !== option)
-          : [...currentGeography, option];
-        updateFormData({ secondaryAudienceGeography: newGeography });
+        if (currentGeography.includes(option)) {
+          const newGeography = currentGeography.filter(g => g !== option);
+          updateFormData({ secondaryAudienceGeography: newGeography });
+        } else if (currentGeography.length < MAX_GEOGRAPHY_SELECTIONS) {
+          updateFormData({ secondaryAudienceGeography: [...currentGeography, option] });
+        } else {
+          toast.error('Select your target geography (only 2 allowed)');
+          return;
+        }
         if (errors.secondaryAudienceGeography) {
           setErrors(prev => ({ ...prev, secondaryAudienceGeography: '' }));
         }
@@ -1306,19 +1565,21 @@ export default function CreatorOnboardingForm() {
                             `}</style>
             <Swiper
               onSwiper={(swiper) => { audienceGeoSwiperRef.current = swiper; }}
+              onSlideChangeTransitionEnd={(swiper) => setStepSlideIndex((prev) => ({ ...prev, 5: swiper.activeIndex }))}
               modules={[Pagination]}
               spaceBetween={24}
               slidesPerView={1}
               pagination={{ clickable: true }}
               className="audience-geo-slider"
             >
-              {/* Slide 1: Primary Audience Regions */}
+              {/* Slide 1: Primary Audience Geography (max 2) */}
               <SwiperSlide>
                 <div className="max-w-full box-border">
-                  <div className="flex items-center gap-2 mb-4">
+                  <div className="flex items-center gap-2 mb-2">
                     <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                    <h3 className="text-lg font-semibold text-gray-900">Primary Audience Regions <span className="text-red-500">*</span></h3>
+                    <h3 className="text-lg font-semibold text-gray-900">Primary Audience Geography <span className="text-red-500">*</span></h3>
                   </div>
+                  <p className="text-sm text-gray-500 mb-4">Select your target geography (only 2 allowed)</p>
                   <div className="space-y-3">
                     {geographyOptions.map((option) => {
                       const isSelected = formData.primaryAudienceGeography?.includes(option) || false;
@@ -1360,13 +1621,14 @@ export default function CreatorOnboardingForm() {
                 </div>
               </SwiperSlide>
 
-              {/* Slide 2: Secondary Audience Regions */}
+              {/* Slide 2: Secondary Audience Geography (max 2) */}
               <SwiperSlide>
                 <div className="max-w-full box-border">
-                  <div className="flex items-center gap-2 mb-4">
+                  <div className="flex items-center gap-2 mb-2">
                     <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                    <h3 className="text-lg font-semibold text-gray-900">Secondary Audience Regions <span className="text-red-500">*</span></h3>
+                    <h3 className="text-lg font-semibold text-gray-900">Secondary Audience Geography <span className="text-red-500">*</span></h3>
                   </div>
+                  <p className="text-sm text-gray-500 mb-4">Select your target geography (only 2 allowed)</p>
                   <div className="space-y-3">
                     {geographyOptions.map((option) => {
                       const isSelected = formData.secondaryAudienceGeography?.includes(option) || false;
@@ -1412,10 +1674,11 @@ export default function CreatorOnboardingForm() {
           {/* Mobile: single step - both geography sections stacked */}
           <div className="md:hidden space-y-8">
             <div className="max-w-full box-border">
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-2">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                <h3 className="text-lg font-semibold text-gray-900">Primary Audience Regions <span className="text-red-500">*</span></h3>
+                <h3 className="text-lg font-semibold text-gray-900">Primary Audience Geography <span className="text-red-500">*</span></h3>
               </div>
+              <p className="text-sm text-gray-500 mb-4">Select your target geography (only 2 allowed)</p>
               <div className="space-y-3">
                 {geographyOptions.map((option) => {
                   const isSelected = formData.primaryAudienceGeography?.includes(option) || false;
@@ -1433,10 +1696,11 @@ export default function CreatorOnboardingForm() {
               {errors.primaryAudienceGeography && <p className="mt-2 text-sm text-red-500">{errors.primaryAudienceGeography}</p>}
             </div>
             <div className="max-w-full box-border">
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-2">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                <h3 className="text-lg font-semibold text-gray-900">Secondary Audience Regions <span className="text-red-500">*</span></h3>
+                <h3 className="text-lg font-semibold text-gray-900">Secondary Audience Geography <span className="text-red-500">*</span></h3>
               </div>
+              <p className="text-sm text-gray-500 mb-4">Select your target geography (only 2 allowed)</p>
               <div className="space-y-3">
                 {geographyOptions.map((option) => {
                   const isSelected = formData.secondaryAudienceGeography?.includes(option) || false;
@@ -2230,6 +2494,7 @@ export default function CreatorOnboardingForm() {
               `}</style>
               <Swiper
                 onSwiper={(swiper) => { collaborationSwiperRef.current = swiper; }}
+                onSlideChangeTransitionEnd={(swiper) => setStepSlideIndex((prev) => ({ ...prev, 9: swiper.activeIndex }))}
                 modules={[Pagination]}
                 spaceBetween={24}
                 slidesPerView={1}
@@ -2636,16 +2901,17 @@ export default function CreatorOnboardingForm() {
           </div>
 
           {/* Right Content Area */}
-          <div className='bg-[#F8F8F8] h-full  py-12 px-4 sm:px-8 pb-24 md:pb-12 w-screen lg:w-[calc(100vw_-_415px)]'>
+          <div className='bg-[#F8F8F8] h-full py-12 px-4 sm:px-8 pb-24 w-screen lg:w-[calc(100vw_-_415px)]'>
             <div className="rounded-lg flex flex-col justify-between h-full w-full">
               <div key={currentStep} className='sm:p-8 p-4 bg-white rounded-lg' ref={stepContentRef}>
                 {renderStepContent()}
               </div>
 
-              {/* Navigation Buttons - Fixed on mobile, relative on md+ */}
-              <div className="fixed md:relative bottom-0 left-0 right-0 md:left-auto md:right-auto md:bottom-auto w-full md:w-auto mt-8 bg-white md:bg-transparent p-4 md:p-8 border-t md:border-t-0 border-gray-200 md:border-0 flex justify-end gap-4 rounded-t-lg md:rounded-lg shadow-lg md:shadow-none z-10">
-                {currentStep > 1 && (
+              {/* Navigation Buttons - Fixed at bottom (all viewports, same as mobile) */}
+              <div className="fixed bottom-0 left-0 right-0 w-full bg-white p-4 md:p-6 border-t border-gray-200 flex justify-end gap-4 rounded-t-lg shadow-lg z-10">
+                {showBackButton && (
                   <button
+                    type="button"
                     onClick={handleBack}
                     className="px-6 py-3 bg-white text-[#7B46F8] border-2 border-[#7B46F8] rounded-lg hover:bg-[#7B46F8] hover:text-white transition-colors font-medium"
                   >

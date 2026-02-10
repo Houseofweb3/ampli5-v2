@@ -101,6 +101,7 @@ const FounderInquiryForm: React.FC = () => {
   const step3SwiperRef = useRef<SwiperType | null>(null);
   const step4SwiperRef = useRef<SwiperType | null>(null);
   const stepContentRef = useRef<HTMLDivElement | null>(null);
+  const [stepSlideIndex, setStepSlideIndex] = useState<Record<number, number>>({});
 
   const stepFields: Record<number, string[]> = {
     1: ["fullName", "startupName", "startupWebsite"],
@@ -303,7 +304,21 @@ const FounderInquiryForm: React.FC = () => {
     if (validateCurrentStep()) setCurrentStep((s) => Math.min(4, s + 1));
   };
 
-  const handleBack = () => setCurrentStep((s) => Math.max(1, s - 1));
+  const handleBack = () => {
+    const stepsWithSwiper: Record<number, React.MutableRefObject<SwiperType | null>> = {
+      2: step2SwiperRef,
+      3: step3SwiperRef,
+      4: step4SwiperRef,
+    };
+    const ref = stepsWithSwiper[currentStep];
+    const currentSlide = stepSlideIndex[currentStep] ?? 0;
+    if (ref?.current && currentSlide > 0) {
+      ref.current.slideTo(currentSlide - 1);
+      setStepSlideIndex((prev) => ({ ...prev, [currentStep]: currentSlide - 1 }));
+    } else {
+      setCurrentStep((s) => Math.max(1, s - 1));
+    }
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -416,6 +431,7 @@ const FounderInquiryForm: React.FC = () => {
           <div className="hidden md:block">
             <Swiper
               onSwiper={(swiper) => { step2SwiperRef.current = swiper; }}
+              onSlideChangeTransitionEnd={(swiper) => setStepSlideIndex((prev) => ({ ...prev, 2: swiper.activeIndex }))}
               modules={[Pagination]}
               spaceBetween={24}
               slidesPerView={1}
@@ -576,6 +592,7 @@ const FounderInquiryForm: React.FC = () => {
           <div className="hidden md:block">
             <Swiper
               onSwiper={(swiper) => { step3SwiperRef.current = swiper; }}
+              onSlideChangeTransitionEnd={(swiper) => setStepSlideIndex((prev) => ({ ...prev, 3: swiper.activeIndex }))}
               modules={[Pagination]}
               spaceBetween={24}
               slidesPerView={1}
@@ -720,6 +737,7 @@ const FounderInquiryForm: React.FC = () => {
           <div className="hidden md:block">
             <Swiper
               onSwiper={(swiper) => { step4SwiperRef.current = swiper; }}
+              onSlideChangeTransitionEnd={(swiper) => setStepSlideIndex((prev) => ({ ...prev, 4: swiper.activeIndex }))}
               modules={[Pagination]}
               spaceBetween={24}
               slidesPerView={1}
@@ -1011,15 +1029,15 @@ const FounderInquiryForm: React.FC = () => {
           </div>
 
           {/* Right Content Area */}
-          <div className="bg-[#F8F8F8] h-full py-12 px-4 sm:px-8 pb-24 md:pb-12 w-screen lg:w-[calc(100vw_-_415px)]">
+          <div className="bg-[#F8F8F8] h-full py-12 px-4 sm:px-8 pb-24 w-screen lg:w-[calc(100vw_-_415px)]">
             <div className="rounded-lg flex flex-col justify-between h-full w-full">
               <form onSubmit={handleSubmit} className="flex flex-col h-full">
                 <div key={currentStep} className="sm:p-8 p-4 bg-white rounded-lg" ref={stepContentRef}>
                   {renderStepContent()}
                 </div>
 
-                {/* Navigation Buttons - same as creator-onboarding */}
-                <div className="fixed md:relative bottom-0 left-0 right-0 md:left-auto md:right-auto md:bottom-auto w-full md:w-auto mt-8 bg-white md:bg-transparent p-4 md:p-8 border-t md:border-t-0 border-gray-200 md:border-0 flex justify-end gap-4 rounded-t-lg md:rounded-lg shadow-lg md:shadow-none z-10">
+                {/* Navigation Buttons - Fixed at bottom (all viewports, same as mobile) */}
+                <div className="fixed bottom-0 left-0 right-0 w-full bg-white p-4 md:p-6 border-t border-gray-200 flex justify-end gap-4 rounded-t-lg shadow-lg z-10">
                   {currentStep > 1 && (
                     <button
                       type="button"

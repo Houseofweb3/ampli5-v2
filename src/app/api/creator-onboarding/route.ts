@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { google } from "googleapis";
+import { sendNewEntryNotification } from "@/src/lib/email";
 
 interface CreatorOnboardingFormData {
   // Step 1: Basic Details
@@ -10,6 +11,7 @@ interface CreatorOnboardingFormData {
   primaryCountry: string;
   primaryTimezone: string;
   platforms: string[];
+  platformUrls?: Record<string, string>;
 
   // Step 2: Industry selection
   industries: string[];
@@ -18,7 +20,7 @@ interface CreatorOnboardingFormData {
   categories: string[];
 
   // Step 4: Inventory selection & Rates
-  inventoryItems: Record<string, { selected: boolean; rate: string }>;
+  inventoryItems: Record<string, { selected: boolean; rate: string; averageViews?: string }>;
 
   // Step 5: Audience & GEO
   primaryAudienceGeography: string[];
@@ -182,11 +184,18 @@ export async function POST(request: Request) {
           const rate = item.rate != null ? String(item.rate).trim() : "";
           return rate !== "" && rate !== "0";
         })
-        .map(([key, item]) => `${key}: $${item.rate}`)
+        .map(([key, item]) => {
+          const avgViews = item.averageViews != null ? String(item.averageViews).trim() : "";
+          return avgViews ? `${key}: $${item.rate}, Avg views: ${avgViews}` : `${key}: $${item.rate}`;
+        })
         .join("; ")
       : "";
 
-    // Prepare values array for Google Sheets
+    // Prepare values array for Google Sheets - all form data in column order
+    // Columns: Date, Time, Channel Name, Email, Telegram, WhatsApp, Country, Timezone, Platforms,
+    // Platform URLs, Industries, Categories, Inventory (rates + avg views), Primary GEO, Secondary GEO,
+    // Age/Gender/TopCountries screenshots, Payment Terms, Turnaround, Collab Images 1-3,
+    // X, Instagram, Youtube, TikTok, Newsletter links, Final Confirmation
     const values = [
       [
         formattedDate, // Date
@@ -197,7 +206,8 @@ export async function POST(request: Request) {
         body.whatsappNumber || "", // WhatsApp Number
         body.primaryCountry || "", // Primary Country
         body.primaryTimezone || "", // Primary Timezone
-        body.platforms?.join(", ") || "", // Platforms
+        // body.platforms?.join(", ") || "", // Platforms
+        body.platforms?.map((p) => `${p}: ${(body.platformUrls || {})[p] || ""}`).join(" | ") || "", // Platform profile URLs
         body.industries?.join(", ") || "", // Industries
         body.categories?.join(", ") || "", // Categories
         inventoryItemsStr, // Inventory Items & Rates
@@ -228,6 +238,20 @@ export async function POST(request: Request) {
       range,
       valueInputOption: "RAW",
       requestBody: { values },
+    });
+
+    // Notify team after successful sheet save
+    const summary = [
+      `New Creator Onboarding entry`,
+      `Channel/Brand: ${body.channelBrandName || "-"}`,
+      `Email: ${body.primaryContactEmail || "-"}`,
+      `Platforms: ${body.platforms?.join(", ") || "-"}`,
+      `Submitted at: ${formattedDate} ${indiaTime}`,
+    ].join("\n");
+    await sendNewEntryNotification({
+      formType: "creator",
+      subject: "New Creator Onboarding – " + (body.channelBrandName || "New entry"),
+      summary,
     });
 
     return NextResponse.json({ status: 200, message: "Form submitted successfully!" });
