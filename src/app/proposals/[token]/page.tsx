@@ -16,6 +16,7 @@ import {
   SpotifyIcon2,
 } from "@/public/icons";
 import ConfirmationModal from "@/src/components/ui/ConfirmationModal";
+import { GrDocumentText } from "react-icons/gr";
 
 interface Influencer {
   id: string;
@@ -115,7 +116,9 @@ export default function ProposalPage({
           if (data.influencerItems) {
             const initialApprovalStates: Record<string, boolean | null> = {};
             data.influencerItems.forEach((item: Influencer) => {
-              initialApprovalStates[item.id] = item.isClientApproved ? true : null;
+              initialApprovalStates[item.id] = item.isClientApproved
+                ? true
+                : null;
             });
             setApprovalStates(initialApprovalStates);
           }
@@ -260,7 +263,7 @@ export default function ProposalPage({
 
   const handleBillingFormChange = (
     field: keyof BillingInfo,
-    value: string | number
+    value: string | number,
   ) => {
     setBillingForm((prev) => ({
       ...prev,
@@ -294,7 +297,7 @@ export default function ProposalPage({
       !/^https?:\/\/.+/.test(billingForm.projectUrl)
     ) {
       toast.error(
-        "Please enter a valid URL (must start with http:// or https://)"
+        "Please enter a valid URL (must start with http:// or https://)",
       );
       return false;
     }
@@ -467,6 +470,49 @@ export default function ProposalPage({
             </div>
           )}
         </div>
+
+        {/* Client Information Card */}
+        {!showBillingForm && proposal?.billingInfo && (
+          <div className="mb-8 bg-white rounded-lg shadow-sm p-6 md:p-8">
+            <h2 className="text-lg font-bold text-[#7B46F8] mb-4 pb-2 border-b border-gray-200">
+              Client Information
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              <div>
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                  Name
+                </p>
+                <p className="text-sm font-medium text-gray-900">
+                  {[
+                    proposal.billingInfo.firstName,
+                    proposal.billingInfo.lastName,
+                  ]
+                    .filter(Boolean)
+                    .join(" ") || "—"}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                  Email
+                </p>
+                <p className="text-sm font-medium text-gray-900">
+                  {proposal.email || "—"}
+                </p>
+              </div>
+            </div>
+            {proposal.billingInfo.note && (
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                  Note
+                </p>
+                <p className="text-sm text-gray-700">
+                  {proposal.billingInfo.note}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Desktop Table View */}
         {!showBillingForm && (
           <div className="hidden md:block bg-white rounded-lg shadow-sm overflow-hidden mb-8">
@@ -477,7 +523,7 @@ export default function ProposalPage({
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                       Profile
                     </th>
-                   
+
                     <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
                       Platform
                     </th>
@@ -496,8 +542,9 @@ export default function ProposalPage({
                     <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
                       Price
                     </th>
-                  
-                    
+                    <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      Total Price
+                    </th>
                     <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider ">
                       Action
                     </th>
@@ -527,7 +574,7 @@ export default function ProposalPage({
                           </div>
                         </div>
                       </td>
-                     
+
                       <td className="px-6 py-4 whitespace-nowrap text-center">
                         <a
                           href={item.influencer.socialMediaLink}
@@ -543,7 +590,7 @@ export default function ProposalPage({
                           {item.influencer.contentType}
                         </div>
                       </td>
-                     
+
                       <td className="px-6 py-4 text-center">
                         {item.note ? (
                           <textarea
@@ -557,18 +604,30 @@ export default function ProposalPage({
                           <div className="text-sm text-gray-900">-</div>
                         )}
                       </td>
-                      <td className="px-6 py-4 text-center">
-                        {item.profOfWork ? (
-                          <textarea
-                            rows={3}
-                            cols={30}
-                            readOnly
-                            className="text-sm text-gray-900 max-w-xs word-wrap:break-word"
-                            value={item.profOfWork}
-                          />
-                        ) : (
-                          <div className="text-sm text-gray-900">-</div>
+                      <td className="px-6 py-4 text-center flex items-center justify-center">
+                        {item.profOfWork && (
+                          <div>
+                            {/^https?:\/\//i.test(item.profOfWork.trim()) ? (
+                              <a
+                                href={item.profOfWork.trim()}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-medium text-blue-600 hover:underline break-all"
+                              >
+                                <GrDocumentText className="w-6 h-6" />
+                              </a>
+                            ) : (
+                              <span className="font-medium">
+                                {item.profOfWork}
+                              </span>
+                            )}
+                          </div>
                         )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <div className="text-sm text-gray-900">
+                          {item.quantity || item.influencer.quantity || "1"}
+                        </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
                         <div className="text-sm text-gray-900">
@@ -577,9 +636,17 @@ export default function ProposalPage({
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
                         <div className="text-sm text-gray-900">
-                          {item.quantity || item.influencer.quantity || "1"}
+                          {formatPrice(
+                            parseFloat(
+                              String(item.price || item.influencer?.price || 0),
+                            ) *
+                              Number(
+                                item.quantity ?? item.influencer?.quantity ?? 1,
+                              ),
+                          )}
                         </div>
                       </td>
+
                       <td className="px-6 py-4 whitespace-nowrap text-center">
                         <div className="flex items-center justify-center">
                           <label className="flex items-center cursor-pointer">
@@ -607,27 +674,26 @@ export default function ProposalPage({
         {!showBillingForm && (
           <div className="md:hidden space-y-4 mb-8 w-full">
             {proposal?.influencerItems?.map((item) => (
-              <div key={item.id} className="bg-white rounded-lg shadow-sm p-4 w-full">
+              <div
+                key={item.id}
+                className="bg-white rounded-lg shadow-sm p-4 w-full"
+              >
                 <div className="flex flex-col items-start space-y-4">
-                  <div className="flex-shrink-0">
-                    <Image
-                      src={item.influencer.dpLink || "/placeholder-avatar.png"}
-                      alt={item.influencer.name}
-                      width={60}
-                      height={60}
-                      className="rounded-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1 w-full">
-                    <div className="text-base font-semibold text-gray-900 mb-2">
-                      {item.influencer.name.trim() || "Unknown"}
+                  <div className="flex justify-start items-center gap-2">
+                    <div className="flex-shrink-0">
+                      <Image
+                        src={
+                          item.influencer.dpLink || "/placeholder-avatar.png"
+                        }
+                        alt={item.influencer.name}
+                        width={60}
+                        height={60}
+                        className="rounded-full object-cover"
+                      />
                     </div>
-                    <div className="space-y-1 text-sm text-gray-600">
-                      <div>
-                        <span className="font-medium">Quantity:</span>{" "}
-                        <span className="font-semibold">
-                          {item.quantity || item.influencer.quantity || "1"}
-                        </span>
+                    <div className="text-sm text-gray-600">
+                      <div className="text-base font-semibold text-gray-900 ">
+                        {item.influencer.name.trim() || "Unknown"}
                       </div>
                       <div className="flex justify-start items-center gap-2">
                         <span className="font-semibold">Platform:</span>{" "}
@@ -640,37 +706,68 @@ export default function ProposalPage({
                           {getPlatformIcon(item.influencer.platform)}
                         </a>
                       </div>
+                    </div>
+                  </div>
+                  <div className="flex-1 w-full">
+                    <div className="space-y-1 text-sm text-gray-600">
                       <div>
                         <span className="font-semibold">Content Type:</span>{" "}
-                        <span className="font-medium">
-                          {item.influencer.contentType}
-                        </span>
+                        <span className="">{item.influencer.contentType}</span>
                       </div>
                       {item.note && (
                         <div>
                           <span className="font-semibold">Note:</span>{" "}
-                          <span className="font-medium break-all">{item.note}</span>
+                          <span className=" break-all">{item.note}</span>
                         </div>
                       )}
                       {item.profOfWork && (
-                        <div>
+                        <div className="flex items-center justify-start gap-2">
                           <span className="font-semibold">Prof of Work:</span>{" "}
                           {/^https?:\/\//i.test(item.profOfWork.trim()) ? (
                             <a
                               href={item.profOfWork.trim()}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="font-medium text-blue-600 hover:underline break-all"
+                              className=" text-blue-600 hover:underline break-all"
                             >
-                              {item.profOfWork}
+                              <GrDocumentText className="w-4 h-4" />
                             </a>
                           ) : (
-                            <span className="font-medium">{item.profOfWork}</span>
+                            <span className="font-medium">
+                              {item.profOfWork}
+                            </span>
                           )}
                         </div>
                       )}
+                      <div className="flex justify-start items-center gap-2">
+                        <span className="font-semibold">Price:</span>{" "}
+                        <span className="">
+                          {formatPrice(
+                            item.price || item.influencer?.price || 0,
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex justify-start items-center gap-2">
+                        <span className="font-semibold">Quantity:</span>{" "}
+                        <span className="">
+                          {item.quantity || item.influencer?.quantity || 1}
+                        </span>
+                      </div>
+                      <div className="flex justify-start items-center gap-2">
+                        <span className="font-semibold">Total Price:</span>{" "}
+                        <span className="">
+                          {formatPrice(
+                            parseFloat(
+                              String(item.price || item.influencer?.price || 0),
+                            ) *
+                              Number(
+                                item.quantity ?? item.influencer?.quantity ?? 1,
+                              ),
+                          )}
+                        </span>
+                      </div>
                     </div>
-                    <div className="mt-4 flex items-center gap-4">
+                    <div className="mt-4 flex items-center justify-end gap-4">
                       <label className="flex items-center cursor-pointer">
                         <input
                           type="checkbox"
@@ -682,11 +779,6 @@ export default function ProposalPage({
                           Accept
                         </span>
                       </label>
-                      <div className="ml-auto">
-                        <span className="text-sm font-semibold text-gray-900">
-                          {formatPrice(item.price || item.influencer.price)}
-                        </span>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -748,7 +840,7 @@ export default function ProposalPage({
               onClick={() => {
                 // Check if any influencers are accepted
                 const hasAcceptedInfluencers = proposal?.influencerItems?.some(
-                  (item) => approvalStates[item.id] === true
+                  (item) => approvalStates[item.id] === true,
                 );
 
                 if (!hasAcceptedInfluencers) {
