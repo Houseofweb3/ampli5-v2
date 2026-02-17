@@ -1,6 +1,6 @@
 // Loader.tsx
 import { cn } from "../../lib/utils";
-import React from 'react';
+import React from "react";
 
 interface LoaderProps {
   size?: number;
@@ -13,12 +13,12 @@ const Loader: React.FC<LoaderProps> = ({ size = 18, loaderColor, lineColor }) =>
 
   return (
     <div
-      className={cn('rounded-full animate-spin border-4 hover ', loaderColor, lineColor)}
+      className={cn("rounded-full animate-spin border-4 hover ", loaderColor, lineColor)}
       style={{
         width: dimension,
         height: dimension,
-        borderTopColor: loaderColor ? loaderColor : 'border-black',
-        borderColor: lineColor ? lineColor : 'border-gray',
+        borderTopColor: loaderColor ? loaderColor : "border-black",
+        borderColor: lineColor ? lineColor : "border-gray",
       }}
     />
   );

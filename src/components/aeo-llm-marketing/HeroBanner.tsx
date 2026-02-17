@@ -47,18 +47,13 @@ export default function HeroBanner() {
             AEO gives your brand the power to become the answer not an ad.
           </h1>
           <div className="hero_description pb-16px lg:pb-28px">
-            <h2 className="!font-medium">
-              Search is no longer typed, it's generated.{" "}
-            </h2>
+            <h2 className="!font-medium">Search is no longer typed, it's generated. </h2>
           </div>
         </div>
         <div className="pb-26px lg:pb-48px">
           <PrimaryButton
             onClick={() =>
-              window.open(
-                "https://calendly.com/partnerships-houseofweb3/30min",
-                "_blank"
-              )
+              window.open("https://calendly.com/partnerships-houseofweb3/30min", "_blank")
             }
             className="text-white mx-auto"
           >

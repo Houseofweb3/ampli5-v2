@@ -5,8 +5,7 @@ import { cn } from "@/src/lib/utils";
 const faqData = [
   {
     number: 1,
-    question:
-      "What makes Ampli5's creator arena different from influencer marketing?",
+    question: "What makes Ampli5's creator arena different from influencer marketing?",
     answer:
       "Influencer marketing pays for a single post. The Arena rewards competition. Many creators make content. The best work wins. You get higher quality and more creative options without overpaying for followers.",
   },

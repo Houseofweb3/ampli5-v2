@@ -29,12 +29,7 @@ const CheckOutPage = () => {
 
   useEffect(() => {
     const hasEmptyRequiredField =
-      !firstName ||
-      !lastname ||
-      !email ||
-      !projectName ||
-      !projectUrl ||
-      !telegramLink;
+      !firstName || !lastname || !email || !projectName || !projectUrl || !telegramLink;
     setDisable(hasEmptyRequiredField);
   }, [firstName, lastname, email, projectName, projectUrl, telegramLink]);
 
@@ -127,10 +122,7 @@ const CheckOutPage = () => {
     try {
       // Ensure URL has https:// prefix for submission
       let formattedUrl = projectUrl;
-      if (
-        !formattedUrl.startsWith("http://") &&
-        !formattedUrl.startsWith("https://")
-      ) {
+      if (!formattedUrl.startsWith("http://") && !formattedUrl.startsWith("https://")) {
         formattedUrl = "https://" + formattedUrl;
       }
 

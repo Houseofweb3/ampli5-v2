@@ -8,7 +8,8 @@ import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Distribution Through Clipping | Ampli5",
-  description: "Ampli5's distribution through clipping service - coming soon. Transform your content distribution strategy with innovative clipping technology for web3 marketing.",
+  description:
+    "Ampli5's distribution through clipping service - coming soon. Transform your content distribution strategy with innovative clipping technology for web3 marketing.",
   keywords: [
     "distribution through clipping",
     "content distribution",
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Distribution Through Clipping | Ampli5",
-    description: "Transform your content distribution strategy with innovative clipping technology for web3 marketing.",
+    description:
+      "Transform your content distribution strategy with innovative clipping technology for web3 marketing.",
     url: `${process.env.NEXTAUTH_URL || "https://ampli5.ai"}/services/distribution-through-clipping`,
   },
   alternates: {
@@ -90,9 +92,7 @@ export default function DistributionThroughClippingPage() {
               {/* CTA Button */}
               <div className="pb-26px lg:pb-48px mb-6">
                 <Link href="/">
-                  <PrimaryButton className="text-white mx-auto">
-                    Back to Home
-                  </PrimaryButton>
+                  <PrimaryButton className="text-white mx-auto">Back to Home</PrimaryButton>
                 </Link>
               </div>
 
@@ -109,4 +109,3 @@ export default function DistributionThroughClippingPage() {
     </div>
   );
 }
-

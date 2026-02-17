@@ -7,7 +7,7 @@ import { Influencer } from "@/src/lib/types";
 import EmptyTable from "../empty-table";
 import LoadingTable from "./LoadingTable";
 import InfluencerCard from "./InfluencerCard";
-import{ InfluencerDetailModal} from "./InfluencerDetailsModal";
+import { InfluencerDetailModal } from "./InfluencerDetailsModal";
 import useHow3client from "@/src/hooks/usehow3client";
 import { ENDPOINTS } from "@/src/utils/constants";
 
@@ -32,8 +32,7 @@ const MobileTable: React.FC<MobileTableProps> = ({
   setNiche,
   setSearchQuery,
 }) => {
-  const [selectedInfluencer, setSelectedInfluencer] =
-    useState<Influencer | null>(null);
+  const [selectedInfluencer, setSelectedInfluencer] = useState<Influencer | null>(null);
   const { data: session } = useSession();
   const user = session?.user;
   const { cartId, fetchCart, cart } = useCart();
@@ -48,14 +47,10 @@ const MobileTable: React.FC<MobileTableProps> = ({
   const cartOperations = useMemo(
     () => ({
       findInfluencer: (cart: any, influencerId: string) =>
-        cart?.influencerCartItems?.find(
-          (item: any) => item.influencer.id === influencerId
-        ),
+        cart?.influencerCartItems?.find((item: any) => item.influencer.id === influencerId),
 
       isInfluencerInCart: (cart: any, influencerId: string) =>
-        !!cart?.influencerCartItems?.some(
-          (item: any) => item.influencer.id === influencerId
-        ),
+        !!cart?.influencerCartItems?.some((item: any) => item.influencer.id === influencerId),
     }),
     []
   );
@@ -89,9 +84,7 @@ const MobileTable: React.FC<MobileTableProps> = ({
           const cartItem = cartOperations.findInfluencer(cart, influencerId);
           if (!cartItem) return;
 
-          const response = await how3.delete(
-            `${ENDPOINTS.INFLUENCER_CART_ITEM}/${cartItem.id}`
-          );
+          const response = await how3.delete(`${ENDPOINTS.INFLUENCER_CART_ITEM}/${cartItem.id}`);
 
           if (response.data) {
             await fetchCart();
@@ -112,13 +105,8 @@ const MobileTable: React.FC<MobileTableProps> = ({
       event.stopPropagation();
 
       if (user) {
-        const isInCart = cartOperations.isInfluencerInCart(
-          cart!,
-          influencer.id
-        );
-        isInCart
-          ? cartActions.remove(influencer.id)
-          : cartActions.add(influencer.id);
+        const isInCart = cartOperations.isInfluencerInCart(cart!, influencer.id);
+        isInCart ? cartActions.remove(influencer.id) : cartActions.add(influencer.id);
       } else {
         handleChange(influencer);
       }

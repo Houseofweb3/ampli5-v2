@@ -25,7 +25,6 @@ const NavbarDashBoard = () => {
   const { data: session } = useSession();
   const User = session?.user;
 
-
   const handleCartIconClick = () => {
     const Main = {
       influencers: Logcart,
@@ -50,8 +49,8 @@ const NavbarDashBoard = () => {
               />
             </Link>
             {pathname.includes("/dashboard/cart") ||
-              pathname.includes("/dashboard/checkout") ||
-              pathname === ALLROUTES.DASHBOARD ? (
+            pathname.includes("/dashboard/checkout") ||
+            pathname === ALLROUTES.DASHBOARD ? (
               ""
             ) : (
               <div className="flex  justify-center gap-[38px] items-center ">
@@ -66,8 +65,7 @@ const NavbarDashBoard = () => {
                   <div className="bg-primary w-4 h-4 p-2 rounded-full flex justify-center items-center text-white font-Jakarta text-[10px] absolute -top-1 -right-2 ">
                     {User?.id
                       ? cart && cart.influencerCartItems && cart.packageCartItems
-                        ? cart.influencerCartItems?.length +
-                        cart.packageCartItems?.length
+                        ? cart.influencerCartItems?.length + cart.packageCartItems?.length
                         : 0
                       : Logcart.length + Logpackage.length}
                   </div>

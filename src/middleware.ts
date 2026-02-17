@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
   // Set the current path
   headers.set("x-current-path", request.nextUrl.pathname);
 
-  // Set the 'id' query parameter for redirecting user to article page if he logs in from article page 
+  // Set the 'id' query parameter for redirecting user to article page if he logs in from article page
   const id = request.nextUrl.searchParams.get("id");
   if (id) {
     headers.set("x-query-id", id);

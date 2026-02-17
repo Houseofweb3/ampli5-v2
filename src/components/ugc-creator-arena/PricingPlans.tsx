@@ -28,8 +28,7 @@ const pricingPlans = [
   },
   {
     title: "Leadership Plan",
-    description:
-      "Built for brands that want to dominate answer share in their category.",
+    description: "Built for brands that want to dominate answer share in their category.",
     price: "$15,000",
     period: "per month",
     features: [
@@ -57,9 +56,7 @@ const PricingPlans: React.FC = (): JSX.Element => {
               key={index}
               className={cn(
                 "relative  p-6 lg:p-8 flex flex-col bg-white border-[#7B46F8] rounded-xl",
-                index === 1
-                  ? "border-[3px] md:top-[-50px]"
-                  : "border-[3px]  md:border-none"
+                index === 1 ? "border-[3px] md:top-[-50px]" : "border-[3px]  md:border-none"
               )}
             >
               <h3 className="text-2xl sm:text-3xl font-extrabold text-[#7B46F8] mb-3">

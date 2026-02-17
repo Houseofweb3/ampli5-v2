@@ -29,10 +29,7 @@ export async function POST(request: Request) {
       !formData.startupName?.trim() ||
       !formData.startupWebsite?.trim()
     ) {
-      return NextResponse.json(
-        { message: "All required fields must be filled." },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "All required fields must be filled." }, { status: 400 });
     }
 
     // Get date and time
@@ -49,15 +46,11 @@ export async function POST(request: Request) {
       second: "2-digit",
       hour12: true,
     };
-    const indiaTime = new Intl.DateTimeFormat("en-US", options).format(
-      new Date()
-    );
+    const indiaTime = new Intl.DateTimeFormat("en-US", options).format(new Date());
 
     // Check if Google Sheets environment variables are set
     const hasGoogleConfig =
-      process.env.SPREAD_SHEET_EMAIL &&
-      process.env.GOOGLE_KEY &&
-      process.env.SPREAD_SHEET_ID;
+      process.env.SPREAD_SHEET_EMAIL && process.env.GOOGLE_KEY && process.env.SPREAD_SHEET_ID;
 
     if (hasGoogleConfig) {
       try {
@@ -126,9 +119,6 @@ export async function POST(request: Request) {
     );
   } catch (error: unknown) {
     console.error("Error submitting form:", error);
-    return NextResponse.json(
-      { message: "Something went wrong." },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Something went wrong." }, { status: 500 });
   }
 }

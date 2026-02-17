@@ -28,16 +28,14 @@ const WaveContent: React.FC = (): JSX.Element => {
           />
         </div>
         <div className="relative z-10">
-          <h2 className="h2 max-w-7xl mx-auto text-white pb-4">
-            Start Your Fastest Campaign Yet
-          </h2>
+          <h2 className="h2 max-w-7xl mx-auto text-white pb-4">Start Your Fastest Campaign Yet</h2>
 
           <div className=" mt-12  flex flex-col md:flex-row gap-4  justify-center items-center">
             <SecondaryButton
               onClick={() => {
-                const link = document.createElement('a');
-                link.href = '/brochure/ampli5-influencer-marketing.png';
-                link.download = 'ampli5-influencer-marketing.png';
+                const link = document.createElement("a");
+                link.href = "/brochure/ampli5-influencer-marketing.png";
+                link.download = "ampli5-influencer-marketing.png";
                 document.body.appendChild(link);
                 link.click();
                 link.remove();
@@ -50,10 +48,7 @@ const WaveContent: React.FC = (): JSX.Element => {
             </SecondaryButton>
             <SecondaryButton
               onClick={() =>
-                window.open(
-                  "https://calendly.com/partnerships-houseofweb3/30min",
-                  "_blank"
-                )
+                window.open("https://calendly.com/partnerships-houseofweb3/30min", "_blank")
               }
               disabled={false}
               className="w-fit"

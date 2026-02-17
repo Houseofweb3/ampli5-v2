@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -14,9 +14,5 @@ export default function Navbar(): JSX.Element {
     setIsDashboard(pathname.startsWith("/dashboard"));
   }, [pathname]);
 
-  return (
-    <>
-      {isDashboard ? <NavbarDashBoard /> : <NavbarHome />}
-    </>
-  );
+  return <>{isDashboard ? <NavbarDashBoard /> : <NavbarHome />}</>;
 }

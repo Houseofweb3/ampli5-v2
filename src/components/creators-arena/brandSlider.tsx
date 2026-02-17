@@ -11,48 +11,49 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from "next/image";
 import Link from "next/link";
-import { CabbageCatsIcon, MultipliCatsIcon, RouterLogo, SonicIcon, StoopidCatsIcon } from "@/src/data/icon";
+import {
+  CabbageCatsIcon,
+  MultipliCatsIcon,
+  RouterLogo,
+  SonicIcon,
+  StoopidCatsIcon,
+} from "@/src/data/icon";
 
 export const NEW_CASE_STUDY_DATA = [
   {
     brandLogo: <RouterLogo />,
-    roi:'50x',
-    mindshare:'Top 20',
-    engagements:"13,000+",
-    s3_url:
-      "/case_studies/Ampli5+X+Router.pdf",
+    roi: "50x",
+    mindshare: "Top 20",
+    engagements: "13,000+",
+    s3_url: "/case_studies/Ampli5+X+Router.pdf",
   },
   {
     brandLogo: <SonicIcon />,
-    roi:'30x',
-    mindshare:'Top 10',
-    engagements:"10,000+",
-    s3_url:
-      "/case_studies/Ampli5+x+Sonic.pdf",
+    roi: "30x",
+    mindshare: "Top 10",
+    engagements: "10,000+",
+    s3_url: "/case_studies/Ampli5+x+Sonic.pdf",
   },
   {
     brandLogo: <StoopidCatsIcon />,
-    roi:'20x',
-    mindshare:'Top 5',
-    engagements:"8,000+",
-    s3_url:
-      "/case_studies/Ampli5+x+Stoopid+Cats.pdf",
+    roi: "20x",
+    mindshare: "Top 5",
+    engagements: "8,000+",
+    s3_url: "/case_studies/Ampli5+x+Stoopid+Cats.pdf",
   },
   {
     brandLogo: <MultipliCatsIcon />,
-    roi:'15x',
-    mindshare:'Top 3',
-    engagements:"6,000+",
-    s3_url:
-      "/case_studies/Ampli5+x+Multipli+Case+study.pdf",
+    roi: "15x",
+    mindshare: "Top 3",
+    engagements: "6,000+",
+    s3_url: "/case_studies/Ampli5+x+Multipli+Case+study.pdf",
   },
   {
     brandLogo: <CabbageCatsIcon />,
-    roi:'10x',
-    mindshare:'Top 1',
-    engagements:"4,000+",
-    s3_url:
-      "/case_studies/Ampli5+x+Cabbage.pdf",
+    roi: "10x",
+    mindshare: "Top 1",
+    engagements: "4,000+",
+    s3_url: "/case_studies/Ampli5+x+Cabbage.pdf",
   },
 ];
 
@@ -115,12 +116,8 @@ function BrandSlider() {
                     <div className="grid grid-cols-2 md:grid-cols-4 items-center gap-y-6">
                       <div className="flex items-center justify-center flex-col sm:flex-row gap-4 border-r border-white px-2 sm:px-4 py-4">
                         <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center ">
-                          <h2 className="font-medium leading-tight text-white">
-                            {brand.roi}{" "}
-                          </h2>
-                          <p className="!text-16 !font-light !text-white">
-                            ROI
-                          </p>
+                          <h2 className="font-medium leading-tight text-white">{brand.roi} </h2>
+                          <p className="!text-16 !font-light !text-white">ROI</p>
                         </div>
                       </div>
                       <div className="flex items-center justify-center flex-col sm:flex-row  text-center gap-4 md:border-r border-white px-2 sm:px-4 py-4">
@@ -128,9 +125,7 @@ function BrandSlider() {
                           <h2 className="font-medium leading-tight text-white">
                             {brand.mindshare}
                           </h2>
-                          <p className="!text-16 !font-light !text-white">
-                            in Kaito Mindshare
-                          </p>
+                          <p className="!text-16 !font-light !text-white">in Kaito Mindshare</p>
                         </div>
                       </div>
                       <div className="flex items-center justify-center flex-col sm:flex-row gap-4 text-center border-r border-white px-2 sm:px-4 py-4">
@@ -138,9 +133,7 @@ function BrandSlider() {
                           <h2 className="font-medium leading-tight text-white">
                             {brand.engagements}
                           </h2>
-                          <p className="!text-16 !font-light !text-white">
-                            Engagements{" "}
-                          </p>
+                          <p className="!text-16 !font-light !text-white">Engagements </p>
                         </div>
                       </div>
                       <div className="px-2 sm:px-4 py-4 w-full flex justify-center items-center">

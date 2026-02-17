@@ -11,8 +11,7 @@ const cardData = [
     isHighlighted: false,
   },
   {
-    number:
-      "2. Why pay 30 percent more for middle layers when tech can cut that cost?",
+    number: "2. Why pay 30 percent more for middle layers when tech can cut that cost?",
     description:
       "No sales reps. No negotiations. No inflated influencer rates. Our platform gives you creator verified pricing without agency markup.",
     isHighlighted: true,
@@ -28,10 +27,10 @@ const BrandDeserves: React.FC = (): JSX.Element => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
-    
+
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
@@ -56,7 +55,7 @@ const BrandDeserves: React.FC = (): JSX.Element => {
 
         // Check if card is visible and in viewport (with some margin)
         const isVisible = rect.top < window.innerHeight + 100 && rect.bottom > -100;
-        
+
         if (isVisible && distance < closestDistance) {
           closestDistance = distance;
           closestIndex = index;
@@ -79,7 +78,7 @@ const BrandDeserves: React.FC = (): JSX.Element => {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", checkCenterCard);
-    
+
     // Initial check with a small delay to ensure refs are set
     setTimeout(checkCenterCard, 100);
 
@@ -140,13 +139,7 @@ interface AnimatedCardProps {
   cardRef: (el: HTMLDivElement | null) => void;
 }
 
-function AnimatedCard({
-  card,
-  index,
-  highlightedIndex,
-  isMobile,
-  cardRef,
-}: AnimatedCardProps) {
+function AnimatedCard({ card, index, highlightedIndex, isMobile, cardRef }: AnimatedCardProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   // Set the ref for parent component to track
@@ -160,18 +153,14 @@ function AnimatedCard({
   }, [cardRef]);
 
   // On mobile, use viewport center-based highlighting; on desktop, use card.isHighlighted
-  const isHighlighted = isMobile
-    ? highlightedIndex === index
-    : card.isHighlighted;
+  const isHighlighted = isMobile ? highlightedIndex === index : card.isHighlighted;
 
   return (
     <motion.div
       ref={ref}
       className={cn(
         "rounded-xl p-6 lg:p-8 flex flex-col gap-4 border-2 transition-all duration-500",
-        isHighlighted
-          ? "bg-white border-[#a709f0]"
-          : "bg-transparent border-white"
+        isHighlighted ? "bg-white border-[#a709f0]" : "bg-transparent border-white"
       )}
       initial={{ opacity: 1, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
@@ -186,12 +175,7 @@ function AnimatedCard({
         {card.number}
       </div>
 
-      <div
-        className={cn(
-          "h-0.5 w-full mb-4",
-          isHighlighted ? "bg-[#7B46F8]" : "bg-white"
-        )}
-      ></div>
+      <div className={cn("h-0.5 w-full mb-4", isHighlighted ? "bg-[#7B46F8]" : "bg-white")}></div>
 
       <p
         className={cn(

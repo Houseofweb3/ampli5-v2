@@ -33,9 +33,7 @@ function BrandSlider() {
               <div className="flex items-center justify-center flex-col sm:flex-row gap-4 border-r border-white px-2 sm:px-4 py-4">
                 <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center ">
                   <h2 className="font-medium leading-tight text-white">84K+</h2>
-                  <p className="!text-16 !font-light !text-white">
-                    organic YouTube views
-                  </p>
+                  <p className="!text-16 !font-light !text-white">organic YouTube views</p>
                 </div>
               </div>
               <div className="flex items-center justify-center flex-col sm:flex-row  text-center gap-4 md:border-r border-white px-2 sm:px-4 py-4">
@@ -48,9 +46,7 @@ function BrandSlider() {
               </div>
               <div className="flex items-center justify-center flex-col sm:flex-row gap-4 text-center border-r border-white px-2 sm:px-4 py-4">
                 <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center">
-                  <h2 className="font-medium leading-tight text-white">
-                    700K+
-                  </h2>
+                  <h2 className="font-medium leading-tight text-white">700K+</h2>
                   <p className="!text-16 !font-light !text-white">
                     cross ecosystem audience exposure
                   </p>

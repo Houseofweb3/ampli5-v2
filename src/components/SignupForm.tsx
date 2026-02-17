@@ -1,12 +1,12 @@
-'use client';
-export const dynamic = 'force-dynamic';
-import React, { useEffect, useLayoutEffect, useState, ChangeEvent, FormEvent } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Container from './ui/container';
-import { useAuthStore } from '../store/auth';
-import axiosInstance from '../lib/axiosInstance';
-import { toast } from 'react-toastify';
-import { cn } from '../lib/utils';
+"use client";
+export const dynamic = "force-dynamic";
+import React, { useEffect, useLayoutEffect, useState, ChangeEvent, FormEvent } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Container from "./ui/container";
+import { useAuthStore } from "../store/auth";
+import axiosInstance from "../lib/axiosInstance";
+import { toast } from "react-toastify";
+import { cn } from "../lib/utils";
 
 interface FormData {
   yapScore: string;
@@ -35,31 +35,31 @@ const SignupForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [hasHandled, setHasHandled] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
-    yapScore: '',
-    email: '',
-    password: '',
-    fullname: '',
-    telegramId: '',
-    type: 'user',
-    projectName: '',
-    projectUrl: '',
-    profilePicture: '',
-    firstName: '',
-    lastName: '',
-    phoneNumber: '+911234567890',
-    role: 'user',
+    yapScore: "",
+    email: "",
+    password: "",
+    fullname: "",
+    telegramId: "",
+    type: "user",
+    projectName: "",
+    projectUrl: "",
+    profilePicture: "",
+    firstName: "",
+    lastName: "",
+    phoneNumber: "+911234567890",
+    role: "user",
     addressInfo: {
-      pinCode: '000',
+      pinCode: "000",
     },
   });
 
-  const yaps = params.get('yaps') || '0';
-  const email = params.get('email') || '';
-  const auth = params.get('auth') || '';
-  const username = params.get('username') || '';
-  const profile_picture = params.get('profile_picture') || '';
-  const name = params.get('name') || '';
-  const error = params.get('error') || '';
+  const yaps = params.get("yaps") || "0";
+  const email = params.get("email") || "";
+  const auth = params.get("auth") || "";
+  const username = params.get("username") || "";
+  const profile_picture = params.get("profile_picture") || "";
+  const name = params.get("name") || "";
+  const error = params.get("error") || "";
 
   // Set data from URL once on mount
   useEffect(() => {
@@ -90,7 +90,7 @@ const SignupForm: React.FC = () => {
         toast.error(error);
       }
     } catch (error) {
-      toast.error('Decryption failed. Please try again or contact support.');
+      toast.error("Decryption failed. Please try again or contact support.");
     }
 
     setHasHandled(true);
@@ -106,13 +106,13 @@ const SignupForm: React.FC = () => {
 
   const validateForm = (): boolean => {
     if (!formData.telegramId.trim()) {
-      toast.error('Telegram ID is required.');
+      toast.error("Telegram ID is required.");
       return false;
     }
 
     const yapNum = parseFloat(formData.yapScore);
     if (isNaN(yapNum) || yapNum < 10) {
-      toast.error('Yap Score must be 10 or higher.');
+      toast.error("Yap Score must be 10 or higher.");
       return false;
     }
 
@@ -126,7 +126,7 @@ const SignupForm: React.FC = () => {
 
     try {
       setIsSubmitting(true);
-      const response = await axiosInstance.post('/auth/signup', { ...formData });
+      const response = await axiosInstance.post("/auth/signup", { ...formData });
       authStore.login({
         user: {
           id: response.data.user.id,
@@ -138,13 +138,13 @@ const SignupForm: React.FC = () => {
         token: response.data.accessToken,
       });
 
-      toast.success(response.data.message || 'Signup successful!');
-      router.push('/');
+      toast.success(response.data.message || "Signup successful!");
+      router.push("/");
     } catch (error: any) {
       const msg =
         error?.response?.data?.message ||
         error?.message ||
-        'Something went wrong, please try again.';
+        "Something went wrong, please try again.";
       toast.error(msg);
     } finally {
       setIsSubmitting(false);
@@ -195,10 +195,10 @@ const SignupForm: React.FC = () => {
                     value={formData.yapScore}
                     readOnly
                     className={cn(
-                      'border border-solid focus:outline-0 bg-alabaster-bg py-3.5 px-4 rounded-8 placeholder:text-black/30',
+                      "border border-solid focus:outline-0 bg-alabaster-bg py-3.5 px-4 rounded-8 placeholder:text-black/30",
                       parseFloat(formData.yapScore) < 10
-                        ? 'border-dark-orange-bg'
-                        : 'border-light-blue2-bg'
+                        ? "border-dark-orange-bg"
+                        : "border-light-blue2-bg"
                     )}
                     type="text"
                     placeholder="Yap Score"
@@ -241,7 +241,7 @@ const SignupForm: React.FC = () => {
                       Signing Up...
                     </span>
                   ) : (
-                    'Continue to Signup'
+                    "Continue to Signup"
                   )}
                 </button>
 

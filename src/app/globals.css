@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --font-bricolage: 'Bricolage Grotesque', sans-serif;
+  --font-bricolage: "Bricolage Grotesque", sans-serif;
 }
 
 * {
@@ -126,10 +126,12 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(var(--bg-color) 10%,
-      transparent 30%,
-      transparent 70%,
-      var(--bg-color) 90%);
+  background: linear-gradient(
+    var(--bg-color) 10%,
+    transparent 30%,
+    transparent 70%,
+    var(--bg-color) 90%
+  );
   z-index: 20;
 }
 
@@ -211,9 +213,9 @@
   h5 {
     @apply text-14 font-normal text-black/45;
   }
-.hero_descript p {
-  @apply text-16 lg:text-2xl text-black/80 font-normal text-center;
-}
+  .hero_descript p {
+    @apply text-16 lg:text-2xl text-black/80 font-normal text-center;
+  }
   .text_small {
     @apply text-12 leading-12 text-dampened-black-bg/45 font-semibold;
   }
@@ -227,7 +229,8 @@
   }
 
   .bg_square_bottom::before {
-    @apply content-[""] absolute bottom-0 md:bottom-10 lg:bottom-20 xl:bottom-118px right-0 bg-none lg:bg-[url('/pattern/square-bottom.png')] bg-contain bg-no-repeat bg-right w-full h-full max-w-600px;  }
+    @apply content-[""] absolute bottom-0 md:bottom-10 lg:bottom-20 xl:bottom-118px right-0 bg-none lg:bg-[url('/pattern/square-bottom.png')] bg-contain bg-no-repeat bg-right w-full h-full max-w-600px;
+  }
 
   .bg_hero_pattern::after {
     @apply content-[""] absolute bottom-[10%] z-10 left-0 md:bg-[url('/images/banner/hero-bg.png')] bg-contain bg-no-repeat bg-right w-full h-full aspect-video;
@@ -355,11 +358,7 @@
 
 .ctm_effect_slider .ctm_slider_block {
   mask-image: linear-gradient(to right, #0000, #000 10%, #000 90%, #0000);
-  -webkit-mask-image: linear-gradient(to right,
-      #0000,
-      #000 10%,
-      #000 90%,
-      #0000);
+  -webkit-mask-image: linear-gradient(to right, #0000, #000 10%, #000 90%, #0000);
   pointer-events: auto;
 }
 
@@ -417,7 +416,7 @@
 /* Leaderboard scroll styles */
 .leaderboard-scroll {
   scrollbar-width: thin;
-  scrollbar-color: #A762FE #2a2a2a;
+  scrollbar-color: #a762fe #2a2a2a;
 }
 
 .leaderboard-scroll::-webkit-scrollbar {
@@ -430,12 +429,12 @@
 }
 
 .leaderboard-scroll::-webkit-scrollbar-thumb {
-  background: #A762FE;
+  background: #a762fe;
   border-radius: 10px;
 }
 
 .leaderboard-scroll::-webkit-scrollbar-thumb:hover {
-  background: #9340FC;
+  background: #9340fc;
 }
 
 @media (max-width: 1024px) {
@@ -473,15 +472,21 @@
 }
 
 .text_pattern {
-  text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+  text-shadow:
+    3px 3px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000;
   @apply stroke-1 stroke-black text-white;
 }
 
 .gradient-border {
-  border-image: linear-gradient(180deg,
+  border-image: linear-gradient(
+      180deg,
       rgba(255, 255, 255, 0.4),
       rgba(175, 175, 175, 0.7),
-      rgba(255, 255, 255, 0.4)) 1;
+      rgba(255, 255, 255, 0.4)
+    )
+    1;
 }
 
 .rfm-child {
@@ -490,7 +495,6 @@
 
 /* Floating animation for hero images */
 @keyframes float {
-
   0%,
   100% {
     transform: translate(0px, 0px) rotate(0deg);
@@ -510,7 +514,6 @@
 }
 
 @keyframes floatSlow {
-
   0%,
   100% {
     transform: translate(0px, 0px) rotate(0deg);
@@ -526,7 +529,6 @@
 }
 
 @keyframes floatFast {
-
   0%,
   100% {
     transform: translate(0px, 0px) rotate(0deg);
@@ -551,7 +553,6 @@
 
 /* Mobile animations with half movement (below 768px) */
 @keyframes floatMobile {
-
   0%,
   100% {
     transform: translate(0px, 0px) rotate(0deg);
@@ -571,7 +572,6 @@
 }
 
 @keyframes floatSlowMobile {
-
   0%,
   100% {
     transform: translate(0px, 0px) rotate(0deg);
@@ -587,7 +587,6 @@
 }
 
 @keyframes floatFastMobile {
-
   0%,
   100% {
     transform: translate(0px, 0px) rotate(0deg);
@@ -641,7 +640,6 @@
   @apply !h-auto;
 }
 
-
 /* Campaign Cards Slider Styles */
 .campaign-cards-swiper {
   width: 100%;
@@ -678,7 +676,7 @@
 
 .case-study-slider .swiper-pagination-bullet-active {
   opacity: 1;
-  background: #BDF522;
+  background: #bdf522;
   width: 12px;
   height: 12px;
 }
@@ -692,7 +690,7 @@
 
 .campaign-enters-swiper .swiper-pagination-bullet-active {
   opacity: 1;
-  background: #BDF522;
+  background: #bdf522;
   width: 12px;
   height: 12px;
 }

@@ -19,9 +19,9 @@ const HowWork: React.FC = (): JSX.Element => {
           </h2>
         </div>
         <p className="text-center max-w-xl mx-auto">
-          The internet doesn’t reward effort. It rewards{" "}
-          <b>frequency with consistency.</b> Great stories die every day because
-          they appear once and disappear forever. Ampli5 exists to prevent that.
+          The internet doesn’t reward effort. It rewards <b>frequency with consistency.</b> Great
+          stories die every day because they appear once and disappear forever. Ampli5 exists to
+          prevent that.
         </p>
       </div>
     </div>

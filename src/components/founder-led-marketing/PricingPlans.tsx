@@ -62,10 +62,7 @@ const PricingPlans: React.FC = (): JSX.Element => {
                 <PrimaryButton
                   className=" !text-white py-2 px-4 mt-8 w-full max-w-56 mx-auto "
                   onClick={() =>
-                    window.open(
-                      "https://calendly.com/partnerships-houseofweb3/30min",
-                      "_blank"
-                    )
+                    window.open("https://calendly.com/partnerships-houseofweb3/30min", "_blank")
                   }
                 >
                   Get Started

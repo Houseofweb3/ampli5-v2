@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque } from 'next/font/google';
+import { Bricolage_Grotesque } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "../../auth";
 
@@ -18,19 +18,18 @@ import JsonLd, {
   getSoftwareApplicationSchema,
 } from "../components/seo/JsonLd";
 
-
 const bricolage = Bricolage_Grotesque({
-  subsets: ['latin'],
-  variable: '--font-bricolage',
+  subsets: ["latin"],
+  variable: "--font-bricolage",
 });
-
 
 export const metadata: Metadata = {
   title: {
     default: "Ampli5 | AI-Powered Influencer & PR Solutions for Web3",
     template: "%s | Ampli5",
   },
-  description: "Ampli5 (Ampli5) - AI-powered influencer marketing and PR solutions for web3 projects. Connect with top crypto influencers, launch founder-led marketing campaigns, and amplify your brand with cutting-edge AI technology.",
+  description:
+    "Ampli5 (Ampli5) - AI-powered influencer marketing and PR solutions for web3 projects. Connect with top crypto influencers, launch founder-led marketing campaigns, and amplify your brand with cutting-edge AI technology.",
   keywords: [
     "Ampli5",
     "Ampli5",
@@ -61,7 +60,8 @@ export const metadata: Metadata = {
     url: process.env.NEXTAUTH_URL || "https://ampli5.ai",
     siteName: "Ampli5",
     title: "Ampli5 | AI-Powered Influencer & PR Solutions for Web3",
-    description: "Ampli5 (Ampli5) - AI-powered influencer marketing and PR solutions for web3 projects. Connect with top crypto influencers and amplify your brand.",
+    description:
+      "Ampli5 (Ampli5) - AI-powered influencer marketing and PR solutions for web3 projects. Connect with top crypto influencers and amplify your brand.",
     images: [
       {
         url: "/logo/ampli5.png",
@@ -74,7 +74,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Ampli5 | AI-Powered Influencer & PR Solutions for Web3",
-    description: "Ampli5 (Ampli5) - AI-powered influencer marketing and PR solutions for web3 projects.",
+    description:
+      "Ampli5 (Ampli5) - AI-powered influencer marketing and PR solutions for web3 projects.",
     images: ["/logo/ampli5.png"],
     creator: "@nomo_nomaya",
   },

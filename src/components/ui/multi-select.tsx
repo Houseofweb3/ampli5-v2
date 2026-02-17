@@ -1,9 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import {
-  FaChevronDown,
-  FaChevronUp,
-} from "react-icons/fa";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { BsSquare, BsCheckSquareFill } from "react-icons/bs";
 import { GrPowerReset } from "react-icons/gr";
 
@@ -24,9 +21,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
 
   const handleOptionClick = (value: string) => {
     if (selectedOptions.includes(value)) {
-      setSelectedOptions(
-        selectedOptions.filter((optionValue) => optionValue !== value)
-      );
+      setSelectedOptions(selectedOptions.filter((optionValue) => optionValue !== value));
     } else {
       setSelectedOptions([...selectedOptions, value]);
     }
@@ -47,20 +42,12 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
       <div className="flex items-center justify-between p-2 text-gray-600 cursor-pointer border border-gray-300 rounded-xl h-12 font-Jakarta text-sm ">
         <div
           className={`${
-            selectedOptions?.length > 0
-              ? "text-dark-gray font-semibold"
-              : "text-gray-400"
+            selectedOptions?.length > 0 ? "text-dark-gray font-semibold" : "text-gray-400"
           } flex-grow text-sm flex w-full truncate`}
         >
-          {selectedOptions?.length > 0
-            ? placeholder + ":" + " " + selectedOptions
-            : placeholder}
+          {selectedOptions?.length > 0 ? placeholder + ":" + " " + selectedOptions : placeholder}
         </div>
-        {isOpen ? (
-          <FaChevronUp className="text-sm" />
-        ) : (
-          <FaChevronDown className="text-sm" />
-        )}
+        {isOpen ? <FaChevronUp className="text-sm" /> : <FaChevronDown className="text-sm" />}
       </div>
       {isOpen && (
         <div className="absolute max-h-sm overflow-y-auto w-full bg-white shadow-md rounded-xl z-10  flex flex-col p-2 gap-2">

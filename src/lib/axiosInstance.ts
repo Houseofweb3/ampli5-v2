@@ -1,6 +1,6 @@
-import axios, { AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '../store/auth';
+import axios, { AxiosError, InternalAxiosRequestConfig, AxiosResponse } from "axios";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "../store/auth";
 
 const axiosInstance = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL_BOUNTY}`,
@@ -14,7 +14,7 @@ axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = useAuthStore.getState().token;
     if (token && config.headers) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
@@ -27,11 +27,11 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       useAuthStore.getState().logout();
       const router = useRouter();
-      router.push('/');
+      router.push("/");
     }
 
     return Promise.reject(error);
   }
 );
 
-export default axiosInstance; 
+export default axiosInstance;

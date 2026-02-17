@@ -1,22 +1,22 @@
-'use client';
-import React, { useCallback, useEffect, useState } from 'react';
-import Container from './ui/container';
-import Title from './ui/title';
-import Card from './ui/card';
-import BountiesCard from './BountiesCard';
-import Filter from './Filter';
-import axiosInstance from '../lib/axiosInstance';
-import isEmpty from '../lib/inEmpty';
-import BountiesSkeletonCard from './ui/bountiesSkeletonCard';
-import { useAuthStore } from '../store/auth';
-import groupByYap from '../lib/groupByYap';
-import Pagination from './ui/Pagination';
-import GoBackButton from './ui/goBackBtn';
+"use client";
+import React, { useCallback, useEffect, useState } from "react";
+import Container from "./ui/container";
+import Title from "./ui/title";
+import Card from "./ui/card";
+import BountiesCard from "./BountiesCard";
+import Filter from "./Filter";
+import axiosInstance from "../lib/axiosInstance";
+import isEmpty from "../lib/inEmpty";
+import BountiesSkeletonCard from "./ui/bountiesSkeletonCard";
+import { useAuthStore } from "../store/auth";
+import groupByYap from "../lib/groupByYap";
+import Pagination from "./ui/Pagination";
+import GoBackButton from "./ui/goBackBtn";
 
 interface BountiesListProps {
   title?: string;
   vector?: string;
-  type?: 'Bounties' | 'Submissions';
+  type?: "Bounties" | "Submissions";
 }
 
 interface Bounty {
@@ -66,11 +66,11 @@ const BountiesList: React.FC<BountiesListProps> = ({ title, vector, type }) => {
         page,
         limit: 6,
         ...(statusFilter && { statusFilter }),
-        ...(bountyType.length > 0 && { bountyType: bountyType.join(',') }),
+        ...(bountyType.length > 0 && { bountyType: bountyType.join(",") }),
         ...(sortBy && { sortBy }),
       };
 
-      if (type === 'Submissions') {
+      if (type === "Submissions") {
         const response = await axiosInstance.get(`/bounty/my/submission/${userId}`, { params });
         const data = response.data.bounty.bounty.reduce((pre: Bounty[], bounty: any) => {
           return [...pre, bounty.bounty];
@@ -79,7 +79,7 @@ const BountiesList: React.FC<BountiesListProps> = ({ title, vector, type }) => {
         setBounties(data);
         setBountiesMetaData(response.data.bounty.pagination);
       } else {
-        const response = await axiosInstance.get('/bounty', { params });
+        const response = await axiosInstance.get("/bounty", { params });
         if (Auth.isLogin) {
           const { greaterThen, lessThan } = await groupByYap({
             bounties: response.data.bounties,
@@ -93,7 +93,7 @@ const BountiesList: React.FC<BountiesListProps> = ({ title, vector, type }) => {
         setBountiesMetaData(response.data.pagination);
       }
     } catch (error) {
-      console.error('Failed to fetch bounties:', error);
+      console.error("Failed to fetch bounties:", error);
     } finally {
       setLoading(false);
     }
@@ -112,7 +112,7 @@ const BountiesList: React.FC<BountiesListProps> = ({ title, vector, type }) => {
     <div className="bg-cream-bg relative pt-56px bg_square w-full overflow-x-hidden">
       <Container>
         <div className="mb-6 lg:mb-9 flex justify-center items-center gap-4">
-          <GoBackButton /> <Title>{title || 'Bounties'}</Title>
+          <GoBackButton /> <Title>{title || "Bounties"}</Title>
         </div>
         <Card vector={vector}>
           <div>

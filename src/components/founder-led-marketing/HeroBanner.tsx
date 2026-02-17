@@ -52,10 +52,7 @@ export default function HeroBanner() {
         <div className="pb-26px lg:pb-48px">
           <PrimaryButton
             onClick={() =>
-              window.open(
-                "https://calendly.com/partnerships-houseofweb3/30min",
-                "_blank"
-              )
+              window.open("https://calendly.com/partnerships-houseofweb3/30min", "_blank")
             }
             className="text-white mx-auto"
           >
@@ -70,9 +67,7 @@ export default function HeroBanner() {
             </h3>
           </div>
           <div className="hero_description pb-16px lg:pb-28px text-center max-w-4xl mx-auto">
-            <h3 className="!text-dark-purple1-bg">
-              5X ROI. 4X Brand Searches. 10X Recall.
-            </h3>
+            <h3 className="!text-dark-purple1-bg">5X ROI. 4X Brand Searches. 10X Recall.</h3>
           </div>
         </div>
       </div>

@@ -20,9 +20,7 @@ const TableRow: React.FC<{ data: any }> = ({ data }) => {
   const RemoveFromCart = async () => {
     try {
       if (cartId) {
-        const response = await how3.delete(
-          `${ENDPOINTS.PACKAGES_CART_ITEM}/${data.PackageCartId}`
-        );
+        const response = await how3.delete(`${ENDPOINTS.PACKAGES_CART_ITEM}/${data.PackageCartId}`);
         if (response.data) {
           fetchCart();
           console.log(response.data);

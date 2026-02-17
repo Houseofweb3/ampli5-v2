@@ -41,9 +41,7 @@ const StepRow = ({ step }: { step: Step }) => {
       }}
       className="flex items-start md:items-center gap-8 md:gap-12 bg-white py-4"
     >
-      <div className="text-6xl md:text-xxl font-light text-gray-200 w-10">
-        {step.number}
-      </div>
+      <div className="text-6xl md:text-xxl font-light text-gray-200 w-10">{step.number}</div>
 
       <div className="flex gap-4">
         <div className="w-8 md:w-10 h-8 md:h-10 flex items-center justify-center text-purple-600">

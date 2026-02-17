@@ -3,38 +3,38 @@ import { google } from "googleapis";
 import { sendNewEntryNotification } from "@/src/lib/email";
 
 interface BrandIntakeFormData {
-    // Step 1: Brand Snapshot
-    brandProductName: string;
-    websiteLink: string;
-    primaryContactEmail?: string;
-    telegramId?: string;
-    whatsappNumber?: string;
+  // Step 1: Brand Snapshot
+  brandProductName: string;
+  websiteLink: string;
+  primaryContactEmail?: string;
+  telegramId?: string;
+  whatsappNumber?: string;
 
-    // Step 2: Market & Audience Readiness
-    categories: string[];
-    audienceReadinessLevel?: string;
+  // Step 2: Market & Audience Readiness
+  categories: string[];
+  audienceReadinessLevel?: string;
 
-    // Step 3: Campaign Goal
-    campaignGoals: string[];
+  // Step 3: Campaign Goal
+  campaignGoals: string[];
 
-    // Step 4: Revenue Model & Market focus
-    monetizationModel: string[];
-    revenueModel?: string;
-    marketFocus?: string;
+  // Step 4: Revenue Model & Market focus
+  monetizationModel: string[];
+  revenueModel?: string;
+  marketFocus?: string;
 
-    // Step 5: Demographics
-    primaryAudienceGeography: string[];
-    ageRange: string;
-    genderSkew: string;
-    geographicLocation?: string;
+  // Step 5: Demographics
+  primaryAudienceGeography: string[];
+  ageRange: string;
+  genderSkew: string;
+  geographicLocation?: string;
 
-    // Step 6: Timeline
-    campaignStartTimeline: string;
-    campaignStartDate?: string;
-    campaignEndDate?: string;
+  // Step 6: Timeline
+  campaignStartTimeline: string;
+  campaignStartDate?: string;
+  campaignEndDate?: string;
 
-    // Step 7: Custom Brief
-    customBrief: string;
+  // Step 7: Custom Brief
+  customBrief: string;
 }
 
 export async function POST(request: Request) {
@@ -43,22 +43,13 @@ export async function POST(request: Request) {
 
     // Validate required fields
     if (!body.brandProductName?.trim()) {
-      return NextResponse.json(
-        { message: "Brand Product Name is required." },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "Brand Product Name is required." }, { status: 400 });
     }
     if (!body.websiteLink?.trim()) {
-      return NextResponse.json(
-        { message: "Website Link is required." },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "Website Link is required." }, { status: 400 });
     }
     if (!body.primaryContactEmail?.trim()) {
-      return NextResponse.json(
-        { message: "Primary Contact Email is required." },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "Primary Contact Email is required." }, { status: 400 });
     }
 
     // Get date and time
@@ -76,21 +67,16 @@ export async function POST(request: Request) {
       hour12: true,
     };
 
-    const indiaTime = new Intl.DateTimeFormat("en-US", options).format(
-      new Date()
-    );
+    const indiaTime = new Intl.DateTimeFormat("en-US", options).format(new Date());
 
     // Ensure environment variables are set
     if (
       !process.env.SPREAD_SHEET_EMAIL ||
-            !process.env.GOOGLE_KEY ||
-            !process.env.SPREAD_SHEET_ID_FOR_BRABD_INTAKE
+      !process.env.GOOGLE_KEY ||
+      !process.env.SPREAD_SHEET_ID_FOR_BRABD_INTAKE
     ) {
       console.error("Missing environment variables");
-      return NextResponse.json(
-        { message: "Server configuration error." },
-        { status: 500 }
-      );
+      return NextResponse.json({ message: "Server configuration error." }, { status: 500 });
     }
 
     // Handle Google Key formatting
@@ -109,8 +95,8 @@ export async function POST(request: Request) {
     // Remove surrounding quotes if present
     if (
       googleKey &&
-            ((googleKey.startsWith('"') && googleKey.endsWith('"')) ||
-                (googleKey.startsWith("'") && googleKey.endsWith("'")))
+      ((googleKey.startsWith('"') && googleKey.endsWith('"')) ||
+        (googleKey.startsWith("'") && googleKey.endsWith("'")))
     ) {
       googleKey = googleKey.slice(1, -1);
     }
@@ -156,10 +142,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           message: "Authentication failed. Please check server configuration.",
-          error:
-                        process.env.NODE_ENV === "development"
-                          ? authError.message
-                          : undefined,
+          error: process.env.NODE_ENV === "development" ? authError.message : undefined,
         },
         { status: 500 }
       );

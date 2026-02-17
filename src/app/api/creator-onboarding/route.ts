@@ -57,16 +57,10 @@ export async function POST(request: Request) {
 
     // Validate required fields
     if (!body.channelBrandName?.trim()) {
-      return NextResponse.json(
-        { message: "Channel / Brand Name is required." },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "Channel / Brand Name is required." }, { status: 400 });
     }
     if (!body.primaryContactEmail?.trim()) {
-      return NextResponse.json(
-        { message: "Primary Contact Email is required." },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "Primary Contact Email is required." }, { status: 400 });
     }
 
     // Get date and time
@@ -84,9 +78,7 @@ export async function POST(request: Request) {
       hour12: true,
     };
 
-    const indiaTime = new Intl.DateTimeFormat("en-US", options).format(
-      new Date()
-    );
+    const indiaTime = new Intl.DateTimeFormat("en-US", options).format(new Date());
 
     // Ensure environment variables are set
     if (
@@ -95,10 +87,7 @@ export async function POST(request: Request) {
       !process.env.SPREAD_SHEET_ID_FOR_CREATOR_ONBOARDING
     ) {
       console.error("Missing environment variables");
-      return NextResponse.json(
-        { message: "Server configuration error." },
-        { status: 500 }
-      );
+      return NextResponse.json({ message: "Server configuration error." }, { status: 500 });
     }
 
     // Handle Google Key formatting
@@ -164,10 +153,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           message: "Authentication failed. Please check server configuration.",
-          error:
-            process.env.NODE_ENV === "development"
-              ? authError.message
-              : undefined,
+          error: process.env.NODE_ENV === "development" ? authError.message : undefined,
         },
         { status: 500 }
       );
@@ -179,16 +165,18 @@ export async function POST(request: Request) {
     // Format inventory items: only selected items with a non-empty, non-zero rate
     const inventoryItemsStr = body.inventoryItems
       ? Object.entries(body.inventoryItems)
-        .filter(([, item]) => {
-          if (!item.selected) return false;
-          const rate = item.rate != null ? String(item.rate).trim() : "";
-          return rate !== "" && rate !== "0";
-        })
-        .map(([key, item]) => {
-          const avgViews = item.averageViews != null ? String(item.averageViews).trim() : "";
-          return avgViews ? `${key}: $${item.rate}, Avg views: ${avgViews}` : `${key}: $${item.rate}`;
-        })
-        .join("; ")
+          .filter(([, item]) => {
+            if (!item.selected) return false;
+            const rate = item.rate != null ? String(item.rate).trim() : "";
+            return rate !== "" && rate !== "0";
+          })
+          .map(([key, item]) => {
+            const avgViews = item.averageViews != null ? String(item.averageViews).trim() : "";
+            return avgViews
+              ? `${key}: $${item.rate}, Avg views: ${avgViews}`
+              : `${key}: $${item.rate}`;
+          })
+          .join("; ")
       : "";
 
     // Prepare values array for Google Sheets - all form data in column order
@@ -257,9 +245,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ status: 200, message: "Form submitted successfully!" });
   } catch (error: unknown) {
     console.error("Error submitting creator onboarding form:", error);
-    return NextResponse.json(
-      { message: "Something went wrong." },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Something went wrong." }, { status: 500 });
   }
 }

@@ -11,12 +11,14 @@ const cardData = [
   },
   {
     number: "2. Your category is being defined without you",
-    description: "If competitors shape the narrative, models will echo their version of the story.Silence has a cost.",
+    description:
+      "If competitors shape the narrative, models will echo their version of the story.Silence has a cost.",
     isHighlighted: true,
   },
   {
     number: "3. Your size no longer limits your visibility",
-    description: "LLMs treat strong signals from small brands the same way they treat signals from giants.This is the first time David can outrank Goliath through pure clarity and consistency.",
+    description:
+      "LLMs treat strong signals from small brands the same way they treat signals from giants.This is the first time David can outrank Goliath through pure clarity and consistency.",
     isHighlighted: false,
   },
 ];
@@ -24,8 +26,6 @@ const cardData = [
 const BrandDeserves: React.FC = (): JSX.Element => {
   return (
     <div className="relative  bg-[#A609F0] py-14 lg:py-20 overflow-hidden">
-      
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-center text_pattern text-3xl sm:text-4xl lg:text-5xl font-extrabold !text-[#D6FFF6] mb-12 lg:mb-16">
           Why Your Brand Deserves <br /> Love From LLMs?
@@ -37,9 +37,7 @@ const BrandDeserves: React.FC = (): JSX.Element => {
               key={index}
               className={cn(
                 "rounded-xl p-6 lg:p-8 flex flex-col gap-4  border-2 ",
-                !card.isHighlighted
-                  ? "bg-white border-[#a709f0]"
-                  : "bg-transparent border-white"
+                !card.isHighlighted ? "bg-white border-[#a709f0]" : "bg-transparent border-white"
               )}
             >
               <div

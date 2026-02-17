@@ -1,4 +1,4 @@
-import { BountiesPollPrizeDistribution } from '../data/data';
+import { BountiesPollPrizeDistribution } from "../data/data";
 
 interface PrizeDistribution {
   percentage: number;
@@ -14,4 +14,4 @@ export function calculatePrizes(totalPrize: number): PrizeDistribution[] {
       amount: amount.toFixed(0),
     };
   });
-} 
+}

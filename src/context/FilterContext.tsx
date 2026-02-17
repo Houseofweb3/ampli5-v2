@@ -1,11 +1,5 @@
 "use client";
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface FilterContextType {
   filterQueries: string;
@@ -33,29 +27,29 @@ interface FilterProviderProps {
 
 export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
   const [filterQueries, setFilterQueries] = useState(
-    () => (typeof window !== 'undefined' ? localStorage.getItem("filterQueries") : "") || ""
+    () => (typeof window !== "undefined" ? localStorage.getItem("filterQueries") : "") || ""
   );
   const [platforms, setPlatforms] = useState<string[]>(() =>
-    typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("platforms") || "[]") : []
+    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("platforms") || "[]") : []
   );
   const [niche, setNiche] = useState<string[]>(() =>
-    typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("niche") || "[]") : []
+    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("niche") || "[]") : []
   );
   const [er, setER] = useState<string[]>(() =>
-    typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("er") || "[]") : []
+    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("er") || "[]") : []
   );
   const [contentTypes, setContentTypes] = useState<string[]>(() =>
-    typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("contentTypes") || "[]") : []
+    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("contentTypes") || "[]") : []
   );
   const [credibility, setCredibility] = useState<string[]>(() =>
-    typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("credibility") || "[]") : []
+    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("credibility") || "[]") : []
   );
   const [price, setPrice] = useState<string[]>(() =>
-    typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("price") || "[]") : []
+    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("price") || "[]") : []
   );
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       localStorage.setItem("filterQueries", filterQueries);
       localStorage.setItem("platforms", JSON.stringify(platforms));
       localStorage.setItem("niche", JSON.stringify(niche));
@@ -94,9 +88,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
     resetFilters,
   };
 
-  return (
-    <FilterContext.Provider value={value}>{children}</FilterContext.Provider>
-  );
+  return <FilterContext.Provider value={value}>{children}</FilterContext.Provider>;
 };
 
 export const useFilter = () => {

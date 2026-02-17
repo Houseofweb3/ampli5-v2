@@ -31,10 +31,10 @@ const EcosystemLoves: React.FC = (): JSX.Element => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
-    
+
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
@@ -59,7 +59,7 @@ const EcosystemLoves: React.FC = (): JSX.Element => {
 
         // Check if card is visible and in viewport (with some margin)
         const isVisible = rect.top < window.innerHeight + 100 && rect.bottom > -100;
-        
+
         if (isVisible && distance < closestDistance) {
           closestDistance = distance;
           closestIndex = index;
@@ -82,7 +82,7 @@ const EcosystemLoves: React.FC = (): JSX.Element => {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", checkCenterCard);
-    
+
     // Initial check with a small delay to ensure refs are set
     setTimeout(checkCenterCard, 100);
 
@@ -102,9 +102,7 @@ const EcosystemLoves: React.FC = (): JSX.Element => {
           <h2 className="text-center  text-3xl sm:text-4xl lg:text-5xl font-extrabold ">
             Why The Ecosystem Loves Us?
           </h2>
-          <p>
-            Creators, buyers and platforms work better when friction disappears.
-          </p>
+          <p>Creators, buyers and platforms work better when friction disappears.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-12 lg:mb-16 ">
@@ -138,13 +136,7 @@ interface AnimatedCardProps {
   cardRef: (el: HTMLDivElement | null) => void;
 }
 
-function AnimatedCard({
-  card,
-  index,
-  highlightedIndex,
-  isMobile,
-  cardRef,
-}: AnimatedCardProps) {
+function AnimatedCard({ card, index, highlightedIndex, isMobile, cardRef }: AnimatedCardProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   // Set the ref for parent component to track
@@ -158,9 +150,7 @@ function AnimatedCard({
   }, [cardRef]);
 
   // On mobile, use viewport center-based highlighting; on desktop, use card.isHighlighted
-  const isHighlighted = isMobile
-    ? highlightedIndex === index
-    : card.isHighlighted;
+  const isHighlighted = isMobile ? highlightedIndex === index : card.isHighlighted;
 
   return (
     <motion.div
@@ -182,12 +172,7 @@ function AnimatedCard({
         {card.number}
       </div>
 
-      <div
-        className={cn(
-          "h-0.5 w-full mb-4",
-          isHighlighted ? "bg-white" : "bg-[#7B46F8]"
-        )}
-      ></div>
+      <div className={cn("h-0.5 w-full mb-4", isHighlighted ? "bg-white" : "bg-[#7B46F8]")}></div>
 
       <p
         className={cn(

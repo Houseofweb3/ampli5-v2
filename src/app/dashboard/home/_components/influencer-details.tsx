@@ -5,24 +5,14 @@ import { VerifyIcon, TwitterIcon, PlayIcon } from "@/public/icons";
 const Details = () => {
   return (
     <div className="w-full flex flex-col">
-      <span className="font-Jakarta font-[600] text-lg">
-        Influencer Details
-      </span>
+      <span className="font-Jakarta font-[600] text-lg">Influencer Details</span>
       <div className="flex flex-col md:grid md:grid-cols-6 w-full py-4 gap-6">
         <div className="col-span-2 hidden md:flex flex-col items-center w-full font-Jakarta">
-          <Image
-            src={"/profile.svg"}
-            alt={"profile"}
-            width={80}
-            height={80}
-            className="mb-4"
-          />
+          <Image src={"/profile.svg"} alt={"profile"} width={80} height={80} className="mb-4" />
           <div className=" flex gap-2 items-center">
             TearOfSatoshi <VerifyIcon />
           </div>
-          <span className="text-gray-300 text-sm text-center">
-            Shitcoin Alchemist
-          </span>
+          <span className="text-gray-300 text-sm text-center">Shitcoin Alchemist</span>
           <span className="text-gray-300 text-sm">India, Delhi</span>
           <div className="flex gap-4 py-4 md:flex-row flex-col">
             <div className="flex gap-2 p-2 border border-gray-200 rounded-lg">
@@ -60,12 +50,10 @@ const Details = () => {
           </div>
           <div className="flex flex-col p-4 border border-gray-200 rounded-lg w-full">
             <div className="border-b border-gray-200 pb-4">
-              <span className="text-lg md:text-xl font-[600]">
-                Shitcoin Alchemist
-              </span>
+              <span className="text-lg md:text-xl font-[600]">Shitcoin Alchemist</span>
               <p className="text-base text-gray-300">
-                Some people call me Nostradamus's 7th Son. I often miss the tops
-                but never miss a play.
+                Some people call me Nostradamus's 7th Son. I often miss the tops but never miss a
+                play.
               </p>
             </div>
             <div className="pt-4">

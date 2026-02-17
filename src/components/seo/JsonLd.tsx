@@ -9,10 +9,7 @@ interface JsonLdProps {
  */
 export default function JsonLd({ data }: JsonLdProps) {
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
   );
 }
 
@@ -21,7 +18,7 @@ export default function JsonLd({ data }: JsonLdProps) {
  */
 export function getOrganizationSchema() {
   const baseUrl = process.env.NEXTAUTH_URL || "https://ampli5.ai";
-  
+
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -48,7 +45,7 @@ export function getOrganizationSchema() {
  */
 export function getWebsiteSchema() {
   const baseUrl = process.env.NEXTAUTH_URL || "https://ampli5.ai";
-  
+
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -75,7 +72,7 @@ export function getWebsiteSchema() {
  */
 export function getServiceSchema() {
   const baseUrl = process.env.NEXTAUTH_URL || "https://ampli5.ai";
-  
+
   return {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -86,7 +83,8 @@ export function getServiceSchema() {
       url: baseUrl,
     },
     areaServed: "Worldwide",
-    description: "AI-powered influencer marketing and PR solutions for web3 projects. Connect with top crypto influencers, launch founder-led marketing campaigns, and amplify your brand.",
+    description:
+      "AI-powered influencer marketing and PR solutions for web3 projects. Connect with top crypto influencers, launch founder-led marketing campaigns, and amplify your brand.",
     offers: {
       "@type": "Offer",
       description: "Web3 influencer marketing and PR services",
@@ -100,7 +98,7 @@ export function getServiceSchema() {
  */
 export function getSoftwareApplicationSchema() {
   const baseUrl = process.env.NEXTAUTH_URL || "https://ampli5.ai";
-  
+
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -125,4 +123,3 @@ export function getSoftwareApplicationSchema() {
     },
   };
 }
-

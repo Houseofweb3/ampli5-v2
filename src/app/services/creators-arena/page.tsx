@@ -21,9 +21,7 @@ export const metadata: Metadata = {
     title: "Creators Arena for Web3 | Ampli5",
     description:
       "Creators Arena connects web3 projects with talented content creators. Launch user-generated content campaigns, reward creators, and build authentic community engagement. Custom podcast production and reward pool management included.",
-    url: `${
-      process.env.NEXTAUTH_URL || "https://ampli5.ai"
-    }/services/creators-arena`,
+    url: `${process.env.NEXTAUTH_URL || "https://ampli5.ai"}/services/creators-arena`,
   },
   alternates: {
     canonical: "/services/creators-arena",

@@ -58,14 +58,8 @@ const NewTable: React.FC<TableProps> = ({
                       visibility: item === "Number" ? "hidden" : "visible",
                     }}
                   >
-                    <div
-                      className={` whitespace-nowrap`}
-                    >
-                      <HeadingWithTooltip
-                        heading={item}
-                        order={order}
-                        setOrder={setOrder}
-                      />
+                    <div className={` whitespace-nowrap`}>
+                      <HeadingWithTooltip heading={item} order={order} setOrder={setOrder} />
                     </div>
                   </div>
                 ))}
@@ -87,7 +81,7 @@ const NewTable: React.FC<TableProps> = ({
                   </div>
                 </div>
               ) : (
-                influencers?.map((item,index) => (
+                influencers?.map((item, index) => (
                   <TableRow
                     key={item.id}
                     data={item}

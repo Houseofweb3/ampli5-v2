@@ -30,22 +30,13 @@ const EmptyTable: React.FC<EmptyTableProps> = ({
   };
   return (
     <div className="w-full  h-full flex justify-center items-center p-6 font-Jakarta flex-col gap-2">
-      <Image
-        src={"/socials/noResultFound.svg"}
-        alt="no result"
-        width={200}
-        height={200}
-      />
+      <Image src={"/socials/noResultFound.svg"} alt="no result" width={200} height={200} />
       <span className="font-semibold md:text-lg ">No Result Found</span>
       <p className="text-secondary-text text-sm md:text-base">
         Try adjusting your filters slightly to see more results.
       </p>
 
-      <Button
-        type={BUTTON_TYPES.TEXT}
-        size={BUTTON_SIZES.LARGE}
-        onClick={handleReset}
-      >
+      <Button type={BUTTON_TYPES.TEXT} size={BUTTON_SIZES.LARGE} onClick={handleReset}>
         <RxReload /> Reset
       </Button>
     </div>

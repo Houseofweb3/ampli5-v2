@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import Input from './ui/input';
-import axiosInstance from '../lib/axiosInstance';
-import { toast } from 'react-toastify';
-import Card from './ui/card';
-import AppointmentCalendar from './AppointmentCalendar';
-import Title from './ui/title';
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import Input from "./ui/input";
+import axiosInstance from "../lib/axiosInstance";
+import { toast } from "react-toastify";
+import Card from "./ui/card";
+import AppointmentCalendar from "./AppointmentCalendar";
+import Title from "./ui/title";
 
 interface FormData {
   name: string;
@@ -26,32 +26,32 @@ const CreateBountiesForm: React.FC = () => {
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const [isBookingOpen, setIsBookingOpen] = useState<boolean>(false);
   const [form, setForm] = useState<FormData>({
-    name: '',
-    email: '',
-    telegramId: '',
-    projectURL: '',
+    name: "",
+    email: "",
+    telegramId: "",
+    projectURL: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
 
   const validate = (): FormErrors => {
     const newErrors: FormErrors = {};
-    if (!form.name.trim()) newErrors.name = 'Name is required';
-    if (!form.email.trim()) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = 'Invalid email format';
-    if (!form.telegramId.trim()) newErrors.telegramId = 'Telegram ID is required';
-    if (!form.projectURL.trim()) newErrors.projectURL = 'Project URL is required';
+    if (!form.name.trim()) newErrors.name = "Name is required";
+    if (!form.email.trim()) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = "Invalid email format";
+    if (!form.telegramId.trim()) newErrors.telegramId = "Telegram ID is required";
+    if (!form.projectURL.trim()) newErrors.projectURL = "Project URL is required";
     else if (
       !/^https?:\/\/.+\..+/.test(form.projectURL) &&
       !/^www\.[^.\s]+\.[^\s]+/.test(form.projectURL)
     )
-      newErrors.projectURL = 'Invalid URL format (must start with https:// OR www.)';
+      newErrors.projectURL = "Invalid URL format (must start with https:// OR www.)";
     return newErrors;
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: '' });
+    setErrors({ ...errors, [e.target.name]: "" });
   };
 
   const feedbackFormHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -63,14 +63,13 @@ const CreateBountiesForm: React.FC = () => {
     }
     setSubmitting(true);
     try {
-      await axiosInstance.post('/bounty-booking/book', { ...form });
-      toast.success('Form has been submitted');
+      await axiosInstance.post("/bounty-booking/book", { ...form });
+      toast.success("Form has been submitted");
       setIsBookingOpen(true);
     } catch (error) {
-
       console.log(error, "error");
 
-      toast.error('Failed to submit form!');
+      toast.error("Failed to submit form!");
     } finally {
       setSubmitting(false);
     }
@@ -143,7 +142,7 @@ const CreateBountiesForm: React.FC = () => {
                   className="bg-dark-purple1-bg text-white w-full py-2 text-20 cursor-pointer font-bold rounded mt-4 disabled:opacity-50 disabled:pointer-events-none"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Submitting...' : 'Book a meeting'}
+                  {isSubmitting ? "Submitting..." : "Book a meeting"}
                 </button>
               </div>
             </form>

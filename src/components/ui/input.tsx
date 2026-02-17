@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -15,12 +15,12 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const Input: React.FC<InputProps> = ({
   label,
   name,
-  type = 'text',
-  placeholder = '',
+  type = "text",
+  placeholder = "",
   value,
   onChange,
   required = false,
-  className = '',
+  className = "",
   ...props
 }) => {
   return (
@@ -32,7 +32,7 @@ const Input: React.FC<InputProps> = ({
         </label>
       )}
 
-      {type === 'textarea' ? (
+      {type === "textarea" ? (
         <textarea
           name={name}
           id={name}

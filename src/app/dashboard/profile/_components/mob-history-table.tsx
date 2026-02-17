@@ -60,9 +60,7 @@ const Table = () => {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3">
             <div className="border border-slate-200 flex flex-col gap-2 p-2">
-              <span className="text-xs font-Poppins text-gray-300">
-                Platform
-              </span>
+              <span className="text-xs font-Poppins text-gray-300">Platform</span>
               <div className="flex gap-2 items-center text-sm">
                 {data.col2.icon}
                 {data.col2.followers}
@@ -73,9 +71,7 @@ const Table = () => {
               {data.col3}
             </div>
             <div className="border border-slate-200 flex flex-col gap-2 p-2">
-              <span className="text-xs font-Poppins text-gray-300">
-                Country
-              </span>
+              <span className="text-xs font-Poppins text-gray-300">Country</span>
               {data.col4}
             </div>
             <div className="border border-slate-200 flex flex-col gap-2 p-2">
@@ -83,9 +79,7 @@ const Table = () => {
               {data.col5}
             </div>
             <div className="border border-slate-200 flex flex-col gap-2 p-2">
-              <span className="text-xs font-Poppins text-gray-300">
-                Credibility Score
-              </span>
+              <span className="text-xs font-Poppins text-gray-300">Credibility Score</span>
               {data.col6}
             </div>
             <div className="border border-slate-200 flex flex-col gap-2 p-2">

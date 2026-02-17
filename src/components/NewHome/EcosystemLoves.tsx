@@ -11,10 +11,10 @@ const EcosystemLoves: React.FC = (): JSX.Element => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
-    
+
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
@@ -80,7 +80,7 @@ const EcosystemLoves: React.FC = (): JSX.Element => {
     {
       number: "AI is already deciding without you.",
       description: [
-        "People don't \"discover\" brands anymore. They ask questions.",
+        'People don\'t "discover" brands anymore. They ask questions.',
         "AI answers using existing public context. If your story isn't already there, the gap gets filled for you.",
         "Ampli5 places your narrative where AI learns from, so your brand shows up as the answer.",
       ],
@@ -128,13 +128,7 @@ interface AnimatedCardProps {
   cardRef: (el: HTMLDivElement | null) => void;
 }
 
-function AnimatedCard({
-  card,
-  index,
-  highlightedIndex,
-  isMobile,
-  cardRef,
-}: AnimatedCardProps) {
+function AnimatedCard({ card, index, highlightedIndex, isMobile, cardRef }: AnimatedCardProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   // Set the ref for parent component to track
@@ -145,9 +139,7 @@ function AnimatedCard({
   }, [cardRef]);
 
   // On mobile, use viewport center-based highlighting; on desktop, use card.isHighlighted
-  const isHighlighted = isMobile
-    ? highlightedIndex === index
-    : card.isHighlighted;
+  const isHighlighted = isMobile ? highlightedIndex === index : card.isHighlighted;
 
   return (
     <motion.div
@@ -168,12 +160,7 @@ function AnimatedCard({
       >
         {card.number}
       </div>
-      <div
-        className={cn(
-          "h-0.5 w-full mb-4",
-          isHighlighted ? "bg-[#7B46F8]" : "bg-white"
-        )}
-      ></div>
+      <div className={cn("h-0.5 w-full mb-4", isHighlighted ? "bg-[#7B46F8]" : "bg-white")}></div>
       <ul
         className={cn(
           "text-base lg:text-lg leading-relaxed space-y-8",

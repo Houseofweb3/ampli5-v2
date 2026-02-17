@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Blogs | Ampli5 - Web3 Marketing Insights",
-  description: "Read the latest insights, industry updates, and expert articles about web3 marketing, influencer marketing, crypto PR, and AI-powered marketing solutions from Ampli5 (Ampli5).",
+  description:
+    "Read the latest insights, industry updates, and expert articles about web3 marketing, influencer marketing, crypto PR, and AI-powered marketing solutions from Ampli5 (Ampli5).",
   keywords: [
     "web3 marketing blog",
     "crypto marketing insights",
@@ -22,11 +23,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BlogsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function BlogsLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
-

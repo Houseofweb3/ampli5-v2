@@ -34,10 +34,10 @@ const HowWork: React.FC = (): JSX.Element => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
-    
+
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
@@ -62,7 +62,7 @@ const HowWork: React.FC = (): JSX.Element => {
 
         // Check if card is visible and in viewport (with some margin)
         const isVisible = rect.top < window.innerHeight + 100 && rect.bottom > -100;
-        
+
         if (isVisible && distance < closestDistance) {
           closestDistance = distance;
           closestIndex = index;
@@ -85,7 +85,7 @@ const HowWork: React.FC = (): JSX.Element => {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", checkCenterCard);
-    
+
     // Initial check with a small delay to ensure refs are set
     setTimeout(checkCenterCard, 100);
 
@@ -120,12 +120,10 @@ const HowWork: React.FC = (): JSX.Element => {
       </div>
       <Marquee>
         <h2 className="text-center  text-3xl font-extrabold mb-12 lg:mb-16 px-16">
-          Clarity is the new discoverability. If models decide attention, make
-          them choose you.{""}
+          Clarity is the new discoverability. If models decide attention, make them choose you.{""}
         </h2>
         <h2 className="text-center  text-2xl md:text-3xl font-extrabold mb-12 lg:mb-16 px-16">
-          Clarity is the new discoverability. If models decide attention, make
-          them choose you.{""}
+          Clarity is the new discoverability. If models decide attention, make them choose you.{""}
         </h2>
       </Marquee>
       <div className="absolute sm:bottom-[-50px] bottom-[-25px] sm:right-[50px] right-[25px]  z-10">
@@ -156,13 +154,7 @@ interface AnimatedCardProps {
   cardRef: (el: HTMLDivElement | null) => void;
 }
 
-function AnimatedCard({
-  card,
-  index,
-  highlightedIndex,
-  isMobile,
-  cardRef,
-}: AnimatedCardProps) {
+function AnimatedCard({ card, index, highlightedIndex, isMobile, cardRef }: AnimatedCardProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   // Set the ref for parent component to track
@@ -176,9 +168,7 @@ function AnimatedCard({
   }, [cardRef]);
 
   // On mobile, use viewport center-based highlighting; on desktop, use card.isHighlighted
-  const isHighlighted = isMobile
-    ? highlightedIndex === index
-    : card.isHighlighted;
+  const isHighlighted = isMobile ? highlightedIndex === index : card.isHighlighted;
 
   return (
     <motion.div
@@ -200,12 +190,7 @@ function AnimatedCard({
         {card.number}
       </div>
 
-      <div
-        className={cn(
-          "h-0.5 w-full mb-4",
-          isHighlighted ? "bg-white" : "bg-[#7B46F8]"
-        )}
-      ></div>
+      <div className={cn("h-0.5 w-full mb-4", isHighlighted ? "bg-white" : "bg-[#7B46F8]")}></div>
 
       <p
         className={cn(

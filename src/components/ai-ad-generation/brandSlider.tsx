@@ -13,21 +13,19 @@ import Image from "next/image";
 export const NEW_CASE_STUDY_DATA = [
   {
     brandLogo: null,
-    video: '/video/cabbage by stader labs.mov',
+    video: "/video/cabbage by stader labs.mov",
   },
   {
     brandLogo: null,
-    video: '/video/Crypto Kitty.mp4',
+    video: "/video/Crypto Kitty.mp4",
   },
   {
     brandLogo: null,
-    video: '/video/Delta Ai Video.mp4',
-
+    video: "/video/Delta Ai Video.mp4",
   },
   {
     brandLogo: null,
-    video: '/video/Quill Audit.mp4',
-
+    video: "/video/Quill Audit.mp4",
   },
 ];
 function BrandSlider() {
@@ -51,7 +49,6 @@ function BrandSlider() {
           <h3 className="!text-white text-center text-24 lg:text-32 pb-8 text_pattern">
             Sample Work
           </h3>
-     
         </div>
         <div className="max-w-7xl mx-auto px-4 relative">
           <Swiper

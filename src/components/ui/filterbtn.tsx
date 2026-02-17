@@ -11,7 +11,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function Button({
-  value = '',
+  value = "",
   label = null,
   active = false,
   border = "border-gray-bg",

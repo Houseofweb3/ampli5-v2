@@ -50,10 +50,7 @@ const WaveContent: React.FC = (): JSX.Element => {
             </SecondaryButton> */}
             <SecondaryButton
               onClick={() =>
-                window.open(
-                  "https://calendly.com/partnerships-houseofweb3/30min",
-                  "_blank"
-                )
+                window.open("https://calendly.com/partnerships-houseofweb3/30min", "_blank")
               }
               disabled={false}
               className="w-fit"

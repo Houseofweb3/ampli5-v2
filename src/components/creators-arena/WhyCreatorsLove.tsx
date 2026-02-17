@@ -68,8 +68,7 @@ const WhyCreatorsLove: React.FC = (): JSX.Element => {
                 Real Skill Gets Rewarded
               </h3>
               <p className="card_desc">
-                Great work wins. Simple. The better the content, the higher the
-                reward.
+                Great work wins. Simple. The better the content, the higher the reward.
               </p>
             </div>
           </div>

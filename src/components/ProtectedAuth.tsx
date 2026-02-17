@@ -1,7 +1,7 @@
-'use client';
-import React, { useEffect, useState, ReactNode } from 'react';
-import { useAuthStore } from '../store/auth';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useEffect, useState, ReactNode } from "react";
+import { useAuthStore } from "../store/auth";
+import { useRouter } from "next/navigation";
 
 interface RequireAuthProps {
   isLoading?: boolean;
@@ -15,7 +15,7 @@ const RequireAuth: React.FC<RequireAuthProps> = ({ isLoading = false, children }
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const checkHydration = useAuthStore.persist?.hasHydrated?.() ?? true;
       setHasHydrated(checkHydration);
     }
@@ -25,7 +25,7 @@ const RequireAuth: React.FC<RequireAuthProps> = ({ isLoading = false, children }
     if (!hasHydrated) return;
 
     if (!token) {
-      router.push('/');
+      router.push("/");
     } else {
       setLoading(false);
     }

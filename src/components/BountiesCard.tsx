@@ -1,8 +1,8 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
-import { cn } from '../lib/utils';
-import { TimeLeft } from '../lib/TimeLeft';
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import { cn } from "../lib/utils";
+import { TimeLeft } from "../lib/TimeLeft";
 
 interface BountyData {
   status: string;
@@ -24,8 +24,8 @@ export default function BountiesCard({ data }: { data: BountyData }) {
   return (
     <div
       className={cn(
-        'border border-solid border-black  rounded-3xl  p-4 lg:p-6 relative',
-        data.status === 'open' ? 'bg-white' : 'bg-bounties-bg'
+        "border border-solid border-black  rounded-3xl  p-4 lg:p-6 relative",
+        data.status === "open" ? "bg-white" : "bg-bounties-bg"
       )}
     >
       <div className="bg-blue-bg text-white text-12 lg:text-14 leading-14 font-semibold rounded-tr-3xl rounded-bl-3xl w-max py-9px px-16px absolute -top-1px -right-1px capitalize">
@@ -37,7 +37,7 @@ export default function BountiesCard({ data }: { data: BountyData }) {
             <div className="flex-shrink-0 bg-gray-200 rounded-full">
               <Image
                 src={data.metadata.logo}
-                onError={(e) => ((e.target as HTMLImageElement).src = '/images/icon.png')}
+                onError={(e) => ((e.target as HTMLImageElement).src = "/images/icon.png")}
                 width={64}
                 height={64}
                 alt="xd-icon"
@@ -49,7 +49,7 @@ export default function BountiesCard({ data }: { data: BountyData }) {
               </h4>
               <Link
                 className="truncate w-full block text-sm text-ellipsis overflow-hidden whitespace-nowrap"
-                href={data.metadata.resources?.x || '#'}
+                href={data.metadata.resources?.x || "#"}
               >
                 {data.metadata.resources?.x}
               </Link>
@@ -64,7 +64,7 @@ export default function BountiesCard({ data }: { data: BountyData }) {
             </div>
             <div className=" px-3 border-l border-r border-solid border-black/20 flex-grow-1">
               <h5 className="mb-6px">Min. Yaps Req.</h5>
-              <h4>{data?.yaps || '-'}</h4>
+              <h4>{data?.yaps || "-"}</h4>
             </div>
             <div className="pl-3 flex-grow-1">
               <h5 className="mb-6px">Bounty Type</h5>
@@ -84,9 +84,9 @@ export default function BountiesCard({ data }: { data: BountyData }) {
             </div>
             <Link
               className="w-fit border  border-solid rounded-4xl border-black py-8px px-6 bg-white text-black text-14 lg:text-xl font-medium capitalize transition duration-300 ease-in-out flex items-center justify-center shadow-xl hover:bg-black hover:text-white hover:shadow-none cursor-pointer"
-              href={'/bounty-hunt/details/' + data.id}
+              href={"/bounty-hunt/details/" + data.id}
             >
-              {data.status === 'closed' ? 'View' : ' Explore'}
+              {data.status === "closed" ? "View" : " Explore"}
             </Link>
           </div>
         </div>

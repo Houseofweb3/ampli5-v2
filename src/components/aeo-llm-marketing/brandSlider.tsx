@@ -57,32 +57,28 @@ function BrandSlider() {
             <div className="grid grid-cols-2 md:grid-cols-4 items-center gap-y-6">
               <div className="flex items-center justify-center flex-col sm:flex-row gap-4 border-r border-white px-2 sm:px-4 py-4">
                 <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center ">
-                  <h2 className="font-medium leading-tight text-white">
-                    0 - 29
-                  </h2>
+                  <h2 className="font-medium leading-tight text-white">0 - 29</h2>
                   <p className="!text-16 !font-light !text-white">DA </p>
                 </div>
               </div>
               <div className="flex items-center justify-center flex-col sm:flex-row  text-center gap-4 md:border-r border-white px-2 sm:px-4 py-4">
                 <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold ">
-                  <h2 className="font-medium leading-tight text-white">
-                    0 - 5,148
-                  </h2>
+                  <h2 className="font-medium leading-tight text-white">0 - 5,148</h2>
                   <p className="!text-16 !font-light !text-white">Backlinks</p>
                 </div>
               </div>
               <div className="flex items-center justify-center flex-col sm:flex-row gap-4 text-center border-r border-white px-2 sm:px-4 py-4">
                 <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center">
-                  <h2 className="font-medium leading-tight text-white">
-                    15,000+
-                  </h2>
-                  <p className="!text-16 !font-light !text-white">
-                    Brand keyword search
-                  </p>
+                  <h2 className="font-medium leading-tight text-white">15,000+</h2>
+                  <p className="!text-16 !font-light !text-white">Brand keyword search</p>
                 </div>
               </div>
               <div className="px-2 sm:px-4 py-4 w-full flex justify-center items-center">
-                <Link href={`/case_studies/AISEO+PRCaseStudy-yMedia2025.pdf`} target="_blank" className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit ">
+                <Link
+                  href={`/case_studies/AISEO+PRCaseStudy-yMedia2025.pdf`}
+                  target="_blank"
+                  className="cursor-pointer text-white hover:text-black bg-transparent hover:bg-white transition-all duration-300 ease-in-out border border-white rounded-xl p-4 w-fit mx-auto h-fit "
+                >
                   <GoArrowUpRight className="text-xl sm:text-3xl" />
                 </Link>
               </div>

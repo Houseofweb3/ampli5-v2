@@ -1,13 +1,7 @@
 /* eslint-disable no-unused-vars */
 "use client";
 
-import React, {
-  createContext,
-  useState,
-  useContext,
-  useEffect,
-  ReactNode,
-} from "react";
+import React, { createContext, useState, useContext, useEffect, ReactNode } from "react";
 import { useSession } from "next-auth/react";
 import useHow3client from "../hooks/usehow3client";
 import { ENDPOINTS } from "../utils/constants";
@@ -34,17 +28,13 @@ export const useCart = (): CartContextType => {
   return context;
 };
 
-export const CartProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const how3 = useHow3client();
   const { data: session } = useSession();
   const user = session?.user;
 
   const [cart, setCart] = useState<Cart | null>(null);
   const [cartId, setCartId] = useState<string | null>(null);
-
-
 
   const getCartId = async (): Promise<void> => {
     if (!user?.id) return;
@@ -70,8 +60,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
 
       if (response.data.length > 0) {
         const sortedCarts = response.data.sort(
-          (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
 
         const latestCart = sortedCarts[sortedCarts.length - 1];
@@ -94,10 +83,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
     }
     // eslint-disable-next-line no-unused-vars
   }, [user]);
-  const fetchCartAfterCouponApplied = async (
-    applyCoupon: boolean,
-    couponId: string
-  ) => {
+  const fetchCartAfterCouponApplied = async (applyCoupon: boolean, couponId: string) => {
     if (!user?.id) return;
 
     try {
@@ -111,8 +97,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
 
       if (response.data.length > 0) {
         const sortedCarts = response.data.sort(
-          (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
 
         const latestCart = sortedCarts[sortedCarts.length - 1];

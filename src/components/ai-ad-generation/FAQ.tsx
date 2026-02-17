@@ -6,8 +6,7 @@ const faqData = [
   {
     number: 1,
     question: "How fast do we receive the ads?",
-    answer:
-      "Most ads are delivered within 72 hours once the narrative is locked.",
+    answer: "Most ads are delivered within 72 hours once the narrative is locked.",
   },
   {
     number: 2,
@@ -17,8 +16,7 @@ const faqData = [
   },
   {
     number: 3,
-    question:
-      "Can we use these videos for launches, campaigns and investor decks?",
+    question: "Can we use these videos for launches, campaigns and investor decks?",
     answer:
       "Yes. Our strongest outputs have been launch explainers and narrative driven brand films.",
   },

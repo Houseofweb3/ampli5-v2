@@ -20,9 +20,7 @@ const Page = () => {
   useEffect(() => {
     const getProfile = async () => {
       try {
-        const response = await how3.get(
-          `/api/v1/auth/profile/${session?.user?.id}`
-        );
+        const response = await how3.get(`/api/v1/auth/profile/${session?.user?.id}`);
         const { fullname, email } = response.data.user;
 
         // Ensure fullname is defined and can be split

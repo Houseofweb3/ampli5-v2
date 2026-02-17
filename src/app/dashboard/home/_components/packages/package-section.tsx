@@ -24,9 +24,7 @@ const Packages = () => {
   return (
     <>
       <div className="md:bg-white relative w-full h-full rounded-xl md:p-4">
-        <div className="text-xl md:text-2xl font-Jakarta font-[600] pb-4 ">
-          PR Packages
-        </div>
+        <div className="text-xl md:text-2xl font-Jakarta font-[600] pb-4 ">PR Packages</div>
 
         <div className="flex flex-col xl:py-3 p-3  xl:px-10 gap-10">
           {Packages ? (

@@ -1,7 +1,7 @@
-'use client';
-import React, { useEffect, useState, ReactNode } from 'react';
-import { useAuthStore } from '../store/auth';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useEffect, useState, ReactNode } from "react";
+import { useAuthStore } from "../store/auth";
+import { useRouter } from "next/navigation";
 
 interface PubliceAuthProps {
   children: ReactNode;
@@ -19,7 +19,7 @@ const PubliceAuth: React.FC<PubliceAuthProps> = ({ children }) => {
     if (!hasHydrated) return;
 
     if (token) {
-      router.push('/');
+      router.push("/");
     } else {
       setLoading(false);
     }

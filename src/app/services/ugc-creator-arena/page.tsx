@@ -7,7 +7,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "UGC Creator Arena for Web3 | Ampli5",
-  description: "Ampli5's UGC Creator Arena connects web3 projects with talented content creators. Launch user-generated content campaigns, reward creators, and build authentic community engagement. Custom podcast production and reward pool management included.",
+  description:
+    "Ampli5's UGC Creator Arena connects web3 projects with talented content creators. Launch user-generated content campaigns, reward creators, and build authentic community engagement. Custom podcast production and reward pool management included.",
   keywords: [
     "UGC creator platform",
     "user-generated content web3",
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "UGC Creator Arena for Web3 | Ampli5",
-    description: "Connect web3 projects with talented content creators. Launch UGC campaigns and build authentic community engagement.",
+    description:
+      "Connect web3 projects with talented content creators. Launch UGC campaigns and build authentic community engagement.",
     url: `${process.env.NEXTAUTH_URL || "https://ampli5.ai"}/services/ugc-creator-arena`,
   },
   alternates: {

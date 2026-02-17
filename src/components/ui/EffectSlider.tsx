@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { ReactNode } from 'react';
-import Image from 'next/image';
-import Container from './container';
-import Link from 'next/link';
-import Marquee from 'react-fast-marquee';
-import { cn } from '../../lib/utils';
+import React, { ReactNode } from "react";
+import Image from "next/image";
+import Container from "./container";
+import Link from "next/link";
+import Marquee from "react-fast-marquee";
+import { cn } from "../../lib/utils";
 
 interface EffectSliderData {
   link: string;
@@ -14,12 +14,17 @@ interface EffectSliderData {
 
 interface EffectSliderProps {
   data: EffectSliderData[];
-  direction?: 'left' | 'right';
+  direction?: "left" | "right";
   type?: string;
   children?: ReactNode;
 }
 
-const EffectSlider: React.FC<EffectSliderProps> = ({ data, direction = 'left', type, children }) => {
+const EffectSlider: React.FC<EffectSliderProps> = ({
+  data,
+  direction = "left",
+  type,
+  children,
+}) => {
   return (
     <div className=" w-full pt-14 lg:pt-20 ctm_effect_slider">
       <Container>
@@ -32,8 +37,8 @@ const EffectSlider: React.FC<EffectSliderProps> = ({ data, direction = 'left', t
                 href={value.link}
                 target="_blank"
                 className={cn(
-                  'block overflow-hidden w-[320px] h-full p-9px border border-solid border-black rounded-3xl  bg-slider-bg mx-2',
-                  type === 'X' ? 'aspect-[5/4]' : 'aspect-video'
+                  "block overflow-hidden w-[320px] h-full p-9px border border-solid border-black rounded-3xl  bg-slider-bg mx-2",
+                  type === "X" ? "aspect-[5/4]" : "aspect-video"
                 )}
               >
                 <Image

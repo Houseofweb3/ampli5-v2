@@ -53,10 +53,7 @@ const Discount: React.FC<DiscountProps> = ({
         res.data.data[0].name === coupon.toUpperCase() &&
         res.data.data[0].minimumOrderValue <= cart?.cutAmount!
       ) {
-        const response = await fetchCartAfterCouponApplied(
-          true,
-          res.data.data[0].id
-        );
+        const response = await fetchCartAfterCouponApplied(true, res.data.data[0].id);
 
         if (response?.discountMessage === DISCOUNT_MESSAGE.ALREADY_APPLIED) {
           setCouponError(true);
@@ -72,9 +69,7 @@ const Discount: React.FC<DiscountProps> = ({
         res.data.data[0].name === coupon.toUpperCase() &&
         res.data.data[0].minimumOrderValue > cart?.cutAmount!
       ) {
-        setErrorMessage(
-          "Order total must be at least 2000 to use this coupon."
-        );
+        setErrorMessage("Order total must be at least 2000 to use this coupon.");
         setCouponSuccess(false);
         setCouponError(true);
       } else {
@@ -89,14 +84,10 @@ const Discount: React.FC<DiscountProps> = ({
       <div className="flex gap-2 w-full md:items-center justify-between flex-col md:flex-row">
         <div className="flex gap-2 items-center ">
           <DiscountIcon />
-          <span className="font-semibold md:text-lg">
-            Referral Discount Code
-          </span>
+          <span className="font-semibold md:text-lg">Referral Discount Code</span>
         </div>
         {couponSuccess === true && (
-          <span className="text-success text-xs md:text-sm font-semibold">
-            Coupon Applied
-          </span>
+          <span className="text-success text-xs md:text-sm font-semibold">Coupon Applied</span>
         )}
       </div>
 
@@ -137,9 +128,7 @@ const Discount: React.FC<DiscountProps> = ({
 
           {couponError && (
             <span className="font-Poppins font-semibold text-red-500 text-sm">
-              {errorMessage !== ""
-                ? errorMessage
-                : "This Coupon code is invalid"}
+              {errorMessage !== "" ? errorMessage : "This Coupon code is invalid"}
             </span>
           )}
         </div>

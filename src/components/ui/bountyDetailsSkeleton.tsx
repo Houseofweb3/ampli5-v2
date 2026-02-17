@@ -1,5 +1,5 @@
-import React from 'react';
-import Container from './container';
+import React from "react";
+import Container from "./container";
 
 export default function BountyDetailsSkeleton(): JSX.Element {
   return (
@@ -31,4 +31,4 @@ export default function BountyDetailsSkeleton(): JSX.Element {
       </div>
     </div>
   );
-} 
+}

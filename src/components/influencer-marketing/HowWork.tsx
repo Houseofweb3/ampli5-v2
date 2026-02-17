@@ -9,7 +9,7 @@ const cardData = [
     description: "Use our proprietary platform to filter creators by",
     list: ["Location", "Niche", "Credibility score", "Platform"],
     summary:
-      "Add them to cart like a real marketplace. No waiting for an agent to \"check availability.\"",
+      'Add them to cart like a real marketplace. No waiting for an agent to "check availability."',
     isHighlighted: false,
   },
 
@@ -40,10 +40,10 @@ const HowWork: React.FC = (): JSX.Element => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
-    
+
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
@@ -136,13 +136,7 @@ interface AnimatedCardProps {
   cardRef: (el: HTMLDivElement | null) => void;
 }
 
-function AnimatedCard({
-  card,
-  index,
-  highlightedIndex,
-  isMobile,
-  cardRef,
-}: AnimatedCardProps) {
+function AnimatedCard({ card, index, highlightedIndex, isMobile, cardRef }: AnimatedCardProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   // Set the ref for parent component to track
@@ -153,9 +147,7 @@ function AnimatedCard({
   }, [cardRef]);
 
   // On mobile, use viewport center-based highlighting; on desktop, use card.isHighlighted
-  const isHighlighted = isMobile
-    ? highlightedIndex === index
-    : card.isHighlighted;
+  const isHighlighted = isMobile ? highlightedIndex === index : card.isHighlighted;
 
   return (
     <motion.div
@@ -171,9 +163,7 @@ function AnimatedCard({
       <div
         className={cn(
           "text-sm font-semibold rounded-full px-3 py-0.5 w-fit",
-          isHighlighted
-            ? "text-[#7B46F8] bg-white"
-            : "text-white bg-[#7B46F8]"
+          isHighlighted ? "text-[#7B46F8] bg-white" : "text-white bg-[#7B46F8]"
         )}
       >
         Step {index + 1}
@@ -187,12 +177,7 @@ function AnimatedCard({
         {card.number}
       </div>
 
-      <div
-        className={cn(
-          "h-0.5 w-full mb-4",
-          isHighlighted ? "bg-white" : "bg-[#7B46F8]"
-        )}
-      ></div>
+      <div className={cn("h-0.5 w-full mb-4", isHighlighted ? "bg-white" : "bg-[#7B46F8]")}></div>
 
       <p
         className={cn(
@@ -203,12 +188,7 @@ function AnimatedCard({
         {card.description}
       </p>
       {card.list && (
-        <ul
-          className={cn(
-            "list-disc list-inside",
-            isHighlighted ? "text-white" : "text-black"
-          )}
-        >
+        <ul className={cn("list-disc list-inside", isHighlighted ? "text-white" : "text-black")}>
           {card.list.map((item, index) => (
             <li key={index}>{item}</li>
           ))}

@@ -72,11 +72,7 @@ const Why: React.FC = (): JSX.Element => {
 
                 <div className="w-full lg:w-1/2 order-1 lg:order-2 flex items-center">
                   <div className="flex flex-col gap-4 lg:gap-6">
-                    <h3
-                      className={cn(
-                        "h3 leading-10 font-extrabold mb-2 text-[#7B46F8]"
-                      )}
-                    >
+                    <h3 className={cn("h3 leading-10 font-extrabold mb-2 text-[#7B46F8]")}>
                       {slide.title}
                     </h3>
                     <p className="text-black text-base lg:text-lg leading-relaxed">

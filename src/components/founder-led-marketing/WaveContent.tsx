@@ -35,9 +35,9 @@ const WaveContent: React.FC = (): JSX.Element => {
           <div className=" mt-12  flex flex-col md:flex-row gap-4  justify-center items-center">
             <SecondaryButton
               onClick={() => {
-                const link = document.createElement('a');
-                link.href = '/brochure/ampli5-founder-led-marketing.png';
-                link.download = 'ampli5-founder-led-marketing.png';
+                const link = document.createElement("a");
+                link.href = "/brochure/ampli5-founder-led-marketing.png";
+                link.download = "ampli5-founder-led-marketing.png";
                 document.body.appendChild(link);
                 link.click();
                 link.remove();
@@ -50,10 +50,7 @@ const WaveContent: React.FC = (): JSX.Element => {
             </SecondaryButton>
             <SecondaryButton
               onClick={() =>
-                window.open(
-                  "https://calendly.com/partnerships-houseofweb3/30min",
-                  "_blank"
-                )
+                window.open("https://calendly.com/partnerships-houseofweb3/30min", "_blank")
               }
               disabled={false}
               className="w-fit"

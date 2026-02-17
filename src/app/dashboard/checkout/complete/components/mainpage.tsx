@@ -21,15 +21,12 @@ const CheckMainPage = () => {
 
             <div className="] flex justify-center gap-4 flex-col  text-center">
               <div className="text-[1.1rem font-[400]">
-                Your details & shortlisted KOL & PR are sent to our
-                representative.
+                Your details & shortlisted KOL & PR are sent to our representative.
               </div>
             </div>
             <div className="bg-black h-[1.5px] mt-6"></div>
             <div className="w-full justify-center items-center flex pt-6 mt-32">
-              <Button onClick={() => router.push(ALLROUTES.DASHBOARD)}>
-                Go back to Dashboard
-              </Button>
+              <Button onClick={() => router.push(ALLROUTES.DASHBOARD)}>Go back to Dashboard</Button>
             </div>
           </div>
         </div>

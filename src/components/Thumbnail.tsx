@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from "react";
 import { CaseStudyAmpli5Logo } from "../data/icon";
 
 interface ThumbnailProps {
@@ -17,11 +17,11 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   return (
     <div className="w-full h-full bg-[#A762FE]  flex flex-col justify-between p-8 rounded-lg gap-8">
       <div className="flex items-center flex-wrap justify-between ">
-        <div className='flex-1 shrink'>
+        <div className="flex-1 shrink">
           <CaseStudyAmpli5Logo />
         </div>
 
-        <div className='flex-1 shrink'>
+        <div className="flex-1 shrink">
           <svg
             width="auto"
             height="54"
@@ -34,14 +34,10 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
             <path d="M60.75 6L5.75 61" stroke="white" strokeWidth="16"></path>
           </svg>
         </div>
-        <div className='flex-1 shrink'>
-          {brandLogo}
-        </div>
+        <div className="flex-1 shrink">{brandLogo}</div>
       </div>
       <div className="">
-        <div className=" font-bold tracking-tighter text-white text-4xl">
-          {heading}
-        </div>
+        <div className=" font-bold tracking-tighter text-white text-4xl">{heading}</div>
         <div className=" mt-8 text-lg tracking-tight text-white ">{date}</div>
       </div>
     </div>

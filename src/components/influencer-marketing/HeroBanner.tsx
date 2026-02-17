@@ -48,16 +48,11 @@ export default function HeroBanner() {
           <h1 className="text-center mb-4 max-w-4xl mx-auto  uppercase">
             Agencies take days to respond.
             <br />
-            <span className="text-[#7B46F8]">
-              Ampli5 gives you a campaign in 5 minutes.
-            </span>
+            <span className="text-[#7B46F8]">Ampli5 gives you a campaign in 5 minutes.</span>
           </h1>
         </div>
         <div className="pb-26px lg:pb-48px">
-          <PrimaryButton
-            className="text-white mx-auto"
-            onClick={() => router.push("/dashboard")}
-          >
+          <PrimaryButton className="text-white mx-auto" onClick={() => router.push("/dashboard")}>
             Launch your Influencer Campaign{" "}
           </PrimaryButton>
         </div>
@@ -68,9 +63,7 @@ export default function HeroBanner() {
             </h3>
           </div>
           <div className="hero_description pb-16px lg:pb-28px text-center max-w-4xl mx-auto">
-            <h3 className="!text-dark-purple1-bg">
-              72X faster. 1.5X Cheaper, 10X Effective
-            </h3>
+            <h3 className="!text-dark-purple1-bg">72X faster. 1.5X Cheaper, 10X Effective</h3>
           </div>
         </div>
       </div>

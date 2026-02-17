@@ -18,10 +18,7 @@ interface EffectSliderProps {
   children?: ReactNode;
 }
 
-const Effect: React.FC<EffectSliderProps> = ({
-  data,
-  children,
-}) => {
+const Effect: React.FC<EffectSliderProps> = ({ data, children }) => {
   return (
     <div className=" w-full pt-48px lg:pt-70px py-48px ctm_effect_slider">
       <Container>

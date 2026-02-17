@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useEffect } from 'react';
+import { useLayoutEffect, useRef, useEffect } from "react";
 
 type ClickAwayCallback = () => void;
 
@@ -18,14 +18,14 @@ export function useClickAway(cb: ClickAwayCallback) {
       }
     };
 
-    document.addEventListener('mousedown', handler);
-    document.addEventListener('touchstart', handler);
+    document.addEventListener("mousedown", handler);
+    document.addEventListener("touchstart", handler);
 
     return () => {
-      document.removeEventListener('mousedown', handler);
-      document.removeEventListener('touchstart', handler);
+      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("touchstart", handler);
     };
   }, []);
 
   return ref;
-} 
+}

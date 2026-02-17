@@ -24,8 +24,7 @@ export const NEW_CASE_STUDY_DATA = [
     mdata: "engagement",
     engagements: "10,000+",
     edata: "unique wallet participation",
-    s3_url:
-      "/case_studies/Ampli5+x+Sonic.pdf",
+    s3_url: "/case_studies/Ampli5+x+Sonic.pdf",
   },
   {
     brandLogo: <StoopidCatsIcon />,
@@ -36,8 +35,7 @@ export const NEW_CASE_STUDY_DATA = [
     mdata: "impressions",
     engagements: "1,000+",
     edata: "SOL raised",
-    s3_url:
-      "/case_studies/Ampli5+x+Stoopid+Cats.pdf",
+    s3_url: "/case_studies/Ampli5+x+Stoopid+Cats.pdf",
   },
 ];
 
@@ -112,12 +110,8 @@ function BrandSlider() {
                     <div className="grid grid-cols-2 md:grid-cols-4 items-center gap-y-6">
                       <div className="flex items-center justify-center flex-col sm:flex-row gap-4 border-r border-white px-2 sm:px-4 py-4">
                         <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center ">
-                          <h2 className="font-medium leading-tight text-white">
-                            {brand.roi}{" "}
-                          </h2>
-                          <p className="!text-16 !font-light !text-white">
-                            {brand.rdata}
-                          </p>
+                          <h2 className="font-medium leading-tight text-white">{brand.roi} </h2>
+                          <p className="!text-16 !font-light !text-white">{brand.rdata}</p>
                         </div>
                       </div>
                       <div className="flex items-center justify-center flex-col sm:flex-row  text-center gap-4 md:border-r border-white px-2 sm:px-4 py-4">
@@ -125,9 +119,7 @@ function BrandSlider() {
                           <h2 className="font-medium leading-tight text-white">
                             {brand.mindshare}
                           </h2>
-                          <p className="!text-16 !font-light !text-white">
-                            {brand.mdata}
-                          </p>
+                          <p className="!text-16 !font-light !text-white">{brand.mdata}</p>
                         </div>
                       </div>
                       <div className="flex items-center justify-center flex-col sm:flex-row gap-4 text-center border-r border-white px-2 sm:px-4 py-4">
@@ -135,9 +127,7 @@ function BrandSlider() {
                           <h2 className="font-medium leading-tight text-white">
                             {brand.engagements}
                           </h2>
-                          <p className="!text-16 !font-light !text-white">
-                            {brand.edata}
-                          </p>
+                          <p className="!text-16 !font-light !text-white">{brand.edata}</p>
                         </div>
                       </div>
                       <div className="px-2 sm:px-4 py-4 w-full flex justify-center items-center">

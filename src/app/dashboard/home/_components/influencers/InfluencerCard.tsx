@@ -13,10 +13,7 @@ interface InfluencerCardProps {
   onToggleDetails: (id: string) => void;
 }
 
-const InfluencerCard: React.FC<InfluencerCardProps> = ({
-  influencer,
-  onToggleDetails,
-}) => {
+const InfluencerCard: React.FC<InfluencerCardProps> = ({ influencer, onToggleDetails }) => {
   return (
     <div className="bg-white border-t border-black/10 font-Jakarta py-4">
       <div className="w-full flex flex-col gap-5">
@@ -59,9 +56,7 @@ const InfluencerCard: React.FC<InfluencerCardProps> = ({
         <div className="flex justify-between gap-4 items-start">
           <div className="space-y-1">
             <p className="text-xs text-gray-500">Niche</p>
-            <p className="font-medium text-xs">
-              {influencer.niche.split(",")[0]}
-            </p>
+            <p className="font-medium text-xs">{influencer.niche.split(",")[0]}</p>
           </div>
           <div className="space-y-1">
             <p className="text-xs text-gray-500">Credibility Score</p>

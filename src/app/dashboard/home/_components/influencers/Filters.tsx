@@ -2,11 +2,9 @@
 /* eslint-disable indent */
 import React, { useEffect, useState } from "react";
 
-
-
 import MultiSelect from "@/src/components/ui/multi-select";
 import useHow3client from "@/src/hooks/usehow3client";
-import { FilterCross,  Search } from "@/public/icons";
+import { FilterCross, Search } from "@/public/icons";
 import AiButton from "./AIButton";
 import { ENDPOINTS } from "@/src/utils/constants";
 import { FiltersData, PlatformData } from "../../../_components/FilterSection";
@@ -48,19 +46,16 @@ const Filters: React.FC<FilterProp> = ({
   setContentTypes,
 }) => {
   const [filters, setFilters] = useState<FiltersData | null>(null);
-    const [availableContentTypes, setAvailableContentTypes] = useState<
-      string[]
-    >([]);
+  const [availableContentTypes, setAvailableContentTypes] = useState<string[]>([]);
   const how3 = useHow3client();
 
   useEffect(() => {
     const fetchFilters = async () => {
       try {
         const response = await how3.get(ENDPOINTS.FETCH_OPTIONS);
-        const filteredPlatforms =
-          response.data.platformsWithContentTypes.filter(
-            (p: PlatformData) => p.platform !== "YT Short"
-          );
+        const filteredPlatforms = response.data.platformsWithContentTypes.filter(
+          (p: PlatformData) => p.platform !== "YT Short"
+        );
         setFilters({
           ...response.data,
           platformsWithContentTypes: filteredPlatforms,
@@ -75,19 +70,15 @@ const Filters: React.FC<FilterProp> = ({
 
   useEffect(() => {
     if (filters?.platformsWithContentTypes) {
-      const selectedPlatformData = filters.platformsWithContentTypes.filter(
-        (p) => platforms.includes(p.platform)
+      const selectedPlatformData = filters.platformsWithContentTypes.filter((p) =>
+        platforms.includes(p.platform)
       );
 
-      const allContentTypes: string[] = selectedPlatformData.flatMap(
-        (p) => p.contentTypes
-      );
+      const allContentTypes: string[] = selectedPlatformData.flatMap((p) => p.contentTypes);
 
       setAvailableContentTypes(Array.from(new Set(allContentTypes)));
 
-      setContentTypes((prev) =>
-        prev.filter((type) => allContentTypes.includes(type))
-      );
+      setContentTypes((prev) => prev.filter((type) => allContentTypes.includes(type)));
     }
   }, [platforms, filters?.platformsWithContentTypes]);
 
@@ -145,7 +136,7 @@ const Filters: React.FC<FilterProp> = ({
 
   // Get total number of active filters
   const activeFilterCount =
-    platforms.length + niche.length + credibility.length | contentTypes?.length;
+    (platforms.length + niche.length + credibility.length) | contentTypes?.length;
 
   return (
     <div className="space-y-4 w-full pb-8">
@@ -172,9 +163,7 @@ const Filters: React.FC<FilterProp> = ({
       <div className="grid grid-cols-1 grid-flow-row-dense items-center md:grid-cols-4 gap-4">
         <div className="">
           <MultiSelect
-            options={
-              filters?.platformsWithContentTypes?.map((p) => p.platform) || []
-            }
+            options={filters?.platformsWithContentTypes?.map((p) => p.platform) || []}
             setSelectedOptions={setPlatforms}
             selectedOptions={platforms}
             placeholder="Platforms"
@@ -234,7 +223,7 @@ const Filters: React.FC<FilterProp> = ({
                       onClick={() => removeFilter("Platform", platform)}
                       className="text-gray-400 hover:text-gray-600"
                     >
-                     <FilterCross/>
+                      <FilterCross />
                     </button>
                   </div>
                 ))}
@@ -249,7 +238,7 @@ const Filters: React.FC<FilterProp> = ({
                       onClick={() => removeFilter("contentType", contentType)}
                       className="text-gray-400 hover:text-gray-600"
                     >
-                     <FilterCross/>
+                      <FilterCross />
                     </button>
                   </div>
                 ))}
@@ -264,7 +253,7 @@ const Filters: React.FC<FilterProp> = ({
                       onClick={() => removeFilter("Niche", n)}
                       className="text-gray-400 hover:text-gray-600"
                     >
-                     <FilterCross/>
+                      <FilterCross />
                     </button>
                   </div>
                 ))}
@@ -279,7 +268,7 @@ const Filters: React.FC<FilterProp> = ({
                       onClick={() => removeFilter("Credibility", score)}
                       className="text-gray-400 hover:text-gray-600"
                     >
-                     <FilterCross/>
+                      <FilterCross />
                     </button>
                   </div>
                 ))}

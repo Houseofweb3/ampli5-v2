@@ -16,11 +16,7 @@ const LogpackageContext = createContext<packageContextType>({
 
 export const useLogpackage = () => useContext(LogpackageContext);
 
-export const LogpackageProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const LogpackageProvider = ({ children }: { children: React.ReactNode }) => {
   const [Logpackage, Makepackage] = useState<any>([]);
 
   useEffect(() => {
@@ -44,9 +40,7 @@ export const LogpackageProvider = ({
       let storedCartData = localStorage.getItem("cartData");
       if (storedCartData) {
         let parsedCartData = JSON.parse(storedCartData);
-        parsedCartData.packages = parsedCartData.packages.filter(
-          (item: any) => item.id !== Id
-        );
+        parsedCartData.packages = parsedCartData.packages.filter((item: any) => item.id !== Id);
         localStorage.setItem("cartData", JSON.stringify(parsedCartData));
       }
       Makepackage(() => {

@@ -50,7 +50,7 @@ const getBadgeIconMobile = (rate: string) => {
     case "Low":
       return <LowArrowMobile />;
     case "High":
-      return <HighArrowMobile/>;
+      return <HighArrowMobile />;
 
     default:
       return <LowArrowMobile />;

@@ -1,6 +1,6 @@
-import React from 'react'
-import { TopAttention } from '../../data/data';
-import CardImage from '../ui/CardImage';
+import React from "react";
+import { TopAttention } from "../../data/data";
+import CardImage from "../ui/CardImage";
 
 export default function TopPerforming() {
   return (

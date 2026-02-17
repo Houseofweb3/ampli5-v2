@@ -38,9 +38,7 @@ const CartTable = () => {
       };
 
       if (influencers?.length === 0 && packages?.length === 0) {
-        toast.error(
-          "Please add influencers or packages to cart to proceed to checkout"
-        );
+        toast.error("Please add influencers or packages to cart to proceed to checkout");
         return;
       }
 
@@ -54,9 +52,7 @@ const CartTable = () => {
       };
 
       if (Main.influencers.length === 0 && Main.packages.length === 0) {
-        toast.error(
-          "Please add influencers or packages to cart to proceed to checkout"
-        );
+        toast.error("Please add influencers or packages to cart to proceed to checkout");
         return;
       }
 
@@ -69,9 +65,7 @@ const CartTable = () => {
   return (
     <div className="w-full h-full overflow-x-hidden">
       <div className="rounded-xl bg-black w-full p-4">
-        <span className="text-white font-semibold tracking-wider">
-          Influencers
-        </span>
+        <span className="text-white font-semibold tracking-wider">Influencers</span>
       </div>
 
       <div className="w-full">
@@ -88,9 +82,7 @@ const CartTable = () => {
       </div>
 
       <div className="rounded-xl bg-black w-full p-4 mt-8">
-        <span className="text-white font-semibold tracking-wider">
-          PR Packages
-        </span>
+        <span className="text-white font-semibold tracking-wider">PR Packages</span>
       </div>
 
       <PackagesTable
@@ -107,15 +99,9 @@ const CartTable = () => {
       <div className="w-full flex md:flex-row flex-col justify-between mt-6 gap-6">
         <div className=" flex gap-2 items-center">
           <h1 className="font-semibold md:text-lg ">Subtotal : </h1>
-          <span className="font-bold text-primary md:text-xl">
-            $ {cart?.subtotal}
-          </span>
+          <span className="font-bold text-primary md:text-xl">$ {cart?.subtotal}</span>
         </div>
-        <Button
-          onClick={handleCheckout}
-          size={BUTTON_SIZES.LARGE}
-          type={BUTTON_TYPES.PRIMARY}
-        >
+        <Button onClick={handleCheckout} size={BUTTON_SIZES.LARGE} type={BUTTON_TYPES.PRIMARY}>
           Reserve your KOLs
         </Button>
       </div>

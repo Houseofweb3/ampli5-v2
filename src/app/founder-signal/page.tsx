@@ -1,9 +1,9 @@
-import React from 'react';
-import Image from 'next/image';
-import Card from '../../components/ui/card';
-import Container from '../../components/ui/container';
-import NftNewsSlider from '../../components/ui/NftNewsSlider';
-import AppointmentCalendar from '../../components/AppointmentCalendar';
+import React from "react";
+import Image from "next/image";
+import Card from "../../components/ui/card";
+import Container from "../../components/ui/container";
+import NftNewsSlider from "../../components/ui/NftNewsSlider";
+import AppointmentCalendar from "../../components/AppointmentCalendar";
 
 export default function Page() {
   return (
@@ -12,7 +12,7 @@ export default function Page() {
         <div className=" absolute top-9 lg:top-20 lg:-left-7">
           <Image
             className="w-90px h-90px lg:w-166px lg:h-166px"
-            src={'/pattern/Vector3_mobile.png'}
+            src={"/pattern/Vector3_mobile.png"}
             width={166}
             height={166}
             alt="icon"
@@ -21,7 +21,7 @@ export default function Page() {
         <div className=" absolute top-4 lg:top-20 -right-5 lg:-right-9">
           <Image
             className="w-90px h-90px lg:w-170px lg:h-170px object-contain"
-            src={'/pattern/Vector4.png'}
+            src={"/pattern/Vector4.png"}
             width={170}
             height={170}
             alt="icon"
@@ -30,7 +30,7 @@ export default function Page() {
         <div className="hidden lg:block absolute top-473px -right-9 ">
           <Image
             className="w-103px h-103px object-contain"
-            src={'/pattern/Vector2.png'}
+            src={"/pattern/Vector2.png"}
             width={103}
             height={103}
             alt="icon"
@@ -39,7 +39,7 @@ export default function Page() {
         <Container>
           <div className=" lg:mt-22 mt-9 mb-16 lg:mb-32">
             <div className=" bg-blue-btn sm:bg-transparent font-semibold text-white sm:text-black mx-auto w-fit rounded-full mb-4 py-3 px-5 border border-solid border-blue-btn lg:border-black text-14 lg:text-20 border-none shadow-none">
-              Founder-led Marketing{' '}
+              Founder-led Marketing{" "}
             </div>
 
             <h1 className="w-full text-center text-36 lg:text-72 leading-40 lg:leading-tight font-semibold ">
@@ -62,13 +62,13 @@ export default function Page() {
                   </h2>
                   <ul className="mt-32px flex flex-col gap-6">
                     <li className="flex items-start lg:items-center gap-3">
-                      <Image src={'/icons/checkmark-badge.png'} width={24} height={24} alt="icon" />
+                      <Image src={"/icons/checkmark-badge.png"} width={24} height={24} alt="icon" />
                       <span className="text-18 lg:text-22 leading-28px lg:leading-normal">
                         Tokens don't build trust—stories do.
                       </span>
                     </li>
                     <li className="flex items-start lg:items-center gap-3">
-                      <Image src={'/icons/checkmark-badge.png'} width={24} height={24} alt="icon" />
+                      <Image src={"/icons/checkmark-badge.png"} width={24} height={24} alt="icon" />
                       <span className="text-18 lg:text-22 leading-28px lg:leading-normal">
                         People buy people, not pitch decks.
                       </span>
@@ -76,7 +76,7 @@ export default function Page() {
                   </ul>
                 </div>
                 <div className="w-full lg:w-1/2">
-                  <Image src={'/images/OBJECTS.png'} width={569} height={473} alt="icon" />
+                  <Image src={"/images/OBJECTS.png"} width={569} height={473} alt="icon" />
                 </div>
               </div>
             </Card>
@@ -86,13 +86,13 @@ export default function Page() {
               </h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <Card className="w-full">
-                  <Image src={'/icons/podcast.png'} width={36} height={36} alt="icon" />
+                  <Image src={"/icons/podcast.png"} width={36} height={36} alt="icon" />
                   <div className="text-18 lg:text-20 leading-32px pt-2">
                     <p>10 podcast appearances where builders, VCs & real users hang out.</p>
                   </div>
                 </Card>
                 <Card className="w-full">
-                  <Image src={'/icons/video-camera-ai.png'} width={36} height={36} alt="icon" />
+                  <Image src={"/icons/video-camera-ai.png"} width={36} height={36} alt="icon" />
                   <div className="text-18 lg:text-20 leading-32px pt-2 max-w-473px">
                     <p>Clips, quotables, & reels your BD team will thank you for.</p>
                   </div>

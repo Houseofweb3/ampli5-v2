@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import React from 'react';
+import Image from "next/image";
+import React from "react";
 
 export default function LatestPerform() {
   return (
@@ -12,7 +12,7 @@ export default function LatestPerform() {
           <div className="p-9px border border-solid border-black rounded-3xl shadow-xl w-full sm:w-fit break-inside-avoid-column masenory_grid_item">
             <Image
               className="rounded-18"
-              src={'/images/content/image.png'}
+              src={"/images/content/image.png"}
               width={367}
               height={215}
               alt="image"
@@ -21,7 +21,7 @@ export default function LatestPerform() {
           <div className="p-9px border border-solid border-black rounded-3xl shadow-xl w-full sm:w-fit break-inside-avoid-column masenory_grid_item">
             <Image
               className="rounded-18"
-              src={'/images/content/image1.png'}
+              src={"/images/content/image1.png"}
               width={367}
               height={215}
               alt="image1"
@@ -30,7 +30,7 @@ export default function LatestPerform() {
           <div className="p-9px border border-solid border-black rounded-3xl shadow-xl w-full sm:w-fit break-inside-avoid-column masenory_grid_item">
             <Image
               className="rounded-18"
-              src={'/images/content/image2.png'}
+              src={"/images/content/image2.png"}
               width={367}
               height={215}
               alt="image1"
@@ -39,7 +39,7 @@ export default function LatestPerform() {
           <div className="p-9px border border-solid border-black rounded-3xl shadow-xl w-full sm:w-fit break-inside-avoid-column masenory_grid_item">
             <Image
               className="rounded-18"
-              src={'/images/content/image3.png'}
+              src={"/images/content/image3.png"}
               width={367}
               height={484}
               alt="image1"
@@ -48,7 +48,7 @@ export default function LatestPerform() {
           <div className="p-9px border border-solid border-black rounded-3xl shadow-xl w-full sm:w-fit break-inside-avoid-column masenory_grid_item">
             <Image
               className="rounded-18"
-              src={'/images/content/image4.png'}
+              src={"/images/content/image4.png"}
               width={367}
               height={644}
               alt="image1"
@@ -57,7 +57,7 @@ export default function LatestPerform() {
           <div className="p-9px border border-solid border-black rounded-3xl shadow-xl w-full sm:w-fit break-inside-avoid-column masenory_grid_item">
             <Image
               className="rounded-18"
-              src={'/images/content/image5.png'}
+              src={"/images/content/image5.png"}
               width={367}
               height={686}
               alt="image1"
@@ -66,7 +66,7 @@ export default function LatestPerform() {
           <div className="p-9px border border-solid border-black rounded-3xl shadow-xl w-full sm:w-fit break-inside-avoid-column masenory_grid_item">
             <Image
               className="rounded-18"
-              src={'/images/content/image6.png'}
+              src={"/images/content/image6.png"}
               width={367}
               height={758}
               alt="image1"
@@ -75,7 +75,7 @@ export default function LatestPerform() {
           <div className="p-9px border border-solid border-black rounded-3xl shadow-xl w-full sm:w-fit break-inside-avoid-column masenory_grid_item">
             <Image
               className="rounded-18"
-              src={'/images/content/image7.png'}
+              src={"/images/content/image7.png"}
               width={367}
               height={549}
               alt="image1"
@@ -84,7 +84,7 @@ export default function LatestPerform() {
           <div className="p-9px border border-solid border-black rounded-3xl shadow-xl w-full sm:w-fit break-inside-avoid-column masenory_grid_item">
             <Image
               className="rounded-18"
-              src={'/images/content/image8.png'}
+              src={"/images/content/image8.png"}
               width={367}
               height={631}
               alt="image1"

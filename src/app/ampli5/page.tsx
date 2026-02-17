@@ -4,7 +4,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Ampli5 - AI-Powered Web3 Marketing Platform",
-  description: "Discover Ampli5 (Ampli5) - the comprehensive AI-powered platform for web3 influencer marketing, PR solutions, founder-led marketing, AEO/LLM optimization, AI ad generation, and UGC creator campaigns. Transform your web3 brand with cutting-edge marketing technology.",
+  description:
+    "Discover Ampli5 (Ampli5) - the comprehensive AI-powered platform for web3 influencer marketing, PR solutions, founder-led marketing, AEO/LLM optimization, AI ad generation, and UGC creator campaigns. Transform your web3 brand with cutting-edge marketing technology.",
   keywords: [
     "Ampli5",
     "Ampli5",
@@ -16,7 +17,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Ampli5 - AI-Powered Web3 Marketing Platform",
-    description: "The comprehensive AI-powered platform for web3 influencer marketing, PR solutions, and brand amplification.",
+    description:
+      "The comprehensive AI-powered platform for web3 influencer marketing, PR solutions, and brand amplification.",
     url: `${process.env.NEXTAUTH_URL || "https://ampli5.ai"}/ampli5`,
   },
   alternates: {

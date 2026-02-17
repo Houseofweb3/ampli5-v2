@@ -19,9 +19,8 @@ export default function NewVisibility() {
           The New Visibility Layer
         </h3>
         <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-2xl mx-auto">
-          People have stopped typing long searches. They ask one question and
-          trust one answer. That answer is written by a model that has already
-          made up its mind about which brands matter.
+          People have stopped typing long searches. They ask one question and trust one answer. That
+          answer is written by a model that has already made up its mind about which brands matter.
         </p>
 
         <p className="sm:!text-18 !text-16 !font-normal !text-[#FE8616] ">

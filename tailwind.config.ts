@@ -21,10 +21,8 @@ module.exports = {
         bricolage: ["'Bricolage Grotesque'", "sans-serif"],
       },
       backgroundImage: {
-        card_corner_shade_left:
-          "linear-gradient(133deg, #A762FE -146.91%, #FAFAFA 41.68%)",
-        card_corner_shade_right:
-          "linear-gradient(226deg, #A762FE -114.83%, #FAFAFA 34.45%)",
+        card_corner_shade_left: "linear-gradient(133deg, #A762FE -146.91%, #FAFAFA 41.68%)",
+        card_corner_shade_right: "linear-gradient(226deg, #A762FE -114.83%, #FAFAFA 34.45%)",
         banner_gradient: "linear-gradient(264deg, #000 0.16%, #5B00CD 99.56%)",
         primary_gradient: "linear-gradient(90deg, #A762FE 0%, #1158D3 100%);",
         ai_button_gradient: "linear-gradient(90deg, #A762FE 0%, #1158D3 100%)",
@@ -299,12 +297,10 @@ module.exports = {
         },
         blink: {
           "0%, 100%": {
-            boxShadow:
-              '0 0 10px theme("colors.primary"), 0 0 10px theme("colors.primary")',
+            boxShadow: '0 0 10px theme("colors.primary"), 0 0 10px theme("colors.primary")',
           },
           "50%": {
-            boxShadow:
-              '0 0 15px theme("colors.primary"), 0 0 15px theme("colors.primary")',
+            boxShadow: '0 0 15px theme("colors.primary"), 0 0 15px theme("colors.primary")',
           },
         },
       },

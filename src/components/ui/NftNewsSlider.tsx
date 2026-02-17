@@ -1,8 +1,8 @@
-'use client';
-import Image from 'next/image';
-import Link from 'next/link';
-import { nftNewsData } from '../../data/data';
-import Marquee from 'react-fast-marquee';
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { nftNewsData } from "../../data/data";
+import Marquee from "react-fast-marquee";
 
 interface NewsItem {
   image: string;
@@ -15,7 +15,7 @@ interface NewsItem {
 export default function NftNewsSlider(): JSX.Element {
   return (
     <div className="mt-6 lg:mt-48px">
-      <Marquee direction='right'>
+      <Marquee direction="right">
         {nftNewsData.map((value: NewsItem, key: number) => {
           return (
             <div key={key} className="rounded-2xl overflow-hidden relative w-[250px] h-full mx-2">
@@ -41,4 +41,4 @@ export default function NftNewsSlider(): JSX.Element {
       </Marquee>
     </div>
   );
-} 
+}

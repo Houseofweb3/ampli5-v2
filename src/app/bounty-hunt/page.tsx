@@ -1,5 +1,5 @@
-import BountiesList from '../../components/BountiesList';
-import React from 'react';
+import BountiesList from "../../components/BountiesList";
+import React from "react";
 
 export default function Page(): JSX.Element {
   return (

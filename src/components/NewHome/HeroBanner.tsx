@@ -54,18 +54,13 @@ export default function HeroBanner() {
           </h1>
         </div>
         <div className="pb-26px lg:pb-48px">
-          <PrimaryButton
-            className="text-white mx-auto"
-            onClick={() => router.push("/dashboard")}
-          >
+          <PrimaryButton className="text-white mx-auto" onClick={() => router.push("/dashboard")}>
             How Ampli5 works
           </PrimaryButton>
         </div>
         <div>
           <div className="hero_description  text-center">
-            <h3 className="!text-dark-purple1-bg">
-               10M+ impressions · 1M+ views · 1% CTR
-            </h3>
+            <h3 className="!text-dark-purple1-bg"> 10M+ impressions · 1M+ views · 1% CTR</h3>
           </div>
         </div>
       </div>

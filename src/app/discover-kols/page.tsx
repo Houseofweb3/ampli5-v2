@@ -1,8 +1,8 @@
-import AppointmentCalendar from '../../components/AppointmentCalendar';
-import Container from '../../components/ui/container';
-import { DEMO_POINTS } from '../../data/data';
-import { CheckIcon } from '../../data/icon';
-import React from 'react';
+import AppointmentCalendar from "../../components/AppointmentCalendar";
+import Container from "../../components/ui/container";
+import { DEMO_POINTS } from "../../data/data";
+import { CheckIcon } from "../../data/icon";
+import React from "react";
 
 export default function Page() {
   return (

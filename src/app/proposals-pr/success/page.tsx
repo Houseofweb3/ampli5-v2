@@ -29,15 +29,11 @@ export default function PRProposalSuccessPage() {
           </div>
 
           {/* Success Message */}
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Thank You!
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 mb-2">
-            Your submission was successful
-          </p>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Thank You!</h1>
+          <p className="text-lg md:text-xl text-gray-600 mb-2">Your submission was successful</p>
           <p className="text-base text-gray-500 mb-8">
-            We have received your proposal and will review it shortly. You will
-            be notified once the review is complete.
+            We have received your proposal and will review it shortly. You will be notified once the
+            review is complete.
           </p>
 
           {/* Action Buttons */}

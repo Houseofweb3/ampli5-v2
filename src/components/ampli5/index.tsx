@@ -16,7 +16,6 @@ import CaseStudies from "@/src/components/ampli5/CaseStudies";
 
 import { TopAttention, XSliderData, YoutubeSliderData } from "@/src/data/data";
 
-
 export default function Ampli5() {
   const router = useRouter();
 
@@ -59,10 +58,7 @@ export default function Ampli5() {
               <p>Turn your post into profits</p>
             </div>
             <div className="flex items-center justify-center">
-              <PrimaryButton
-                onClick={() => router.push("/bounty-hunt")}
-                className="text-white"
-              >
+              <PrimaryButton onClick={() => router.push("/bounty-hunt")} className="text-white">
                 Explore
               </PrimaryButton>
             </div>
@@ -107,12 +103,7 @@ export default function Ampli5() {
         </div>
         <EffectSlider data={YoutubeSliderData} type="youtube" direction="right">
           <div className="mb-9  w-fit mx-auto">
-            <Image
-              src={"/icons/youtube.png"}
-              width={144}
-              height={32}
-              alt="img"
-            />
+            <Image src={"/icons/youtube.png"} width={144} height={32} alt="img" />
           </div>
         </EffectSlider>
         <EffectSlider data={XSliderData} type="X" direction="right">

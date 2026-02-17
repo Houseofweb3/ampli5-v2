@@ -1,10 +1,6 @@
 /* eslint-disable indent */
 import React from "react";
-import {
-  PiInfo,
-  PiSortAscendingBold,
-  PiSortDescendingBold,
-} from "react-icons/pi";
+import { PiInfo, PiSortAscendingBold, PiSortDescendingBold } from "react-icons/pi";
 import { MdFormatLineSpacing } from "react-icons/md";
 
 import {
@@ -21,11 +17,7 @@ interface HeadingWithTooltipProps {
   order: string;
 }
 
-const HeadingWithTooltip: React.FC<HeadingWithTooltipProps> = ({
-  heading,
-  order,
-  setOrder,
-}) => {
+const HeadingWithTooltip: React.FC<HeadingWithTooltipProps> = ({ heading, order, setOrder }) => {
   const tooltipContent = getTooltipContent(heading);
 
   return (
@@ -46,9 +38,7 @@ const HeadingWithTooltip: React.FC<HeadingWithTooltipProps> = ({
       {heading === "Price" && (
         <span
           className="font-lg cursor-pointer"
-          onClick={() =>
-            setOrder(order === "" ? "DESC" : order === "DESC" ? "ASC" : "")
-          }
+          onClick={() => setOrder(order === "" ? "DESC" : order === "DESC" ? "ASC" : "")}
         >
           {order === "ASC" ? (
             <PiSortAscendingBold />
@@ -68,8 +58,7 @@ const getTooltipContent = (heading: string) => {
     case "ER":
       return (
         <p>
-          An approximation of how many followers <br /> engage on the KOL's
-          posts.
+          An approximation of how many followers <br /> engage on the KOL's posts.
         </p>
       );
     case "Price":

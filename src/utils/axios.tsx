@@ -10,10 +10,7 @@ let failedQueue: Array<{
   reject: (error: any) => void;
 }> = [];
 
-const processQueue = (
-  error: AxiosError | null,
-  token: string | null = null
-) => {
+const processQueue = (error: AxiosError | null, token: string | null = null) => {
   failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error);
@@ -85,9 +82,7 @@ how3.interceptors.response.use(
           const newAccessToken = data?.newAccessToken;
 
           // Update the headers with the new access token
-          axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${newAccessToken}`;
+          axios.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
           setAuthToken(newAccessToken);
           if (originalRequest.headers) {
             originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;

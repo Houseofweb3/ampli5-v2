@@ -84,20 +84,15 @@ export const {
         }
 
         try {
-          const userData = await createUser(
-            email,
-            email,
-            name || "User",
-            "user"
-          );
-          
+          const userData = await createUser(email, email, name || "User", "user");
+
           console.log(userData, "user in database Google");
 
           setUserCookies(userData);
           return true;
         } catch (err) {
           console.log(err, "Error creating user in database Google");
-          
+
           return false;
         }
       }
@@ -114,14 +109,11 @@ export const {
           id,
         } = profile.data as TwitterProfileData;
         try {
-          const res = await axios.get(
-            `https://api.kaito.ai/api/v1/yaps?username=${username}`
-          );
+          const res = await axios.get(`https://api.kaito.ai/api/v1/yaps?username=${username}`);
           const data = res.data;
 
           if (data.message || data.yaps_all < 10) {
-            token.yaps_error =
-              "Access denied — you need a minimum Yap score of 10 to continue.";
+            token.yaps_error = "Access denied — you need a minimum Yap score of 10 to continue.";
           }
           token.yaps_score = Number(data.yaps_all || 0).toFixed(0);
           token.user_id = id;
@@ -129,8 +121,7 @@ export const {
           token.name = name;
           token.profile_picture = profilePicture;
         } catch (err) {
-          token.yaps_error =
-            "Access denied — you need a minimum Yap score of 10 to continue.";
+          token.yaps_error = "Access denied — you need a minimum Yap score of 10 to continue.";
           token.user_id = id;
           token.user_name = username;
           token.name = name;

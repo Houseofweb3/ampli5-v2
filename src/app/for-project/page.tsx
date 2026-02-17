@@ -1,10 +1,10 @@
-import Container from '../../components/ui/container';
-import GoBackButton from '../../components/ui/goBackBtn';
-import Title from '../../components/ui/title';
-import { forProjectLinks } from '../../data/data';
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
+import Container from "../../components/ui/container";
+import GoBackButton from "../../components/ui/goBackBtn";
+import Title from "../../components/ui/title";
+import { forProjectLinks } from "../../data/data";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 
 export default function Page(): JSX.Element {
   return (

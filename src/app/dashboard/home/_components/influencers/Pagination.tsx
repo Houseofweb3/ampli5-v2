@@ -90,9 +90,7 @@ const Pagination: React.FC<PaginationProps> = ({
               key={index}
               onClick={() => handlePageClick(page)}
               className={`w-8 h-8 p-2 rounded-full text-sm flex items-center justify-center ${
-                currentPage === page
-                  ? "text-white bg-primary"
-                  : " hover:bg-gray-100 text-gray-400"
+                currentPage === page ? "text-white bg-primary" : " hover:bg-gray-100 text-gray-400"
               } ${page === "..." ? "cursor-default" : ""}`}
               disabled={page === "..."}
             >

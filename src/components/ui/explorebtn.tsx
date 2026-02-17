@@ -22,4 +22,4 @@ export default function ExploreBtn({ disabled, className, onClick, children }: E
       {children}
     </button>
   );
-} 
+}

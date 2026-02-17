@@ -1,20 +1,20 @@
-import { cn } from '../../lib/utils';
-import React from 'react';
+import { cn } from "../../lib/utils";
+import React from "react";
 
 interface PrimaryButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
   className?: string;
-  type?: 'button' | 'submit' | 'reset';
+  type?: "button" | "submit" | "reset";
   onClick?: () => void;
   children: React.ReactNode;
 }
 
-export default function PrimaryButton({ 
-  disabled = false, 
-  className, 
-  type = 'button', 
-  onClick, 
-  children 
+export default function PrimaryButton({
+  disabled = false,
+  className,
+  type = "button",
+  onClick,
+  children,
 }: PrimaryButtonProps) {
   return (
     <button
@@ -29,4 +29,4 @@ export default function PrimaryButton({
       {children}
     </button>
   );
-} 
+}

@@ -1,23 +1,23 @@
-'use client';
-import BountyPool from '../components/BountyPool';
-import BountyDetailsSkeleton from '../components/ui/bountyDetailsSkeleton';
-import Card from '../components/ui/card';
-import Container from '../components/ui/container';
-import ExploreBtn from '../components/ui/explorebtn';
-import PrimaryButton from '../components/ui/PrimaryButton';
-import { BountiesType } from '../data/data';
-import axiosInstance from '../lib/axiosInstance';
-import { deadlineCounter } from '../lib/deadlineCounter';
-import { cn } from '../lib/utils';
-import { useAuthStore } from '../store/auth';
-import moment from 'moment';
-import { signIn } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import Winner from './WinnerList';
+"use client";
+import BountyPool from "../components/BountyPool";
+import BountyDetailsSkeleton from "../components/ui/bountyDetailsSkeleton";
+import Card from "../components/ui/card";
+import Container from "../components/ui/container";
+import ExploreBtn from "../components/ui/explorebtn";
+import PrimaryButton from "../components/ui/PrimaryButton";
+import { BountiesType } from "../data/data";
+import axiosInstance from "../lib/axiosInstance";
+import { deadlineCounter } from "../lib/deadlineCounter";
+import { cn } from "../lib/utils";
+import { useAuthStore } from "../store/auth";
+import moment from "moment";
+import { signIn } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import Winner from "./WinnerList";
 
 interface BountyMetadata {
   coverImage: string;
@@ -60,7 +60,7 @@ interface Bounty {
   prize: number;
   bountyType: string;
   yaps: number;
-  status: 'open' | 'closed';
+  status: "open" | "closed";
   endDate: string;
   metadata: BountyMetadata;
 }
@@ -73,8 +73,6 @@ interface Submission {
   fullname?: string;
 }
 
-
-
 const BountyDetailPage: React.FC = (): JSX.Element => {
   const { bounties_id } = useParams();
   const router = useRouter();
@@ -86,7 +84,7 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
   const [winderList, setWinnerList] = useState<Submission[]>([]);
 
   const [submittedUser, setSubmittedUser] = useState<Submission | false>(false);
-  const [submissionLink, setSubmissionLink] = useState<string>('');
+  const [submissionLink, setSubmissionLink] = useState<string>("");
   const [submissionLinkValidation, setSubmissionLinkValidation] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -98,7 +96,7 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
         setBounty(response.data.bounty.bounty);
         setSubmissionsList(response.data.bounty.submissions);
       } catch (err) {
-        console.error('Error fetching bounty:', err);
+        console.error("Error fetching bounty:", err);
       } finally {
         setLoading(false);
       }
@@ -123,38 +121,37 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
 
     try {
       if (!submissionLink || !bounties_id || !user?.id) {
-        toast.warn('Required filed messing');
+        toast.warn("Required filed messing");
         return;
       }
       const regex = /^https:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
       const isValid = regex.test(submissionLink);
       if (!isValid) {
-        setSubmissionLinkValidation('Invalid submission link');
+        setSubmissionLinkValidation("Invalid submission link");
         return;
       }
       if (submittedUser) {
         await axiosInstance.put(`/bounty-submission/${submittedUser.id}`, {
           submissionLink: submissionLink,
         });
-        toast.success('Your submission has been Updated');
+        toast.success("Your submission has been Updated");
       } else {
-        await axiosInstance.post('/bounty-submission', {
+        await axiosInstance.post("/bounty-submission", {
           userId: user.id,
           bountyId: bounties_id,
           submissionLink: submissionLink,
         });
-        toast.success('Your submission has been submitted');
+        toast.success("Your submission has been submitted");
       }
-      setSubmissionLink('');
-      router.push('/bounty-hunt');
+      setSubmissionLink("");
+      router.push("/bounty-hunt");
     } catch (error) {
       if (submittedUser) {
-        toast.error('Submission Update failed. Please try again.');
+        toast.error("Submission Update failed. Please try again.");
       } else {
-        toast.error('Submission failed. Please try again.');
+        toast.error("Submission failed. Please try again.");
       }
       console.log(error, "error");
-
     } finally {
       setIsSubmitting(false);
     }
@@ -163,7 +160,7 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
   useEffect(() => {
     if (submissionsList.length > 0) {
       const IsWinnerDeclared = submissionsList.filter(
-        (submission) => submission.status === 'approved'
+        (submission) => submission.status === "approved"
       );
       setWinnerList([...IsWinnerDeclared]);
     }
@@ -176,11 +173,11 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
       <div className="relative">
         <Image
           src={
-            bounty?.metadata?.coverImage?.startsWith('http')
+            bounty?.metadata?.coverImage?.startsWith("http")
               ? bounty?.metadata?.coverImage
-              : '/images/bounties-details-banner.png'
+              : "/images/bounties-details-banner.png"
           }
-          onError={(e: any) => (e.target.src = '/images/bounties-details-banner.png')}
+          onError={(e: any) => (e.target.src = "/images/bounties-details-banner.png")}
           height={257}
           width={1440}
           alt="img"
@@ -191,8 +188,8 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
         <Container>
           <div className="w-full relative flex flex-col">
             <Image
-              src={bounty?.metadata?.logo || '/images/bounties-details-img.png'}
-              onError={(e: any) => (e.target.src = '/images/bounties-details-img.png')}
+              src={bounty?.metadata?.logo || "/images/bounties-details-img.png"}
+              onError={(e: any) => (e.target.src = "/images/bounties-details-img.png")}
               height={141}
               width={141}
               alt="img"
@@ -209,13 +206,13 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
                     </div>
                     <div
                       className={cn(
-                        'w-fit text-white rounded-2xl h-fit py-2 px-3 flex gap-2 justify-between items-center border',
-                        bounty?.bountyType ? BountiesType[bounty.bountyType]?.bgcolor : '',
-                        bounty?.bountyType ? BountiesType[bounty.bountyType]?.borderColor : ''
+                        "w-fit text-white rounded-2xl h-fit py-2 px-3 flex gap-2 justify-between items-center border",
+                        bounty?.bountyType ? BountiesType[bounty.bountyType]?.bgcolor : "",
+                        bounty?.bountyType ? BountiesType[bounty.bountyType]?.borderColor : ""
                       )}
                     >
                       <Image
-                        src={bounty?.bountyType ? BountiesType[bounty.bountyType]?.url : ''}
+                        src={bounty?.bountyType ? BountiesType[bounty.bountyType]?.url : ""}
                         height={24}
                         width={24}
                         alt="icon"
@@ -226,7 +223,7 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
                       <Image src="/icons/image-71.png" height={24} width={24} alt="icon" />
                       <span> {bounty?.yaps} Yaps Req</span>
                     </div>
-                    {bounty?.status === 'closed' ? (
+                    {bounty?.status === "closed" ? (
                       <div className="w-fit h-fit text-white rounded-2xl bg-videoBg border border-videoBadgeBorder py-2 px-3 flex gap-2 justify-between items-center">
                         Closed
                       </div>
@@ -234,12 +231,12 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
                       <div className="w-fit h-fit text-black/45 rounded-2xl bg-white border border-black py-2 px-3 flex gap-2 justify-between items-center">
                         <Image src="/icons/clock-05.png" height={24} width={24} alt="icon" />
                         <span className="text-18">
-                          {moment(bounty?.endDate)?.format('DD/MM/YYYY')}
+                          {moment(bounty?.endDate)?.format("DD/MM/YYYY")}
                         </span>
                       </div>
                     )}
                   </div>
-                  {bounty?.status === 'closed' ? null : (
+                  {bounty?.status === "closed" ? null : (
                     <div className="w-full sm:w-fit h-fit">
                       <Link href="#submit">
                         <PrimaryButton className="w-full sm:w-fit text-white px-6 lg:px-8 py-2 lg:py-3 ">
@@ -260,7 +257,7 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
               <h2 className="text-36"> About the Project</h2>
               <p>{bounty?.metadata?.about}</p>
               <Link
-                href={bounty?.metadata?.resources?.website || '#'}
+                href={bounty?.metadata?.resources?.website || "#"}
                 className="font-medium text-18 pt-2 mb-9 flex items-center"
               >
                 <ExploreBtn className="bg-yellow-bg hover:bg-white text-black/80 hover:text-black border-black shadow-xl px-4 lg:px-7 py-1.5 lg:py-3 text-14 md:text-18 w-full md:w-fit">
@@ -276,23 +273,25 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
               </Link>
               <h2>Founder/Team</h2>
               <ul className="flex flex-col p-0 mt-4 w-fit mb-9 ">
-                {Object?.entries(bounty?.metadata?.founderTeam || {})?.map(([key, value], index) => (
-                  <li key={index} className="grid grid-cols-2 gap-2 py-1  text-16 lg:text-18">
-                    <span className="font-bold">{key}</span>
-                    <Link href={value.xUrl} className="flex group items-center gap-2   break-all">
-                      <span className=" group-hover:text-yellow-bg transition-all duration-300 ease-in-out">
-                        {value.name}
-                      </span>
-                      <Image
-                        alt="Arrow"
-                        width={1000}
-                        height={1000}
-                        className="w-6 h-5 py-2px px-1 border border-solid border-black rounded-full shadow-xl bg-yellow-bg group-hover:shadow-none group-hover:bg-transparent transition-all duration-300 ease-in-out"
-                        src="/icons/arrow-up-right-01.png"
-                      />
-                    </Link>
-                  </li>
-                ))}
+                {Object?.entries(bounty?.metadata?.founderTeam || {})?.map(
+                  ([key, value], index) => (
+                    <li key={index} className="grid grid-cols-2 gap-2 py-1  text-16 lg:text-18">
+                      <span className="font-bold">{key}</span>
+                      <Link href={value.xUrl} className="flex group items-center gap-2   break-all">
+                        <span className=" group-hover:text-yellow-bg transition-all duration-300 ease-in-out">
+                          {value.name}
+                        </span>
+                        <Image
+                          alt="Arrow"
+                          width={1000}
+                          height={1000}
+                          className="w-6 h-5 py-2px px-1 border border-solid border-black rounded-full shadow-xl bg-yellow-bg group-hover:shadow-none group-hover:bg-transparent transition-all duration-300 ease-in-out"
+                          src="/icons/arrow-up-right-01.png"
+                        />
+                      </Link>
+                    </li>
+                  )
+                )}
               </ul>
 
               <div className="flex flex-col md:flex-row gap-30px md:gap-9 mb-9">
@@ -300,7 +299,7 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
                   <h2>USP</h2>
                   <div className="bg-gradient-to-r from-light-blue1-bg to-light-sky-blue-bg p-6 rounded-2xl w-full flex flex-col items-end gap-4">
                     <h3 className="font-normal w-full text-left">{bounty?.metadata?.USP}</h3>
-                    <Image src={'/icons/pie-chart.png'} width={54} height={54} alt="icons" />
+                    <Image src={"/icons/pie-chart.png"} width={54} height={54} alt="icons" />
                   </div>
                 </div>
                 <div className="flex items-start flex-col gap-2  flex-1">
@@ -309,7 +308,7 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
                     <h3 className="font-normal w-full text-left">
                       {bounty?.metadata?.missionStatement}
                     </h3>
-                    <Image src={'/icons/target.png'} width={54} height={54} alt="icons" />
+                    <Image src={"/icons/target.png"} width={54} height={54} alt="icons" />
                   </div>
                 </div>
               </div>
@@ -333,23 +332,25 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
               <div>
                 <h2>Resources</h2>
                 <ul className="flex flex-col p-0 mt-4 w-fit mb-9  text-16 sm:text-18">
-                  {Object.entries(bounty?.metadata?.resources || {})?.map(([key, value], index) => (
-                    value ? <li key={index} className="flex gap-1 py-1 group  text-16 sm:text-18">
-                      <span className="font-bold capitalize">{key}:</span>
-                      <Link href={value as string} className="flex gap-2 list-none">
-                        <span className="  break-all group-hover:text-yellow-bg transition-all duration-300 ease-in-out break-words">
-                          {value}
-                        </span>
-                        <Image
-                          alt="Arrow"
-                          width={1000}
-                          height={1000}
-                          className="w-6 h-5 py-2px px-1 border border-solid border-black rounded-full shadow-xl bg-yellow-bg group-hover:shadow-none group-hover:bg-transparent transition-all duration-300 ease-in-out"
-                          src="/icons/arrow-up-right-01.png"
-                        />
-                      </Link>
-                    </li> : null
-                  ))}
+                  {Object.entries(bounty?.metadata?.resources || {})?.map(([key, value], index) =>
+                    value ? (
+                      <li key={index} className="flex gap-1 py-1 group  text-16 sm:text-18">
+                        <span className="font-bold capitalize">{key}:</span>
+                        <Link href={value as string} className="flex gap-2 list-none">
+                          <span className="  break-all group-hover:text-yellow-bg transition-all duration-300 ease-in-out break-words">
+                            {value}
+                          </span>
+                          <Image
+                            alt="Arrow"
+                            width={1000}
+                            height={1000}
+                            className="w-6 h-5 py-2px px-1 border border-solid border-black rounded-full shadow-xl bg-yellow-bg group-hover:shadow-none group-hover:bg-transparent transition-all duration-300 ease-in-out"
+                            src="/icons/arrow-up-right-01.png"
+                          />
+                        </Link>
+                      </li>
+                    ) : null
+                  )}
                 </ul>
               </div>
 
@@ -412,7 +413,10 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
               <div className="mb-9">
                 <h2 className="mb-4">Deadline</h2>
                 <div className="flex flex-col md:flex-row gap-4">
-                  {deadlineCounter({ date: bounty?.endDate || '', status: bounty?.status || 'open' })}
+                  {deadlineCounter({
+                    date: bounty?.endDate || "",
+                    status: bounty?.status || "open",
+                  })}
                 </div>
               </div>
 
@@ -421,7 +425,7 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
                 <div className="flex flex-row items-center gap-4 w-full p-6 border border-solid border-black/15 rounded-3xl">
                   <span className="text-20 lg:text-24 ">🤑</span>
                   <small className="text-black/80 font-semibold text-18 ">
-                    {Number(bounty?.prize).toFixed(0)} USDT{' '}
+                    {Number(bounty?.prize).toFixed(0)} USDT{" "}
                   </small>
                 </div>
               </div>
@@ -430,12 +434,12 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
                 {bounty?.yaps && user?.yaps_score && bounty.yaps <= user.yaps_score ? (
                   isLogin ? (
                     <div>
-                      {bounty?.status === 'open' ? (
+                      {bounty?.status === "open" ? (
                         <form onSubmit={handleSubmit}>
                           <div className="flex flex-col w-full">
                             <label className="text-14 text-dark-gray-bg">
                               For video submissions, videos can be submitted only on Youtube and
-                              LinkedIn{' '}
+                              LinkedIn{" "}
                             </label>
                             <input
                               type="url"
@@ -456,22 +460,24 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
 
                           <PrimaryButton
                             type="submit"
-                            disabled={isSubmitting || submissionLink.length < 1 || bounty.status !== 'open'}
+                            disabled={
+                              isSubmitting || submissionLink.length < 1 || bounty.status !== "open"
+                            }
                             className="mt-4 text-white w-full md:w-fit py-3"
                           >
-                            {submittedUser ? 'Update' : 'Submit'}
+                            {submittedUser ? "Update" : "Submit"}
                           </PrimaryButton>
                         </form>
                       ) : null}
-                      {bounty?.status === 'closed' ? (
+                      {bounty?.status === "closed" ? (
                         <span className="text-videoBg">This bounty is now closed</span>
                       ) : null}
                     </div>
                   ) : (
                     <div>
                       <span> Join the bounty contest by signing up. It's free!</span>
-                      <PrimaryButton className="text-white mt-2" onClick={() => signIn('twitter')}>
-                        Sign up to participate{' '}
+                      <PrimaryButton className="text-white mt-2" onClick={() => signIn("twitter")}>
+                        Sign up to participate{" "}
                       </PrimaryButton>
                     </div>
                   )
@@ -507,7 +513,7 @@ const BountyDetailPage: React.FC = (): JSX.Element => {
             </Card>
           </Container>
 
-          {bounty?.status === 'closed' ? (
+          {bounty?.status === "closed" ? (
             <Winner winderList={winderList as any} />
           ) : (
             <BountyPool Prize={bounty?.prize || 0} />

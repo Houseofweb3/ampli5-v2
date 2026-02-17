@@ -10,15 +10,10 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
             <h2 className="text_pattern"> Ampli5</h2>
             <div className="sm:space-y-8 space-y-4 mt-10">
               <p className="text-white">
-                Ampli5 creates a proposal in under 5 minutes with quick feedback
-                loops.
+                Ampli5 creates a proposal in under 5 minutes with quick feedback loops.
               </p>
-              <p className="text-white">
-                Ampli5 helps with the lowest cost guarantee.
-              </p>
-              <p className="text-white">
-                Ampli5 executes in under 72 hours and have an SLM
-              </p>
+              <p className="text-white">Ampli5 helps with the lowest cost guarantee.</p>
+              <p className="text-white">Ampli5 executes in under 72 hours and have an SLM</p>
             </div>
           </div>
           <div className="h-full text-center">
@@ -37,9 +32,7 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
             <h2 className="text_pattern"> Agencies</h2>
             <div className="sm:space-y-8 space-y-4 mt-10">
               <p className="text-white">Agencies take days to respond.</p>
-              <p className="text-white">
-                Agencies have bloated operations cost.
-              </p>
+              <p className="text-white">Agencies have bloated operations cost.</p>
               <p className="text-white">
                 Agencies rely on human intelligence & resources to execute
               </p>

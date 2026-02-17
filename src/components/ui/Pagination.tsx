@@ -1,7 +1,7 @@
-import React from 'react';
-import ExploreBtn from './explorebtn';
-import { GoArrowLeft, GoArrowRight } from 'react-icons/go';
-import { cn } from '../../lib/utils';
+import React from "react";
+import ExploreBtn from "./explorebtn";
+import { GoArrowLeft, GoArrowRight } from "react-icons/go";
+import { cn } from "../../lib/utils";
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -42,8 +42,8 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, setPag
         <button
           onClick={() => setPage(1)}
           className={cn(
-            'px-2  py-1 sm:px-3.5 sm:py-2 border-1 border-gray-border text-gray-border rounded-md',
-            1 === currentPage ? 'bg-white text-black border-black' : ''
+            "px-2  py-1 sm:px-3.5 sm:py-2 border-1 border-gray-border text-gray-border rounded-md",
+            1 === currentPage ? "bg-white text-black border-black" : ""
           )}
         >
           1
@@ -60,8 +60,8 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, setPag
             key={page}
             onClick={() => setPage(page)}
             className={cn(
-              'px-2  py-1 sm:px-3.5 sm:py-2 border-1 border-gray-border text-gray-border rounded-md',
-              page === currentPage ? 'bg-white text-black border-black' : ''
+              "px-2  py-1 sm:px-3.5 sm:py-2 border-1 border-gray-border text-gray-border rounded-md",
+              page === currentPage ? "bg-white text-black border-black" : ""
             )}
           >
             {page}
@@ -78,8 +78,8 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, setPag
           <button
             onClick={() => setPage(totalPages)}
             className={cn(
-              'px-2  py-1 sm:px-3.5 sm:py-2  border-1 border-gray-border text-gray-border rounded-md',
-              totalPages === currentPage ? 'bg-white text-black border-black' : ''
+              "px-2  py-1 sm:px-3.5 sm:py-2  border-1 border-gray-border text-gray-border rounded-md",
+              totalPages === currentPage ? "bg-white text-black border-black" : ""
             )}
           >
             {totalPages}
@@ -99,4 +99,4 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, setPag
   );
 };
 
-export default Pagination; 
+export default Pagination;

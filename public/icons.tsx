@@ -56,13 +56,7 @@ export const Logo = () => {
   );
 };
 export const BackArrow = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
     <path
       d="M16.25 10L3.75 10M3.75 10L8.4375 15M3.75 10L8.4375 5"
       stroke="black"
@@ -104,24 +98,9 @@ export const Hamburger = () => {
         viewBox="0 0 24 24"
         fill="none"
       >
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M10 13H20V11H10V13Z"
-          fill="black"
-        />
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M4 6H20V4H4V6Z"
-          fill="black"
-        />
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M4 20H20V18H4V20Z"
-          fill="black"
-        />
+        <path fillRule="evenodd" clipRule="evenodd" d="M10 13H20V11H10V13Z" fill="black" />
+        <path fillRule="evenodd" clipRule="evenodd" d="M4 6H20V4H4V6Z" fill="black" />
+        <path fillRule="evenodd" clipRule="evenodd" d="M4 20H20V18H4V20Z" fill="black" />
       </svg>
     </>
   );
@@ -560,15 +539,7 @@ export const NeutralIcon = () => {
         fill="none"
       >
         <rect y="0.5" width="20" height="20" rx="5" fill="#FBFBF9" />
-        <rect
-          x="0.5"
-          y="1"
-          width="19"
-          height="19"
-          rx="4.5"
-          stroke="black"
-          stroke-opacity="0.1"
-        />
+        <rect x="0.5" y="1" width="19" height="19" rx="4.5" stroke="black" stroke-opacity="0.1" />
       </svg>
     </>
   );
@@ -596,13 +567,7 @@ export const CrossIcon = () => {
 };
 
 export const FilterCross = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="14"
-    height="14"
-    viewBox="0 0 14 14"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
     <path
       d="M11.0836 2.91602L2.91699 11.0827M2.91699 2.91602L11.0836 11.0827"
       stroke="black"
@@ -622,10 +587,7 @@ export const NewLogo = () => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path
-          d="M72.731 5.96822L91.15 0.251953L78.4472 11.6845L72.731 5.96822Z"
-          fill="#A762FE"
-        />
+        <path d="M72.731 5.96822L91.15 0.251953L78.4472 11.6845L72.731 5.96822Z" fill="#A762FE" />
         <path
           d="M87.3393 15.4952L70.8257 20.5763L82.2582 10.4141L87.3393 15.4952Z"
           fill="#A762FE"
@@ -634,10 +596,7 @@ export const NewLogo = () => {
           d="M67.4063 3.50393H64.1443L64.1138 0.150391H67.4063V3.50393ZM67.4368 20.5765H64.1443V5.33314H67.4368V20.5765Z"
           fill="#313131"
         />
-        <path
-          d="M62.0143 20.5765H58.7217V0.150391H62.0143V20.5765Z"
-          fill="#313131"
-        />
+        <path d="M62.0143 20.5765H58.7217V0.150391H62.0143V20.5765Z" fill="#313131" />
         <path
           d="M45.4491 25.8521H42.187V5.42596H45.1747V7.92587H45.3271C46.0283 6.15764 47.7661 5.12109 50.3879 5.12109C54.6561 5.12109 57.0036 8.20026 57.0036 13.0172C57.0036 17.8036 54.7171 20.8827 50.6014 20.8827C47.888 20.8827 46.2113 19.6328 45.5406 18.2304H45.4491V25.8521ZM45.4491 14.3586C45.4491 16.889 46.9125 18.078 49.5953 18.078C52.4915 18.078 53.711 16.7365 53.711 13.0172C53.711 9.26729 52.522 7.92587 49.5953 7.92587C46.9125 7.92587 45.4491 9.11486 45.4491 11.6453V14.3586Z"
           fill="#313131"
@@ -656,13 +615,7 @@ export const NewLogo = () => {
 };
 export const CartIcon = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="21"
-      height="22"
-      viewBox="0 0 21 22"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="22" viewBox="0 0 21 22" fill="none">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -675,13 +628,7 @@ export const CartIcon = () => {
 
 export const CartWhiteIcon = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="21"
-      height="22"
-      viewBox="0 0 21 22"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="22" viewBox="0 0 21 22" fill="none">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -736,13 +683,7 @@ export const FilledCartIcon = () => {
 
 export const RightArrow = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="29"
-      height="29"
-      viewBox="0 0 29 29"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29" fill="none">
       <path
         d="M19.1663 16.1888L17.5033 16.1851L17.494 11.9692L9.7228 19.7404L8.54429 18.5619L16.3157 10.7904L12.0988 10.7808L12.0951 9.11775L19.1507 9.1336L19.1663 16.1888Z"
         fill="currentColor"
@@ -753,25 +694,14 @@ export const RightArrow = () => {
 
 export const DollarIcon = () => {
   return (
-    <svg
-      width="25"
-      height="24"
-      viewBox="0 0 25 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
         d="M8.50563 6.05476C7.51873 6.69276 7.08333 7.45561 7.08333 8.14815C7.08333 8.59305 7.16774 8.93123 7.31044 9.19662C7.45067 9.45743 7.67691 9.70367 8.04996 9.92385C8.83512 10.3873 10.2177 10.7037 12.5 10.7037C14.8777 10.7037 16.8458 10.9982 18.2461 11.7984C18.9666 12.2101 19.5458 12.7608 19.9377 13.47C20.3275 14.1752 20.5 14.979 20.5 15.8519C20.5 17.7763 19.4421 19.1185 17.9155 19.922C16.4444 20.6962 14.509 21 12.5 21C10.4191 21 8.48652 20.5023 7.04045 19.6453C5.61627 18.8014 4.5 17.4928 4.5 15.8519H6.5C6.5 16.5019 6.95074 17.2674 8.06005 17.9247C9.14748 18.5691 10.7149 19 12.5 19C14.357 19 15.9216 18.7112 16.984 18.1521C17.9909 17.6222 18.5 16.8904 18.5 15.8519C18.5 15.2433 18.3809 14.7877 18.1873 14.4374C17.9959 14.0911 17.7001 13.7899 17.2539 13.5349C16.3209 13.0018 14.789 12.7037 12.5 12.7037C10.1156 12.7037 8.28988 12.3878 7.03338 11.6462C6.38559 11.2639 5.88266 10.7644 5.54894 10.1438C5.21768 9.52773 5.08333 8.84872 5.08333 8.14815C5.08333 6.54973 6.08436 5.2385 7.41983 4.37517C8.76538 3.50532 10.5643 3 12.5 3C14.4357 3 16.2346 3.50532 17.5802 4.37517C18.9156 5.2385 19.9167 6.54973 19.9167 8.14815H17.9167C17.9167 7.45561 17.4813 6.69276 16.4944 6.05476C15.5175 5.42327 14.1081 5 12.5 5C10.8919 5 9.48246 5.42327 8.50563 6.05476Z"
         fill="#A762FE"
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M11.5 22V2H13.5V22H11.5Z"
-        fill="#A762FE"
-      />
+      <path fillRule="evenodd" clipRule="evenodd" d="M11.5 22V2H13.5V22H11.5Z" fill="#A762FE" />
     </svg>
   );
 };
@@ -815,13 +745,7 @@ export const UnionBg: React.FC<UnionBgProps> = ({ className }) => {
 
 export const SquareTickIcon = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="21"
-      viewBox="0 0 20 21"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -865,13 +789,7 @@ export const Wave = () => {
 
 export const DiscountIcon = () => {
   return (
-    <svg
-      width="22"
-      height="22"
-      viewBox="0 0 22 22"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -884,13 +802,7 @@ export const DiscountIcon = () => {
 
 export const SuccessBadge = () => {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -902,13 +814,7 @@ export const SuccessBadge = () => {
 };
 export const Stars = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
       <path
         d="M8 1.5C8.27613 1.5 8.5 1.72386 8.5 2C8.5 3.33739 9.17373 4.71662 10.2285 5.77145C11.2834 6.82627 12.6626 7.5 14 7.5C14.2761 7.5 14.5 7.72387 14.5 8C14.5 8.27613 14.2761 8.5 14 8.5C12.6626 8.5 11.2834 9.17373 10.2285 10.2285C9.17373 11.2834 8.5 12.6626 8.5 14C8.5 14.2761 8.27613 14.5 8 14.5C7.72387 14.5 7.5 14.2761 7.5 14C7.5 12.6626 6.82627 11.2834 5.77145 10.2285C4.71662 9.17373 3.33739 8.5 2 8.5C1.72386 8.5 1.5 8.27613 1.5 8C1.5 7.72387 1.72386 7.5 2 7.5C3.33739 7.5 4.71662 6.82627 5.77145 5.77145C6.82627 4.71662 7.5 3.33739 7.5 2C7.5 1.72386 7.72387 1.5 8 1.5Z"
         fill="currentColor"
@@ -926,42 +832,21 @@ export const Stars = () => {
 };
 export const CheckIcon = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="31"
-      viewBox="0 0 20 31"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="31" viewBox="0 0 20 31" fill="none">
       <path
         d="M18.6667 15.3333C18.6667 10.731 14.9357 7 10.3333 7C5.73096 7 2 10.731 2 15.3333C2 19.9357 5.73096 23.6667 10.3333 23.6667C14.9357 23.6667 18.6667 19.9357 18.6667 15.3333Z"
         stroke="#141B34"
         strokeWidth="1.5"
       />
-      <path
-        d="M7 15.9167L9.08333 18L13.6667 13"
-        stroke="#141B34"
-        strokeWidth="1.5"
-      />
+      <path d="M7 15.9167L9.08333 18L13.6667 13" stroke="#141B34" strokeWidth="1.5" />
     </svg>
   );
 };
 
 export const CartBigIcon = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="32"
-      height="32"
-      viewBox="0 0 48 48"
-      fill="none"
-    >
-      <path
-        d="M16 32L37 29L40 12"
-        stroke="#A762FE"
-        strokeWidth="4.5"
-        strokeLinejoin="round"
-      />
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 48 48" fill="none">
+      <path d="M16 32L37 29L40 12" stroke="#A762FE" strokeWidth="4.5" strokeLinejoin="round" />
       <path d="M12 12H44" stroke="#A762FE" strokeWidth="4.5" />
       <path
         d="M12 44C14.2091 44 16 42.2091 16 40C16 37.7909 14.2091 36 12 36C9.79086 36 8 37.7909 8 40C8 42.2091 9.79086 44 12 44Z"
@@ -986,13 +871,7 @@ export const CartBigIcon = () => {
 
 export const PaperCheckIcon = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
       <path d="M12 26H24" stroke="#A762FE" strokeWidth="4.5" />
       <path d="M12 34H32" stroke="#A762FE" strokeWidth="4.5" />
       <path
@@ -1011,13 +890,7 @@ export const PaperCheckIcon = () => {
 
 export const TruckIcon = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
       <path
         d="M34 40C36.2091 40 38 38.2091 38 36C38 33.7909 36.2091 32 34 32C31.7909 32 30 33.7909 30 36C30 38.2091 31.7909 40 34 40Z"
         stroke="#A762FE"
@@ -1036,37 +909,16 @@ export const TruckIcon = () => {
         strokeWidth="4.5"
         strokeLinejoin="round"
       />
-      <path
-        d="M4 16H16"
-        stroke="#A762FE"
-        strokeWidth="4.5"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M4 22H12"
-        stroke="#A762FE"
-        strokeWidth="4.5"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M28 12L38 12L44 22"
-        stroke="#A762FE"
-        strokeWidth="4.5"
-        strokeLinejoin="round"
-      />
+      <path d="M4 16H16" stroke="#A762FE" strokeWidth="4.5" strokeLinejoin="round" />
+      <path d="M4 22H12" stroke="#A762FE" strokeWidth="4.5" strokeLinejoin="round" />
+      <path d="M28 12L38 12L44 22" stroke="#A762FE" strokeWidth="4.5" strokeLinejoin="round" />
     </svg>
   );
 };
 
 export const ContentIcon = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
       <path
         d="M16 13.9889H24.0358M24.0358 13.9889H44V23.9944M24.0358 13.9889L18 6H4V42H18"
         stroke="#A762FE"
@@ -1084,18 +936,8 @@ export const ContentIcon = () => {
 
 export const CheckMarkIcon = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-      <path
-        d="M8.5 9.5L12 13L21.0002 3"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      />
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M8.5 9.5L12 13L21.0002 3" stroke="currentColor" strokeWidth="1.5" />
       <path
         d="M19.0029 8.99876L21.9971 11.9929C22.001 11.9968 22.001 12.0032 21.9971 12.0071L19.0029 15.0012V18.9929C19.0029 18.9984 18.9984 19.0029 18.9929 19.0029H15.0012L12.0071 21.9971C12.0032 22.001 11.9968 22.001 11.9929 21.9971L9.00169 19.0058C8.99981 19.004 8.99727 19.0029 8.99461 19.0029H5.0071C5.00158 19.0029 4.9971 18.9984 4.9971 18.9929V15.0012L2.00293 12.0071C1.99902 12.0032 1.99902 11.9968 2.00293 11.9929L4.9971 8.99876V5.0071C4.9971 5.00158 5.00158 4.9971 5.0071 4.9971H8.99876L11.9929 2.00293C11.9968 1.99902 12.0032 1.99902 12.0071 2.00293L15.0012 4.9971"
         stroke="currentColor"
@@ -1106,19 +948,8 @@ export const CheckMarkIcon = () => {
 };
 export const TeamIcon = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="32"
-      height="32"
-      viewBox="0 0 48 48"
-      fill="none"
-    >
-      <path
-        d="M8.00391 27V17H24.0192V27"
-        stroke="#A762FE"
-        strokeWidth="4"
-        strokeLinejoin="round"
-      />
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 48 48" fill="none">
+      <path d="M8.00391 27V17H24.0192V27" stroke="#A762FE" strokeWidth="4" strokeLinejoin="round" />
       <path
         d="M38.0312 26C38.0312 28.2092 36.2386 30 34.0272 30C31.816 30 30.0234 28.2092 30.0234 26C30.0234 23.7908 31.816 22 34.0272 22C36.2386 22 38.0312 23.7908 38.0312 26Z"
         stroke="#A762FE"
@@ -1146,13 +977,7 @@ export const TeamIcon = () => {
 
 export const RocketIcon = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="32"
-      height="32"
-      viewBox="0 0 48 48"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 48 48" fill="none">
       <path
         d="M20.9986 15.0856L27.5724 9.00902C30.9178 5.66358 38.0466 3.9531 43.9986 4.00098C43.9986 11.001 42.3362 17.082 38.9908 20.4274L32.9144 27.001L34.9986 33.001L30.9986 37.001L11 17.001L15 13.001L20.9986 15.0856Z"
         stroke="#A762FE"
@@ -1166,23 +991,13 @@ export const RocketIcon = () => {
         strokeLinecap="square"
         strokeLinejoin="round"
       />
-      <path
-        d="M4 44L17 31M16 44L23 37M4 32L11 25"
-        stroke="#A762FE"
-        strokeWidth="4"
-      />
+      <path d="M4 44L17 31M16 44L23 37M4 32L11 25" stroke="#A762FE" strokeWidth="4" />
     </svg>
   );
 };
 
 export const LowArrow = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
     <g clipPath="url(#clip0_3886_7362)">
       <path
         d="M3.50047 18L8.50047 18C9.32847 18 10.0005 17.328 10.0005 16.5C10.0005 15.672 9.32848 15 8.50048 15L5.12148 15L11.0005 9.121L15.1195 13.24C16.1565 14.277 17.8445 14.277 18.8815 13.24L23.5615 8.561C24.1475 7.975 24.1475 7.026 23.5615 6.44C22.9755 5.854 22.0265 5.854 21.4405 6.44L17.0015 10.879L12.8825 6.76C12.3635 6.241 11.6835 5.982 11.0015 5.982C10.3195 5.982 9.63948 6.242 9.12048 6.76L3.00147 12.879L3.00148 9.5C3.00148 8.672 2.32947 8 1.50148 8C0.673474 8 0.0014752 8.672 0.00147512 9.5L0.00147469 14.5C0.00147452 16.43 1.57047 18 3.50047 18Z"
@@ -1191,24 +1006,13 @@ export const LowArrow = () => (
     </g>
     <defs>
       <clipPath id="clip0_3886_7362">
-        <rect
-          width="24"
-          height="24"
-          fill="white"
-          transform="translate(24 24) rotate(-180)"
-        />
+        <rect width="24" height="24" fill="white" transform="translate(24 24) rotate(-180)" />
       </clipPath>
     </defs>
   </svg>
 );
 export const LowArrowMobile = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
     <g clipPath="url(#clip0_4166_22620)">
       <path
         d="M2.33397 12L5.66731 12C6.21931 12 6.66731 11.552 6.66731 11C6.66731 10.448 6.21931 10 5.66731 10L3.41464 10L7.33398 6.08067L10.08 8.82667C10.7713 9.518 11.8966 9.518 12.588 8.82667L15.708 5.70733C16.0986 5.31667 16.0986 4.684 15.708 4.29333C15.3173 3.90267 14.6846 3.90267 14.294 4.29333L11.3346 7.25267L8.58864 4.50667C8.24264 4.16067 7.78931 3.988 7.33464 3.988C6.87998 3.988 6.42664 4.16133 6.08064 4.50667L2.00131 8.586L2.00131 6.33333C2.00131 5.78133 1.55331 5.33333 1.00131 5.33333C0.449307 5.33333 0.00130692 5.78133 0.00130687 6.33333L0.00130658 9.66666C0.00130647 10.9533 1.04731 12 2.33397 12Z"
@@ -1217,25 +1021,14 @@ export const LowArrowMobile = () => (
     </g>
     <defs>
       <clipPath id="clip0_4166_22620">
-        <rect
-          width="16"
-          height="16"
-          fill="white"
-          transform="translate(16 16) rotate(-180)"
-        />
+        <rect width="16" height="16" fill="white" transform="translate(16 16) rotate(-180)" />
       </clipPath>
     </defs>
   </svg>
 );
 
 export const HighArrow = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
     <g clipPath="url(#clip0_3886_7367)">
       <path
         d="M20.4995 6H15.4995C14.6715 6 13.9995 6.672 13.9995 7.5C13.9995 8.328 14.6715 9 15.4995 9H18.8785L12.9995 14.879L8.88052 10.76C7.84352 9.723 6.15552 9.723 5.11852 10.76L0.438524 15.439C-0.147477 16.025 -0.147477 16.974 0.438524 17.56C1.02452 18.146 1.97352 18.146 2.55952 17.56L6.99852 13.121L11.1175 17.24C11.6365 17.759 12.3165 18.018 12.9985 18.018C13.6805 18.018 14.3605 17.758 14.8795 17.24L20.9985 11.121V14.5C20.9985 15.328 21.6705 16 22.4985 16C23.3265 16 23.9985 15.328 23.9985 14.5V9.5C23.9985 7.57 22.4295 6 20.4995 6Z"
@@ -1250,13 +1043,7 @@ export const HighArrow = () => (
   </svg>
 );
 export const HighArrowMobile = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
     <g clipPath="url(#clip0_4166_22622)">
       <path
         d="M13.666 4H10.3327C9.78069 4 9.33269 4.448 9.33269 5C9.33269 5.552 9.78069 6 10.3327 6H12.5854L8.66602 9.91933L5.92002 7.17333C5.22869 6.482 4.10336 6.482 3.41202 7.17333L0.292023 10.2927C-0.0986432 10.6833 -0.0986432 11.316 0.292023 11.7067C0.68269 12.0973 1.31536 12.0973 1.70602 11.7067L4.66536 8.74733L7.41136 11.4933C7.75736 11.8393 8.21069 12.012 8.66536 12.012C9.12002 12.012 9.57336 11.8387 9.91936 11.4933L13.9987 7.414V9.66667C13.9987 10.2187 14.4467 10.6667 14.9987 10.6667C15.5507 10.6667 15.9987 10.2187 15.9987 9.66667V6.33333C15.9987 5.04667 14.9527 4 13.666 4Z"
@@ -1272,22 +1059,9 @@ export const HighArrowMobile = () => (
 );
 
 export const NicheIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="26"
-    height="26"
-    viewBox="0 0 26 26"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
     <g clipPath="url(#clip0_3886_7486)">
-      <mask
-        id="mask0_3886_7486"
-        maskUnits="userSpaceOnUse"
-        x="0"
-        y="0"
-        width="26"
-        height="26"
-      >
+      <mask id="mask0_3886_7486" maskUnits="userSpaceOnUse" x="0" y="0" width="26" height="26">
         <path d="M0 1.90735e-06H26V26H0V1.90735e-06Z" fill="white" />
       </mask>
       <g mask="url(#mask0_3886_7486)">
@@ -1350,13 +1124,7 @@ export const NicheIcon = () => (
   </svg>
 );
 export const GeographyIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="26"
-    height="26"
-    viewBox="0 0 26 26"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
     <path
       d="M21.883 21.884L23.833 23.834M22.858 18.4715C22.858 16.0483 20.8937 14.084 18.4705 14.084C16.0473 14.084 14.083 16.0483 14.083 18.4715C14.083 20.8947 16.0473 22.859 18.4705 22.859C20.8937 22.859 22.858 20.8947 22.858 18.4715Z"
       stroke="black"
@@ -1384,13 +1152,7 @@ export const GeographyIcon = () => (
   </svg>
 );
 export const Score = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="27"
-    height="26"
-    viewBox="0 0 27 26"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="27" height="26" viewBox="0 0 27 26" fill="none">
     <g clipPath="url(#clip0_3886_7546)">
       <path
         fillRule="evenodd"
@@ -1408,13 +1170,7 @@ export const Score = () => (
 );
 
 export const FollowerIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="26"
-    height="26"
-    viewBox="0 0 26 26"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
     <path
       d="M2.16699 13.5417C2.16699 12.345 3.13704 11.375 4.33366 11.375C6.12858 11.375 7.58366 12.83 7.58366 14.625V18.9583C7.58366 20.7533 6.12858 22.2083 4.33366 22.2083C3.13704 22.2083 2.16699 21.2383 2.16699 20.0417V13.5417Z"
       stroke="black"
@@ -1433,33 +1189,18 @@ export const FollowerIcon = () => (
 );
 
 export const YouTubeIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="43"
-    height="43"
-    viewBox="0 0 43 43"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="43" height="43" viewBox="0 0 43 43" fill="none">
     <circle cx="21.5" cy="21.5" r="21.5" fill="#FF0000" />
     <path
       d="M32.7767 16.5478C32.5085 15.5516 31.7231 14.7662 30.7269 14.4981C28.9071 14 21.6278 14 21.6278 14C21.6278 14 14.3484 14 12.5286 14.4789C11.5516 14.7471 10.7471 15.5516 10.4789 16.5478C10 18.3676 10 22.1414 10 22.1414C10 22.1414 10 25.9343 10.4789 27.735C10.7471 28.7311 11.5325 29.5165 12.5286 29.7847C14.3676 30.2827 21.6278 30.2827 21.6278 30.2827C21.6278 30.2827 28.9071 30.2827 30.7269 29.8038C31.7231 29.5356 32.5085 28.7502 32.7767 27.7541C33.2556 25.9343 33.2556 22.1605 33.2556 22.1605C33.2556 22.1605 33.2747 18.3676 32.7767 16.5478Z"
       fill="white"
     />
-    <path
-      d="M19.3096 18.6553V25.6281L25.3629 22.1417L19.3096 18.6553Z"
-      fill="#FF0000"
-    />
+    <path d="M19.3096 18.6553V25.6281L25.3629 22.1417L19.3096 18.6553Z" fill="#FF0000" />
   </svg>
 );
 export const XIcon = () => (
   <div className=" bg-black p-2 flex justify-center items-center rounded-full">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="21"
-      height="21"
-      viewBox="0 0 21 21"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
       <path
         d="M2.625 18.375L9.22985 11.7702M9.22985 11.7702L2.625 2.625H7L11.7702 9.22985M9.22985 11.7702L14 18.375H18.375L11.7702 9.22985M18.375 2.625L11.7702 9.22985"
         stroke="white"
@@ -1482,10 +1223,7 @@ export const ThubnailLogo = () => (
       d="M237.715 19.0181L297.916 0.335144L256.398 37.7011L237.715 19.0181Z"
       fill="white"
     ></path>
-    <path
-      d="M285.459 50.157L231.486 66.7641L268.852 33.5499L285.459 50.157Z"
-      fill="white"
-    ></path>
+    <path d="M285.459 50.157L231.486 66.7641L268.852 33.5499L285.459 50.157Z" fill="white"></path>
     <path
       d="M220.31 10.9607H209.648L209.549 0H220.31V10.9607ZM220.41 66.7605H209.648V16.9392H220.41V66.7605Z"
       fill="white"
@@ -1516,12 +1254,7 @@ export const LadyIcon = () => (
   >
     <circle cx="15.5" cy="15.5" r="15.5" fill="url(#pattern0_18_4916)" />
     <defs>
-      <pattern
-        id="pattern0_18_4916"
-        patternContentUnits="objectBoundingBox"
-        width="1"
-        height="1"
-      >
+      <pattern id="pattern0_18_4916" patternContentUnits="objectBoundingBox" width="1" height="1">
         <use xlinkHref="#image0_18_4916" transform="scale(0.0025)" />
       </pattern>
       <image
@@ -1546,12 +1279,7 @@ export const LadyIcon2 = () => (
   >
     <circle cx="32" cy="32" r="32" fill="url(#pattern0_18_4915)" />
     <defs>
-      <pattern
-        id="pattern0_18_4915"
-        patternContentUnits="objectBoundingBox"
-        width="1"
-        height="1"
-      >
+      <pattern id="pattern0_18_4915" patternContentUnits="objectBoundingBox" width="1" height="1">
         <use xlinkHref="#image0_18_4915" transform="scale(0.0025)" />
       </pattern>
       <image
@@ -1581,16 +1309,8 @@ export const SpotifyIcon = () => (
       fill="url(#pattern0_18_5677)"
     />
     <defs>
-      <pattern
-        id="pattern0_18_5677"
-        patternContentUnits="objectBoundingBox"
-        width="1"
-        height="1"
-      >
-        <use
-          xlinkHref="#image0_18_5677"
-          transform="scale(0.000976562 0.00094518)"
-        />
+      <pattern id="pattern0_18_5677" patternContentUnits="objectBoundingBox" width="1" height="1">
+        <use xlinkHref="#image0_18_5677" transform="scale(0.000976562 0.00094518)" />
       </pattern>
       <image
         id="image0_18_5677"
@@ -1612,24 +1332,10 @@ export const ManIcon = () => (
     viewBox="0 0 43 44"
     fill="none"
   >
-    <ellipse
-      cx="21.5"
-      cy="22"
-      rx="21.5"
-      ry="22"
-      fill="url(#pattern0_18_4914)"
-    />
+    <ellipse cx="21.5" cy="22" rx="21.5" ry="22" fill="url(#pattern0_18_4914)" />
     <defs>
-      <pattern
-        id="pattern0_18_4914"
-        patternContentUnits="objectBoundingBox"
-        width="1"
-        height="1"
-      >
-        <use
-          xlinkHref="#image0_18_4914"
-          transform="matrix(0.00255814 0 0 0.0025 -0.0116279 0)"
-        />
+      <pattern id="pattern0_18_4914" patternContentUnits="objectBoundingBox" width="1" height="1">
+        <use xlinkHref="#image0_18_4914" transform="matrix(0.00255814 0 0 0.0025 -0.0116279 0)" />
       </pattern>
       <image
         id="image0_18_4914"
@@ -1653,12 +1359,7 @@ export const Telegram2 = () => (
   >
     <rect width="39" height="39" fill="url(#pattern0_18_5393)" />
     <defs>
-      <pattern
-        id="pattern0_18_5393"
-        patternContentUnits="objectBoundingBox"
-        width="1"
-        height="1"
-      >
+      <pattern id="pattern0_18_5393" patternContentUnits="objectBoundingBox" width="1" height="1">
         <use xlinkHref="#image0_18_5393" transform="scale(0.000488281)" />
       </pattern>
       <image
@@ -1673,13 +1374,7 @@ export const Telegram2 = () => (
 );
 // Icons as components
 export const KaitoIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path
       d="M17.7802 15C18.2542 15 18.6564 15 18.9901 15.0286C19.3434 15.0588 19.6752 15.1245 19.9976 15.2864C20.2683 15.4222 20.5142 15.6026 20.7257 15.8198C20.9767 16.0778 21.1413 16.3743 21.2802 16.7031C21.4119 17.0147 21.5387 17.4016 21.6888 17.8597L22.0246 18.8839L22.0411 18.9343C22.2238 19.4916 22.3858 19.9855 22.4568 20.3916C22.5329 20.826 22.5363 21.3222 22.2201 21.7684C21.9015 22.2179 21.4303 22.3749 20.9943 22.4399C20.5905 22.5001 20.0762 22.5001 19.5002 22.5H19.4461H16.0532H15.9992C15.4232 22.5001 14.9089 22.5001 14.505 22.4399C14.069 22.3749 13.5979 22.2179 13.2793 21.7684C12.963 21.3222 12.9665 20.826 13.0425 20.3916C13.1136 19.9855 13.2755 19.4916 13.4583 18.9343L13.4748 18.8839L13.8105 17.8597C13.9607 17.4015 14.0875 17.0147 14.2191 16.7031C14.358 16.3743 14.5226 16.0778 14.7737 15.8198C14.9851 15.6026 15.231 15.4222 15.5017 15.2864C15.8241 15.1245 16.1559 15.0588 16.5093 15.0286C16.8429 15 17.2452 15 17.7192 15H17.7802Z"
       fill="#D9BBFF"
@@ -1702,13 +1397,7 @@ export const KaitoIcon = () => (
 );
 
 export const TwitterIcon3 = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path
       d="M11.2582 8.23767C11.1447 5.63601 13.2575 3.25 16 3.25C17.0745 3.25 18.067 3.60755 18.8629 4.20937L21.8895 3.7582C22.1672 3.71679 22.4449 3.83404 22.6089 4.06201C22.7729 4.28998 22.7958 4.59048 22.6682 4.84067L20.7346 8.63307C20.4044 15.3809 14.8294 20.75 8.00005 20.75C5.70521 20.75 3.52189 20.2468 1.62451 19.1492C1.34284 18.9863 1.19837 18.6603 1.26684 18.3422C1.33531 18.0241 1.60109 17.7864 1.92484 17.7538C2.62749 17.683 3.68928 17.4806 4.55591 17.165C4.99281 17.0059 5.33383 16.8344 5.55154 16.6675C5.5727 16.6513 5.59165 16.6359 5.60862 16.6215C2.5742 13.2838 1.50804 8.17157 2.76751 3.89342C2.85052 3.61145 3.0906 3.40396 3.38162 3.36266C3.67264 3.32137 3.96096 3.45389 4.11913 3.70164C5.72891 6.22305 8.3663 8.09513 11.2582 8.23767Z"
       fill="#D9BBFF"
@@ -1717,13 +1406,7 @@ export const TwitterIcon3 = () => (
 );
 
 export const ExclamationIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -1734,13 +1417,7 @@ export const ExclamationIcon = () => (
 );
 
 export const KOLIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -1761,16 +1438,8 @@ export const SonicIcon = () => (
   >
     <rect width="512" height="139" fill="url(#pattern0_88_1374)" />
     <defs>
-      <pattern
-        id="pattern0_88_1374"
-        patternContentUnits="objectBoundingBox"
-        width="1"
-        height="1"
-      >
-        <use
-          xlinkHref="#image0_88_1374"
-          transform="scale(0.00195312 0.00719424)"
-        />
+      <pattern id="pattern0_88_1374" patternContentUnits="objectBoundingBox" width="1" height="1">
+        <use xlinkHref="#image0_88_1374" transform="scale(0.00195312 0.00719424)" />
       </pattern>
       <image
         id="image0_88_1374"
@@ -1784,21 +1453,9 @@ export const SonicIcon = () => (
 );
 
 export const CaseStudyAmpli5Logo = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="298"
-    height="84"
-    viewBox="0 0 298 84"
-    fill="none"
-  >
-    <path
-      d="M237.714 19.0182L297.915 0.335205L256.397 37.7012L237.714 19.0182Z"
-      fill="white"
-    />
-    <path
-      d="M285.459 50.1569L231.486 66.764L268.852 33.5498L285.459 50.1569Z"
-      fill="white"
-    />
+  <svg xmlns="http://www.w3.org/2000/svg" width="298" height="84" viewBox="0 0 298 84" fill="none">
+    <path d="M237.714 19.0182L297.915 0.335205L256.397 37.7012L237.714 19.0182Z" fill="white" />
+    <path d="M285.459 50.1569L231.486 66.764L268.852 33.5498L285.459 50.1569Z" fill="white" />
     <path
       d="M220.31 10.9607H209.648L209.549 0H220.31V10.9607ZM220.41 66.7605H209.648V16.9392H220.41V66.7605Z"
       fill="white"
@@ -1830,12 +1487,7 @@ export const RouterLogo = () => (
   >
     <rect width="306.833" height="141.615" fill="url(#pattern0_88_1388)" />
     <defs>
-      <pattern
-        id="pattern0_88_1388"
-        patternContentUnits="objectBoundingBox"
-        width="1"
-        height="1"
-      >
+      <pattern id="pattern0_88_1388" patternContentUnits="objectBoundingBox" width="1" height="1">
         <use
           xlinkHref="#image0_88_1388"
           transform="matrix(0.00111982 0 0 0.00242628 0 -0.0604703)"
@@ -1861,19 +1513,9 @@ export const StoopidCatsIcon = () => (
     viewBox="0 0 308 142"
     fill="none"
   >
-    <rect
-      x="0.914062"
-      width="306.833"
-      height="141.615"
-      fill="url(#pattern0_88_1405)"
-    />
+    <rect x="0.914062" width="306.833" height="141.615" fill="url(#pattern0_88_1405)" />
     <defs>
-      <pattern
-        id="pattern0_88_1405"
-        patternContentUnits="objectBoundingBox"
-        width="1"
-        height="1"
-      >
+      <pattern id="pattern0_88_1405" patternContentUnits="objectBoundingBox" width="1" height="1">
         <use
           xlinkHref="#image0_88_1405"
           transform="matrix(0.000812568 0 0 0.00176056 -0.00135427 0)"
@@ -1890,15 +1532,9 @@ export const StoopidCatsIcon = () => (
   </svg>
 );
 
-export const Bullat =()=>{
+export const Bullat = () => {
   return (
-    <svg
-      width="23"
-      height="18"
-      viewBox="0 0 23 18"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="23" height="18" viewBox="0 0 23 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M0.5 16L0.499999 2C0.499999 1.17157 1.17157 0.5 2 0.5L16.8232 0.499999C17.368 0.500017 17.8702 0.795301 18.1348 1.27148L22.0234 8.27148C22.2751 8.72451 22.2751 9.27549 22.0234 9.72851L18.1348 16.7285C17.8702 17.2047 17.368 17.5 16.8232 17.5L2 17.5C1.17157 17.5 0.5 16.8284 0.5 16Z"
         fill="#A762FE"
@@ -1906,7 +1542,7 @@ export const Bullat =()=>{
       />
     </svg>
   );
-}
+};
 
 export const MediumIcon = () => (
   <svg
@@ -1940,12 +1576,7 @@ export const MediumPlatformIcon = () => (
     viewBox="0 0 24 24"
     fill="none"
   >
-    <rect
-      width="24"
-      height="24"
-      fill="url(#pattern0_4822_19567)"
-      fillOpacity="0.9"
-    />
+    <rect width="24" height="24" fill="url(#pattern0_4822_19567)" fillOpacity="0.9" />
     <defs>
       <pattern
         id="pattern0_4822_19567"
@@ -1985,13 +1616,7 @@ export const Podcast = () => (
 );
 
 export const InstagramIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="19"
-    height="18"
-    viewBox="0 0 19 18"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
     <g clipPath="url(#clip0_4171_16665)">
       <path
         d="M14.5835 0H5.021C2.69104 0 0.802246 1.8888 0.802246 4.21875V13.7812C0.802246 16.1112 2.69104 18 5.021 18H14.5835C16.9134 18 18.8022 16.1112 18.8022 13.7812V4.21875C18.8022 1.8888 16.9134 0 14.5835 0Z"
@@ -2033,34 +1658,16 @@ export const InstagramIcon = () => (
         <stop offset="1" stop-color="#6600FF" stop-opacity="0" />
       </radialGradient>
       <clipPath id="clip0_4171_16665">
-        <rect
-          width="18"
-          height="18"
-          fill="white"
-          transform="translate(0.802246)"
-        />
+        <rect width="18" height="18" fill="white" transform="translate(0.802246)" />
       </clipPath>
     </defs>
   </svg>
 );
 
 export const XIcon2 = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 18 18"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18" fill="none">
     <g clipPath="url(#clip0_4099_11590)">
-      <mask
-        id="mask0_4099_11590"
-        maskUnits="userSpaceOnUse"
-        x="0"
-        y="0"
-        width="18"
-        height="18"
-      >
+      <mask id="mask0_4099_11590" maskUnits="userSpaceOnUse" x="0" y="0" width="18" height="18">
         <path d="M0 0H18V18H0V0Z" fill="white" />
       </mask>
       <g mask="url(#mask0_4099_11590)">
@@ -2079,31 +1686,17 @@ export const XIcon2 = () => (
 );
 
 export const YouTubeIcon2 = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="26"
-    height="20"
-    viewBox="0 0 26 18"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="20" viewBox="0 0 26 18" fill="none">
     <g clipPath="url(#clip0_4171_16662)">
       <path
         d="M25.2348 2.8075C25.088 2.26486 24.8015 1.77014 24.404 1.37263C24.0065 0.975112 23.5119 0.688661 22.9692 0.5418C20.9826 0 12.9872 0 12.9872 0C12.9872 0 4.99141 0.0164 3.00481 0.5582C2.46216 0.70507 1.96746 0.991536 1.56996 1.38907C1.17246 1.78661 0.886036 2.28134 0.739214 2.824C0.138315 6.3538 -0.0947855 11.7324 0.755714 15.121C0.902552 15.6636 1.18898 16.1584 1.58648 16.5559C1.98398 16.9534 2.47868 17.2398 3.02131 17.3867C5.00791 17.9285 13.0035 17.9285 13.0035 17.9285C13.0035 17.9285 20.999 17.9285 22.9855 17.3867C23.5282 17.2399 24.0229 16.9534 24.4204 16.5559C24.8179 16.1584 25.1044 15.6637 25.2512 15.121C25.885 11.5862 26.0803 6.2109 25.2348 2.8075Z"
         fill="#FF0000"
       />
-      <path
-        d="M10.4419 12.8062L17.0747 8.96436L10.4419 5.12256V12.8062Z"
-        fill="white"
-      />
+      <path d="M10.4419 12.8062L17.0747 8.96436L10.4419 5.12256V12.8062Z" fill="white" />
     </g>
     <defs>
       <clipPath id="clip0_4171_16662">
-        <rect
-          width="25.605"
-          height="18"
-          fill="white"
-          transform="translate(0.197266)"
-        />
+        <rect width="25.605" height="18" fill="white" transform="translate(0.197266)" />
       </clipPath>
     </defs>
   </svg>
@@ -2150,18 +1743,8 @@ export const SpotifyIcon2 = () => (
     <title>Spotify-color</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g
-      id="Icons"
-      stroke="none"
-      stroke-width="1"
-      fill="none"
-      fill-rule="evenodd"
-    >
-      <g
-        id="Color-"
-        transform="translate(-200.000000, -460.000000)"
-        fill="#00DA5A"
-      >
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+      <g id="Color-" transform="translate(-200.000000, -460.000000)" fill="#00DA5A">
         <path
           d="M238.16,481.36 C230.48,476.8 217.64,476.32 210.32,478.6 C209.12,478.96 207.92,478.24 207.56,477.16 C207.2,475.96 207.92,474.76 209,474.4 C217.52,471.88 231.56,472.36 240.44,477.64 C241.52,478.24 241.88,479.68 241.28,480.76 C240.68,481.6 239.24,481.96 238.16,481.36 M237.92,488.08 C237.32,488.92 236.24,489.28 235.4,488.68 C228.92,484.72 219.08,483.52 211.52,485.92 C210.56,486.16 209.48,485.68 209.24,484.72 C209,483.76 209.48,482.68 210.44,482.44 C219.2,479.8 230,481.12 237.44,485.68 C238.16,486.04 238.52,487.24 237.92,488.08 M235.04,494.68 C234.56,495.4 233.72,495.64 233,495.16 C227.36,491.68 220.28,490.96 211.88,492.88 C211.04,493.12 210.32,492.52 210.08,491.8 C209.84,490.96 210.44,490.24 211.16,490 C220.28,487.96 228.2,488.8 234.44,492.64 C235.28,493 235.4,493.96 235.04,494.68 M224,460 C210.8,460 200,470.8 200,484 C200,497.2 210.8,508 224,508 C237.2,508 248,497.2 248,484 C248,470.8 237.32,460 224,460"
           id="Spotify"

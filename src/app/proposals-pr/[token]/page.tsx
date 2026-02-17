@@ -45,11 +45,7 @@ interface ProposalData {
   email: string;
 }
 
-export default function PRProposalPage({
-  params,
-}: {
-  params: { token: string };
-}) {
+export default function PRProposalPage({ params }: { params: { token: string } }) {
   const { token } = params;
   if (!token) {
     notFound();
@@ -60,9 +56,7 @@ export default function PRProposalPage({
   const [showBillingForm, setShowBillingForm] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
-  const [approvalStates, setApprovalStates] = useState<
-    Record<string, boolean | null>
-  >({});
+  const [approvalStates, setApprovalStates] = useState<Record<string, boolean | null>>({});
 
   // Billing form state
   const [billingForm, setBillingForm] = useState<BillingInfo>({
@@ -117,8 +111,7 @@ export default function PRProposalPage({
               projectUrl: data.billingInfo.projectUrl || "",
               campaignLiveDate: data.billingInfo.campaignLiveDate || "",
               note: data.billingInfo.note || "",
-              managementFeePercentage:
-                data.billingInfo.managementFeePercentage || 15,
+              managementFeePercentage: data.billingInfo.managementFeePercentage || 15,
               discount: data.billingInfo.discount || 0,
             });
           }
@@ -131,9 +124,7 @@ export default function PRProposalPage({
         }
       } catch (error: any) {
         const errorMessage =
-          error.response?.data?.message ||
-          error.message ||
-          "Something went wrong";
+          error.response?.data?.message || error.message || "Something went wrong";
         toast.error(errorMessage, { duration: 2000 });
         router.push("/");
         return;
@@ -224,11 +215,7 @@ export default function PRProposalPage({
     })}`;
   };
 
-
-  const handleBillingFormChange = (
-    field: keyof BillingInfo,
-    value: string | number
-  ) => {
+  const handleBillingFormChange = (field: keyof BillingInfo, value: string | number) => {
     setBillingForm((prev) => ({
       ...prev,
       [field]: value,
@@ -256,13 +243,8 @@ export default function PRProposalPage({
       toast.error("Project URL is required");
       return false;
     }
-    if (
-      billingForm.projectUrl &&
-      !/^https?:\/\/.+/.test(billingForm.projectUrl)
-    ) {
-      toast.error(
-        "Please enter a valid URL (must start with http:// or https://)"
-      );
+    if (billingForm.projectUrl && !/^https?:\/\/.+/.test(billingForm.projectUrl)) {
+      toast.error("Please enter a valid URL (must start with http:// or https://)");
       return false;
     }
     if (!billingForm.telegramId.trim()) {
@@ -297,9 +279,7 @@ export default function PRProposalPage({
       router.push("/proposals-pr/success");
     } catch (error: any) {
       const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Failed to update proposal";
+        error.response?.data?.message || error.message || "Failed to update proposal";
       toast.error(errorMessage, { duration: 2000 });
     } finally {
       setIsSubmitting(false);
@@ -346,8 +326,8 @@ export default function PRProposalPage({
           {!showBillingForm && (
             <div className="my-8">
               <p className="text-base md:text-lg text-gray-900 mb-6">
-                Confluence between Artificial & Human intelligence to deliver
-                best ROI on influencer campaigns.
+                Confluence between Artificial & Human intelligence to deliver best ROI on influencer
+                campaigns.
               </p>
 
               <div className="flex gap-4">
@@ -355,9 +335,7 @@ export default function PRProposalPage({
                 <div className="w-1 bg-[#7B46F8] rounded-full flex-shrink-0"></div>
 
                 <div className="flex-1">
-                  <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-                    Our Pitch?
-                  </h2>
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">Our Pitch?</h2>
                   <ul className="space-y-3 mb-6">
                     <li className="flex items-start gap-3">
                       <svg
@@ -416,17 +394,13 @@ export default function PRProposalPage({
                       <span className="font-bold">KAITO</span>.
                     </p>
                     <p>
-                      Collaborate with top{" "}
-                      <span className="font-bold">YAPPERS</span> on{" "}
-                      <span className="font-bold">KAITO</span> for authentic
-                      engagement.
+                      Collaborate with top <span className="font-bold">YAPPERS</span> on{" "}
+                      <span className="font-bold">KAITO</span> for authentic engagement.
                     </p>
                     <p>
-                      Find YouTube KOLs with{" "}
-                      <span className="font-bold">loyal audiences</span>,
-                      measured by{" "}
-                      <span className="font-bold">repeat viewers</span>, not
-                      just unique views.
+                      Find YouTube KOLs with <span className="font-bold">loyal audiences</span>,
+                      measured by <span className="font-bold">repeat viewers</span>, not just unique
+                      views.
                     </p>
                   </div>
                 </div>
@@ -524,9 +498,7 @@ export default function PRProposalPage({
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
-                        <div className="text-sm text-gray-900">
-                          {formatPrice(item.price)}
-                        </div>
+                        <div className="text-sm text-gray-900">{formatPrice(item.price)}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
                         <div className="flex items-center justify-center">
@@ -537,9 +509,7 @@ export default function PRProposalPage({
                               onChange={() => handleApprovalChange(item.id)}
                               className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
                             />
-                            <span className="ml-2 text-sm text-green-600 font-medium">
-                              Accept
-                            </span>
+                            <span className="ml-2 text-sm text-green-600 font-medium">Accept</span>
                           </label>
                         </div>
                       </td>
@@ -571,15 +541,11 @@ export default function PRProposalPage({
                     <div className="space-y-1 text-sm text-gray-600">
                       <div>
                         <span className="font-medium">DR Rating:</span>{" "}
-                        <span className="font-semibold">
-                          {item.dr.dr || "-"}
-                        </span>
+                        <span className="font-semibold">{item.dr.dr || "-"}</span>
                       </div>
                       <div>
                         <span className="font-medium">Deliverables:</span>{" "}
-                        <span className="font-semibold">
-                          {item.dr.deliverables || "-"}
-                        </span>
+                        <span className="font-semibold">{item.dr.deliverables || "-"}</span>
                       </div>
                       <div>
                         <span className="font-medium">Quantity:</span>{" "}
@@ -608,9 +574,7 @@ export default function PRProposalPage({
                           onChange={() => handleApprovalChange(item.id)}
                           className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
                         />
-                        <span className="ml-2 text-sm text-green-600 font-medium">
-                          Accept
-                        </span>
+                        <span className="ml-2 text-sm text-green-600 font-medium">Accept</span>
                       </label>
                       <div className="ml-auto">
                         <span className="text-sm font-semibold text-gray-900">
@@ -628,15 +592,11 @@ export default function PRProposalPage({
         {/* Pricing Summary */}
         {!showBillingForm && (
           <div className="bg-white rounded-lg shadow-sm p-6 md:p-8 mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Pricing Summary
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Pricing Summary</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="text-gray-900 font-medium">
-                  {formatPrice(pricing.subtotal)}
-                </span>
+                <span className="text-gray-900 font-medium">{formatPrice(pricing.subtotal)}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-600">
@@ -648,9 +608,7 @@ export default function PRProposalPage({
               </div>
               {pricing.discountPercentage > 0 && (
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">
-                    Discount ({pricing.discountPercentage}%)
-                  </span>
+                  <span className="text-gray-600">Discount ({pricing.discountPercentage}%)</span>
                   <span className="text-green-600 font-medium">
                     -{formatPrice(pricing.discountAmount)}
                   </span>
@@ -658,9 +616,7 @@ export default function PRProposalPage({
               )}
               <div className="border-t border-gray-200 pt-3 mt-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-lg font-semibold text-gray-900">
-                    Total
-                  </span>
+                  <span className="text-lg font-semibold text-gray-900">Total</span>
                   <span className="text-lg font-bold text-[#7B46F8]">
                     {formatPrice(pricing.total)}
                   </span>
@@ -716,9 +672,7 @@ export default function PRProposalPage({
                   label="First Name"
                   name="firstName"
                   value={billingForm.firstName}
-                  onChange={(e) =>
-                    handleBillingFormChange("firstName", e.target.value)
-                  }
+                  onChange={(e) => handleBillingFormChange("firstName", e.target.value)}
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
@@ -728,9 +682,7 @@ export default function PRProposalPage({
                   label="Last Name"
                   name="lastName"
                   value={billingForm.lastName}
-                  onChange={(e) =>
-                    handleBillingFormChange("lastName", e.target.value)
-                  }
+                  onChange={(e) => handleBillingFormChange("lastName", e.target.value)}
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
@@ -750,9 +702,7 @@ export default function PRProposalPage({
                   label="Project Name"
                   name="projectName"
                   value={billingForm.projectName}
-                  onChange={(e) =>
-                    handleBillingFormChange("projectName", e.target.value)
-                  }
+                  onChange={(e) => handleBillingFormChange("projectName", e.target.value)}
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
@@ -763,9 +713,7 @@ export default function PRProposalPage({
                   name="projectUrl"
                   type="url"
                   value={billingForm.projectUrl}
-                  onChange={(e) =>
-                    handleBillingFormChange("projectUrl", e.target.value)
-                  }
+                  onChange={(e) => handleBillingFormChange("projectUrl", e.target.value)}
                   placeholder="https://example.com"
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
@@ -776,9 +724,7 @@ export default function PRProposalPage({
                   label="Telegram ID"
                   name="telegramId"
                   value={billingForm.telegramId}
-                  onChange={(e) =>
-                    handleBillingFormChange("telegramId", e.target.value)
-                  }
+                  onChange={(e) => handleBillingFormChange("telegramId", e.target.value)}
                   placeholder="@username or numeric ID"
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
@@ -788,15 +734,11 @@ export default function PRProposalPage({
 
             {/* Pricing Summary in Billing Form */}
             <div className="mt-6 bg-gray-50 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Pricing Summary
-              </h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Pricing Summary</h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="text-gray-900 font-medium">
-                    {formatPrice(pricing.subtotal)}
-                  </span>
+                  <span className="text-gray-900 font-medium">{formatPrice(pricing.subtotal)}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">
@@ -809,9 +751,7 @@ export default function PRProposalPage({
                 </div>
                 {pricing.discountPercentage > 0 && (
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">
-                      Discount ({pricing.discountPercentage}%)
-                    </span>
+                    <span className="text-gray-600">Discount ({pricing.discountPercentage}%)</span>
                     <span className="text-green-600 font-medium">
                       -{formatPrice(pricing.discountAmount)}
                     </span>
@@ -819,9 +759,7 @@ export default function PRProposalPage({
                 )}
                 <div className="border-t border-gray-200 pt-3 mt-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-lg font-semibold text-gray-900">
-                      Total
-                    </span>
+                    <span className="text-lg font-semibold text-gray-900">Total</span>
                     <span className="text-lg font-bold text-[#7B46F8]">
                       {formatPrice(pricing.total)}
                     </span>

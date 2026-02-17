@@ -1,7 +1,7 @@
-'use client';
-import Image from 'next/image';
-import React from 'react';
-import Marquee from 'react-fast-marquee';
+"use client";
+import Image from "next/image";
+import React from "react";
+import Marquee from "react-fast-marquee";
 
 export default function MarqueeSlide(): JSX.Element {
   return (
@@ -18,4 +18,4 @@ export default function MarqueeSlide(): JSX.Element {
       </Marquee>
     </div>
   );
-} 
+}

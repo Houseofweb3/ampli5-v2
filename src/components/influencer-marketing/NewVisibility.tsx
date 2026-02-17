@@ -22,8 +22,8 @@ export default function NewVisibility() {
           BDs do not understand brief.
         </p>
         <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-2xl mx-auto">
-          You get a template list of influencers that do not work Current model
-          is outdated: Send a brief. Wait for replies.
+          You get a template list of influencers that do not work Current model is outdated: Send a
+          brief. Wait for replies.
         </p>
         <p className="sm:!text-18 !text-16 !font-semibold !text-[#FE8616] ">
           Low volume. Low testing. Low performance.

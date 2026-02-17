@@ -12,16 +12,13 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
               ECOSYSTEM <br /> PARTNERSHIPS
             </h2>
             <div className="sm:space-y-8 space-y-4 mt-10">
-              <p className="text-white">
-                Warm intros via creators and founders
-              </p>
+              <p className="text-white">Warm intros via creators and founders</p>
               <p className="text-white">
                 Narrative-led pitches ecosystems resonate
-                <br/>with Faster integrations
+                <br />
+                with Faster integrations
               </p>
-              <p className="text-white">
-                Network effects that build TVL and AUM
-              </p>
+              <p className="text-white">Network effects that build TVL and AUM</p>
             </div>
           </div>
           <div className="h-full text-center">

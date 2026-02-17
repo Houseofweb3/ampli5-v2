@@ -4,7 +4,6 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import NewHome from "../components/NewHome";
 
-
 export const metadata: Metadata = {
   title: "Ampli5 | AI-Powered Influencer & PR Solutions for Web3",
   description:

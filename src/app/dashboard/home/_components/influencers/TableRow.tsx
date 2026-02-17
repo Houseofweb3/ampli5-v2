@@ -6,13 +6,7 @@ import { FiExternalLink } from "react-icons/fi";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
-import {
-  VerifyIcon,
-  NicheIcon,
-  GeographyIcon,
-  FollowerIcon,
-  Score,
-} from "@/public/icons";
+import { VerifyIcon, NicheIcon, GeographyIcon, FollowerIcon, Score } from "@/public/icons";
 import { Influencer } from "@/src/lib/types";
 import { useCart } from "@/src/context/CartContext";
 import { useLogCart } from "@/src/context/InfluencersContext";
@@ -56,14 +50,10 @@ const TableRow: React.FC<TableRowProps> = React.memo(
     const cartOperations = useMemo(
       () => ({
         findInfluencer: (cart: CartState) =>
-          cart?.influencerCartItems?.find(
-            (item) => item.influencer.id === data.id
-          ),
+          cart?.influencerCartItems?.find((item) => item.influencer.id === data.id),
 
         isInfluencerInCart: (cart: CartState) =>
-          !!cart?.influencerCartItems?.some(
-            (item) => item.influencer.id === data.id
-          ),
+          !!cart?.influencerCartItems?.some((item) => item.influencer.id === data.id),
       }),
       [data.id]
     );
@@ -97,9 +87,7 @@ const TableRow: React.FC<TableRowProps> = React.memo(
             const cartItem = cartOperations.findInfluencer(cart);
             if (!cartItem) return;
 
-            const response = await how3.delete(
-              `${ENDPOINTS.INFLUENCER_CART_ITEM}/${cartItem.id}`
-            );
+            const response = await how3.delete(`${ENDPOINTS.INFLUENCER_CART_ITEM}/${cartItem.id}`);
 
             if (response.data) {
               await fetchCart();
@@ -172,9 +160,7 @@ const TableRow: React.FC<TableRowProps> = React.memo(
       <div className="mb-2 transition-colors border-b border-black/20 w-full">
         <div
           id="table-row"
-          className={`w-full flex  ${
-            !isOpen ? "opacity-100 h-fit " : "opacity-0 max-h-0"
-          }`}
+          className={`w-full flex  ${!isOpen ? "opacity-100 h-fit " : "opacity-0 max-h-0"}`}
         >
           {/* <TableCell id="Number">
             <span className="text-sm text-[#757575]">{number}</span>
@@ -209,9 +195,7 @@ const TableRow: React.FC<TableRowProps> = React.memo(
             <PlatformIcon platform={data.platform} />
           </TableCell>
           <TableCell id="ContentType">
-            <span className="text-sm text-[#757575]">
-              {data?.contentType}
-            </span>
+            <span className="text-sm text-[#757575]">{data?.contentType}</span>
           </TableCell>
           <TableCell id="Niche">
             <span className="text-sm text-[#757575]">{data.niche}</span>
@@ -253,9 +237,7 @@ const TableRow: React.FC<TableRowProps> = React.memo(
                   <VerifyIcon />
                 </span>
               </p>
-              <p className=" text-[#757575] text-xs font-light">
-                {data?.geography}
-              </p>
+              <p className=" text-[#757575] text-xs font-light">{data?.geography}</p>
             </div>
             <div className="flex-1 flex flex-col gap-3 ">
               <div className="grid md:grid-cols-3 gap-3 grid-cols-1">

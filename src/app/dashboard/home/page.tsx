@@ -12,9 +12,7 @@ const Tabs = dynamic(() => import("@/src/components/ui/tabs"), {
 const HeroSection = lazy(() => import("./_components/influencers/HeroSection"));
 const Packages = lazy(() => import("./_components/packages/package-section"));
 
-const LoadingFallback = () => (
-  <div className="animate-pulse h-48 bg-gray-100 rounded-lg" />
-);
+const LoadingFallback = () => <div className="animate-pulse h-48 bg-gray-100 rounded-lg" />;
 
 const Page = () => {
   const { data: session } = useSession();
@@ -37,9 +35,7 @@ const Page = () => {
     <div className="py-8 px-4 md:px-12 w-full h-full flex flex-col">
       <div className="font-Jakarta w-full flex flex-col gap-6 justify-center md:items-center pb-8">
         <div className="flex w-full items-center justify-center relative 2md:flex-row flex-col gap-4">
-          <p className="text-gray-600 uppercase tracking-widest">
-            Welcome {session?.user?.name}
-          </p>
+          <p className="text-gray-600 uppercase tracking-widest">Welcome {session?.user?.name}</p>
         </div>
 
         <span className="font-semibold text-2xl md:text-5xl tracking-wider text-center">
@@ -49,8 +45,7 @@ const Page = () => {
 
       <Tabs items={TabItems} />
 
-      <Suspense fallback={<LoadingFallback />}>
-      </Suspense>
+      <Suspense fallback={<LoadingFallback />}></Suspense>
     </div>
   );
 };

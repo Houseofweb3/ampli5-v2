@@ -5,12 +5,7 @@ import Image from "next/image";
 const cardData = [
   {
     number: "You already create",
-    description: [
-      "Podcasts",
-      "Founder interviews",
-      "Product explainers",
-      "Long-form content",
-    ],
+    description: ["Podcasts", "Founder interviews", "Product explainers", "Long-form content"],
   },
   {
     number: "But",
@@ -39,16 +34,13 @@ const BrandDeserves: React.FC = (): JSX.Element => {
       const elementCenter = rect.top + rect.height / 2;
 
       // Check if element center is within 20% of viewport center
-      const isInCenter =
-        Math.abs(elementCenter - viewportCenter) < viewportHeight * 0.2;
+      const isInCenter = Math.abs(elementCenter - viewportCenter) < viewportHeight * 0.2;
 
       // Check if element is below the center (scrolled down past center)
-      const isBelowCenter =
-        elementCenter > viewportCenter + viewportHeight * 0.2;
+      const isBelowCenter = elementCenter > viewportCenter + viewportHeight * 0.2;
 
       // Check if element is above the center (scrolled up past center)
-      const isAboveCenter =
-        elementCenter < viewportCenter - viewportHeight * 0.2;
+      const isAboveCenter = elementCenter < viewportCenter - viewportHeight * 0.2;
 
       if (isInCenter) {
         // Mark that it has reached center and highlight it
@@ -116,9 +108,7 @@ const BrandDeserves: React.FC = (): JSX.Element => {
             const isSecondCard = index === 1;
             // First card is highlighted when second card is NOT in center
             // Second card is highlighted when it IS in center
-            const shouldHighlight = isSecondCard
-              ? isSecondCardInCenter
-              : !isSecondCardInCenter;
+            const shouldHighlight = isSecondCard ? isSecondCardInCenter : !isSecondCardInCenter;
 
             return (
               <div
@@ -126,9 +116,7 @@ const BrandDeserves: React.FC = (): JSX.Element => {
                 ref={isSecondCard ? secondCardRef : null}
                 className={cn(
                   "rounded-xl p-6 lg:p-8 flex flex-col gap-4  border-2 transition-all duration-500",
-                  shouldHighlight
-                    ? "bg-white border-[#a709f0]"
-                    : "bg-transparent border-white"
+                  shouldHighlight ? "bg-white border-[#a709f0]" : "bg-transparent border-white"
                 )}
               >
                 <div
@@ -141,10 +129,7 @@ const BrandDeserves: React.FC = (): JSX.Element => {
                 </div>
 
                 <div
-                  className={cn(
-                    "h-0.5 w-full mb-4",
-                    shouldHighlight ? "bg-[#7B46F8]" : "bg-white"
-                  )}
+                  className={cn("h-0.5 w-full mb-4", shouldHighlight ? "bg-[#7B46F8]" : "bg-white")}
                 ></div>
 
                 <ul

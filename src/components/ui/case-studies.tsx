@@ -106,12 +106,7 @@ export default function CaseStudies() {
               className="bg-white rounded-xl p-6 md:p-8 border-2 border-[#7B46F8] h-full"
             >
               <div className="flex  justify-between items-center w-full mb-6 md:mb-12">
-                <div
-                  className={cn(
-                    "mr-auto  w-fit ",
-                    index <= 3 ? "h-[40px]" : " h-[30px]"
-                  )}
-                >
+                <div className={cn("mr-auto  w-fit ", index <= 3 ? "h-[40px]" : " h-[30px]")}>
                   <Image
                     src={study.img}
                     alt={study.name}

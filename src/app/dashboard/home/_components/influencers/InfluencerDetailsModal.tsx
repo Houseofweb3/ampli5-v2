@@ -36,10 +36,7 @@ export const InfluencerDetailModal: React.FC<InfluencerDetailModalProps> = ({
     <div className="fixed inset-0 bg-black/50 z-[999999] flex flex-col items-start justify-start overflow-y-auto">
       <div className="relative w-full min-h-screen bg-white flex flex-col">
         {/* Close button */}
-        <button
-          onClick={onClose}
-          className=" flex justify-start items-center gap-1.5 p-4"
-        >
+        <button onClick={onClose} className=" flex justify-start items-center gap-1.5 p-4">
           <BackArrow />
           <span>Back</span>
         </button>
@@ -49,9 +46,7 @@ export const InfluencerDetailModal: React.FC<InfluencerDetailModalProps> = ({
             {/* Profile Header */}
             <div className="flex flex-row items-start gap-2 bg-primary-light rounded-lg p-3">
               <Image
-                src={
-                  influencer.dpLink !== "NaN" ? influencer.dpLink : "/logo.svg"
-                }
+                src={influencer.dpLink !== "NaN" ? influencer.dpLink : "/logo.svg"}
                 alt={`${influencer.influencer}'s profile`}
                 width={80}
                 height={80}
@@ -65,9 +60,7 @@ export const InfluencerDetailModal: React.FC<InfluencerDetailModalProps> = ({
                     <VerifyIcon />
                   </span>
                 </p>
-                <p className="text-[#757575] text-xs font-light">
-                  {influencer?.geography}
-                </p>
+                <p className="text-[#757575] text-xs font-light">{influencer?.geography}</p>
               </div>
             </div>
             {/* Platform Info */}

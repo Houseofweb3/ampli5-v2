@@ -190,8 +190,7 @@ const HeroSection = () => {
                 influencerNumber={
                   currentPage === 1
                     ? influencerList?.influencers.length * currentPage
-                    : influencerList?.influencers.length +
-                      10 * (currentPage - 1)
+                    : influencerList?.influencers.length + 10 * (currentPage - 1)
                 }
                 totalInfluencers={influencerList?.pagination.total}
                 currentPage={currentPage}

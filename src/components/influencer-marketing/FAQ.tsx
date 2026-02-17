@@ -30,8 +30,7 @@ const faqData = [
   {
     number: 5,
     question: "How soon can a campaign go live",
-    answer:
-      "Within 72 hours from selection. Speed is our operating principle.",
+    answer: "Within 72 hours from selection. Speed is our operating principle.",
   },
 ];
 

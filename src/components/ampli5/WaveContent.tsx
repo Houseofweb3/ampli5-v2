@@ -11,11 +11,10 @@ const WaveContent: React.FC = (): JSX.Element => {
           Choose What You Create. Get Paid To express.
         </h2>
         <p>
-          Whether you write threads, create reels, or design memes — there's a
-          campaign for you.
+          Whether you write threads, create reels, or design memes — there's a campaign for you.
         </p>
         <div className="flex justify-center items-center mt-9 lg:mt-60px max-w-full sm:max-w-180px mx-auto">
-          <SecondaryButton 
+          <SecondaryButton
             onClick={() => router.push("/bounty-hunt")}
             disabled={false}
             className=""

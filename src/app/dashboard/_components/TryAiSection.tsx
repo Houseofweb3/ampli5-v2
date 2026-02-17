@@ -28,9 +28,8 @@ const TryAiSection = () => {
             Not sure where to start? Let AI do the heavy lifting.
           </span>
           <p className="text-secondary-text md:text-lg ">
-            Answer few question about your business, and our AI will deliver a
-            custom list of influencers that align with your brand and target
-            audience.
+            Answer few question about your business, and our AI will deliver a custom list of
+            influencers that align with your brand and target audience.
           </p>
         </div>
         <Button

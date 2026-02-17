@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
 const AppointmentButton: React.FC = () => {
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.lemcal.com/lemcal-integrations.min.js';
+    const script = document.createElement("script");
+    script.src = "https://cdn.lemcal.com/lemcal-integrations.min.js";
     script.defer = true;
     document.body.appendChild(script);
 
@@ -16,7 +16,7 @@ const AppointmentButton: React.FC = () => {
   }, []);
 
   return (
-    <div 
+    <div
       className="lemcal-embed-button my-8 md:my-14"
       data-user="usr_dkaCWS9H7QvTQN8nP"
       data-meeting-type="met_kCDPcSFktqbotx26B"

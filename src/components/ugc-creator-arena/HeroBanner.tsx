@@ -47,17 +47,13 @@ export default function HeroBanner() {
             Growth doesn’t come from campaigns alone.
           </h1>
           <p className="mb-6 sm:mb-10 text-center text-xl font-semibold max-w-5xl mx-auto">
-            It comes from infra that makes your product easier, faster and
-            cheaper to use.
+            It comes from infra that makes your product easier, faster and cheaper to use.
           </p>
         </div>
         <div className="pb-26px lg:pb-48px">
           <PrimaryButton
             onClick={() =>
-              window.open(
-                "https://calendly.com/partnerships-houseofweb3/30min",
-                "_blank"
-              )
+              window.open("https://calendly.com/partnerships-houseofweb3/30min", "_blank")
             }
             className="text-white mx-auto"
           >
@@ -67,15 +63,12 @@ export default function HeroBanner() {
         <div>
           <div className="hero_description  text-center mt-4">
             <h3 className="!text-black !font-medium text-xl md:text-2xl  max-w-3xl mx-auto">
-              Warm intros to the right partners and a GTM team that executes
-              them end-to-end. Institutional access. Liquidity routes. Infra
-              integrations.
+              Warm intros to the right partners and a GTM team that executes them end-to-end.
+              Institutional access. Liquidity routes. Infra integrations.
             </h3>
           </div>
           <div className="hero_description pb-16px lg:pb-28px text-center max-w-4xl mx-auto">
-            <h3 className="!text-dark-purple1-bg">
-              5 Partnerships. 10 M TVL. 45 Days
-            </h3>
+            <h3 className="!text-dark-purple1-bg">5 Partnerships. 10 M TVL. 45 Days</h3>
           </div>
         </div>
       </div>

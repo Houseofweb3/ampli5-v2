@@ -2,7 +2,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
-
 export default function FounderFuelSuccessPage() {
   const router = useRouter();
 
@@ -30,14 +29,13 @@ export default function FounderFuelSuccessPage() {
           </div>
 
           {/* Success Message */}
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Thank You!
-          </h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Thank You!</h1>
           <p className="text-lg md:text-xl text-gray-600 mb-2">
             Your FounderFuel application has been submitted successfully
           </p>
           <p className="text-base text-gray-500 mb-8">
-            We have received your application and will get back to you shortly. Our team will review your submission and contact you soon.
+            We have received your application and will get back to you shortly. Our team will review
+            your submission and contact you soon.
           </p>
 
           {/* Action Buttons */}

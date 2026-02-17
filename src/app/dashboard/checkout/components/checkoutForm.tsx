@@ -35,9 +35,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   return (
     <div className="font-Jakarta">
       <div className="flex flex-col gap-5">
-        <div className="font-bold text-2xl font-Jakarta md:leading-[24px]">
-          Checkout
-        </div>
+        <div className="font-bold text-2xl font-Jakarta md:leading-[24px]">Checkout</div>
 
         <div className="font-semibold md:text-base text-sm font-Jakarta md:leading-[22px]">
           Campaign Details
@@ -45,9 +43,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
       </div>
       <div className="pt-4 md:pt-10 w-full grid md:grid-cols-2 grid-cols-1 md:gap-6 gap-3">
         <div className="flex flex-col gap-3">
-          <div className="font-semibold md:text-sm md:leading-[20px]">
-            First Name*
-          </div>
+          <div className="font-semibold md:text-sm md:leading-[20px]">First Name*</div>
           <div className="items-center">
             <Input
               required
@@ -60,25 +56,20 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         </div>
 
         <div className="flex flex-col gap-3">
-          <div className="font-bold md:text-sm md:leading-[20px]">
-            Last Name*
-          </div>
+          <div className="font-bold md:text-sm md:leading-[20px]">Last Name*</div>
           <div className="items-center">
             <Input
               required
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               variant={INPUT_VARIANTS.OUTLINED}
-
               name="lastName"
             />
           </div>
         </div>
 
         <div className="flex flex-col gap-3">
-          <div className="font-bold md:text-sm md:leading-[20px]">
-            Project Name*
-          </div>
+          <div className="font-bold md:text-sm md:leading-[20px]">Project Name*</div>
           <div className="items-center">
             <Input
               required
@@ -86,15 +77,12 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
               onChange={(e) => setProjectName(e.target.value)}
               variant={INPUT_VARIANTS.OUTLINED}
               name="projectName"
-
             />
           </div>
         </div>
 
         <div className="flex flex-col gap-3">
-          <div className="font-bold md:text-sm md:leading-[20px]">
-            Project URL*
-          </div>
+          <div className="font-bold md:text-sm md:leading-[20px]">Project URL*</div>
           <div className="flex gap-3 border w-full border-gray-300 rounded-md bg-white">
             <div className="py-[14px] pl-[16px]">
               <LinkIcon />
@@ -133,9 +121,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         </div>
 
         <div className="flex flex-col gap-3">
-          <div className="font-bold md:text-sm md:leading-[20px]">
-            Telegram ID*
-          </div>
+          <div className="font-bold md:text-sm md:leading-[20px]">Telegram ID*</div>
           <div className="flex gap-3 border w-full border-gray-300 rounded-md bg-white">
             <div className="py-[14px] pl-[16px]">
               <TelegramIcon />

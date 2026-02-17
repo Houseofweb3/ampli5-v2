@@ -32,15 +32,14 @@ const WaveContent: React.FC = (): JSX.Element => {
             Don’t Hire Influencers. <br /> Activate Creators.
           </h2>
           <p className="text-white text-2xl font-medium max-w-3xl mx-auto">
-            Start a competition and watch creators battle to give your brand the
-            best content.
+            Start a competition and watch creators battle to give your brand the best content.
           </p>
           <div className=" mt-12  flex flex-col md:flex-row gap-4  justify-center items-center">
             <SecondaryButton
               onClick={() => {
-                const link = document.createElement('a');
-                link.href = '/brochure/ampli5-creator-arena.png';
-                link.download = 'ampli5-creator-arena.png';
+                const link = document.createElement("a");
+                link.href = "/brochure/ampli5-creator-arena.png";
+                link.download = "ampli5-creator-arena.png";
                 document.body.appendChild(link);
                 link.click();
                 link.remove();
@@ -53,10 +52,7 @@ const WaveContent: React.FC = (): JSX.Element => {
             </SecondaryButton>
             <SecondaryButton
               onClick={() =>
-                window.open(
-                  "https://calendly.com/partnerships-houseofweb3/30min",
-                  "_blank"
-                )
+                window.open("https://calendly.com/partnerships-houseofweb3/30min", "_blank")
               }
               disabled={false}
               className="w-fit"

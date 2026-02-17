@@ -48,18 +48,13 @@ export default function HeroBanner() {
             <span className="text-dark-purple1-bg">Activate Creators.</span>
           </h1>
           <div className="hero_description pb-16px lg:pb-28px">
-            <h2 className="!font-medium">
-              Stop buying posts. Start buying performance.
-            </h2>
+            <h2 className="!font-medium">Stop buying posts. Start buying performance.</h2>
           </div>
         </div>
         <div className="pb-26px lg:pb-48px">
           <PrimaryButton
             onClick={() =>
-              window.open(
-                "https://calendly.com/partnerships-houseofweb3/30min",
-                "_blank"
-              )
+              window.open("https://calendly.com/partnerships-houseofweb3/30min", "_blank")
             }
             className="text-white mx-auto"
           >

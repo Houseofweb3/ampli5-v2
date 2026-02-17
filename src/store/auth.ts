@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 interface User {
   id: string | null;
@@ -20,9 +20,9 @@ interface AuthState {
 
 const initialUser: User = {
   id: null,
-  profile_picture: '',
-  username: '',
-  name: '',
+  profile_picture: "",
+  username: "",
+  name: "",
   yaps_score: 0,
 };
 
@@ -50,7 +50,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'ampli5-user',
+      name: "ampli5-user",
       storage: createJSONStorage(() => localStorage),
     }
   )

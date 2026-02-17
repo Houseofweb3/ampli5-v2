@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import React from 'react';
+import Image from "next/image";
+import React from "react";
 
 interface UserOverlayProps {
   userList: string[];
@@ -24,4 +24,4 @@ export default function UserOverlay({ userList }: UserOverlayProps): JSX.Element
       </div>
     </div>
   );
-} 
+}

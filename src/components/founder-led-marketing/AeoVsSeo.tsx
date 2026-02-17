@@ -9,16 +9,12 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
           <div className="h-full text-center">
             <h2 className="text_pattern">Founder Led </h2>
             <div className="sm:space-y-8 space-y-4 mt-10">
+              <p className="text-white">Ampli5 puts you podcasts with 100 clipping distribution</p>
               <p className="text-white">
-                Ampli5 puts you podcasts with 100 clipping distribution
+                Ampli5 sits with founders and sharpens the narrative until it cuts through.
               </p>
               <p className="text-white">
-                Ampli5 sits with founders and sharpens the narrative until it
-                cuts through.
-              </p>
-              <p className="text-white">
-                Ampli5 builds distribution around your voice, creating organic
-                search for the brand.
+                Ampli5 builds distribution around your voice, creating organic search for the brand.
               </p>
             </div>
           </div>
@@ -38,15 +34,13 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
             <h2 className="text_pattern">Traditional</h2>
             <div className="sm:space-y-8 space-y-4 mt-10">
               <p className="text-white">
-                Traditional agencies get on you on panels and create linkedin
-                content alone.
+                Traditional agencies get on you on panels and create linkedin content alone.
               </p>
               <p className="text-white">
                 Agencies are not invested in making the story more tight.
               </p>
               <p className="text-white">
-                Traditional agencies can’t balance founder vs brand so both end
-                up invisible.
+                Traditional agencies can’t balance founder vs brand so both end up invisible.
               </p>
             </div>
           </div>

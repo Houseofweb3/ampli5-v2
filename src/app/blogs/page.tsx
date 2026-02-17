@@ -13,8 +13,6 @@ export default function BlogsPage(): JSX.Element {
         className="bg_hero_pattern relative overflow-hidden"
         style={{ minHeight: "calc(100vh - 70px)" }}
       >
-
-
         <div
           className="relative z-20 flex flex-col items-center justify-center max-w-7xl mx-auto px-4 w-full h-full"
           style={{ minHeight: "calc(100vh - 100px)" }}
@@ -32,17 +30,15 @@ export default function BlogsPage(): JSX.Element {
 
             <div className="hero_description pb-16px lg:pb-28px max-w-2xl mx-auto">
               <h2 className="!font-medium">
-                We're crafting something amazing for you. Stay tuned for
-                insightful content, industry updates, and expert insights.
+                We're crafting something amazing for you. Stay tuned for insightful content,
+                industry updates, and expert insights.
               </h2>
             </div>
 
             {/* CTA Button */}
             <div className="pb-26px lg:pb-48px mb-6">
               <Link href="/">
-                <PrimaryButton className="text-white mx-auto">
-                  Back to Home
-                </PrimaryButton>
+                <PrimaryButton className="text-white mx-auto">Back to Home</PrimaryButton>
               </Link>
             </div>
 

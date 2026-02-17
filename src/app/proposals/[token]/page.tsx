@@ -59,11 +59,7 @@ interface ProposalData {
   email: string;
 }
 
-export default function ProposalPage({
-  params,
-}: {
-  params: { token: string };
-}) {
+export default function ProposalPage({ params }: { params: { token: string } }) {
   const { token } = params;
   if (!token) {
     notFound();
@@ -74,9 +70,7 @@ export default function ProposalPage({
   const [showBillingForm, setShowBillingForm] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
-  const [approvalStates, setApprovalStates] = useState<
-    Record<string, boolean | null>
-  >({});
+  const [approvalStates, setApprovalStates] = useState<Record<string, boolean | null>>({});
 
   // Billing form state
   const [billingForm, setBillingForm] = useState<BillingInfo>({
@@ -116,9 +110,7 @@ export default function ProposalPage({
           if (data.influencerItems) {
             const initialApprovalStates: Record<string, boolean | null> = {};
             data.influencerItems.forEach((item: Influencer) => {
-              initialApprovalStates[item.id] = item.isClientApproved
-                ? true
-                : null;
+              initialApprovalStates[item.id] = item.isClientApproved ? true : null;
             });
             setApprovalStates(initialApprovalStates);
           }
@@ -133,8 +125,7 @@ export default function ProposalPage({
               projectUrl: data.billingInfo.projectUrl || "",
               campaignLiveDate: data.billingInfo.campaignLiveDate || "",
               note: data.billingInfo.note || "",
-              managementFeePercentage:
-                data.billingInfo.managementFeePercentage || 15,
+              managementFeePercentage: data.billingInfo.managementFeePercentage || 15,
               discount: data.billingInfo.discount || 0,
             });
           }
@@ -147,9 +138,7 @@ export default function ProposalPage({
         }
       } catch (error: any) {
         const errorMessage =
-          error.response?.data?.message ||
-          error.message ||
-          "Something went wrong";
+          error.response?.data?.message || error.message || "Something went wrong";
         toast.error(errorMessage, { duration: 2000 });
         router.push("/");
         return;
@@ -261,10 +250,7 @@ export default function ProposalPage({
     return platform;
   };
 
-  const handleBillingFormChange = (
-    field: keyof BillingInfo,
-    value: string | number,
-  ) => {
+  const handleBillingFormChange = (field: keyof BillingInfo, value: string | number) => {
     setBillingForm((prev) => ({
       ...prev,
       [field]: value,
@@ -292,13 +278,8 @@ export default function ProposalPage({
       toast.error("Project URL is required");
       return false;
     }
-    if (
-      billingForm.projectUrl &&
-      !/^https?:\/\/.+/.test(billingForm.projectUrl)
-    ) {
-      toast.error(
-        "Please enter a valid URL (must start with http:// or https://)",
-      );
+    if (billingForm.projectUrl && !/^https?:\/\/.+/.test(billingForm.projectUrl)) {
+      toast.error("Please enter a valid URL (must start with http:// or https://)");
       return false;
     }
     if (!billingForm.telegramId.trim()) {
@@ -333,9 +314,7 @@ export default function ProposalPage({
       router.push("/proposals/success");
     } catch (error: any) {
       const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Failed to update proposal";
+        error.response?.data?.message || error.message || "Failed to update proposal";
       toast.error(errorMessage, { duration: 2000 });
     } finally {
       setIsSubmitting(false);
@@ -382,8 +361,8 @@ export default function ProposalPage({
           {!showBillingForm && (
             <div className="my-8">
               <p className="text-base md:text-lg text-gray-900 mb-6">
-                Confluence between Artificial & Human intelligence to deliver
-                best ROI on influencer campaigns.
+                Confluence between Artificial & Human intelligence to deliver best ROI on influencer
+                campaigns.
               </p>
 
               <div className="flex gap-4">
@@ -391,9 +370,7 @@ export default function ProposalPage({
                 <div className="w-1 bg-[#7B46F8] rounded-full flex-shrink-0"></div>
 
                 <div className="flex-1">
-                  <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-                    Our Pitch?
-                  </h2>
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">Our Pitch?</h2>
                   <ul className="space-y-3 mb-6">
                     <li className="flex items-start gap-3">
                       <svg
@@ -452,17 +429,13 @@ export default function ProposalPage({
                       <span className="font-bold">KAITO</span>.
                     </p>
                     <p>
-                      Collaborate with top{" "}
-                      <span className="font-bold">YAPPERS</span> on{" "}
-                      <span className="font-bold">KAITO</span> for authentic
-                      engagement.
+                      Collaborate with top <span className="font-bold">YAPPERS</span> on{" "}
+                      <span className="font-bold">KAITO</span> for authentic engagement.
                     </p>
                     <p>
-                      Find YouTube KOLs with{" "}
-                      <span className="font-bold">loyal audiences</span>,
-                      measured by{" "}
-                      <span className="font-bold">repeat viewers</span>, not
-                      just unique views.
+                      Find YouTube KOLs with <span className="font-bold">loyal audiences</span>,
+                      measured by <span className="font-bold">repeat viewers</span>, not just unique
+                      views.
                     </p>
                   </div>
                 </div>
@@ -483,10 +456,7 @@ export default function ProposalPage({
                   Name
                 </p>
                 <p className="text-sm font-medium text-gray-900">
-                  {[
-                    proposal.billingInfo.firstName,
-                    proposal.billingInfo.lastName,
-                  ]
+                  {[proposal.billingInfo.firstName, proposal.billingInfo.lastName]
                     .filter(Boolean)
                     .join(" ") || "—"}
                 </p>
@@ -495,9 +465,7 @@ export default function ProposalPage({
                 <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
                   Email
                 </p>
-                <p className="text-sm font-medium text-gray-900">
-                  {proposal.email || "—"}
-                </p>
+                <p className="text-sm font-medium text-gray-900">{proposal.email || "—"}</p>
               </div>
             </div>
             {proposal.billingInfo.note && (
@@ -505,9 +473,7 @@ export default function ProposalPage({
                 <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
                   Note
                 </p>
-                <p className="text-sm text-gray-700">
-                  {proposal.billingInfo.note}
-                </p>
+                <p className="text-sm text-gray-700">{proposal.billingInfo.note}</p>
               </div>
             )}
           </div>
@@ -557,10 +523,7 @@ export default function ProposalPage({
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-12 w-12">
                             <Image
-                              src={
-                                item.influencer.dpLink ||
-                                "/placeholder-avatar.png"
-                              }
+                              src={item.influencer.dpLink || "/placeholder-avatar.png"}
                               alt={item.influencer.name}
                               width={48}
                               height={48}
@@ -586,9 +549,7 @@ export default function ProposalPage({
                         </a>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
-                        <div className="text-sm text-gray-900">
-                          {item.influencer.contentType}
-                        </div>
+                        <div className="text-sm text-gray-900">{item.influencer.contentType}</div>
                       </td>
 
                       <td className="px-6 py-4 text-center">
@@ -617,9 +578,7 @@ export default function ProposalPage({
                                 <GrDocumentText className="w-6 h-6" />
                               </a>
                             ) : (
-                              <span className="font-medium">
-                                {item.profOfWork}
-                              </span>
+                              <span className="font-medium">{item.profOfWork}</span>
                             )}
                           </div>
                         )}
@@ -630,19 +589,13 @@ export default function ProposalPage({
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
-                        <div className="text-sm text-gray-900">
-                          {formatPrice(item.price)}
-                        </div>
+                        <div className="text-sm text-gray-900">{formatPrice(item.price)}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
                         <div className="text-sm text-gray-900">
                           {formatPrice(
-                            parseFloat(
-                              String(item.price || item.influencer?.price || 0),
-                            ) *
-                              Number(
-                                item.quantity ?? item.influencer?.quantity ?? 1,
-                              ),
+                            parseFloat(String(item.price || item.influencer?.price || 0)) *
+                              Number(item.quantity ?? item.influencer?.quantity ?? 1)
                           )}
                         </div>
                       </td>
@@ -656,9 +609,7 @@ export default function ProposalPage({
                               onChange={() => handleApprovalChange(item.id)}
                               className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
                             />
-                            <span className="ml-2 text-sm text-green-600 font-medium">
-                              Accept
-                            </span>
+                            <span className="ml-2 text-sm text-green-600 font-medium">Accept</span>
                           </label>
                         </div>
                       </td>
@@ -674,17 +625,12 @@ export default function ProposalPage({
         {!showBillingForm && (
           <div className="md:hidden space-y-4 mb-8 w-full">
             {proposal?.influencerItems?.map((item) => (
-              <div
-                key={item.id}
-                className="bg-white rounded-lg shadow-sm p-4 w-full"
-              >
+              <div key={item.id} className="bg-white rounded-lg shadow-sm p-4 w-full">
                 <div className="flex flex-col items-start space-y-4">
                   <div className="flex justify-start items-center gap-2">
                     <div className="flex-shrink-0">
                       <Image
-                        src={
-                          item.influencer.dpLink || "/placeholder-avatar.png"
-                        }
+                        src={item.influencer.dpLink || "/placeholder-avatar.png"}
                         alt={item.influencer.name}
                         width={60}
                         height={60}
@@ -733,36 +679,26 @@ export default function ProposalPage({
                               <GrDocumentText className="w-4 h-4" />
                             </a>
                           ) : (
-                            <span className="font-medium">
-                              {item.profOfWork}
-                            </span>
+                            <span className="font-medium">{item.profOfWork}</span>
                           )}
                         </div>
                       )}
                       <div className="flex justify-start items-center gap-2">
                         <span className="font-semibold">Price:</span>{" "}
                         <span className="">
-                          {formatPrice(
-                            item.price || item.influencer?.price || 0,
-                          )}
+                          {formatPrice(item.price || item.influencer?.price || 0)}
                         </span>
                       </div>
                       <div className="flex justify-start items-center gap-2">
                         <span className="font-semibold">Quantity:</span>{" "}
-                        <span className="">
-                          {item.quantity || item.influencer?.quantity || 1}
-                        </span>
+                        <span className="">{item.quantity || item.influencer?.quantity || 1}</span>
                       </div>
                       <div className="flex justify-start items-center gap-2">
                         <span className="font-semibold">Total Price:</span>{" "}
                         <span className="">
                           {formatPrice(
-                            parseFloat(
-                              String(item.price || item.influencer?.price || 0),
-                            ) *
-                              Number(
-                                item.quantity ?? item.influencer?.quantity ?? 1,
-                              ),
+                            parseFloat(String(item.price || item.influencer?.price || 0)) *
+                              Number(item.quantity ?? item.influencer?.quantity ?? 1)
                           )}
                         </span>
                       </div>
@@ -775,9 +711,7 @@ export default function ProposalPage({
                           onChange={() => handleApprovalChange(item.id)}
                           className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
                         />
-                        <span className="ml-2 text-sm text-green-600 font-medium">
-                          Accept
-                        </span>
+                        <span className="ml-2 text-sm text-green-600 font-medium">Accept</span>
                       </label>
                     </div>
                   </div>
@@ -790,15 +724,11 @@ export default function ProposalPage({
         {/* Pricing Summary */}
         {!showBillingForm && (
           <div className="bg-white rounded-lg shadow-sm p-6 md:p-8 mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Pricing Summary
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Pricing Summary</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="text-gray-900 font-medium">
-                  {formatPrice(pricing.subtotal)}
-                </span>
+                <span className="text-gray-900 font-medium">{formatPrice(pricing.subtotal)}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-600">
@@ -810,9 +740,7 @@ export default function ProposalPage({
               </div>
               {pricing.discountPercentage > 0 && (
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">
-                    Discount ({pricing.discountPercentage}%)
-                  </span>
+                  <span className="text-gray-600">Discount ({pricing.discountPercentage}%)</span>
                   <span className="text-green-600 font-medium">
                     -{formatPrice(pricing.discountAmount)}
                   </span>
@@ -820,9 +748,7 @@ export default function ProposalPage({
               )}
               <div className="border-t border-gray-200 pt-3 mt-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-lg font-semibold text-gray-900">
-                    Total
-                  </span>
+                  <span className="text-lg font-semibold text-gray-900">Total</span>
                   <span className="text-lg font-bold text-[#7B46F8]">
                     {formatPrice(pricing.total)}
                   </span>
@@ -840,7 +766,7 @@ export default function ProposalPage({
               onClick={() => {
                 // Check if any influencers are accepted
                 const hasAcceptedInfluencers = proposal?.influencerItems?.some(
-                  (item) => approvalStates[item.id] === true,
+                  (item) => approvalStates[item.id] === true
                 );
 
                 if (!hasAcceptedInfluencers) {
@@ -878,9 +804,7 @@ export default function ProposalPage({
                   label="First Name"
                   name="firstName"
                   value={billingForm.firstName}
-                  onChange={(e) =>
-                    handleBillingFormChange("firstName", e.target.value)
-                  }
+                  onChange={(e) => handleBillingFormChange("firstName", e.target.value)}
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
@@ -890,9 +814,7 @@ export default function ProposalPage({
                   label="Last Name"
                   name="lastName"
                   value={billingForm.lastName}
-                  onChange={(e) =>
-                    handleBillingFormChange("lastName", e.target.value)
-                  }
+                  onChange={(e) => handleBillingFormChange("lastName", e.target.value)}
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
@@ -912,9 +834,7 @@ export default function ProposalPage({
                   label="Project Name"
                   name="projectName"
                   value={billingForm.projectName}
-                  onChange={(e) =>
-                    handleBillingFormChange("projectName", e.target.value)
-                  }
+                  onChange={(e) => handleBillingFormChange("projectName", e.target.value)}
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
@@ -925,9 +845,7 @@ export default function ProposalPage({
                   name="projectUrl"
                   type="url"
                   value={billingForm.projectUrl}
-                  onChange={(e) =>
-                    handleBillingFormChange("projectUrl", e.target.value)
-                  }
+                  onChange={(e) => handleBillingFormChange("projectUrl", e.target.value)}
                   placeholder="https://example.com"
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
@@ -938,9 +856,7 @@ export default function ProposalPage({
                   label="Telegram ID"
                   name="telegramId"
                   value={billingForm.telegramId}
-                  onChange={(e) =>
-                    handleBillingFormChange("telegramId", e.target.value)
-                  }
+                  onChange={(e) => handleBillingFormChange("telegramId", e.target.value)}
                   placeholder="@username or numeric ID"
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
@@ -950,15 +866,11 @@ export default function ProposalPage({
 
             {/* Pricing Summary in Billing Form */}
             <div className="mt-6 bg-gray-50 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Pricing Summary
-              </h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Pricing Summary</h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="text-gray-900 font-medium">
-                    {formatPrice(pricing.subtotal)}
-                  </span>
+                  <span className="text-gray-900 font-medium">{formatPrice(pricing.subtotal)}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">
@@ -971,9 +883,7 @@ export default function ProposalPage({
                 </div>
                 {pricing.discountPercentage > 0 && (
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">
-                      Discount ({pricing.discountPercentage}%)
-                    </span>
+                    <span className="text-gray-600">Discount ({pricing.discountPercentage}%)</span>
                     <span className="text-green-600 font-medium">
                       -{formatPrice(pricing.discountAmount)}
                     </span>
@@ -981,9 +891,7 @@ export default function ProposalPage({
                 )}
                 <div className="border-t border-gray-200 pt-3 mt-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-lg font-semibold text-gray-900">
-                      Total
-                    </span>
+                    <span className="text-lg font-semibold text-gray-900">Total</span>
                     <span className="text-lg font-bold text-[#7B46F8]">
                       {formatPrice(pricing.total)}
                     </span>

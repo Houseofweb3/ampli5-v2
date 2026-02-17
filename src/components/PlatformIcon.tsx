@@ -10,9 +10,7 @@ interface PlatformIconProps {
 const PlatformIcon: React.FC<PlatformIconProps> = ({ platform }) => {
   const iconSrc = getIconSrc(platform);
 
-  return iconSrc ? (
-    <Image src={iconSrc} alt={platform} width={20} height={20} />
-  ) : null;
+  return iconSrc ? <Image src={iconSrc} alt={platform} width={20} height={20} /> : null;
 };
 
 const getIconSrc = (platform: string) => {

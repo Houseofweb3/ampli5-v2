@@ -7,7 +7,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Founder-Led Marketing for Web3 | Ampli5",
-  description: "Ampli5's founder-led marketing services help web3 founders build authority and narrative ownership. Extract your natural voice, amplify your message, and become the lens through which the market interprets your category. Build authority that compounds.",
+  description:
+    "Ampli5's founder-led marketing services help web3 founders build authority and narrative ownership. Extract your natural voice, amplify your message, and become the lens through which the market interprets your category. Build authority that compounds.",
   keywords: [
     "founder-led marketing",
     "web3 founder marketing",
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Founder-Led Marketing for Web3 | Ampli5",
-    description: "Help web3 founders build authority and narrative ownership. Extract your natural voice and amplify your message.",
+    description:
+      "Help web3 founders build authority and narrative ownership. Extract your natural voice and amplify your message.",
     url: `${process.env.NEXTAUTH_URL || "https://ampli5.ai"}/services/founder-led-marketing`,
   },
   alternates: {

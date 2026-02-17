@@ -15,16 +15,14 @@ export default function NewVisibility() {
         />
       </div>
       <div className="text-center">
-        <h3 className="!text-[#7B46F8] text-3xl sm:text-4xl lg:text-5xl pb-6">
-          What is ampli5?
-        </h3>
+        <h3 className="!text-[#7B46F8] text-3xl sm:text-4xl lg:text-5xl pb-6">What is ampli5?</h3>
         <p className="sm:!text-18 !text-16 !font-semibold max-w-2xl mx-auto">
           Ampli5 is not an agency.
         </p>
         <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-2xl mx-auto">
-          Agencies focus on creation. Ampli5 focuses on <b>distribution.</b> We
-          use clipping to create repeat exposure. Brand recall becomes brand
-          mindshare across social, search, and AI.
+          Agencies focus on creation. Ampli5 focuses on <b>distribution.</b> We use clipping to
+          create repeat exposure. Brand recall becomes brand mindshare across social, search, and
+          AI.
         </p>
       </div>
     </div>

@@ -7,7 +7,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Influencer Marketing for Web3 | Ampli5",
-  description: "Ampli5's AI-powered influencer marketing platform for web3 projects. Connect with verified crypto influencers, launch data-driven campaigns, and amplify your brand reach. Get instant proposals and start campaigns within 72 hours.",
+  description:
+    "Ampli5's AI-powered influencer marketing platform for web3 projects. Connect with verified crypto influencers, launch data-driven campaigns, and amplify your brand reach. Get instant proposals and start campaigns within 72 hours.",
   keywords: [
     "web3 influencer marketing",
     "crypto influencer marketing",
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Influencer Marketing for Web3 | Ampli5",
-    description: "AI-powered influencer marketing platform for web3 projects. Connect with verified crypto influencers and launch data-driven campaigns.",
+    description:
+      "AI-powered influencer marketing platform for web3 projects. Connect with verified crypto influencers and launch data-driven campaigns.",
     url: `${process.env.NEXTAUTH_URL || "https://ampli5.ai"}/services/influencer-marketing`,
   },
   alternates: {

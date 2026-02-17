@@ -19,12 +19,12 @@ export default function NewVisibility() {
           The New Creative Layer
         </h3>
         <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-xl mx-auto">
-          Traditional video production slows you down. Meetings. Edits. Brief
-          revisions. Delays that kill momentum.
+          Traditional video production slows you down. Meetings. Edits. Brief revisions. Delays that
+          kill momentum.
         </p>
         <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-xl mx-auto">
-          Audiences today decide in three seconds.You either win the moment or
-          lose the attention forever.
+          Audiences today decide in three seconds.You either win the moment or lose the attention
+          forever.
         </p>
         <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-xl mx-auto">
           If your ads still depend on long production cycles

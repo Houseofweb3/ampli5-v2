@@ -17,11 +17,7 @@ const LogCartContext = createContext<CartContextType>({
 
 export const useLogCart = () => useContext(LogCartContext);
 
-export const LogCartProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const LogCartProvider = ({ children }: { children: React.ReactNode }) => {
   const [Logcart, MakeCart] = useState<any>([]);
 
   useEffect(() => {

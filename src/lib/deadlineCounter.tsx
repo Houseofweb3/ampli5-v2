@@ -1,10 +1,10 @@
-import moment from 'moment';
-import React from 'react';
-import { cn } from './utils';
+import moment from "moment";
+import React from "react";
+import { cn } from "./utils";
 
 interface DeadlineCounterProps {
   date: string | Date;
-  status: 'open' | 'closed';
+  status: "open" | "closed";
 }
 
 export function deadlineCounter({ date, status }: DeadlineCounterProps): React.ReactElement {
@@ -12,19 +12,19 @@ export function deadlineCounter({ date, status }: DeadlineCounterProps): React.R
   const end = moment(date);
   const duration = moment.duration(end.diff(now));
 
-  const isExpired = status === 'closed' ? true : duration.asSeconds() <= 0;
+  const isExpired = status === "closed" ? true : duration.asSeconds() <= 0;
 
-  const days = isExpired ? '00' : String(Math.floor(duration.asDays())).padStart(2, '0');
-  const hours = isExpired ? '00' : String(duration.hours()).padStart(2, '0');
-  const minutes = isExpired ? '00' : String(duration.minutes()).padStart(2, '0');
+  const days = isExpired ? "00" : String(Math.floor(duration.asDays())).padStart(2, "0");
+  const hours = isExpired ? "00" : String(duration.hours()).padStart(2, "0");
+  const minutes = isExpired ? "00" : String(duration.minutes()).padStart(2, "0");
 
   return (
     <ul className="m-0 grid grid-cols-3 text-center border border-solid border-black p-6 rounded-2xl max-w-554px w-full">
       <li className="flex flex-col justify-center items-center h-full max-w-147px w-full">
         <span
           className={cn(
-            'text-20 lg:text-24 leading-loose',
-            isExpired ? 'text-dark-orange-bg' : 'text-black'
+            "text-20 lg:text-24 leading-loose",
+            isExpired ? "text-dark-orange-bg" : "text-black"
           )}
         >
           {days}
@@ -34,8 +34,8 @@ export function deadlineCounter({ date, status }: DeadlineCounterProps): React.R
       <li className="flex flex-col justify-center items-center h-full max-w-147px w-full">
         <span
           className={cn(
-            'text-20 lg:text-24 leading-loose',
-            isExpired ? 'text-dark-orange-bg' : 'text-black'
+            "text-20 lg:text-24 leading-loose",
+            isExpired ? "text-dark-orange-bg" : "text-black"
           )}
         >
           {hours}
@@ -45,8 +45,8 @@ export function deadlineCounter({ date, status }: DeadlineCounterProps): React.R
       <li className="flex flex-col justify-center items-center h-full max-w-147px w-full">
         <span
           className={cn(
-            'text-20 lg:text-24 leading-loose',
-            isExpired ? 'text-dark-orange-bg' : 'text-black'
+            "text-20 lg:text-24 leading-loose",
+            isExpired ? "text-dark-orange-bg" : "text-black"
           )}
         >
           {minutes}
@@ -55,4 +55,4 @@ export function deadlineCounter({ date, status }: DeadlineCounterProps): React.R
       </li>
     </ul>
   );
-} 
+}

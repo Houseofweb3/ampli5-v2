@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 interface BrandIntakeFormData {
   // Step 1: Brand Snapshot
@@ -45,26 +45,26 @@ interface BrandIntakeFormState {
 }
 
 const initialFormData: BrandIntakeFormData = {
-  brandProductName: '',
-  websiteLink: '',
+  brandProductName: "",
+  websiteLink: "",
   categories: [],
-  targetMarket: '',
-  audienceReadinessLevel: '',
+  targetMarket: "",
+  audienceReadinessLevel: "",
   campaignGoals: [],
   monetizationModel: [],
-  revenueModel: '',
-  marketFocus: '',
+  revenueModel: "",
+  marketFocus: "",
   primaryAudienceGeography: [],
-  ageRange: '',
-  genderSkew: '',
-  geographicLocation: '',
-  primaryContactEmail: '',
-  telegramId: '',
-  whatsappNumber: '',
-  campaignStartTimeline: '',
-  campaignStartDate: '',
-  campaignEndDate: '',
-  customBrief: '',
+  ageRange: "",
+  genderSkew: "",
+  geographicLocation: "",
+  primaryContactEmail: "",
+  telegramId: "",
+  whatsappNumber: "",
+  campaignStartTimeline: "",
+  campaignStartDate: "",
+  campaignEndDate: "",
+  customBrief: "",
 };
 
 export const useBrandIntakeFormStore = create<BrandIntakeFormState>()(
@@ -81,7 +81,7 @@ export const useBrandIntakeFormStore = create<BrandIntakeFormState>()(
         }),
     }),
     {
-      name: 'brand-intake-form',
+      name: "brand-intake-form",
       storage: createJSONStorage(() => localStorage),
     }
   )

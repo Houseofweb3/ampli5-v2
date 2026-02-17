@@ -73,10 +73,7 @@ export default function NavbarHome(): JSX.Element {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        profileRef.current &&
-        !profileRef.current.contains(event.target as Node)
-      ) {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
         setIsProfileOpen(false);
       }
     };
@@ -187,9 +184,7 @@ export default function NavbarHome(): JSX.Element {
                             {value.label}
                           </button>
                         )}
-                        {index < AuthProfile.length - 1 && (
-                          <hr className="border-light-gray-bg" />
-                        )}
+                        {index < AuthProfile.length - 1 && <hr className="border-light-gray-bg" />}
                       </Fragment>
                     ))}
                   </div>
@@ -226,9 +221,7 @@ export default function NavbarHome(): JSX.Element {
                 {isAmpli5 ? (
                   <PrimaryButton
                     className="text-white text-sm sm:text-base px-2 sm:px-6 lg:px-12 py-1.5 sm:py-2 lg:py-4"
-                    onClick={() =>
-                      signIn("twitter", { callbackUrl: "/api/user/verify" })
-                    }
+                    onClick={() => signIn("twitter", { callbackUrl: "/api/user/verify" })}
                   >
                     <span>Login</span>
                     <span className="sm:block hidden">/Signup</span>
@@ -246,11 +239,7 @@ export default function NavbarHome(): JSX.Element {
                 onClick={() => setIsServicesOpen((pre) => !pre)}
                 ref={servicesHamBurBtn}
               >
-                {isServicesOpen ? (
-                  <FiX className="text-32" />
-                ) : (
-                  <FiMenu className="text-32" />
-                )}
+                {isServicesOpen ? <FiX className="text-32" /> : <FiMenu className="text-32" />}
               </button>
             </div>
           )}
@@ -258,7 +247,10 @@ export default function NavbarHome(): JSX.Element {
       </Container>
 
       {isServicesOpen && (
-        <div ref={servicesHamBur} className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 p-4 z-50 w-full max-w-[650px] px-2 max-h-[80vh] overflow-y-auto">
+        <div
+          ref={servicesHamBur}
+          className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 p-4 z-50 w-full max-w-[650px] px-2 max-h-[80vh] overflow-y-auto"
+        >
           <div className="grid sm:grid-cols-2 grid-cols-1 gap-3">
             {servicesData.map((service, index) => {
               const isActive =
@@ -318,9 +310,7 @@ export default function NavbarHome(): JSX.Element {
             {isAmpli5 ? (
               <PrimaryButton
                 className="text-white text-sm sm:text-base  lg:px-12 py-2 !w-full"
-                onClick={() =>
-                  signIn("twitter", { callbackUrl: "/api/user/verify" })
-                }
+                onClick={() => signIn("twitter", { callbackUrl: "/api/user/verify" })}
               >
                 Login/Signup
               </PrimaryButton>

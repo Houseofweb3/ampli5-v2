@@ -9,8 +9,7 @@ import "swiper/css/pagination";
 const cardData = [
   {
     title: "Launch A Bounty",
-    description:
-      "State your brief. Set your reward pool. Your challenge enters the Arena.",
+    description: "State your brief. Set your reward pool. Your challenge enters the Arena.",
     image: "/images/arina1.png",
     width: 297,
     height: 257,
@@ -18,8 +17,7 @@ const cardData = [
   },
   {
     title: "Ampli5 Distributes It To Active Creators",
-    description:
-      "Creators looking to win; not just show up; start studying your brief.",
+    description: "Creators looking to win; not just show up; start studying your brief.",
     image: "/images/slid2.png",
     width: 292,
     height: 257,
@@ -60,8 +58,7 @@ const CampaignEnters: React.FC = (): JSX.Element => {
             pagination={{
               clickable: true,
               bulletClass: "swiper-pagination-bullet !bg-white",
-              bulletActiveClass:
-                "swiper-pagination-bullet-active !bg-[#BDF522]",
+              bulletActiveClass: "swiper-pagination-bullet-active !bg-[#BDF522]",
             }}
             breakpoints={{
               640: {
@@ -104,12 +101,9 @@ const CampaignEnters: React.FC = (): JSX.Element => {
           </Swiper>
 
           <div className="text-center text-white px-4 mt-12">
+            <p className="text-lg md:text-xl font-light">Winners earn from the prize pool.</p>
             <p className="text-lg md:text-xl font-light">
-              Winners earn from the prize pool.
-            </p>
-            <p className="text-lg md:text-xl font-light">
-              You get top-tier content that outperforms traditional influencer
-              posts.
+              You get top-tier content that outperforms traditional influencer posts.
             </p>
           </div>
         </div>

@@ -41,13 +41,9 @@ const MainPackges = ({ data }: { data: any }) => {
   const RemoveFromCart = async () => {
     try {
       if (cartId) {
-        const IsPackage = cart?.packageCartItems.find(
-          (main: any) => main.package.id === data.id
-        );
+        const IsPackage = cart?.packageCartItems.find((main: any) => main.package.id === data.id);
 
-        const response = await how3.delete(
-          `${ENDPOINTS.PACKAGES_CART_ITEM}/${IsPackage.id}`
-        );
+        const response = await how3.delete(`${ENDPOINTS.PACKAGES_CART_ITEM}/${IsPackage.id}`);
         if (response.data) {
           fetchCart();
           console.log(response.data);
@@ -80,9 +76,7 @@ const MainPackges = ({ data }: { data: any }) => {
   const CheckPackages = () => {
     const PackageId = data.id;
 
-    const IsPackage = cart?.packageCartItems.find(
-      (main: any) => main.package.id === PackageId
-    );
+    const IsPackage = cart?.packageCartItems.find((main: any) => main.package.id === PackageId);
 
     setIsAdded(IsPackage ? true : false);
   };
@@ -163,10 +157,7 @@ const MainPackges = ({ data }: { data: any }) => {
           <div className="md:grid flex flex-col gap-1 flex-[0.65] grid-cols-4 justify-between  text-[11px]">
             {data.guaranteedFeatures.map((data: string) => {
               return (
-                <div
-                  key={data}
-                  className="text-[10px] leading-[16px] text-light-gray "
-                >
+                <div key={data} className="text-[10px] leading-[16px] text-light-gray ">
                   {data}
                 </div>
               );

@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-import Link from 'next/link';
-import { CASE_STUDY_DATA } from '../data/data';
-import Container from './ui/container';
+import Link from "next/link";
+import { CASE_STUDY_DATA } from "../data/data";
+import Container from "./ui/container";
 
 interface CaseStudyItem {
   s3_url: string;

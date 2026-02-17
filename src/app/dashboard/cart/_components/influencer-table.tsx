@@ -115,9 +115,7 @@ const Table: React.FC<TableProps> = ({ influencers }) => {
     <table className="w-full mt-2">
       <tbody className="gap-2 flex flex-col w-full">
         {influencers?.length > 0 &&
-          influencers?.map((item, index) => (
-            <TableRow key={index} data={item} />
-          ))}
+          influencers?.map((item, index) => <TableRow key={index} data={item} />)}
       </tbody>
     </table>
   );

@@ -36,9 +36,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
 
   const removeInflucenerFromCart = async (id: string) => {
     try {
-      const response = await how3.delete(
-        `${ENDPOINTS.INFLUENCER_CART_ITEM}/${id}`
-      );
+      const response = await how3.delete(`${ENDPOINTS.INFLUENCER_CART_ITEM}/${id}`);
       if (response.data) {
         await fetchCart();
 
@@ -50,9 +48,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   };
   const removePackageFromCart = async (id: string) => {
     try {
-      const response = await how3.delete(
-        `${ENDPOINTS.PACKAGES_CART_ITEM}/${id}`
-      );
+      const response = await how3.delete(`${ENDPOINTS.PACKAGES_CART_ITEM}/${id}`);
       if (response.data) {
         await fetchCart();
 
@@ -192,9 +188,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
           <div>Total</div>
           <div className="flex flex-col items-end">
             {couponSuccess && (
-              <div className="font-semibold relative text-xl">
-                $ {Math.floor(cart?.total!)}
-              </div>
+              <div className="font-semibold relative text-xl">$ {Math.floor(cart?.total!)}</div>
             )}
             <div
               className={`flex gap-1 font-semibold relative w-fit ${

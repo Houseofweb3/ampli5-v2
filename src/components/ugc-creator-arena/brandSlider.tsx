@@ -53,30 +53,20 @@ function BrandSlider() {
             <div className="grid grid-cols-2 md:grid-cols-4 items-center gap-y-6">
               <div className="flex items-center justify-center flex-col sm:flex-row gap-4 border-r border-white px-2 sm:px-4 py-4">
                 <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center ">
-                  <h2 className="font-medium leading-tight text-white">
-                    325,800
-                  </h2>
-                  <p className="!text-16 !font-light !text-white">
-                    YouTube views
-                  </p>
+                  <h2 className="font-medium leading-tight text-white">325,800</h2>
+                  <p className="!text-16 !font-light !text-white">YouTube views</p>
                 </div>
               </div>
               <div className="flex items-center justify-center flex-col sm:flex-row  text-center gap-4 md:border-r border-white px-2 sm:px-4 py-4">
                 <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold ">
-                  <h2 className="font-medium leading-tight text-white">
-                    10,683
-                  </h2>
-                  <p className="!text-16 !font-light !text-white">
-                    referrals 
-                  </p>
+                  <h2 className="font-medium leading-tight text-white">10,683</h2>
+                  <p className="!text-16 !font-light !text-white">referrals</p>
                 </div>
               </div>
               <div className="flex items-center justify-center flex-col sm:flex-row gap-4 text-center border-r border-white px-2 sm:px-4 py-4">
                 <div className="grid_content_info text-20 lg:text-32 leading-10 font-extrabold  text-center">
                   <h2 className="font-medium leading-tight text-white">500 </h2>
-                  <p className="!text-16 !font-light !text-white">
-                    SOL
-                  </p>
+                  <p className="!text-16 !font-light !text-white">SOL</p>
                 </div>
               </div>
               <div className="px-2 sm:px-4 py-4 w-full flex justify-center items-center">

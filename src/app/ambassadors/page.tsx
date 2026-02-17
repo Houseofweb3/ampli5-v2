@@ -1,7 +1,7 @@
-import Image from 'next/image';
-import Card from '../../components/ui/card';
-import Container from '../../components/ui/container';
-import AppointmentCalendar from '../../components/AppointmentCalendar';
+import Image from "next/image";
+import Card from "../../components/ui/card";
+import Container from "../../components/ui/container";
+import AppointmentCalendar from "../../components/AppointmentCalendar";
 
 export default function Pages(): JSX.Element {
   return (
@@ -10,7 +10,7 @@ export default function Pages(): JSX.Element {
         <div className=" absolute top-9 lg:top-20 lg:-left-7">
           <Image
             className="w-90px h-90px lg:w-166px lg:h-166px"
-            src={'/pattern/Vector3_mobile.png'}
+            src={"/pattern/Vector3_mobile.png"}
             width={166}
             height={166}
             alt="icon"
@@ -19,7 +19,7 @@ export default function Pages(): JSX.Element {
         <div className=" absolute top-4 lg:top-20 -right-5 lg:-right-9">
           <Image
             className="w-90px h-90px lg:w-170px lg:h-170px object-contain"
-            src={'/pattern/Vector4.png'}
+            src={"/pattern/Vector4.png"}
             width={170}
             height={170}
             alt="icon"
@@ -28,7 +28,7 @@ export default function Pages(): JSX.Element {
         <Container>
           <div className=" lg:mt-22 mt-9 mb-22">
             <div className="bg-blue-btn sm:bg-transparent font-semibold text-white sm:text-black mx-auto w-fit rounded-full mb-4 py-3 px-5 border border-solid border-blue-btn lg:border-black text-14 lg:text-20 border-none shadow-none">
-              Ambassador Program{' '}
+              Ambassador Program{" "}
             </div>
 
             <h1 className=" w-full text-center text-36 lg:text-72 leading-40 lg:leading-110 font-semibold">
@@ -43,7 +43,7 @@ export default function Pages(): JSX.Element {
             <div className="hidden lg:block absolute -top-9 right-44 -z-10">
               <Image
                 className="w-103px h-103px object-contain"
-                src={'/pattern/Vector2.png'}
+                src={"/pattern/Vector2.png"}
                 width={103}
                 height={103}
                 alt="icon"
@@ -51,7 +51,7 @@ export default function Pages(): JSX.Element {
             </div>
             <Card className="rounded-2xl lg:py-6">
               <h2 className="text-green-bg text-center uppercase">
-                Still trying to find ambassadors on zealy?{' '}
+                Still trying to find ambassadors on zealy?{" "}
               </h2>
               <p className="text-20 text-center">
                 You don't need more airdrop hunters, You need people who will fight for your project

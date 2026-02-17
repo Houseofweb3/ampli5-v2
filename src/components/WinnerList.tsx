@@ -46,12 +46,8 @@ const Winner: React.FC<WinnerProps> = ({ winderList }): JSX.Element => {
                       />
                     </div>
                     <div className="cadimage_list_item_text pt-2.5 pb-4 text-center space-y-2">
-                      <h4 className="font-bold text-black">
-                        {user.ranking || index}
-                      </h4>
-                      <h4 className="font-bold text-black">
-                        {user.user.fullname || ""}
-                      </h4>
+                      <h4 className="font-bold text-black">{user.ranking || index}</h4>
+                      <h4 className="font-bold text-black">{user.user.fullname || ""}</h4>
                     </div>
                   </div>
                 );
@@ -59,9 +55,7 @@ const Winner: React.FC<WinnerProps> = ({ winderList }): JSX.Element => {
             </div>
           ) : (
             <div className="min-h-[300px] flex justify-center items-center">
-              <h3 className="font-normal text-18">
-                Winner to be announced soon{" "}
-              </h3>{" "}
+              <h3 className="font-normal text-18">Winner to be announced soon </h3>{" "}
             </div>
           )}
         </div>

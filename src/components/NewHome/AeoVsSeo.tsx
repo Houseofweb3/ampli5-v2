@@ -11,9 +11,7 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
             <div className="sm:space-y-8 space-y-4 mt-10">
               <p className="text-white">Create visibility</p>
               <p className="text-white">Agencies deliver content.</p>
-              <p className="text-white">
-                They measure success by engagement spikes.
-              </p>
+              <p className="text-white">They measure success by engagement spikes.</p>
             </div>
           </div>
           <div className="h-full text-center">

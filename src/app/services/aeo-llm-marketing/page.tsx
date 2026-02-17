@@ -7,7 +7,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "AEO & LLM Marketing for Web3 | Ampli5",
-  description: "Ampli5's AEO (Answer Engine Optimization) and LLM Marketing services help your web3 brand appear in AI-generated responses. Increase answer share, brand mentions, and visibility across AI platforms like ChatGPT, Perplexity, and more.",
+  description:
+    "Ampli5's AEO (Answer Engine Optimization) and LLM Marketing services help your web3 brand appear in AI-generated responses. Increase answer share, brand mentions, and visibility across AI platforms like ChatGPT, Perplexity, and more.",
   keywords: [
     "AEO marketing",
     "LLM marketing",
@@ -20,7 +21,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "AEO & LLM Marketing for Web3 | Ampli5",
-    description: "Help your web3 brand appear in AI-generated responses. Increase answer share and visibility across AI platforms.",
+    description:
+      "Help your web3 brand appear in AI-generated responses. Increase answer share and visibility across AI platforms.",
     url: `${process.env.NEXTAUTH_URL || "https://ampli5.ai"}/services/aeo-llm-marketing`,
   },
   alternates: {

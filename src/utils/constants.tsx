@@ -1,6 +1,11 @@
-
-
-import { CartBigIcon, ContentIcon, PaperCheckIcon, RocketIcon, TeamIcon, TruckIcon } from "@/public/icons"
+import {
+  CartBigIcon,
+  ContentIcon,
+  PaperCheckIcon,
+  RocketIcon,
+  TeamIcon,
+  TruckIcon,
+} from "@/public/icons";
 
 export const ENDPOINTS = {
   INFLUENCER_CART_ITEM: "/api/v1/influencer-cart-item",
@@ -44,22 +49,18 @@ export const INPUT_VARIANTS = {
   OUTLINED: "outlined",
 };
 
-
-
 export const PERKS_CONTANTS = [
   {
     src: "/homepage/sec-1.svg",
     children: (
       <div className="flex flex-col gap-6">
         <h2 className="text-[24px] font-[600] md:text-[32px] md:max-w-[480px]">
-          Amplify Your Web3 Project with{" "}
-          <span className="text-primary">Authentic UGC</span>
+          Amplify Your Web3 Project with <span className="text-primary">Authentic UGC</span>
         </h2>
         <p className="text-base md:text-lg md:max-w-[520px]">
-          Launch your Web3 project with Ampli5.ai, the first UGC content
-          generator for Web3 brands. Generate authentic content, boost organic
-          growth, and engage your community with token-based rewards on
-          Instagram, TikTok, and X.
+          Launch your Web3 project with Ampli5.ai, the first UGC content generator for Web3 brands.
+          Generate authentic content, boost organic growth, and engage your community with
+          token-based rewards on Instagram, TikTok, and X.
         </p>
       </div>
     ),
@@ -72,10 +73,9 @@ export const PERKS_CONTANTS = [
           Web3’s Evolution Needs Authentic UGC
         </h2>
         <p className="text-base md:text-lg md:max-w-[520px]">
-          In a world dominated by Twitter and Discord, visibility for your Web3
-          project is everything. In the age of skyrocketing video consumption,
-          the key to breaking through the noise is simple: authentic,
-          community-driven content.
+          In a world dominated by Twitter and Discord, visibility for your Web3 project is
+          everything. In the age of skyrocketing video consumption, the key to breaking through the
+          noise is simple: authentic, community-driven content.
         </p>
       </div>
     ),
@@ -90,15 +90,11 @@ export const PERKS_CONTANTS = [
         <ul className="text-base md:text-lg list-disc pl-4  md:max-w-[520px]">
           <li>Get unmatched engagement across Instagram, TikTok, and X</li>
           <li>Boost visibility with both Web2 & Web3 native users</li>
-          <li>
-            Unlock the power of word-of-mouth marketing at the nano and micro
-            levels
-          </li>
+          <li>Unlock the power of word-of-mouth marketing at the nano and micro levels</li>
         </ul>
         <p className="text-base md:text-lg  md:max-w-[520px]">
-          Ampli5.ai lets your community become your biggest advocates by turning
-          them into content creators, generating buzz and driving real
-          engagement around your project.
+          Ampli5.ai lets your community become your biggest advocates by turning them into content
+          creators, generating buzz and driving real engagement around your project.
         </p>
       </div>
     ),
@@ -140,33 +136,26 @@ export const STEP_ITEMS = [
 
 export const FAQs = [
   {
-    heading:
-      "Q. How does Ampli5.ai ensure the quality of user-generated content?",
+    heading: "Q. How does Ampli5.ai ensure the quality of user-generated content?",
     content: (
       <>
-        <span className="">
-          {" "}
-          A: We implement a multi-step quality control process:
-        </span>
+        <span className=""> A: We implement a multi-step quality control process:</span>
         <ol className="list-decimal">
           <li className="">
-            1. Users must engage with your podcast and answer questions before
-            creating content, ensuring they understand your project.
+            1. Users must engage with your podcast and answer questions before creating content,
+            ensuring they understand your project.
           </li>
           <li className="">
-            2. Our AI-powered content moderation system filters out
-            inappropriate or off-brand content.
+            2. Our AI-powered content moderation system filters out inappropriate or off-brand
+            content.
           </li>
-          <li className="">
-            3. For Spam content created, we will disregard all entries.{" "}
-          </li>
+          <li className="">3. For Spam content created, we will disregard all entries. </li>
         </ol>
       </>
     ),
   },
   {
-    heading:
-      "Q: Can we customise the reward structure for our specific token economics?",
+    heading: "Q: Can we customise the reward structure for our specific token economics?",
     content:
       "A: Absolutely! We work closely with each project to design a reward structure that aligns with your token economics and community engagement goals. We can adjust XP values token reward amounts, and even create unique challenges or tiers for your most engaged users.",
   },
@@ -178,67 +167,49 @@ export const FAQs = [
         <p className=""> A: We employ several strategies:</p>
         <ol className="list-decimal">
           <li className="">
-            1. Content is created on familiar Web2 platforms (Instagram, TikTok,
-            X) for easy consumption.
+            1. Content is created on familiar Web2 platforms (Instagram, TikTok, X) for easy
+            consumption.
+          </li>
+          <li className="">2. Our educational content simplifies Web3 concepts for newcomers.</li>
+          <li className="">
+            3. The reward system introduces Web2 users to tokens in a low-risk, engaging way.
           </li>
           <li className="">
-            2. Our educational content simplifies Web3 concepts for newcomers.
-          </li>
-          <li className="">
-            3. The reward system introduces Web2 users to tokens in a low-risk,
-            engaging way.
-          </li>
-          <li className="">
-            4. We provide templates and guidelines to help creators explain Web3
-            concepts effectively.
+            4. We provide templates and guidelines to help creators explain Web3 concepts
+            effectively.
           </li>
         </ol>
       </>
     ),
   },
   {
-    heading:
-      "Q: Can Ampli5.ai integrate with our existing community management tools?",
+    heading: "Q: Can Ampli5.ai integrate with our existing community management tools?",
     content:
       "A: Yes! We offer API integrations with popular community management platforms, Discord bots, and analytics tools. This ensures Ampli5.ai fits seamlessly into your existing workflow and data ecosystem.",
   },
   {
-    heading:
-      "Q: How do you prevent bots or fake accounts from gaming the reward system?",
+    heading: "Q: How do you prevent bots or fake accounts from gaming the reward system?",
     content: (
       <>
         <span className="">A: Our anti-bot measures include:</span>
         <ol className="list-decimal">
           <li className="">1. Mandatory podcast engagement and quizzes</li>
-          <li className="">
-            2. AI-powered behaviour analysis to detect suspicious activity
-          </li>
-          <li className="">
-            3. Gradual reward unlocking to discourage short-term exploitation
-          </li>
-          <li className="">
-            4. Manual review for high-value rewards or suspicious accounts
-          </li>
+          <li className="">2. AI-powered behaviour analysis to detect suspicious activity</li>
+          <li className="">3. Gradual reward unlocking to discourage short-term exploitation</li>
+          <li className="">4. Manual review for high-value rewards or suspicious accounts</li>
         </ol>
       </>
     ),
   },
   {
-    heading:
-      "Q. What support does Ampli5.ai provide for onboarding our team and community?",
+    heading: "Q. What support does Ampli5.ai provide for onboarding our team and community?",
     content: (
       <>
-        <span className="">
-          A: We offer a comprehensive onboarding package:
-        </span>
+        <span className="">A: We offer a comprehensive onboarding package:</span>
         <ol className="list-decimal">
           <li className="">1. Dedicated account manager for your project</li>
-          <li className="">
-            2. Training sessions for your community management team
-          </li>
-          <li className="">
-            3. 24/7 support for technical issues or strategic questions
-          </li>
+          <li className="">2. Training sessions for your community management team</li>
+          <li className="">3. 24/7 support for technical issues or strategic questions</li>
         </ol>
       </>
     ),
@@ -254,7 +225,6 @@ export const FAQs = [
       "A: Once you pay, we can start in 7 days! We’ll work with your team to produce the custom podcast, set up the reward pool, and launch your UGC campaign within a week.",
   },
 ];
-
 
 export const PRICE_TOOLTIP_CONTENT = [
   "$$$$ = Over $3000",
@@ -325,7 +295,6 @@ export const getColumnWidth = (id: string): string | undefined => {
   else return "100%";
 };
 
-
 export const PLATFORM_MAP: { [key: string]: string } = {
   x: "/socials/twitter.svg",
   youtube: "/socials/youtube.svg",
@@ -343,7 +312,6 @@ export const NAVBAR_CONSTANTS = {
 export const DISCOUNT_MESSAGE = {
   ALREADY_APPLIED: "You have already used this coupon code",
 };
-
 
 export const TRUST_BY = [
   "/landing/gemini.svg",
@@ -377,15 +345,13 @@ export const STEPS = [
     number: 3,
     icon: <TruckIcon />,
     title: "Ship Product",
-    description:
-      "A dedicated account manager will get in touch to confirm shipping details",
+    description: "A dedicated account manager will get in touch to confirm shipping details",
   },
   {
     number: 4,
     icon: <ContentIcon />,
     title: "Get Content",
-    description:
-      "Get all the content you need delivered to your inbox in 10-12 business days",
+    description: "Get all the content you need delivered to your inbox in 10-12 business days",
   },
 ];
 
@@ -426,8 +392,7 @@ export const DELIVER_RESULT_POINTS = [
     src: "/landing/dr-1.svg",
     title: "Curated Influencer & PR Lists",
     subTitle: "Discover influencer",
-    description:
-      "Discover the best influencers and PR agencies for Crypto & Web3.",
+    description: "Discover the best influencers and PR agencies for Crypto & Web3.",
   },
   {
     src: "/landing/dr-2.svg",
@@ -439,8 +404,7 @@ export const DELIVER_RESULT_POINTS = [
     src: "/landing/dr-3.svg",
     title: "Seamless Campaign Execution",
     subTitle: "Discover influencer",
-    description:
-      "Launch and manage your campaigns effortlessly from start to finish.",
+    description: "Launch and manage your campaigns effortlessly from start to finish.",
   },
 ];
 
@@ -465,15 +429,13 @@ export const WHAT_NEXT = [
   },
   {
     title: "Our team will get in touch ",
-    description:
-      "A dedicated account manager will get in touch to confirm shipping details",
+    description: "A dedicated account manager will get in touch to confirm shipping details",
     src: <TeamIcon />,
   },
   {
     title: "We launch your Campaign",
-    description:
-      "Get all the content you need delivered to your inbox in 10-12 business days",
-    src: <RocketIcon   />,
+    description: "Get all the content you need delivered to your inbox in 10-12 business days",
+    src: <RocketIcon />,
   },
 ];
 

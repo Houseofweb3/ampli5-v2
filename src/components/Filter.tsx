@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React, { useRef, useEffect } from 'react';
-import Button from './ui/filterbtn';
-import Image from 'next/image';
-import { cn } from '../lib/utils';
-import { BountiesStatusFilter, BountyType, SortByOption } from '../data/data';
+import React, { useRef, useEffect } from "react";
+import Button from "./ui/filterbtn";
+import Image from "next/image";
+import { cn } from "../lib/utils";
+import { BountiesStatusFilter, BountyType, SortByOption } from "../data/data";
 
 interface FilterProps {
-  type?: 'Bounties' | 'Submissions';
+  type?: "Bounties" | "Submissions";
   statusFilter: string | null;
   // eslint-disable-next-line no-unused-vars
   setStatusFilter: (value: string | null) => void;
@@ -19,7 +19,7 @@ interface FilterProps {
 }
 
 export default function Filter({
-  type = 'Bounties',
+  type = "Bounties",
   statusFilter,
   setStatusFilter,
   sortBy,
@@ -30,7 +30,9 @@ export default function Filter({
   const [setIsSortByOpen, setSortByOpen] = React.useState(false);
 
   const toggleFilter = (id: string) => {
-    setBountyType((prev: string[]) => (prev.includes(id) ? prev.filter((f: string) => f !== id) : [...prev, id]));
+    setBountyType((prev: string[]) =>
+      prev.includes(id) ? prev.filter((f: string) => f !== id) : [...prev, id]
+    );
   };
 
   const sortByWrapperRef = useRef<HTMLDivElement>(null);
@@ -41,9 +43,9 @@ export default function Filter({
         setSortByOpen(false);
       }
     };
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
@@ -74,12 +76,14 @@ export default function Filter({
         {BountiesStatusFilter?.map((label) => (
           <Button
             key={label.label}
-            active={statusFilter === (label.value === 'all' ? null : label.value.toLowerCase())}
-            onClick={() => setStatusFilter(label.value === 'all' ? null : label.value.toLowerCase())}
+            active={statusFilter === (label.value === "all" ? null : label.value.toLowerCase())}
+            onClick={() =>
+              setStatusFilter(label.value === "all" ? null : label.value.toLowerCase())
+            }
             className={
-              statusFilter === (label.value === 'all' ? null : label.value.toLowerCase())
-                ? 'border border-black py-2 flex justify-center min-w-[90px]'
-                : 'bg-transparent border-none text-gray-bg py-2 flex justify-center min-w-[90px]'
+              statusFilter === (label.value === "all" ? null : label.value.toLowerCase())
+                ? "border border-black py-2 flex justify-center min-w-[90px]"
+                : "bg-transparent border-none text-gray-bg py-2 flex justify-center min-w-[90px]"
             }
           >
             {label.label}
@@ -91,7 +95,7 @@ export default function Filter({
         <Button
           active={setIsSortByOpen}
           onClick={() => setSortByOpen((prev) => !prev)}
-          className={`flex gap-3 px-5 py-2.5 border-black ${setIsSortByOpen ? '' : 'bg-transparent text-gray-bg'}`}
+          className={`flex gap-3 px-5 py-2.5 border-black ${setIsSortByOpen ? "" : "bg-transparent text-gray-bg"}`}
         >
           <span> Sort by</span>
           <Image
@@ -100,9 +104,9 @@ export default function Filter({
             height={12}
             width={12}
             className={cn(
-              'w-3',
-              setIsSortByOpen ? 'rotate-180' : 'rotate-0',
-              'transition-transform duration-300'
+              "w-3",
+              setIsSortByOpen ? "rotate-180" : "rotate-0",
+              "transition-transform duration-300"
             )}
           />
         </Button>

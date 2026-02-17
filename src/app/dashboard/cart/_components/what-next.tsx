@@ -14,12 +14,8 @@ const WhatNext = () => {
           >
             <div className="w-10 h-10">{item.src}</div>
             <div className="flex flex-col ">
-              <span className="md:text-lg font-semibold tracking-wide">
-                {item.title}
-              </span>
-              <p className="text-secondary-text text-sm md:text-base">
-                {item.description}
-              </p>
+              <span className="md:text-lg font-semibold tracking-wide">{item.title}</span>
+              <p className="text-secondary-text text-sm md:text-base">{item.description}</p>
             </div>
           </div>
         ))}

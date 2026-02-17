@@ -19,9 +19,9 @@ export default function NewVisibility() {
           The New Connectivity Layer
         </h3>
         <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-xl mx-auto">
-          Users no longer join protocols based on marketing. They join
-          ecosystems that already trust you. Every partner adds liquidity. Every
-          chain adds distribution. Every integration increases survival.
+          Users no longer join protocols based on marketing. They join ecosystems that already trust
+          you. Every partner adds liquidity. Every chain adds distribution. Every integration
+          increases survival.
         </p>
 
         <p className="sm:!text-18 !text-16 !font-semibold !text-[#FE8616] ">

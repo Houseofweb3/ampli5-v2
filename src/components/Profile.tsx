@@ -1,15 +1,15 @@
-'use client';
-import RequireAuth from './ProtectedAuth';
-import Card from './ui/card';
-import Container from './ui/container';
-import Title from './ui/title';
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
-import TwitterLogout from './TwitterLogout';
-import { useAuthStore } from '../store/auth';
-import GoBackButton from './ui/goBackBtn';
-import { toast } from 'react-toastify';
-import axiosInstance from '../lib/axiosInstance';
+"use client";
+import RequireAuth from "./ProtectedAuth";
+import Card from "./ui/card";
+import Container from "./ui/container";
+import Title from "./ui/title";
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import TwitterLogout from "./TwitterLogout";
+import { useAuthStore } from "../store/auth";
+import GoBackButton from "./ui/goBackBtn";
+import { toast } from "react-toastify";
+import axiosInstance from "../lib/axiosInstance";
 
 interface User {
   id: string;
@@ -41,8 +41,8 @@ const Profile: React.FC = () => {
         const response = await axiosInstance.get(`/user/bounty/details/${userId}`);
         setBountyDetails(response.data);
       } catch (error) {
-        console.error('User profile fetch error:', error);
-        toast.error('User profile fetching error!');
+        console.error("User profile fetch error:", error);
+        toast.error("User profile fetching error!");
       } finally {
         setIsLoading(false);
       }
@@ -67,7 +67,7 @@ const Profile: React.FC = () => {
                   <div className="flex-shrink-0">
                     <Image
                       src={user.profile_picture}
-                      onError={(e: any) => (e.src = '/images/profile.png')}
+                      onError={(e: any) => (e.src = "/images/profile.png")}
                       alt="profile"
                       height={100}
                       width={100}
@@ -76,9 +76,7 @@ const Profile: React.FC = () => {
                   </div>
                   <div>
                     <h4>{user.name}</h4>
-                    <p className="text_small">
-                      {user.username}
-                    </p>
+                    <p className="text_small">{user.username}</p>
                   </div>
                   {/* <div className="flex gap-7">
                     <div className="flex gap-2 items-center">
@@ -97,7 +95,7 @@ const Profile: React.FC = () => {
                     <h1 className="text-white font-normal leading-none">{user.yaps_score}</h1>
                     <div className=" flex items-center gap-3">
                       <Image
-                        src={'/icons/image-71.png'}
+                        src={"/icons/image-71.png"}
                         alt="profile"
                         height={24}
                         width={24}

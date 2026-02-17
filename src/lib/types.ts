@@ -22,7 +22,7 @@ export type Influencer = {
   hiddenPrice: string;
   credibilityScore: string;
   tweetScoutScore: string | number;
-  contentType?:string
+  contentType?: string;
 };
 
 export type CartInfluencer = {

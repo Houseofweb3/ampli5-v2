@@ -46,12 +46,8 @@ const StepItem: React.FC<Step> = ({ number, title, description, imageSrc }) => (
       } w-[90%] md:w-[40%] justify-center md:pt-16`}
     >
       <div className="flex flex-col h-fit">
-        <span className="text-primary mb-2 text-base md:text-lg font-[700]">
-          Step {number}
-        </span>
-        <h3 className="text-lg font-semibold mb-2 font-[600] text-lg md:text-xl">
-          {title}
-        </h3>
+        <span className="text-primary mb-2 text-base md:text-lg font-[700]">Step {number}</span>
+        <h3 className="text-lg font-semibold mb-2 font-[600] text-lg md:text-xl">{title}</h3>
         <p className="text-gray-600 text-base md:text-lg">{description}</p>
       </div>
       <div className={` md:hidden justify-center h-fit flex`}>

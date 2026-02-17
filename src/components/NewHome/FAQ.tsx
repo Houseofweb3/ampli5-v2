@@ -17,8 +17,7 @@ const faqData = [
   },
   {
     number: 3,
-    question:
-      "What makes Ampli5 fundamentally different from influencer marketing?",
+    question: "What makes Ampli5 fundamentally different from influencer marketing?",
     answer:
       "Influencer marketing gives you one post, one spike, one reset. Ampli5 builds repeat exposure through:",
     list: [
@@ -39,11 +38,7 @@ const faqData = [
     question: "What do you mean by “owning distribution”?",
     answer:
       "We don’t rely on creators posting once. We publish through 25+ owned clipping channels with existing audiences. This means:",
-    list: [
-      "No dependency on availability",
-      "No one-off placements",
-      "No reset every campaign",
-    ],
+    list: ["No dependency on availability", "No one-off placements", "No reset every campaign"],
     summary: "Distribution is controlled, repeatable, and scalable.",
   },
   {
@@ -139,7 +134,10 @@ const FAQ: React.FC = (): JSX.Element => {
                             <li key={item}>{item}</li>
                           ))}
                         </ul>
-                        <p className="mt-4 text-base lg:text-lg text-gray-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.summary ?? "" }} />
+                        <p
+                          className="mt-4 text-base lg:text-lg text-gray-600 leading-relaxed"
+                          dangerouslySetInnerHTML={{ __html: faq.summary ?? "" }}
+                        />
                       </div>
                     )}
                   </div>

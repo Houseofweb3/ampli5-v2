@@ -1,11 +1,5 @@
 import Thumbnail from "../components/Thumbnail";
-import {
-  CabbageCatsIcon,
-  MultipliCatsIcon,
-  RouterLogo,
-  SonicIcon,
-  StoopidCatsIcon,
-} from "./icon";
+import { CabbageCatsIcon, MultipliCatsIcon, RouterLogo, SonicIcon, StoopidCatsIcon } from "./icon";
 
 interface AuthProfileItem {
   id: string | null;
@@ -402,19 +396,13 @@ export const CASE_STUDY_DATA = [
         date="December, 2024"
       />
     ),
-    s3_url:
-      "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+X+Router.pdf",
+    s3_url: "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+X+Router.pdf",
   },
   {
     thumbnail: (
-      <Thumbnail
-        date="January, 2025"
-        brandLogo={<SonicIcon />}
-        heading="A CEX listing campaign"
-      />
+      <Thumbnail date="January, 2025" brandLogo={<SonicIcon />} heading="A CEX listing campaign" />
     ),
-    s3_url:
-      "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Sonic.pdf",
+    s3_url: "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Sonic.pdf",
   },
   {
     thumbnail: (
@@ -424,8 +412,7 @@ export const CASE_STUDY_DATA = [
         heading="A pre sale case study for P2E"
       />
     ),
-    s3_url:
-      "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Stoopid+Cats.pdf",
+    s3_url: "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Stoopid+Cats.pdf",
   },
   {
     thumbnail: (
@@ -440,57 +427,48 @@ export const CASE_STUDY_DATA = [
   },
   {
     thumbnail: (
-      <Thumbnail
-        date="July, 2025"
-        brandLogo={<CabbageCatsIcon />}
-        heading="Memecoin Campaign"
-      />
+      <Thumbnail date="July, 2025" brandLogo={<CabbageCatsIcon />} heading="Memecoin Campaign" />
     ),
-    s3_url:
-      "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Cabbage.pdf",
+    s3_url: "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Cabbage.pdf",
   },
 ];
 
 export const NEW_CASE_STUDY_DATA = [
   {
     brandLogo: <RouterLogo />,
-    roi:'50x',
-    mindshare:'Top 20',
-    engagements:"13,000+",
-    s3_url:
-      "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+X+Router.pdf",
+    roi: "50x",
+    mindshare: "Top 20",
+    engagements: "13,000+",
+    s3_url: "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+X+Router.pdf",
   },
   {
     brandLogo: <SonicIcon />,
-    roi:'30x',
-    mindshare:'Top 10',
-    engagements:"10,000+",
-    s3_url:
-      "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Sonic.pdf",
+    roi: "30x",
+    mindshare: "Top 10",
+    engagements: "10,000+",
+    s3_url: "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Sonic.pdf",
   },
   {
     brandLogo: <StoopidCatsIcon />,
-    roi:'20x',
-    mindshare:'Top 5',
-    engagements:"8,000+",
-    s3_url:
-      "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Stoopid+Cats.pdf",
+    roi: "20x",
+    mindshare: "Top 5",
+    engagements: "8,000+",
+    s3_url: "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Stoopid+Cats.pdf",
   },
   {
     brandLogo: <MultipliCatsIcon />,
-    roi:'15x',
-    mindshare:'Top 3',
-    engagements:"6,000+",
+    roi: "15x",
+    mindshare: "Top 3",
+    engagements: "6,000+",
     s3_url:
       "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Multipli+Case+study.pdf",
   },
   {
     brandLogo: <CabbageCatsIcon />,
-    roi:'10x',
-    mindshare:'Top 1',
-    engagements:"4,000+",
-    s3_url:
-      "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Cabbage.pdf",
+    roi: "10x",
+    mindshare: "Top 1",
+    engagements: "4,000+",
+    s3_url: "https://ampli5.s3.us-east-1.amazonaws.com/case_studies/Ampli5+x+Cabbage.pdf",
   },
 ];
 

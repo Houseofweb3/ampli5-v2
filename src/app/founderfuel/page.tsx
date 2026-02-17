@@ -80,12 +80,25 @@ const errorMessages: Record<string, string> = {
 };
 
 // Step 2: slide 0 = stage, 1 = generatingRevenue, 2 = monthlyRevenue
-const FOUNDER_STEP2_FIELD_TO_SLIDE: Record<string, number> = { stage: 0, generatingRevenue: 1, monthlyRevenue: 2 };
+const FOUNDER_STEP2_FIELD_TO_SLIDE: Record<string, number> = {
+  stage: 0,
+  generatingRevenue: 1,
+  monthlyRevenue: 2,
+};
 // Step 3: slide 0 = conversationTopics, otherTopic, 1 = hateAboutGroups
-const FOUNDER_STEP3_FIELD_TO_SLIDE: Record<string, number> = { conversationTopics: 0, otherTopic: 0, hateAboutGroups: 1 };
+const FOUNDER_STEP3_FIELD_TO_SLIDE: Record<string, number> = {
+  conversationTopics: 0,
+  otherTopic: 0,
+  hateAboutGroups: 1,
+};
 // Step 4: slide 0 = yearsBuilding, 1 = openToMatching, 2 = city/heardAbout, 3 = preferredMode/contactDetail
 const FOUNDER_STEP4_FIELD_TO_SLIDE: Record<string, number> = {
-  yearsBuilding: 0, openToMatching: 1, city: 2, heardAbout: 2, preferredMode: 3, contactDetail: 3,
+  yearsBuilding: 0,
+  openToMatching: 1,
+  city: 2,
+  heardAbout: 2,
+  preferredMode: 3,
+  contactDetail: 3,
 };
 
 const FounderInquiryForm: React.FC = () => {
@@ -113,7 +126,12 @@ const FounderInquiryForm: React.FC = () => {
   /* ====================== COMPLETED STEPS ====================== */
   useEffect(() => {
     const completed = new Set<number>();
-    if (formData.fullName?.trim() && formData.startupName?.trim() && formData.startupWebsite?.trim()) completed.add(1);
+    if (
+      formData.fullName?.trim() &&
+      formData.startupName?.trim() &&
+      formData.startupWebsite?.trim()
+    )
+      completed.add(1);
     if (formData.stage && formData.generatingRevenue && formData.monthlyRevenue) completed.add(2);
     if (
       formData.conversationTopics?.length > 0 &&
@@ -150,7 +168,10 @@ const FounderInquiryForm: React.FC = () => {
         continue;
       }
       if (typeof value === "string" && !value.trim()) {
-        const label = field.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase()).trim();
+        const label = field
+          .replace(/([A-Z])/g, " $1")
+          .replace(/^./, (s) => s.toUpperCase())
+          .trim();
         newErrors[field] = errorMessages[field] || `${label} is required.`;
       }
     }
@@ -163,7 +184,8 @@ const FounderInquiryForm: React.FC = () => {
     if (currentStep === 3 && formData.hateAboutGroups?.trim()) {
       const wordCount = formData.hateAboutGroups.trim().split(/\s+/).length;
       if (wordCount < 10) {
-        newErrors.hateAboutGroups = "Please write at least 10 words about what you hate about founder groups.";
+        newErrors.hateAboutGroups =
+          "Please write at least 10 words about what you hate about founder groups.";
       }
     }
     if (currentStep === 4 && formData.preferredMode && formData.contactDetail?.trim()) {
@@ -196,9 +218,15 @@ const FounderInquiryForm: React.FC = () => {
     if (!pendingSlideToField || !currentStep) return;
     if (currentStep === 2 && FOUNDER_STEP2_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
       step2SwiperRef.current?.slideTo(FOUNDER_STEP2_FIELD_TO_SLIDE[pendingSlideToField]);
-    } else if (currentStep === 3 && FOUNDER_STEP3_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
+    } else if (
+      currentStep === 3 &&
+      FOUNDER_STEP3_FIELD_TO_SLIDE[pendingSlideToField] !== undefined
+    ) {
       step3SwiperRef.current?.slideTo(FOUNDER_STEP3_FIELD_TO_SLIDE[pendingSlideToField]);
-    } else if (currentStep === 4 && FOUNDER_STEP4_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
+    } else if (
+      currentStep === 4 &&
+      FOUNDER_STEP4_FIELD_TO_SLIDE[pendingSlideToField] !== undefined
+    ) {
       step4SwiperRef.current?.slideTo(FOUNDER_STEP4_FIELD_TO_SLIDE[pendingSlideToField]);
     }
     stepContentRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -220,7 +248,8 @@ const FounderInquiryForm: React.FC = () => {
     if (!formData.stage) newErrors.stage = errorMessages.stage;
     if (!formData.generatingRevenue) newErrors.generatingRevenue = errorMessages.generatingRevenue;
     if (!formData.monthlyRevenue) newErrors.monthlyRevenue = errorMessages.monthlyRevenue;
-    if (formData.conversationTopics.length === 0) newErrors.conversationTopics = errorMessages.conversationTopics;
+    if (formData.conversationTopics.length === 0)
+      newErrors.conversationTopics = errorMessages.conversationTopics;
     if (formData.conversationTopics.includes("Something else") && !formData.otherTopic?.trim()) {
       newErrors.otherTopic = errorMessages.otherTopic;
     }
@@ -258,7 +287,10 @@ const FounderInquiryForm: React.FC = () => {
       const firstKey = Object.keys(newErrors)[0];
       toast.error(firstMessage);
       for (const [stepStr, fields] of Object.entries(stepFields)) {
-        if (fields.includes(firstKey) || (firstKey === "otherTopic" && fields.includes("conversationTopics"))) {
+        if (
+          fields.includes(firstKey) ||
+          (firstKey === "otherTopic" && fields.includes("conversationTopics"))
+        ) {
           setCurrentStep(Number(stepStr));
           break;
         }
@@ -351,597 +383,1056 @@ const FounderInquiryForm: React.FC = () => {
 
   const renderStepContent = () => {
     switch (currentStep) {
-    case 1:
-      return (
-        <div>
-          <div className="flex items-center gap-2 mb-6">
-            {diamond}
-            <h2 className="text-2xl font-semibold text-gray-900">Basic Info</h2>
+      case 1:
+        return (
+          <div>
+            <div className="flex items-center gap-2 mb-6">
+              {diamond}
+              <h2 className="text-2xl font-semibold text-gray-900">Basic Info</h2>
+            </div>
+            <div className="space-y-6">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  {diamond}
+                  <label className={labelClass}>
+                    1. What&apos;s your full name? <span className="text-red-500">*</span>
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                  className={inputClass(!!errors.fullName)}
+                />
+                {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  {diamond}
+                  <label className={labelClass}>
+                    2. Startup name <span className="text-red-500">*</span>
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  name="startupName"
+                  value={formData.startupName}
+                  onChange={handleChange}
+                  placeholder="Startup name"
+                  className={inputClass(!!errors.startupName)}
+                />
+                {errors.startupName && (
+                  <p className="text-red-500 text-sm mt-1">{errors.startupName}</p>
+                )}
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  {diamond}
+                  <label className={labelClass}>
+                    3. Startup website link <span className="text-red-500">*</span>
+                  </label>
+                </div>
+                <input
+                  type="url"
+                  name="startupWebsite"
+                  value={formData.startupWebsite}
+                  onChange={handleChange}
+                  placeholder="https://yourstartup.com"
+                  className={inputClass(!!errors.startupWebsite)}
+                />
+                {errors.startupWebsite && (
+                  <p className="text-red-500 text-sm mt-1">{errors.startupWebsite}</p>
+                )}
+              </div>
+            </div>
           </div>
-          <div className="space-y-6">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                {diamond}
-                <label className={labelClass}>1. What&apos;s your full name? <span className="text-red-500">*</span></label>
-              </div>
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                placeholder="Enter your full name"
-                className={inputClass(!!errors.fullName)}
-              />
-              {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
-            </div>
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                {diamond}
-                <label className={labelClass}>2. Startup name <span className="text-red-500">*</span></label>
-              </div>
-              <input
-                type="text"
-                name="startupName"
-                value={formData.startupName}
-                onChange={handleChange}
-                placeholder="Startup name"
-                className={inputClass(!!errors.startupName)}
-              />
-              {errors.startupName && <p className="text-red-500 text-sm mt-1">{errors.startupName}</p>}
-            </div>
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                {diamond}
-                <label className={labelClass}>3. Startup website link <span className="text-red-500">*</span></label>
-              </div>
-              <input
-                type="url"
-                name="startupWebsite"
-                value={formData.startupWebsite}
-                onChange={handleChange}
-                placeholder="https://yourstartup.com"
-                className={inputClass(!!errors.startupWebsite)}
-              />
-              {errors.startupWebsite && <p className="text-red-500 text-sm mt-1">{errors.startupWebsite}</p>}
-            </div>
-          </div>
-        </div>
-      );
+        );
 
-    case 2: {
-      const stageOptions = ["Pre-seed (some revenue / MVP live)", "Seed (steady revenue & small team)", "Series A (scaling operations)"];
-      const revenueOptions = ["Yes, consistently", "Yes, but irregular", "Not yet"];
-      const monthlyOptions = ["< $10 K", "$10 K – $50 K", "$50 K – $200 K", "$200 K +"];
-      return (
-        <div>
-          <style dangerouslySetInnerHTML={{
-            __html: `
+      case 2: {
+        const stageOptions = [
+          "Pre-seed (some revenue / MVP live)",
+          "Seed (steady revenue & small team)",
+          "Series A (scaling operations)",
+        ];
+        const revenueOptions = ["Yes, consistently", "Yes, but irregular", "Not yet"];
+        const monthlyOptions = ["< $10 K", "$10 K – $50 K", "$50 K – $200 K", "$200 K +"];
+        return (
+          <div>
+            <style
+              dangerouslySetInnerHTML={{
+                __html: `
               .founderfuel-step2-slider .swiper { width: 100%; overflow: hidden; }
               .founderfuel-step2-slider .swiper-slide { height: auto; box-sizing: border-box; }
               .founderfuel-step2-slider .swiper-pagination { position: relative; margin-top: 24px; display: flex; justify-content: center; gap: 8px; }
               .founderfuel-step2-slider .swiper-pagination-bullet { background: #D1D5DB; width: 8px; height: 8px; opacity: 1; margin: 0 4px; }
               .founderfuel-step2-slider .swiper-pagination-bullet-active { background: #7B46F8; }
             `,
-          }} />
-          <div className="flex items-center gap-2 mb-6">
-            {diamond}
-            <h2 className="text-2xl font-semibold text-gray-900">Stage & Revenue</h2>
-          </div>
-          {/* Desktop: slider */}
-          <div className="hidden md:block">
-            <Swiper
-              onSwiper={(swiper) => { step2SwiperRef.current = swiper; }}
-              onSlideChangeTransitionEnd={(swiper) => setStepSlideIndex((prev) => ({ ...prev, 2: swiper.activeIndex }))}
-              modules={[Pagination]}
-              spaceBetween={24}
-              slidesPerView={1}
-              pagination={{ clickable: true }}
-              className="founderfuel-step2-slider"
-            >
-              {/* Slide 1: Question 4 - Stage */}
-              <SwiperSlide>
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    {diamond}
-                    <h3 className="text-lg font-semibold text-gray-900">4. What stage are you currently at? <span className="text-red-500">*</span></h3>
-                  </div>
-                  <div className="space-y-3">
-                    {stageOptions.map((opt) => (
-                      <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.stage === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                        <input type="radio" name="stage" value={opt} checked={formData.stage === opt} onChange={handleChange} className="sr-only" />
-                        <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.stage === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                          {formData.stage === opt && <div className="w-2 h-2 rounded-full bg-white" />}
-                        </div>
-                        <span className="text-sm font-medium text-gray-700">{opt}</span>
-                      </label>
-                    ))}
-                  </div>
-                  {errors.stage && <p className="text-red-500 text-sm mt-2">{errors.stage}</p>}
-                </div>
-              </SwiperSlide>
-              {/* Slide 2: Question 5 - Generating revenue */}
-              <SwiperSlide>
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    {diamond}
-                    <h3 className="text-lg font-semibold text-gray-900">5. Are you currently generating revenue? <span className="text-red-500">*</span></h3>
-                  </div>
-                  <div className="space-y-3">
-                    {revenueOptions.map((opt) => (
-                      <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.generatingRevenue === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                        <input type="radio" name="generatingRevenue" value={opt} checked={formData.generatingRevenue === opt} onChange={handleChange} className="sr-only" />
-                        <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.generatingRevenue === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                          {formData.generatingRevenue === opt && <div className="w-2 h-2 rounded-full bg-white" />}
-                        </div>
-                        <span className="text-sm font-medium text-gray-700">{opt}</span>
-                      </label>
-                    ))}
-                  </div>
-                  {errors.generatingRevenue && <p className="text-red-500 text-sm mt-2">{errors.generatingRevenue}</p>}
-                </div>
-              </SwiperSlide>
-              {/* Slide 3: Question 6 - Monthly revenue range */}
-              <SwiperSlide>
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    {diamond}
-                    <h3 className="text-lg font-semibold text-gray-900">6. What&apos;s your current monthly revenue range? <span className="text-red-500">*</span></h3>
-                  </div>
-                  <div className="space-y-3">
-                    {monthlyOptions.map((opt) => (
-                      <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.monthlyRevenue === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                        <input type="radio" name="monthlyRevenue" value={opt} checked={formData.monthlyRevenue === opt} onChange={handleChange} className="sr-only" />
-                        <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.monthlyRevenue === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                          {formData.monthlyRevenue === opt && <div className="w-2 h-2 rounded-full bg-white" />}
-                        </div>
-                        <span className="text-sm font-medium text-gray-700">{opt}</span>
-                      </label>
-                    ))}
-                  </div>
-                  {errors.monthlyRevenue && <p className="text-red-500 text-sm mt-2">{errors.monthlyRevenue}</p>}
-                </div>
-              </SwiperSlide>
-            </Swiper>
-          </div>
-          {/* Mobile: single step - all sections stacked */}
-          <div className="md:hidden space-y-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                {diamond}
-                <h3 className="text-lg font-semibold text-gray-900">4. What stage are you currently at? <span className="text-red-500">*</span></h3>
-              </div>
-              <div className="space-y-3">
-                {stageOptions.map((opt) => (
-                  <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.stage === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                    <input type="radio" name="stage" value={opt} checked={formData.stage === opt} onChange={handleChange} className="sr-only" />
-                    <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.stage === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                      {formData.stage === opt && <div className="w-2 h-2 rounded-full bg-white" />}
-                    </div>
-                    <span className="text-sm font-medium text-gray-700">{opt}</span>
-                  </label>
-                ))}
-              </div>
-              {errors.stage && <p className="text-red-500 text-sm mt-2">{errors.stage}</p>}
+              }}
+            />
+            <div className="flex items-center gap-2 mb-6">
+              {diamond}
+              <h2 className="text-2xl font-semibold text-gray-900">Stage & Revenue</h2>
             </div>
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                {diamond}
-                <h3 className="text-lg font-semibold text-gray-900">5. Are you currently generating revenue? <span className="text-red-500">*</span></h3>
-              </div>
-              <div className="space-y-3">
-                {revenueOptions.map((opt) => (
-                  <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.generatingRevenue === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                    <input type="radio" name="generatingRevenue" value={opt} checked={formData.generatingRevenue === opt} onChange={handleChange} className="sr-only" />
-                    <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.generatingRevenue === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                      {formData.generatingRevenue === opt && <div className="w-2 h-2 rounded-full bg-white" />}
+            {/* Desktop: slider */}
+            <div className="hidden md:block">
+              <Swiper
+                onSwiper={(swiper) => {
+                  step2SwiperRef.current = swiper;
+                }}
+                onSlideChangeTransitionEnd={(swiper) =>
+                  setStepSlideIndex((prev) => ({ ...prev, 2: swiper.activeIndex }))
+                }
+                modules={[Pagination]}
+                spaceBetween={24}
+                slidesPerView={1}
+                pagination={{ clickable: true }}
+                className="founderfuel-step2-slider"
+              >
+                {/* Slide 1: Question 4 - Stage */}
+                <SwiperSlide>
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      {diamond}
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        4. What stage are you currently at? <span className="text-red-500">*</span>
+                      </h3>
                     </div>
-                    <span className="text-sm font-medium text-gray-700">{opt}</span>
-                  </label>
-                ))}
-              </div>
-              {errors.generatingRevenue && <p className="text-red-500 text-sm mt-2">{errors.generatingRevenue}</p>}
+                    <div className="space-y-3">
+                      {stageOptions.map((opt) => (
+                        <label
+                          key={opt}
+                          className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.stage === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}
+                        >
+                          <input
+                            type="radio"
+                            name="stage"
+                            value={opt}
+                            checked={formData.stage === opt}
+                            onChange={handleChange}
+                            className="sr-only"
+                          />
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.stage === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}
+                          >
+                            {formData.stage === opt && (
+                              <div className="w-2 h-2 rounded-full bg-white" />
+                            )}
+                          </div>
+                          <span className="text-sm font-medium text-gray-700">{opt}</span>
+                        </label>
+                      ))}
+                    </div>
+                    {errors.stage && <p className="text-red-500 text-sm mt-2">{errors.stage}</p>}
+                  </div>
+                </SwiperSlide>
+                {/* Slide 2: Question 5 - Generating revenue */}
+                <SwiperSlide>
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      {diamond}
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        5. Are you currently generating revenue?{" "}
+                        <span className="text-red-500">*</span>
+                      </h3>
+                    </div>
+                    <div className="space-y-3">
+                      {revenueOptions.map((opt) => (
+                        <label
+                          key={opt}
+                          className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.generatingRevenue === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}
+                        >
+                          <input
+                            type="radio"
+                            name="generatingRevenue"
+                            value={opt}
+                            checked={formData.generatingRevenue === opt}
+                            onChange={handleChange}
+                            className="sr-only"
+                          />
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.generatingRevenue === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}
+                          >
+                            {formData.generatingRevenue === opt && (
+                              <div className="w-2 h-2 rounded-full bg-white" />
+                            )}
+                          </div>
+                          <span className="text-sm font-medium text-gray-700">{opt}</span>
+                        </label>
+                      ))}
+                    </div>
+                    {errors.generatingRevenue && (
+                      <p className="text-red-500 text-sm mt-2">{errors.generatingRevenue}</p>
+                    )}
+                  </div>
+                </SwiperSlide>
+                {/* Slide 3: Question 6 - Monthly revenue range */}
+                <SwiperSlide>
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      {diamond}
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        6. What&apos;s your current monthly revenue range?{" "}
+                        <span className="text-red-500">*</span>
+                      </h3>
+                    </div>
+                    <div className="space-y-3">
+                      {monthlyOptions.map((opt) => (
+                        <label
+                          key={opt}
+                          className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.monthlyRevenue === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}
+                        >
+                          <input
+                            type="radio"
+                            name="monthlyRevenue"
+                            value={opt}
+                            checked={formData.monthlyRevenue === opt}
+                            onChange={handleChange}
+                            className="sr-only"
+                          />
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.monthlyRevenue === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}
+                          >
+                            {formData.monthlyRevenue === opt && (
+                              <div className="w-2 h-2 rounded-full bg-white" />
+                            )}
+                          </div>
+                          <span className="text-sm font-medium text-gray-700">{opt}</span>
+                        </label>
+                      ))}
+                    </div>
+                    {errors.monthlyRevenue && (
+                      <p className="text-red-500 text-sm mt-2">{errors.monthlyRevenue}</p>
+                    )}
+                  </div>
+                </SwiperSlide>
+              </Swiper>
             </div>
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                {diamond}
-                <h3 className="text-lg font-semibold text-gray-900">6. What&apos;s your current monthly revenue range? <span className="text-red-500">*</span></h3>
+            {/* Mobile: single step - all sections stacked */}
+            <div className="md:hidden space-y-8">
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  {diamond}
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    4. What stage are you currently at? <span className="text-red-500">*</span>
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  {stageOptions.map((opt) => (
+                    <label
+                      key={opt}
+                      className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.stage === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}
+                    >
+                      <input
+                        type="radio"
+                        name="stage"
+                        value={opt}
+                        checked={formData.stage === opt}
+                        onChange={handleChange}
+                        className="sr-only"
+                      />
+                      <div
+                        className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.stage === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}
+                      >
+                        {formData.stage === opt && (
+                          <div className="w-2 h-2 rounded-full bg-white" />
+                        )}
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{opt}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors.stage && <p className="text-red-500 text-sm mt-2">{errors.stage}</p>}
               </div>
-              <div className="space-y-3">
-                {monthlyOptions.map((opt) => (
-                  <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.monthlyRevenue === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                    <input type="radio" name="monthlyRevenue" value={opt} checked={formData.monthlyRevenue === opt} onChange={handleChange} className="sr-only" />
-                    <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.monthlyRevenue === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                      {formData.monthlyRevenue === opt && <div className="w-2 h-2 rounded-full bg-white" />}
-                    </div>
-                    <span className="text-sm font-medium text-gray-700">{opt}</span>
-                  </label>
-                ))}
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  {diamond}
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    5. Are you currently generating revenue? <span className="text-red-500">*</span>
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  {revenueOptions.map((opt) => (
+                    <label
+                      key={opt}
+                      className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.generatingRevenue === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}
+                    >
+                      <input
+                        type="radio"
+                        name="generatingRevenue"
+                        value={opt}
+                        checked={formData.generatingRevenue === opt}
+                        onChange={handleChange}
+                        className="sr-only"
+                      />
+                      <div
+                        className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.generatingRevenue === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}
+                      >
+                        {formData.generatingRevenue === opt && (
+                          <div className="w-2 h-2 rounded-full bg-white" />
+                        )}
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{opt}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors.generatingRevenue && (
+                  <p className="text-red-500 text-sm mt-2">{errors.generatingRevenue}</p>
+                )}
               </div>
-              {errors.monthlyRevenue && <p className="text-red-500 text-sm mt-2">{errors.monthlyRevenue}</p>}
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  {diamond}
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    6. What&apos;s your current monthly revenue range?{" "}
+                    <span className="text-red-500">*</span>
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  {monthlyOptions.map((opt) => (
+                    <label
+                      key={opt}
+                      className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.monthlyRevenue === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}
+                    >
+                      <input
+                        type="radio"
+                        name="monthlyRevenue"
+                        value={opt}
+                        checked={formData.monthlyRevenue === opt}
+                        onChange={handleChange}
+                        className="sr-only"
+                      />
+                      <div
+                        className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.monthlyRevenue === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}
+                      >
+                        {formData.monthlyRevenue === opt && (
+                          <div className="w-2 h-2 rounded-full bg-white" />
+                        )}
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{opt}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors.monthlyRevenue && (
+                  <p className="text-red-500 text-sm mt-2">{errors.monthlyRevenue}</p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      );
-    }
+        );
+      }
 
-    case 3: {
-      const conversationTopicsList = [
-        "Mental health & burnout",
-        "Fundraising pressure",
-        "Hiring / firing / leadership",
-        "Loneliness & founder guilt",
-        "Product-market fit struggles",
-        "Relationships / life balance",
-      ];
-      return (
-        <div>
-          <style dangerouslySetInnerHTML={{
-            __html: `
+      case 3: {
+        const conversationTopicsList = [
+          "Mental health & burnout",
+          "Fundraising pressure",
+          "Hiring / firing / leadership",
+          "Loneliness & founder guilt",
+          "Product-market fit struggles",
+          "Relationships / life balance",
+        ];
+        return (
+          <div>
+            <style
+              dangerouslySetInnerHTML={{
+                __html: `
               .founderfuel-step3-slider .swiper { width: 100%; overflow: hidden; }
               .founderfuel-step3-slider .swiper-slide { height: auto; box-sizing: border-box; }
               .founderfuel-step3-slider .swiper-pagination { position: relative; margin-top: 24px; display: flex; justify-content: center; gap: 8px; }
               .founderfuel-step3-slider .swiper-pagination-bullet { background: #D1D5DB; width: 8px; height: 8px; opacity: 1; margin: 0 4px; }
               .founderfuel-step3-slider .swiper-pagination-bullet-active { background: #7B46F8; }
             `,
-          }} />
-          <div className="flex items-center gap-2 mb-6">
-            {diamond}
-            <h2 className="text-2xl font-semibold text-gray-900">Conversations</h2>
-          </div>
-          {/* Desktop: slider */}
-          <div className="hidden md:block">
-            <Swiper
-              onSwiper={(swiper) => { step3SwiperRef.current = swiper; }}
-              onSlideChangeTransitionEnd={(swiper) => setStepSlideIndex((prev) => ({ ...prev, 3: swiper.activeIndex }))}
-              modules={[Pagination]}
-              spaceBetween={24}
-              slidesPerView={1}
-              pagination={{ clickable: true }}
-              className="founderfuel-step3-slider"
-            >
-              <SwiperSlide>
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    {diamond}
-                    <h3 className="text-lg font-semibold text-gray-900">7. What kind of conversations do you wish you could have with other founders? <span className="text-red-500">*</span> <span className="text-gray-500 font-normal">(choose up to 3)</span></h3>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {conversationTopicsList.map((topic) => (
+              }}
+            />
+            <div className="flex items-center gap-2 mb-6">
+              {diamond}
+              <h2 className="text-2xl font-semibold text-gray-900">Conversations</h2>
+            </div>
+            {/* Desktop: slider */}
+            <div className="hidden md:block">
+              <Swiper
+                onSwiper={(swiper) => {
+                  step3SwiperRef.current = swiper;
+                }}
+                onSlideChangeTransitionEnd={(swiper) =>
+                  setStepSlideIndex((prev) => ({ ...prev, 3: swiper.activeIndex }))
+                }
+                modules={[Pagination]}
+                spaceBetween={24}
+                slidesPerView={1}
+                pagination={{ clickable: true }}
+                className="founderfuel-step3-slider"
+              >
+                <SwiperSlide>
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      {diamond}
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        7. What kind of conversations do you wish you could have with other
+                        founders? <span className="text-red-500">*</span>{" "}
+                        <span className="text-gray-500 font-normal">(choose up to 3)</span>
+                      </h3>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {conversationTopicsList.map((topic) => (
+                        <label
+                          key={topic}
+                          className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${formData.conversationTopics.includes(topic) ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}
+                        >
+                          <input
+                            type="checkbox"
+                            value={topic}
+                            checked={formData.conversationTopics.includes(topic)}
+                            onChange={handleCheckboxChange}
+                            className="sr-only"
+                          />
+                          <div
+                            className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${formData.conversationTopics.includes(topic) ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}
+                          >
+                            {formData.conversationTopics.includes(topic) && (
+                              <svg
+                                className="w-3 h-3 text-white"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={3}
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
+                            )}
+                          </div>
+                          <span className="text-sm font-medium text-gray-700">{topic}</span>
+                        </label>
+                      ))}
+                    </div>
+                    <div className="mt-3">
                       <label
-                        key={topic}
-                        className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${formData.conversationTopics.includes(topic) ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}
+                        className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${formData.conversationTopics.includes("Something else") ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}
                       >
-                        <input type="checkbox" value={topic} checked={formData.conversationTopics.includes(topic)} onChange={handleCheckboxChange} className="sr-only" />
-                        <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${formData.conversationTopics.includes(topic) ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}>
-                          {formData.conversationTopics.includes(topic) && (
-                            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        <input
+                          type="checkbox"
+                          value="Something else"
+                          checked={formData.conversationTopics.includes("Something else")}
+                          onChange={handleCheckboxChange}
+                          className="sr-only"
+                        />
+                        <div
+                          className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${formData.conversationTopics.includes("Something else") ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}
+                        >
+                          {formData.conversationTopics.includes("Something else") && (
+                            <svg
+                              className="w-3 h-3 text-white"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={3}
+                                d="M5 13l4 4L19 7"
+                              />
                             </svg>
                           )}
                         </div>
-                        <span className="text-sm font-medium text-gray-700">{topic}</span>
+                        <span className="text-sm font-medium text-gray-700">Something else</span>
                       </label>
-                    ))}
+                      {formData.conversationTopics.includes("Something else") && (
+                        <>
+                          <input
+                            type="text"
+                            name="otherTopic"
+                            value={formData.otherTopic}
+                            onChange={handleChange}
+                            placeholder="Please specify"
+                            className={`mt-2 ${inputClass(!!errors.otherTopic)}`}
+                          />
+                          {errors.otherTopic && (
+                            <p className="text-red-500 text-sm mt-1">{errors.otherTopic}</p>
+                          )}
+                        </>
+                      )}
+                    </div>
+                    {errors.conversationTopics && (
+                      <p className="text-red-500 text-sm mt-2">{errors.conversationTopics}</p>
+                    )}
                   </div>
-                  <div className="mt-3">
-                    <label className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${formData.conversationTopics.includes("Something else") ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}>
-                      <input type="checkbox" value="Something else" checked={formData.conversationTopics.includes("Something else")} onChange={handleCheckboxChange} className="sr-only" />
-                      <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${formData.conversationTopics.includes("Something else") ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}>
-                        {formData.conversationTopics.includes("Something else") && (
-                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      {diamond}
+                      <label className={labelClass}>
+                        8. What do you hate about most founder groups today?{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                    </div>
+                    <textarea
+                      name="hateAboutGroups"
+                      value={formData.hateAboutGroups}
+                      onChange={handleChange}
+                      placeholder="Be honest — this helps us keep the vibe right. (min 10 words)"
+                      rows={4}
+                      maxLength={500}
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent bg-[#FAFAFA] ${errors.hateAboutGroups ? "border-red-500" : "border-gray-300"}`}
+                    />
+                    {errors.hateAboutGroups && (
+                      <p className="text-red-500 text-sm mt-1">{errors.hateAboutGroups}</p>
+                    )}
+                    <p className="text-xs text-gray-400 mt-1">
+                      {formData.hateAboutGroups.length}/500 characters
+                    </p>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+            </div>
+            {/* Mobile: single step - both sections stacked */}
+            <div className="md:hidden space-y-8">
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  {diamond}
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    7. What kind of conversations do you wish you could have with other founders?{" "}
+                    <span className="text-red-500">*</span>{" "}
+                    <span className="text-gray-500 font-normal">(choose up to 3)</span>
+                  </h3>
+                </div>
+                <div className="grid grid-cols-1 gap-3">
+                  {conversationTopicsList.map((topic) => (
+                    <label
+                      key={topic}
+                      className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${formData.conversationTopics.includes(topic) ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}
+                    >
+                      <input
+                        type="checkbox"
+                        value={topic}
+                        checked={formData.conversationTopics.includes(topic)}
+                        onChange={handleCheckboxChange}
+                        className="sr-only"
+                      />
+                      <div
+                        className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${formData.conversationTopics.includes(topic) ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}
+                      >
+                        {formData.conversationTopics.includes(topic) && (
+                          <svg
+                            className="w-3 h-3 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={3}
+                              d="M5 13l4 4L19 7"
+                            />
                           </svg>
                         )}
                       </div>
-                      <span className="text-sm font-medium text-gray-700">Something else</span>
+                      <span className="text-sm font-medium text-gray-700">{topic}</span>
                     </label>
-                    {formData.conversationTopics.includes("Something else") && (
-                      <>
-                        <input type="text" name="otherTopic" value={formData.otherTopic} onChange={handleChange} placeholder="Please specify" className={`mt-2 ${inputClass(!!errors.otherTopic)}`} />
-                        {errors.otherTopic && <p className="text-red-500 text-sm mt-1">{errors.otherTopic}</p>}
-                      </>
-                    )}
-                  </div>
-                  {errors.conversationTopics && <p className="text-red-500 text-sm mt-2">{errors.conversationTopics}</p>}
+                  ))}
                 </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    {diamond}
-                    <label className={labelClass}>8. What do you hate about most founder groups today? <span className="text-red-500">*</span></label>
-                  </div>
-                  <textarea
-                    name="hateAboutGroups"
-                    value={formData.hateAboutGroups}
-                    onChange={handleChange}
-                    placeholder="Be honest — this helps us keep the vibe right. (min 10 words)"
-                    rows={4}
-                    maxLength={500}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent bg-[#FAFAFA] ${errors.hateAboutGroups ? "border-red-500" : "border-gray-300"}`}
-                  />
-                  {errors.hateAboutGroups && <p className="text-red-500 text-sm mt-1">{errors.hateAboutGroups}</p>}
-                  <p className="text-xs text-gray-400 mt-1">{formData.hateAboutGroups.length}/500 characters</p>
-                </div>
-              </SwiperSlide>
-            </Swiper>
-          </div>
-          {/* Mobile: single step - both sections stacked */}
-          <div className="md:hidden space-y-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                {diamond}
-                <h3 className="text-lg font-semibold text-gray-900">7. What kind of conversations do you wish you could have with other founders? <span className="text-red-500">*</span> <span className="text-gray-500 font-normal">(choose up to 3)</span></h3>
-              </div>
-              <div className="grid grid-cols-1 gap-3">
-                {conversationTopicsList.map((topic) => (
-                  <label key={topic} className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${formData.conversationTopics.includes(topic) ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}>
-                    <input type="checkbox" value={topic} checked={formData.conversationTopics.includes(topic)} onChange={handleCheckboxChange} className="sr-only" />
-                    <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${formData.conversationTopics.includes(topic) ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}>
-                      {formData.conversationTopics.includes(topic) && <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
+                <div className="mt-3">
+                  <label
+                    className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${formData.conversationTopics.includes("Something else") ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}
+                  >
+                    <input
+                      type="checkbox"
+                      value="Something else"
+                      checked={formData.conversationTopics.includes("Something else")}
+                      onChange={handleCheckboxChange}
+                      className="sr-only"
+                    />
+                    <div
+                      className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${formData.conversationTopics.includes("Something else") ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}
+                    >
+                      {formData.conversationTopics.includes("Something else") && (
+                        <svg
+                          className="w-3 h-3 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={3}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      )}
                     </div>
-                    <span className="text-sm font-medium text-gray-700">{topic}</span>
+                    <span className="text-sm font-medium text-gray-700">Something else</span>
                   </label>
-                ))}
-              </div>
-              <div className="mt-3">
-                <label className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${formData.conversationTopics.includes("Something else") ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}>
-                  <input type="checkbox" value="Something else" checked={formData.conversationTopics.includes("Something else")} onChange={handleCheckboxChange} className="sr-only" />
-                  <div className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${formData.conversationTopics.includes("Something else") ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}>
-                    {formData.conversationTopics.includes("Something else") && <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">Something else</span>
-                </label>
-                {formData.conversationTopics.includes("Something else") && (
-                  <>
-                    <input type="text" name="otherTopic" value={formData.otherTopic} onChange={handleChange} placeholder="Please specify" className={`mt-2 ${inputClass(!!errors.otherTopic)}`} />
-                    {errors.otherTopic && <p className="text-red-500 text-sm mt-1">{errors.otherTopic}</p>}
-                  </>
+                  {formData.conversationTopics.includes("Something else") && (
+                    <>
+                      <input
+                        type="text"
+                        name="otherTopic"
+                        value={formData.otherTopic}
+                        onChange={handleChange}
+                        placeholder="Please specify"
+                        className={`mt-2 ${inputClass(!!errors.otherTopic)}`}
+                      />
+                      {errors.otherTopic && (
+                        <p className="text-red-500 text-sm mt-1">{errors.otherTopic}</p>
+                      )}
+                    </>
+                  )}
+                </div>
+                {errors.conversationTopics && (
+                  <p className="text-red-500 text-sm mt-2">{errors.conversationTopics}</p>
                 )}
               </div>
-              {errors.conversationTopics && <p className="text-red-500 text-sm mt-2">{errors.conversationTopics}</p>}
-            </div>
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                {diamond}
-                <label className={labelClass}>8. What do you hate about most founder groups today? <span className="text-red-500">*</span></label>
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  {diamond}
+                  <label className={labelClass}>
+                    8. What do you hate about most founder groups today?{" "}
+                    <span className="text-red-500">*</span>
+                  </label>
+                </div>
+                <textarea
+                  name="hateAboutGroups"
+                  value={formData.hateAboutGroups}
+                  onChange={handleChange}
+                  placeholder="Be honest — this helps us keep the vibe right. (min 10 words)"
+                  rows={4}
+                  maxLength={500}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent bg-[#FAFAFA] ${errors.hateAboutGroups ? "border-red-500" : "border-gray-300"}`}
+                />
+                {errors.hateAboutGroups && (
+                  <p className="text-red-500 text-sm mt-1">{errors.hateAboutGroups}</p>
+                )}
+                <p className="text-xs text-gray-400 mt-1">
+                  {formData.hateAboutGroups.length}/500 characters
+                </p>
               </div>
-              <textarea name="hateAboutGroups" value={formData.hateAboutGroups} onChange={handleChange} placeholder="Be honest — this helps us keep the vibe right. (min 10 words)" rows={4} maxLength={500} className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent bg-[#FAFAFA] ${errors.hateAboutGroups ? "border-red-500" : "border-gray-300"}`} />
-              {errors.hateAboutGroups && <p className="text-red-500 text-sm mt-1">{errors.hateAboutGroups}</p>}
-              <p className="text-xs text-gray-400 mt-1">{formData.hateAboutGroups.length}/500 characters</p>
             </div>
           </div>
-        </div>
-      );
-    }
+        );
+      }
 
-    case 4: {
-      const yearsOptions = ["< 1 year", "1 – 3 years", "3 – 5 years", "5 + years"];
-      const matchingOptions = ["Yes", "Maybe, depends on schedule", "No, prefer group convos only"];
-      return (
-        <div>
-          <style dangerouslySetInnerHTML={{
-            __html: `
+      case 4: {
+        const yearsOptions = ["< 1 year", "1 – 3 years", "3 – 5 years", "5 + years"];
+        const matchingOptions = [
+          "Yes",
+          "Maybe, depends on schedule",
+          "No, prefer group convos only",
+        ];
+        return (
+          <div>
+            <style
+              dangerouslySetInnerHTML={{
+                __html: `
               .founderfuel-step4-slider .swiper { width: 100%; overflow: hidden; }
               .founderfuel-step4-slider .swiper-slide { height: auto; box-sizing: border-box; }
               .founderfuel-step4-slider .swiper-pagination { position: relative; margin-top: 24px; display: flex; justify-content: center; gap: 8px; }
               .founderfuel-step4-slider .swiper-pagination-bullet { background: #D1D5DB; width: 8px; height: 8px; opacity: 1; margin: 0 4px; }
               .founderfuel-step4-slider .swiper-pagination-bullet-active { background: #7B46F8; }
             `,
-          }} />
-          <div className="flex items-center gap-2 mb-6">
-            {diamond}
-            <h2 className="text-2xl font-semibold text-gray-900">Details & Contact</h2>
-          </div>
-          {/* Desktop: slider */}
-          <div className="hidden md:block">
-            <Swiper
-              onSwiper={(swiper) => { step4SwiperRef.current = swiper; }}
-              onSlideChangeTransitionEnd={(swiper) => setStepSlideIndex((prev) => ({ ...prev, 4: swiper.activeIndex }))}
-              modules={[Pagination]}
-              spaceBetween={24}
-              slidesPerView={1}
-              pagination={{ clickable: true }}
-              className="founderfuel-step4-slider"
-            >
-              <SwiperSlide>
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    {diamond}
-                    <h3 className="text-lg font-semibold text-gray-900">9. How many years have you been building this startup? <span className="text-red-500">*</span></h3>
-                  </div>
-                  <div className="space-y-3">
-                    {yearsOptions.map((opt) => (
-                      <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.yearsBuilding === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                        <input type="radio" name="yearsBuilding" value={opt} checked={formData.yearsBuilding === opt} onChange={handleChange} className="sr-only" />
-                        <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.yearsBuilding === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                          {formData.yearsBuilding === opt && <div className="w-2 h-2 rounded-full bg-white" />}
-                        </div>
-                        <span className="text-sm font-medium text-gray-700">{opt}</span>
-                      </label>
-                    ))}
-                  </div>
-                  {errors.yearsBuilding && <p className="text-red-500 text-sm mt-2">{errors.yearsBuilding}</p>}
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    {diamond}
-                    <h3 className="text-lg font-semibold text-gray-900">10. Would you be open to being matched 1:1 with another founder for a private conversation every 2 weeks?</h3>
-                  </div>
-                  <div className="space-y-3">
-                    {matchingOptions.map((opt) => (
-                      <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.openToMatching === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                        <input type="radio" name="openToMatching" value={opt} checked={formData.openToMatching === opt} onChange={handleChange} className="sr-only" />
-                        <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.openToMatching === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                          {formData.openToMatching === opt && <div className="w-2 h-2 rounded-full bg-white" />}
-                        </div>
-                        <span className="text-sm font-medium text-gray-700">{opt}</span>
-                      </label>
-                    ))}
-                  </div>
-                  {errors.openToMatching && <p className="text-red-500 text-sm mt-2">{errors.openToMatching}</p>}
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="space-y-6">
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      {diamond}
-                      <label className="text-lg font-semibold text-gray-900">11. What city are you based in? <span className="text-red-500">*</span></label>
-                    </div>
-                    <input type="text" name="city" value={formData.city} onChange={handleChange} placeholder="Enter your city" className={inputClass(!!errors.city)} />
-                    {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      {diamond}
-                      <label className="text-lg font-semibold text-gray-900">12. How did you hear about us? <span className="text-red-500">*</span></label>
-                    </div>
-                    <input type="text" name="heardAbout" value={formData.heardAbout} onChange={handleChange} placeholder="Tell us how you found us" className={inputClass(!!errors.heardAbout)} />
-                    {errors.heardAbout && <p className="text-red-500 text-sm mt-1">{errors.heardAbout}</p>}
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="space-y-6">
+              }}
+            />
+            <div className="flex items-center gap-2 mb-6">
+              {diamond}
+              <h2 className="text-2xl font-semibold text-gray-900">Details & Contact</h2>
+            </div>
+            {/* Desktop: slider */}
+            <div className="hidden md:block">
+              <Swiper
+                onSwiper={(swiper) => {
+                  step4SwiperRef.current = swiper;
+                }}
+                onSlideChangeTransitionEnd={(swiper) =>
+                  setStepSlideIndex((prev) => ({ ...prev, 4: swiper.activeIndex }))
+                }
+                modules={[Pagination]}
+                spaceBetween={24}
+                slidesPerView={1}
+                pagination={{ clickable: true }}
+                className="founderfuel-step4-slider"
+              >
+                <SwiperSlide>
                   <div>
                     <div className="flex items-center gap-2 mb-4">
                       {diamond}
-                      <h3 className="text-lg font-semibold text-gray-900">13. Preferred mode to communicate? <span className="text-red-500">*</span></h3>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        9. How many years have you been building this startup?{" "}
+                        <span className="text-red-500">*</span>
+                      </h3>
                     </div>
                     <div className="space-y-3">
-                      {["WhatsApp", "Slack"].map((opt) => (
-                        <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.preferredMode === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                          <input type="radio" name="preferredMode" value={opt} checked={formData.preferredMode === opt} onChange={handleChange} className="sr-only" />
-                          <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.preferredMode === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                            {formData.preferredMode === opt && <div className="w-2 h-2 rounded-full bg-white" />}
+                      {yearsOptions.map((opt) => (
+                        <label
+                          key={opt}
+                          className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.yearsBuilding === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}
+                        >
+                          <input
+                            type="radio"
+                            name="yearsBuilding"
+                            value={opt}
+                            checked={formData.yearsBuilding === opt}
+                            onChange={handleChange}
+                            className="sr-only"
+                          />
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.yearsBuilding === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}
+                          >
+                            {formData.yearsBuilding === opt && (
+                              <div className="w-2 h-2 rounded-full bg-white" />
+                            )}
                           </div>
                           <span className="text-sm font-medium text-gray-700">{opt}</span>
                         </label>
                       ))}
                     </div>
-                    {errors.preferredMode && <p className="text-red-500 text-sm mt-2">{errors.preferredMode}</p>}
+                    {errors.yearsBuilding && (
+                      <p className="text-red-500 text-sm mt-2">{errors.yearsBuilding}</p>
+                    )}
                   </div>
-                  {formData.preferredMode && (
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      {diamond}
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        10. Would you be open to being matched 1:1 with another founder for a
+                        private conversation every 2 weeks?
+                      </h3>
+                    </div>
+                    <div className="space-y-3">
+                      {matchingOptions.map((opt) => (
+                        <label
+                          key={opt}
+                          className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.openToMatching === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}
+                        >
+                          <input
+                            type="radio"
+                            name="openToMatching"
+                            value={opt}
+                            checked={formData.openToMatching === opt}
+                            onChange={handleChange}
+                            className="sr-only"
+                          />
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.openToMatching === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}
+                          >
+                            {formData.openToMatching === opt && (
+                              <div className="w-2 h-2 rounded-full bg-white" />
+                            )}
+                          </div>
+                          <span className="text-sm font-medium text-gray-700">{opt}</span>
+                        </label>
+                      ))}
+                    </div>
+                    {errors.openToMatching && (
+                      <p className="text-red-500 text-sm mt-2">{errors.openToMatching}</p>
+                    )}
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className="space-y-6">
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         {diamond}
-                        <label className={labelClass}>
-                          {formData.preferredMode === "WhatsApp" ? "WhatsApp Phone Number" : "Slack Email"} <span className="text-red-500">*</span>
+                        <label className="text-lg font-semibold text-gray-900">
+                          11. What city are you based in? <span className="text-red-500">*</span>
                         </label>
                       </div>
                       <input
-                        name="contactDetail"
-                        type={formData.preferredMode === "WhatsApp" ? "tel" : "email"}
-                        value={formData.contactDetail}
+                        type="text"
+                        name="city"
+                        value={formData.city}
                         onChange={handleChange}
-                        placeholder={formData.preferredMode === "WhatsApp" ? "e.g. +1 234 567 8900" : "e.g. founder@startup.com"}
-                        className={inputClass(!!errors.contactDetail)}
+                        placeholder="Enter your city"
+                        className={inputClass(!!errors.city)}
                       />
-                      {errors.contactDetail && <p className="text-red-500 text-sm mt-1">{errors.contactDetail}</p>}
+                      {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
                     </div>
-                  )}
-                </div>
-              </SwiperSlide>
-            </Swiper>
-          </div>
-          {/* Mobile: single step - all sections stacked */}
-          <div className="md:hidden space-y-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                {diamond}
-                <h3 className="text-lg font-semibold text-gray-900">9. How many years have you been building this startup? <span className="text-red-500">*</span></h3>
-              </div>
-              <div className="space-y-3">
-                {yearsOptions.map((opt) => (
-                  <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.yearsBuilding === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                    <input type="radio" name="yearsBuilding" value={opt} checked={formData.yearsBuilding === opt} onChange={handleChange} className="sr-only" />
-                    <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.yearsBuilding === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                      {formData.yearsBuilding === opt && <div className="w-2 h-2 rounded-full bg-white" />}
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        {diamond}
+                        <label className="text-lg font-semibold text-gray-900">
+                          12. How did you hear about us? <span className="text-red-500">*</span>
+                        </label>
+                      </div>
+                      <input
+                        type="text"
+                        name="heardAbout"
+                        value={formData.heardAbout}
+                        onChange={handleChange}
+                        placeholder="Tell us how you found us"
+                        className={inputClass(!!errors.heardAbout)}
+                      />
+                      {errors.heardAbout && (
+                        <p className="text-red-500 text-sm mt-1">{errors.heardAbout}</p>
+                      )}
                     </div>
-                    <span className="text-sm font-medium text-gray-700">{opt}</span>
-                  </label>
-                ))}
-              </div>
-              {errors.yearsBuilding && <p className="text-red-500 text-sm mt-2">{errors.yearsBuilding}</p>}
-            </div>
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                {diamond}
-                <h3 className="text-lg font-semibold text-gray-900">10. Would you be open to being matched 1:1 with another founder for a private conversation every 2 weeks?</h3>
-              </div>
-              <div className="space-y-3">
-                {matchingOptions.map((opt) => (
-                  <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.openToMatching === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                    <input type="radio" name="openToMatching" value={opt} checked={formData.openToMatching === opt} onChange={handleChange} className="sr-only" />
-                    <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.openToMatching === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                      {formData.openToMatching === opt && <div className="w-2 h-2 rounded-full bg-white" />}
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex items-center gap-2 mb-4">
+                        {diamond}
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          13. Preferred mode to communicate? <span className="text-red-500">*</span>
+                        </h3>
+                      </div>
+                      <div className="space-y-3">
+                        {["WhatsApp", "Slack"].map((opt) => (
+                          <label
+                            key={opt}
+                            className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.preferredMode === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}
+                          >
+                            <input
+                              type="radio"
+                              name="preferredMode"
+                              value={opt}
+                              checked={formData.preferredMode === opt}
+                              onChange={handleChange}
+                              className="sr-only"
+                            />
+                            <div
+                              className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.preferredMode === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}
+                            >
+                              {formData.preferredMode === opt && (
+                                <div className="w-2 h-2 rounded-full bg-white" />
+                              )}
+                            </div>
+                            <span className="text-sm font-medium text-gray-700">{opt}</span>
+                          </label>
+                        ))}
+                      </div>
+                      {errors.preferredMode && (
+                        <p className="text-red-500 text-sm mt-2">{errors.preferredMode}</p>
+                      )}
                     </div>
-                    <span className="text-sm font-medium text-gray-700">{opt}</span>
-                  </label>
-                ))}
-              </div>
-              {errors.openToMatching && <p className="text-red-500 text-sm mt-2">{errors.openToMatching}</p>}
+                    {formData.preferredMode && (
+                      <div>
+                        <div className="flex items-center gap-2 mb-2">
+                          {diamond}
+                          <label className={labelClass}>
+                            {formData.preferredMode === "WhatsApp"
+                              ? "WhatsApp Phone Number"
+                              : "Slack Email"}{" "}
+                            <span className="text-red-500">*</span>
+                          </label>
+                        </div>
+                        <input
+                          name="contactDetail"
+                          type={formData.preferredMode === "WhatsApp" ? "tel" : "email"}
+                          value={formData.contactDetail}
+                          onChange={handleChange}
+                          placeholder={
+                            formData.preferredMode === "WhatsApp"
+                              ? "e.g. +1 234 567 8900"
+                              : "e.g. founder@startup.com"
+                          }
+                          className={inputClass(!!errors.contactDetail)}
+                        />
+                        {errors.contactDetail && (
+                          <p className="text-red-500 text-sm mt-1">{errors.contactDetail}</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </SwiperSlide>
+              </Swiper>
             </div>
-            <div className="space-y-6">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  {diamond}
-                  <label className="text-lg font-semibold text-gray-900">11. What city are you based in? <span className="text-red-500">*</span></label>
-                </div>
-                <input type="text" name="city" value={formData.city} onChange={handleChange} placeholder="Enter your city" className={inputClass(!!errors.city)} />
-                {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
-              </div>
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  {diamond}
-                  <label className="text-lg font-semibold text-gray-900">12. How did you hear about us? <span className="text-red-500">*</span></label>
-                </div>
-                <input type="text" name="heardAbout" value={formData.heardAbout} onChange={handleChange} placeholder="Tell us how you found us" className={inputClass(!!errors.heardAbout)} />
-                {errors.heardAbout && <p className="text-red-500 text-sm mt-1">{errors.heardAbout}</p>}
-              </div>
-            </div>
-            <div className="space-y-6">
+            {/* Mobile: single step - all sections stacked */}
+            <div className="md:hidden space-y-8">
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   {diamond}
-                  <h3 className="text-lg font-semibold text-gray-900">13. Preferred mode to communicate? <span className="text-red-500">*</span></h3>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    9. How many years have you been building this startup?{" "}
+                    <span className="text-red-500">*</span>
+                  </h3>
                 </div>
                 <div className="space-y-3">
-                  {["WhatsApp", "Slack"].map((opt) => (
-                    <label key={opt} className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.preferredMode === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}>
-                      <input type="radio" name="preferredMode" value={opt} checked={formData.preferredMode === opt} onChange={handleChange} className="sr-only" />
-                      <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.preferredMode === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}>
-                        {formData.preferredMode === opt && <div className="w-2 h-2 rounded-full bg-white" />}
+                  {yearsOptions.map((opt) => (
+                    <label
+                      key={opt}
+                      className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.yearsBuilding === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}
+                    >
+                      <input
+                        type="radio"
+                        name="yearsBuilding"
+                        value={opt}
+                        checked={formData.yearsBuilding === opt}
+                        onChange={handleChange}
+                        className="sr-only"
+                      />
+                      <div
+                        className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.yearsBuilding === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}
+                      >
+                        {formData.yearsBuilding === opt && (
+                          <div className="w-2 h-2 rounded-full bg-white" />
+                        )}
                       </div>
                       <span className="text-sm font-medium text-gray-700">{opt}</span>
                     </label>
                   ))}
                 </div>
-                {errors.preferredMode && <p className="text-red-500 text-sm mt-2">{errors.preferredMode}</p>}
+                {errors.yearsBuilding && (
+                  <p className="text-red-500 text-sm mt-2">{errors.yearsBuilding}</p>
+                )}
               </div>
-              {formData.preferredMode && (
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  {diamond}
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    10. Would you be open to being matched 1:1 with another founder for a private
+                    conversation every 2 weeks?
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  {matchingOptions.map((opt) => (
+                    <label
+                      key={opt}
+                      className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.openToMatching === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}
+                    >
+                      <input
+                        type="radio"
+                        name="openToMatching"
+                        value={opt}
+                        checked={formData.openToMatching === opt}
+                        onChange={handleChange}
+                        className="sr-only"
+                      />
+                      <div
+                        className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.openToMatching === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}
+                      >
+                        {formData.openToMatching === opt && (
+                          <div className="w-2 h-2 rounded-full bg-white" />
+                        )}
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{opt}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors.openToMatching && (
+                  <p className="text-red-500 text-sm mt-2">{errors.openToMatching}</p>
+                )}
+              </div>
+              <div className="space-y-6">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     {diamond}
-                    <label className={labelClass}>
-                      {formData.preferredMode === "WhatsApp" ? "WhatsApp Phone Number" : "Slack Email"} <span className="text-red-500">*</span>
+                    <label className="text-lg font-semibold text-gray-900">
+                      11. What city are you based in? <span className="text-red-500">*</span>
                     </label>
                   </div>
-                  <input name="contactDetail" type={formData.preferredMode === "WhatsApp" ? "tel" : "email"} value={formData.contactDetail} onChange={handleChange} placeholder={formData.preferredMode === "WhatsApp" ? "e.g. +1 234 567 8900" : "e.g. founder@startup.com"} className={inputClass(!!errors.contactDetail)} />
-                  {errors.contactDetail && <p className="text-red-500 text-sm mt-1">{errors.contactDetail}</p>}
+                  <input
+                    type="text"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    placeholder="Enter your city"
+                    className={inputClass(!!errors.city)}
+                  />
+                  {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
                 </div>
-              )}
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    {diamond}
+                    <label className="text-lg font-semibold text-gray-900">
+                      12. How did you hear about us? <span className="text-red-500">*</span>
+                    </label>
+                  </div>
+                  <input
+                    type="text"
+                    name="heardAbout"
+                    value={formData.heardAbout}
+                    onChange={handleChange}
+                    placeholder="Tell us how you found us"
+                    className={inputClass(!!errors.heardAbout)}
+                  />
+                  {errors.heardAbout && (
+                    <p className="text-red-500 text-sm mt-1">{errors.heardAbout}</p>
+                  )}
+                </div>
+              </div>
+              <div className="space-y-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    {diamond}
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      13. Preferred mode to communicate? <span className="text-red-500">*</span>
+                    </h3>
+                  </div>
+                  <div className="space-y-3">
+                    {["WhatsApp", "Slack"].map((opt) => (
+                      <label
+                        key={opt}
+                        className={`flex items-center p-4 rounded-lg border-2 bg-white cursor-pointer transition-all ${formData.preferredMode === opt ? "border-[#7B46F8]" : "border-gray-200 hover:border-gray-300"}`}
+                      >
+                        <input
+                          type="radio"
+                          name="preferredMode"
+                          value={opt}
+                          checked={formData.preferredMode === opt}
+                          onChange={handleChange}
+                          className="sr-only"
+                        />
+                        <div
+                          className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${formData.preferredMode === opt ? "bg-[#7B46F8] border-[#7B46F8]" : "border-gray-300"}`}
+                        >
+                          {formData.preferredMode === opt && (
+                            <div className="w-2 h-2 rounded-full bg-white" />
+                          )}
+                        </div>
+                        <span className="text-sm font-medium text-gray-700">{opt}</span>
+                      </label>
+                    ))}
+                  </div>
+                  {errors.preferredMode && (
+                    <p className="text-red-500 text-sm mt-2">{errors.preferredMode}</p>
+                  )}
+                </div>
+                {formData.preferredMode && (
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      {diamond}
+                      <label className={labelClass}>
+                        {formData.preferredMode === "WhatsApp"
+                          ? "WhatsApp Phone Number"
+                          : "Slack Email"}{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                    </div>
+                    <input
+                      name="contactDetail"
+                      type={formData.preferredMode === "WhatsApp" ? "tel" : "email"}
+                      value={formData.contactDetail}
+                      onChange={handleChange}
+                      placeholder={
+                        formData.preferredMode === "WhatsApp"
+                          ? "e.g. +1 234 567 8900"
+                          : "e.g. founder@startup.com"
+                      }
+                      className={inputClass(!!errors.contactDetail)}
+                    />
+                    {errors.contactDetail && (
+                      <p className="text-red-500 text-sm mt-1">{errors.contactDetail}</p>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      );
-    }
+        );
+      }
 
-    default:
-      return null;
+      default:
+        return null;
     }
   };
 
@@ -949,10 +1440,22 @@ const FounderInquiryForm: React.FC = () => {
     <div className="relative bg-white ">
       <div className="bg-[#7B46F8] relative py-24">
         <div className="absolute top-0 right-0 z-10">
-          <Image src="/icons/hero-arrow.png" width={100} height={100} alt="" className="w-full h-[100px] md:h-[150px] object-cover" />
+          <Image
+            src="/icons/hero-arrow.png"
+            width={100}
+            height={100}
+            alt=""
+            className="w-full h-[100px] md:h-[150px] object-cover"
+          />
         </div>
         <div className="absolute -top-[40px] md:-top-[65px] left-0 z-10">
-          <Image src="/pattern/flower.png" width={1000} height={1000} alt="" className="w-full h-[100px] md:h-[150px] object-cover" />
+          <Image
+            src="/pattern/flower.png"
+            width={1000}
+            height={1000}
+            alt=""
+            className="w-full h-[100px] md:h-[150px] object-cover"
+          />
         </div>
         <div className="flex md:flex-row flex-col md:items-start items-center justify-center gap-2 max-w-5xl mx-auto px-2">
           {/* <Image src="/logo/white.jpg" width={1000} height={1000} alt="ampli" className="h-[48px] md:h-[55px] w-auto pt-1" /> */}
@@ -961,17 +1464,29 @@ const FounderInquiryForm: React.FC = () => {
           </h1>
         </div>
         <div className="absolute -bottom-[50px] lg:left-[345px] sm:left-[80px] left-[40%] z-10">
-          <Image src="/icons/Star-fill.png" width={1000} height={1000} alt="" className="w-full h-[100px] object-cover" />
+          <Image
+            src="/icons/Star-fill.png"
+            width={1000}
+            height={1000}
+            alt=""
+            className="w-full h-[100px] object-cover"
+          />
         </div>
       </div>
 
       {!showForm && (
         <div className="text-center py-24 max-w-5xl mx-auto px-2">
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-black/80 mb-4">
-            (Pre-Seed to Series A) who want to talk openly about struggles, burn, hiring nightmares, co-founder conflicts, investor pressure, or just… the silence that comes after &quot;how&apos;s it going?&quot;.
+            (Pre-Seed to Series A) who want to talk openly about struggles, burn, hiring nightmares,
+            co-founder conflicts, investor pressure, or just… the silence that comes after
+            &quot;how&apos;s it going?&quot;.
           </p>
-          <p className="text-base md:text-lg text-black/70 mb-4 md:mb-8">No pitches. No flexing. Just real talk.</p>
-          <p className="text-base md:text-lg text-black/70 mb-4 md:mb-8">Let&apos;s see if this space is right for you.</p>
+          <p className="text-base md:text-lg text-black/70 mb-4 md:mb-8">
+            No pitches. No flexing. Just real talk.
+          </p>
+          <p className="text-base md:text-lg text-black/70 mb-4 md:mb-8">
+            Let&apos;s see if this space is right for you.
+          </p>
           <button
             type="button"
             onClick={() => setShowForm(true)}
@@ -1005,20 +1520,34 @@ const FounderInquiryForm: React.FC = () => {
                       className={`flex items-start gap-6 transition-colors ${isClickable ? "cursor-pointer" : "cursor-not-allowed"}`}
                     >
                       <div
-                        className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${isActive ? "bg-[#7B46F8] border-2 border-[#7B46F8]" : isCompleted ? "bg-[#7B46F8] border-2 border-[#7B46F8]" : "bg-[#F8F8F8] border-2 border-gray-300 border-dashed"
+                        className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                          isActive
+                            ? "bg-[#7B46F8] border-2 border-[#7B46F8]"
+                            : isCompleted
+                              ? "bg-[#7B46F8] border-2 border-[#7B46F8]"
+                              : "bg-[#F8F8F8] border-2 border-gray-300 border-dashed"
                         }`}
                       >
                         {isActive && <div className="w-3 h-3 bg-white rounded-full" />}
                       </div>
                       <div className="flex-1 pt-1">
                         <h3
-                          className={`text-lg font-medium ${isActive ? "text-[#7B46F8] font-semibold" : isCompleted ? "text-gray-900 font-medium" : "text-gray-600 font-normal"
+                          className={`text-lg font-medium ${
+                            isActive
+                              ? "text-[#7B46F8] font-semibold"
+                              : isCompleted
+                                ? "text-gray-900 font-medium"
+                                : "text-gray-600 font-normal"
                           }`}
                         >
                           {step.title}
                         </h3>
                         {step.description && (
-                          <p className={`text-xs mt-1 ${isActive || isCompleted ? "text-gray-500" : "text-gray-400"}`}>{step.description}</p>
+                          <p
+                            className={`text-xs mt-1 ${isActive || isCompleted ? "text-gray-500" : "text-gray-400"}`}
+                          >
+                            {step.description}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -1032,7 +1561,11 @@ const FounderInquiryForm: React.FC = () => {
           <div className="bg-[#F8F8F8] h-full py-12 px-4 sm:px-8 pb-24 w-screen lg:w-[calc(100vw_-_415px)]">
             <div className="rounded-lg flex flex-col justify-between h-full w-full">
               <form onSubmit={handleSubmit} className="flex flex-col h-full">
-                <div key={currentStep} className="sm:p-8 p-4 bg-white rounded-lg" ref={stepContentRef}>
+                <div
+                  key={currentStep}
+                  className="sm:p-8 p-4 bg-white rounded-lg"
+                  ref={stepContentRef}
+                >
                   {renderStepContent()}
                 </div>
 
@@ -1065,9 +1598,25 @@ const FounderInquiryForm: React.FC = () => {
                     >
                       {isSubmitting ? (
                         <span className="flex justify-center items-center gap-2">
-                          <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                          <svg
+                            className="animate-spin h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                            />
                           </svg>
                           Submitting...
                         </span>
@@ -1080,7 +1629,8 @@ const FounderInquiryForm: React.FC = () => {
               </form>
             </div>
           </div>
-        </div>)}
+        </div>
+      )}
     </div>
   );
 };

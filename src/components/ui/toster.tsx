@@ -1,5 +1,5 @@
-import React from 'react';
-import { Bounce, ToastContainer } from 'react-toastify';
+import React from "react";
+import { Bounce, ToastContainer } from "react-toastify";
 
 export default function Toast(): JSX.Element {
   return (
@@ -17,4 +17,4 @@ export default function Toast(): JSX.Element {
       transition={Bounce}
     />
   );
-} 
+}

@@ -1,9 +1,9 @@
-import { calculatePrizes } from '../lib/bountyPoolCalculate';
-import { cn } from '../lib/utils';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
-import Image from 'next/image';
-import { useRef, useEffect, useState } from 'react';
+import { calculatePrizes } from "../lib/bountyPoolCalculate";
+import { cn } from "../lib/utils";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import Image from "next/image";
+import { useRef, useEffect, useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,7 +23,7 @@ const BountyPool: React.FC<BountyPoolProps> = ({ Prize }) => {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const horizontalRef = useRef<HTMLDivElement>(null);
-  const [containerHeight, setContainerHeight] = useState<string>('100vh');
+  const [containerHeight, setContainerHeight] = useState<string>("100vh");
 
   const cardWidth = 380;
   const marginRight = 24;
@@ -38,24 +38,23 @@ const BountyPool: React.FC<BountyPoolProps> = ({ Prize }) => {
     const totalMargin = (data.length - 1) * marginRight;
     const contentWidth = totalCardWidth + totalMargin;
 
-
     // Add left and right padding to center first and last cards
     horizontal.style.paddingLeft = `${screenPadding}px`;
     horizontal.style.paddingRight = `${screenPadding}px`;
 
     const totalScroll = contentWidth + screenPadding * 2 - window.innerWidth;
     const calculatedHeight = (totalScroll / window.innerWidth) * window.innerHeight;
-    setContainerHeight(calculatedHeight + window.innerHeight + 'px');
+    setContainerHeight(calculatedHeight + window.innerHeight + "px");
 
     gsap.set(horizontal, { x: 0 });
     ScrollTrigger.getAll().forEach((t) => t.kill());
 
     const tween = gsap.to(horizontal, {
       x: () => `-${totalScroll}px`,
-      ease: 'none',
+      ease: "none",
       scrollTrigger: {
         trigger: container,
-        start: 'top top',
+        start: "top top",
         end: `+=${totalScroll}`,
         scrub: true,
         pin: true,
@@ -91,13 +90,13 @@ const BountyPool: React.FC<BountyPoolProps> = ({ Prize }) => {
             <div
               key={index}
               className={cn(
-                'flex-shrink-0 h-fit border border-solid border-black shadow-xl rounded-4xl bg-gradient-to-br from-white',
-                'flex flex-col justify-between',
-                index !== data.length - 1 && 'mr-6',
-                index === 0 && 'to-light-gold-bg',
-                index === 1 && 'to-light-silver-bg',
-                index === 2 && 'to-light-orange-bg',
-                index >= 3 && 'to-light-wood-bg'
+                "flex-shrink-0 h-fit border border-solid border-black shadow-xl rounded-4xl bg-gradient-to-br from-white",
+                "flex flex-col justify-between",
+                index !== data.length - 1 && "mr-6",
+                index === 0 && "to-light-gold-bg",
+                index === 1 && "to-light-silver-bg",
+                index === 2 && "to-light-orange-bg",
+                index >= 3 && "to-light-wood-bg"
               )}
               style={{ width: `${cardWidth}px` }}
             >
@@ -107,13 +106,13 @@ const BountyPool: React.FC<BountyPoolProps> = ({ Prize }) => {
                 </div>
                 <div className="flex w-fit pt-9 pr-9">
                   <span className="text-right">
-                    <strong className='h2'>{vale.amount}</strong>
+                    <strong className="h2">{vale.amount}</strong>
                     <h3 className="block">USDT</h3>
                   </span>
                 </div>
               </div>
               <div className="pl-9 pb-9">
-                <h2 className='h2'>{vale.percentage}%</h2>
+                <h2 className="h2">{vale.percentage}%</h2>
                 <small className="text-16 leading-25px text-black/80">
                   of the total value of the prize Money
                 </small>

@@ -1,7 +1,7 @@
-import React from 'react';
-import Container from './container';
-import Image from 'next/image';
-import Link from 'next/link';
+import React from "react";
+import Container from "./container";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer(): JSX.Element {
   return (
@@ -9,7 +9,6 @@ export default function Footer(): JSX.Element {
       <Container className="pt-14 pb-4 sm:py-14">
         <div>
           <div className="flex flex-col sm:flex-row gap-5 sm:gap-7 justify-between items-center mb-5 sm:mb-9">
-
             <div className="min-w-91px lg:min-w-115px">
               <Link href="/">
                 <Image
@@ -40,10 +39,7 @@ export default function Footer(): JSX.Element {
               >
                 Creator Onboarding
               </Link>
-              <Link
-                href="/blogs"
-                className="hover:text-primary transition-colors duration-200"
-              >
+              <Link href="/blogs" className="hover:text-primary transition-colors duration-200">
                 Blogs
               </Link>
               <Link

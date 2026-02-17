@@ -16,17 +16,14 @@ export default function NewVisibility() {
       </div>
       <div className="text-center">
         <h3 className="!text-[#7B46F8] text-20 sm:text-24 lg:text-32  pb-6">
-          The Old Founder Playbook <br/> No Longer Works{" "}
+          The Old Founder Playbook <br /> No Longer Works{" "}
         </h3>
         <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-2xl mx-auto">
-          Most founder marketing relies on outdated tactics. PR agencies push
-          founders into a few podcasts, post a couple of generic articles and
-          call it a strategy.
+          Most founder marketing relies on outdated tactics. PR agencies push founders into a few
+          podcasts, post a couple of generic articles and call it a strategy.
         </p>
 
-        <p className=" text-2xl  !font-semibold !text-[#FE8616] ">
-          The result?
-        </p>
+        <p className=" text-2xl  !font-semibold !text-[#FE8616] ">The result?</p>
         <p className="sm:!text-18 !text-16 !font-normal !text-[#FE8616] ">
           The podcast gets less views Brand gets 0 ROI Waste of time.
         </p>
