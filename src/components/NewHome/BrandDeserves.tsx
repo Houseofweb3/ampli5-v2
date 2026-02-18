@@ -4,16 +4,21 @@ import Image from "next/image";
 
 const cardData = [
   {
-    number: "You already create",
-    description: ["Podcasts", "Founder interviews", "Product explainers", "Long-form content"],
+    number: "You already have",
+    description: [
+      "A product with a POV",
+      "Content or a founder who can speak",
+      "A few channels you post on",
+      `A budget to “try distribution"`,
+    ],
   },
   {
     number: "But",
     description: [
-      "Feeds forget fast.",
-      "Posting resets reach",
-      "Discovery fragments across platforms",
-      "AI has no memory of you",
+      "Your ICP is scattered across rooms, not one platform",
+      "One placement is forgettable, reinforcement is what converts",
+      "Outreach is fragmented across 10 vendors and 50 tabs",
+      "You cannot see where attention flows, so you cannot route spend",
     ],
     isHighlighted: true,
   },
@@ -116,25 +121,25 @@ const BrandDeserves: React.FC = (): JSX.Element => {
                 ref={isSecondCard ? secondCardRef : null}
                 className={cn(
                   "rounded-xl p-6 lg:p-8 flex flex-col gap-4  border-2 transition-all duration-500",
-                  shouldHighlight ? "bg-white border-[#a709f0]" : "bg-transparent border-white"
+                  shouldHighlight ? "bg-white border-black" : "bg-transparent border-white"
                 )}
               >
                 <div
                   className={cn(
                     "text-xl font-semibold mb-2",
-                    shouldHighlight ? "text-[#7B46F8]" : "text-white"
+                    shouldHighlight ? "text-black" : "text-white"
                   )}
                 >
                   {card.number}
                 </div>
 
                 <div
-                  className={cn("h-0.5 w-full mb-4", shouldHighlight ? "bg-[#7B46F8]" : "bg-white")}
+                  className={cn("h-0.5 w-full mb-4", shouldHighlight ? "bg-black" : "bg-white")}
                 ></div>
 
                 <ul
                   className={cn(
-                    "list-disc list-inside text-base lg:text-lg leading-relaxed",
+                    "list-disc list-inside text-base lg:text-lg leading-relaxed space-y-3",
                     shouldHighlight ? "text-black" : "text-white"
                   )}
                 >
@@ -156,8 +161,8 @@ const BrandDeserves: React.FC = (): JSX.Element => {
             />
           </div>
         </div>
-        <p className="text-white text-center text-lg font-light">
-          Visibility breaks after creation.
+        <p className="text-white text-center !text-2xl ">
+          Your story is not the problem. Your distribution layer is.{" "}
         </p>
       </div>
     </div>

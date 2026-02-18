@@ -9,9 +9,9 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
           <div className="h-full text-center">
             <h2 className="text_pattern"> Agencies</h2>
             <div className="sm:space-y-8 space-y-4 mt-10">
-              <p className="text-white">Create visibility</p>
-              <p className="text-white">Agencies deliver content.</p>
-              <p className="text-white">They measure success by engagement spikes.</p>
+              <p className="text-white">Agencies sell effort.</p>
+              <p className="text-white">They optimize content.</p>
+              <p className="text-white">They hand you a creator list.</p>
             </div>
           </div>
           <div className="h-full text-center">
@@ -29,11 +29,12 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
           <div className="h-full text-center">
             <h2 className="text_pattern">Ampli5</h2>
             <div className="sm:space-y-8 space-y-4 mt-10">
-              <p className="text-white">Compounds visibility</p>
-              <p className="text-white">Ampli5 manufactures recall.</p>
+              <p className="text-white">We sell terrain.</p>
+              <p className="text-white">We optimize presence and recall.</p>
               <p className="text-white">
-                We measure success by mindshare and <br />
-                memory (organic traffic through socials &<br /> brand Kws)
+                We show you where your audience
+                <br />
+                already is and how attention moves.
               </p>
             </div>
           </div>

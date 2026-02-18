@@ -45,13 +45,14 @@ export default function HeroBanner() {
         style={{ minHeight: "calc(100vh - 100px)" }}
       >
         <div className="md:mt-24 sm:mt-12 mt-6">
-          <h1 className="text-center mb-4 max-w-5xl mx-auto  uppercase !leading-tight sm:leading-normal">
-            1 long-form conversation. Clipped into{" "}
-            <span className="text-[#7B46F8]">
-              10 high-signal clips.Repeatedly distributed across 100 networks{" "}
-            </span>{" "}
-            until recall sets in.
+          <h1 className="text-center mb-4 max-w-2xl md:max-w-4xl mx-auto  uppercase !leading-tight sm:leading-normal">
+            Your audience has a home on the internet. Ampli5{" "}
+            <span className="text-[#7B46F8]">gives you the address.</span>{" "}
           </h1>
+          <p className="text-center  text-lg md:text-xl max-w-3xl mx-auto">
+            Deploy Influencers, Podcasts, Clippers, Traditional media articles & Newsletters,
+            Subreddits, and AEO from one place.
+          </p>
         </div>
         <div className="pb-26px lg:pb-48px">
           <PrimaryButton className="text-white mx-auto" onClick={() => router.push("/dashboard")}>

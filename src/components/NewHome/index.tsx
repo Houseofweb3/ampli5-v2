@@ -9,7 +9,9 @@ import FAQ from "./FAQ";
 import WaveContent from "./WaveContent";
 import EcosystemLoves from "./EcosystemLoves";
 import AeoVsSeo from "./AeoVsSeo";
-import Details from "./Details";
+// import Details from "./Details";
+import NewDetails from "./NewDetails";
+import Get from "./Get";
 
 export default function NewHome() {
   return (
@@ -33,10 +35,14 @@ export default function NewHome() {
         <EcosystemLoves />
       </div>
       <div className="relative top-0 z-0  w-full bg-white">
-        <Details />
+        {/* <Details/> */}
+        <NewDetails />
       </div>
       <div className="sticky top-0 z-0  w-full ">
         <AeoVsSeo />
+      </div>
+      <div className="relative z-0  w-full bg-white">
+        <Get />
       </div>
       <div className="relative z-0  w-full bg-white">
         <FAQ />

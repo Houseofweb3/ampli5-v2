@@ -15,14 +15,23 @@ export default function NewVisibility() {
         />
       </div>
       <div className="text-center">
-        <h3 className="!text-[#7B46F8] text-3xl sm:text-4xl lg:text-5xl pb-6">What is ampli5?</h3>
-        <p className="sm:!text-18 !text-16 !font-semibold max-w-2xl mx-auto">
-          Ampli5 is not an agency.
+        <h3 className="!text-[#7B46F8] text-3xl sm:text-4xl lg:text-5xl pb-6 flex  gap-3 items-center justify-center">
+          What is{" "}
+          <Image
+            src="/logo/ampli5.png"
+            alt="ampli5"
+            width={200}
+            height={200}
+            className="h-[30px] sm:h-[40px] lg:h-[50px] w-auto"
+          />
+          ?
+        </h3>
+        <p className="sm:!text-18 !text-16 !font-semibold max-w-2xl mx-auto mb-4">
+          Not an agency. | Not a marketplace. | Not a creator list.
         </p>
         <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-2xl mx-auto">
-          Agencies focus on creation. Ampli5 focuses on <b>distribution.</b> We use clipping to
-          create repeat exposure. Brand recall becomes brand mindshare across social, search, and
-          AI.
+          Ampli5 is a SaaS distribution aggregator. You give us your ICP. We map where they live
+          online. You deploy across those surfaces at once using an integrated infrastructure layer.
         </p>
       </div>
     </div>

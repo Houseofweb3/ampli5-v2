@@ -65,7 +65,7 @@ const EcosystemLoves: React.FC = (): JSX.Element => {
         "If your story isn't repeating, the algorithm assumes it doesn't matter.",
         "Ampli5 exists to make repetition deliberate.",
       ],
-      isHighlighted: false,
+      isHighlighted: true,
     },
     {
       number: "Distribution is the only MOAT ",
@@ -75,7 +75,7 @@ const EcosystemLoves: React.FC = (): JSX.Element => {
         "Once your story is everywhere, it becomes the default.",
         "Ampli5 doesn't make you louder. It makes you unavoidable.",
       ],
-      isHighlighted: true,
+      isHighlighted: false,
     },
     {
       number: "AI is already deciding without you.",
@@ -84,7 +84,7 @@ const EcosystemLoves: React.FC = (): JSX.Element => {
         "AI answers using existing public context. If your story isn't already there, the gap gets filled for you.",
         "Ampli5 places your narrative where AI learns from, so your brand shows up as the answer.",
       ],
-      isHighlighted: false,
+      isHighlighted: true,
     },
   ];
 
