@@ -19,6 +19,7 @@ const cardData = [
       "One placement is forgettable, reinforcement is what converts",
       "Outreach is fragmented across 10 vendors and 50 tabs",
       "You cannot see where attention flows, so you cannot route spend",
+      "AI will not recommend you unless you seed the right surfaces",
     ],
     isHighlighted: true,
   },

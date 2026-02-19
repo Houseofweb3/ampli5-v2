@@ -56,7 +56,7 @@ export default function HeroBanner() {
         </div>
         <div className="pb-26px lg:pb-48px">
           <PrimaryButton className="text-white mx-auto" onClick={() => router.push("/dashboard")}>
-            How Ampli5 works
+            Build my Audience Atlas
           </PrimaryButton>
         </div>
         <div>
