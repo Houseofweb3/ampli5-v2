@@ -95,6 +95,7 @@ const CREATOR_STEP9_FIELD_TO_SLIDE: Record<string, number> = {
   firstCollaborationImage1: 0,
   firstCollaborationImage2: 0,
   firstCollaborationImage3: 0,
+  previousBrandedLinks: 1,
   xLink: 1,
   instagramLink: 1,
   youtubeLink: 1,
@@ -381,6 +382,9 @@ export default function CreatorOnboardingForm() {
         "Health & Fitness - Mental Health",
         "Health & Fitness - Podcasters",
         "Health & Fitness - Clippers",
+        "Metals",
+        "Forex",
+        "Indice Trading",
       ],
     };
     const selInd = formData.industries?.[0];
@@ -482,16 +486,19 @@ export default function CreatorOnboardingForm() {
     if (formData.paymentTerms && formData.paymentTerms.trim()) completed.add(7);
     // Step 8: Turnaround & Reliability - check if at least one turnaround time is selected
     if (formData.turnaroundTimes && formData.turnaroundTimes.length > 0) completed.add(8);
-    // Step 9: Previous Collaborations - check if all three images and all five links are provided
+    // Step 9: Previous Collaborations - check if all three images and at least one link are provided
+    const hasAtLeastOnePrevLink = [
+      formData.xLink,
+      formData.instagramLink,
+      formData.youtubeLink,
+      formData.tiktokLink,
+      formData.newsletterLink,
+    ].some((v) => v != null && String(v).trim() !== "");
     if (
       formData.firstCollaborationImage1 &&
       formData.firstCollaborationImage2 &&
       formData.firstCollaborationImage3 &&
-      formData.xLink &&
-      formData.instagramLink &&
-      formData.youtubeLink &&
-      formData.tiktokLink &&
-      formData.newsletterLink
+      hasAtLeastOnePrevLink
     )
       completed.add(9);
     // Step 10: Final Confirmation - check if confirmation is checked
@@ -759,21 +766,16 @@ export default function CreatorOnboardingForm() {
         if (!formData.firstCollaborationImage3 || !formData.firstCollaborationImage3.trim()) {
           newErrors.firstCollaborationImage3 = "Third collaboration image is required";
         }
-        // Second slide - validate all links are required
-        if (!formData.xLink || !formData.xLink.trim()) {
-          newErrors.xLink = "X link is required";
-        }
-        if (!formData.instagramLink || !formData.instagramLink.trim()) {
-          newErrors.instagramLink = "Instagram link is required";
-        }
-        if (!formData.youtubeLink || !formData.youtubeLink.trim()) {
-          newErrors.youtubeLink = "YouTube link is required";
-        }
-        if (!formData.tiktokLink || !formData.tiktokLink.trim()) {
-          newErrors.tiktokLink = "TikTok link is required";
-        }
-        if (!formData.newsletterLink || !formData.newsletterLink.trim()) {
-          newErrors.newsletterLink = "Newsletter link is required";
+        // Second slide - at least one link is required
+        const hasAtLeastOneLink = [
+          formData.xLink,
+          formData.instagramLink,
+          formData.youtubeLink,
+          formData.tiktokLink,
+          formData.newsletterLink,
+        ].some((v) => v != null && String(v).trim() !== "");
+        if (!hasAtLeastOneLink) {
+          newErrors.previousBrandedLinks = "At least one link is required";
         }
         break;
       case 10:
@@ -1895,22 +1897,13 @@ export default function CreatorOnboardingForm() {
             "Story sequence (3 slides)",
             "Link in bio placement (7 days)",
             "Reel pinned (7 days)",
-            "TikTok pinned (7 days)",
             "IG Reel – Original (Creator produces content)",
           ],
           TikTok: [
-            "IG Reel – Original (Creator produces content) ( 24 hours )",
-            "IG Reel – Adapted (Brand provides content)( 24 hours )",
-            "IG Reel – Repost (Brand provides content) ( 24h )",
-            "IG Reel – Original (Creator produces content) ( 7 hours )",
-            "IG Reel – Adapted (Brand provides content)( 7 hours )",
-            "IG Reel – Repost (Brand provides content) ( 7h )",
-            "Carousel (3–5 slides)",
-            "Story sequence (3 slides)",
-            "Link in bio placement (7 days)",
-            "Reel pinned (7 days)",
-            "TikTok pinned (7 days)",
-            "IG Reel – Original (Creator produces content)",
+            "Tik Tok Original(with collab tag)",
+            "Tik Tok Adapted(with collab tag)",
+            "Tik Tok Live",
+            "Tik Tok Story(3 carousel stories)",
           ],
           Newsletter: [
             "Sponsored-by mention (top)",
@@ -3426,7 +3419,7 @@ export default function CreatorOnboardingForm() {
             <div className="space-y-6">
               {/* <div className="flex items-center gap-2 mb-4">
               <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h3 className="text-lg font-semibold text-gray-900">Upload Proof Of Work</h3>
+              <h3 className="text-lg font-semibold text-gray-900">Proof of last collaboration and results</h3>
             </div>
              */}
               {/* Desktop: slider */}
@@ -3480,7 +3473,7 @@ export default function CreatorOnboardingForm() {
                       <div className="flex items-center gap-2 mb-4">
                         <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
                         <h3 className="text-lg font-semibold text-gray-900">
-                          Upload Proof Of Work
+                          Proof of last collaboration and results
                         </h3>
                       </div>
                       <CollaborationImageField
@@ -3510,131 +3503,94 @@ export default function CreatorOnboardingForm() {
                         <h3 className="text-lg font-semibold text-gray-900">
                           Links To Previous Branded / Sponsored Content
                         </h3>
+                        <span className="text-sm text-gray-500">(at least one required)</span>
                       </div>
+                      {errors.previousBrandedLinks && (
+                        <p className="mb-2 text-sm text-red-500">{errors.previousBrandedLinks}</p>
+                      )}
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            X <span className="text-red-500">*</span>
-                          </label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">X</label>
                           <input
                             type="text"
                             value={formData.xLink}
                             onChange={(e) => {
                               updateFormData({ xLink: e.target.value });
-                              if (errors.xLink) {
-                                setErrors((prev) => ({ ...prev, xLink: "" }));
+                              if (errors.previousBrandedLinks) {
+                                setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
                               }
                             }}
-                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                              errors.xLink ? "border-red-500" : "border-gray-300"
-                            }`}
+                            className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
                             placeholder="X"
                           />
-                          {errors.xLink && (
-                            <p className="mt-1 text-sm text-red-500">{errors.xLink}</p>
-                          )}
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Instagram <span className="text-red-500">*</span>
+                            Instagram
                           </label>
                           <input
                             type="text"
                             value={formData.instagramLink}
                             onChange={(e) => {
                               updateFormData({ instagramLink: e.target.value });
-                              if (errors.instagramLink) {
-                                setErrors((prev) => ({
-                                  ...prev,
-                                  instagramLink: "",
-                                }));
+                              if (errors.previousBrandedLinks) {
+                                setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
                               }
                             }}
-                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                              errors.instagramLink ? "border-red-500" : "border-gray-300"
-                            }`}
+                            className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
                             placeholder="Instagram"
                           />
-                          {errors.instagramLink && (
-                            <p className="mt-1 text-sm text-red-500">{errors.instagramLink}</p>
-                          )}
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Youtube <span className="text-red-500">*</span>
+                            Youtube
                           </label>
                           <input
                             type="text"
                             value={formData.youtubeLink}
                             onChange={(e) => {
                               updateFormData({ youtubeLink: e.target.value });
-                              if (errors.youtubeLink) {
-                                setErrors((prev) => ({
-                                  ...prev,
-                                  youtubeLink: "",
-                                }));
+                              if (errors.previousBrandedLinks) {
+                                setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
                               }
                             }}
-                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                              errors.youtubeLink ? "border-red-500" : "border-gray-300"
-                            }`}
+                            className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
                             placeholder="Youtube"
                           />
-                          {errors.youtubeLink && (
-                            <p className="mt-1 text-sm text-red-500">{errors.youtubeLink}</p>
-                          )}
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            TikTok <span className="text-red-500">*</span>
+                            TikTok
                           </label>
                           <input
                             type="text"
                             value={formData.tiktokLink}
                             onChange={(e) => {
                               updateFormData({ tiktokLink: e.target.value });
-                              if (errors.tiktokLink) {
-                                setErrors((prev) => ({
-                                  ...prev,
-                                  tiktokLink: "",
-                                }));
+                              if (errors.previousBrandedLinks) {
+                                setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
                               }
                             }}
-                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                              errors.tiktokLink ? "border-red-500" : "border-gray-300"
-                            }`}
+                            className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
                             placeholder="TikTok"
                           />
-                          {errors.tiktokLink && (
-                            <p className="mt-1 text-sm text-red-500">{errors.tiktokLink}</p>
-                          )}
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Newsletter links <span className="text-red-500">*</span>
+                            Newsletter links
                           </label>
                           <input
                             type="text"
                             value={formData.newsletterLink}
                             onChange={(e) => {
-                              updateFormData({
-                                newsletterLink: e.target.value,
-                              });
-                              if (errors.newsletterLink) {
-                                setErrors((prev) => ({
-                                  ...prev,
-                                  newsletterLink: "",
-                                }));
+                              updateFormData({ newsletterLink: e.target.value });
+                              if (errors.previousBrandedLinks) {
+                                setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
                               }
                             }}
-                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                              errors.newsletterLink ? "border-red-500" : "border-gray-300"
-                            }`}
+                            className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
                             placeholder="Newsletter links"
                           />
-                          {errors.newsletterLink && (
-                            <p className="mt-1 text-sm text-red-500">{errors.newsletterLink}</p>
-                          )}
                         </div>
                       </div>
                     </div>
@@ -3646,7 +3602,9 @@ export default function CreatorOnboardingForm() {
                 <div className="max-w-full box-border space-y-4">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                    <h3 className="text-lg font-semibold text-gray-900">Upload Proof Of Work</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Proof of last collaboration and results
+                    </h3>
                   </div>
                   <CollaborationImageField
                     field="firstCollaborationImage1"
@@ -3673,104 +3631,87 @@ export default function CreatorOnboardingForm() {
                     <h3 className="text-lg font-semibold text-gray-900">
                       Links To Previous Branded / Sponsored Content
                     </h3>
+                    <span className="text-sm text-gray-500">(at least one required)</span>
                   </div>
+                  {errors.previousBrandedLinks && (
+                    <p className="mb-2 text-sm text-red-500">{errors.previousBrandedLinks}</p>
+                  )}
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        X <span className="text-red-500">*</span>
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">X</label>
                       <input
                         type="text"
                         value={formData.xLink}
                         onChange={(e) => {
                           updateFormData({ xLink: e.target.value });
-                          if (errors.xLink) setErrors((prev) => ({ ...prev, xLink: "" }));
+                          if (errors.previousBrandedLinks)
+                            setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
                         }}
-                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.xLink ? "border-red-500" : "border-gray-300"}`}
+                        className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
                         placeholder="X"
                       />
-                      {errors.xLink && <p className="mt-1 text-sm text-red-500">{errors.xLink}</p>}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Instagram <span className="text-red-500">*</span>
+                        Instagram
                       </label>
                       <input
                         type="text"
                         value={formData.instagramLink}
                         onChange={(e) => {
                           updateFormData({ instagramLink: e.target.value });
-                          if (errors.instagramLink)
-                            setErrors((prev) => ({
-                              ...prev,
-                              instagramLink: "",
-                            }));
+                          if (errors.previousBrandedLinks)
+                            setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
                         }}
-                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.instagramLink ? "border-red-500" : "border-gray-300"}`}
+                        className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
                         placeholder="Instagram"
                       />
-                      {errors.instagramLink && (
-                        <p className="mt-1 text-sm text-red-500">{errors.instagramLink}</p>
-                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Youtube <span className="text-red-500">*</span>
+                        Youtube
                       </label>
                       <input
                         type="text"
                         value={formData.youtubeLink}
                         onChange={(e) => {
                           updateFormData({ youtubeLink: e.target.value });
-                          if (errors.youtubeLink)
-                            setErrors((prev) => ({ ...prev, youtubeLink: "" }));
+                          if (errors.previousBrandedLinks)
+                            setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
                         }}
-                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.youtubeLink ? "border-red-500" : "border-gray-300"}`}
+                        className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
                         placeholder="Youtube"
                       />
-                      {errors.youtubeLink && (
-                        <p className="mt-1 text-sm text-red-500">{errors.youtubeLink}</p>
-                      )}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        TikTok <span className="text-red-500">*</span>
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">TikTok</label>
                       <input
                         type="text"
                         value={formData.tiktokLink}
                         onChange={(e) => {
                           updateFormData({ tiktokLink: e.target.value });
-                          if (errors.tiktokLink) setErrors((prev) => ({ ...prev, tiktokLink: "" }));
+                          if (errors.previousBrandedLinks)
+                            setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
                         }}
-                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.tiktokLink ? "border-red-500" : "border-gray-300"}`}
+                        className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
                         placeholder="TikTok"
                       />
-                      {errors.tiktokLink && (
-                        <p className="mt-1 text-sm text-red-500">{errors.tiktokLink}</p>
-                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Newsletter links <span className="text-red-500">*</span>
+                        Newsletter links
                       </label>
                       <input
                         type="text"
                         value={formData.newsletterLink}
                         onChange={(e) => {
                           updateFormData({ newsletterLink: e.target.value });
-                          if (errors.newsletterLink)
-                            setErrors((prev) => ({
-                              ...prev,
-                              newsletterLink: "",
-                            }));
+                          if (errors.previousBrandedLinks)
+                            setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
                         }}
-                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${errors.newsletterLink ? "border-red-500" : "border-gray-300"}`}
+                        className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
                         placeholder="Newsletter links"
                       />
-                      {errors.newsletterLink && (
-                        <p className="mt-1 text-sm text-red-500">{errors.newsletterLink}</p>
-                      )}
                     </div>
                   </div>
                 </div>
