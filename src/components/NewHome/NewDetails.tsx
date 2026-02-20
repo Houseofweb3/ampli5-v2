@@ -39,7 +39,7 @@ export default function NewDetails() {
         <div className="flex justify-center items-center  w-full mt-28">
           <div className="mb-12 flex justify-center text-center">
             <h2 className="!text-[#7B46F8] text-3xl sm:text-4xl lg:text-5xl pb-6 flex gap-3 items-center justify-center">
-              Why
+              What
               <Image
                 src="/logo/ampli5.png"
                 alt="ampli5"
@@ -47,7 +47,7 @@ export default function NewDetails() {
                 height={200}
                 className="h-[30px] sm:h-[40px] lg:h-[50px] w-auto"
               />
-              exists?
+              does?
             </h2>
           </div>
         </div>
