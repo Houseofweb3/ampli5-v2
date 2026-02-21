@@ -382,9 +382,7 @@ export default function CreatorOnboardingForm() {
         "Health & Fitness - Mental Health",
         "Health & Fitness - Podcasters",
         "Health & Fitness - Clippers",
-        "Metals",
-        "Forex",
-        "Indice Trading",
+        "Metals Forex Indice Trading",
       ],
     };
     const selInd = formData.industries?.[0];
