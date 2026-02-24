@@ -1,3 +1,5 @@
+import { getAllBlogs } from "@/src/data/blogs";
+
 /* eslint-disable no-unused-vars */
 const getLastModified = async (path: string) => {
   return new Date();
@@ -33,11 +35,20 @@ export default async function sitemap() {
     { path: "/founder-signal", priority: 0.6, changeFrequency: "monthly" as const },
   ];
 
-  // Combine all pages
-  const allPages = [...publicPages, ...servicePages, ...otherPages];
+  // Dynamic blog post pages (from blogs data)
+  const blogPosts = getAllBlogs();
+  const blogPages = blogPosts.map((post) => ({
+    path: `/blogs/${post.slug}`,
+    priority: 0.8 as const,
+    changeFrequency: "weekly" as const,
+    lastModified: post.date ? new Date(post.date) : new Date(),
+  }));
 
-  const sitemapEntries = await Promise.all(
-    allPages.map(async ({ path, priority, changeFrequency }) => {
+  // Combine static pages
+  const allStaticPages = [...publicPages, ...servicePages, ...otherPages];
+
+  const staticEntries = await Promise.all(
+    allStaticPages.map(async ({ path, priority, changeFrequency }) => {
       const lastModified = await getLastModified(path);
       return {
         url: `${baseUrl}${path}`,
@@ -48,5 +59,12 @@ export default async function sitemap() {
     })
   );
 
-  return sitemapEntries;
+  const blogEntries = blogPages.map(({ path, priority, changeFrequency, lastModified }) => ({
+    url: `${baseUrl}${path}`,
+    lastModified,
+    changeFrequency,
+    priority,
+  }));
+
+  return [...staticEntries, ...blogEntries];
 }

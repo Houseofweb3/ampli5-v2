@@ -470,10 +470,10 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
             </div>
             {proposal.billingInfo.note && (
               <div className="mt-4 pt-4 border-t border-gray-200">
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1 no-break">
                   Note
                 </p>
-                <p className="text-sm text-gray-700">{proposal.billingInfo.note}</p>
+                <p className="text-sm text-gray-700 no-break">{proposal.billingInfo.note}</p>
               </div>
             )}
           </div>
@@ -663,7 +663,7 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
                       {item.note && (
                         <div>
                           <span className="font-semibold">Note:</span>{" "}
-                          <span className=" break-all">{item.note}</span>
+                          <span>{item.note}</span>
                         </div>
                       )}
                       {item.profOfWork && (
