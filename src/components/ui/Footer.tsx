@@ -16,7 +16,7 @@ export default function Footer(): JSX.Element {
                   width={1000}
                   height={1000}
                   className="w-91px lg:w-115px h-full"
-                  src="/logo/ampli5.png"
+                  src="/logo.svg"
                 />
               </Link>
             </div>

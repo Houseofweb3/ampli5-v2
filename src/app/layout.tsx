@@ -5,7 +5,6 @@ import { auth } from "../../auth";
 
 import "./globals.css";
 import { LogCartProvider } from "../context/InfluencersContext";
-import { LogpackageProvider } from "../context/PackagesContext";
 import { CartProvider } from "../context/CartContext";
 import { ToastProvider } from "../components/toast";
 import Footer from "../components/ui/Footer";
@@ -64,7 +63,7 @@ export const metadata: Metadata = {
       "Ampli5 (Ampli5) - AI-powered influencer marketing and PR solutions for web3 projects. Connect with top crypto influencers and amplify your brand.",
     images: [
       {
-        url: "/logo/ampli5.png",
+        url: "/logo.svg",
         width: 1200,
         height: 630,
         alt: "Ampli5 - AI-Powered Influencer & PR Solutions for Web3",
@@ -76,7 +75,7 @@ export const metadata: Metadata = {
     title: "Ampli5 | AI-Powered Influencer & PR Solutions for Web3",
     description:
       "Ampli5 (Ampli5) - AI-powered influencer marketing and PR solutions for web3 projects.",
-    images: ["/logo/ampli5.png"],
+    images: ["/logo.svg"],
     creator: "@nomo_nomaya",
   },
   robots: {
@@ -117,12 +116,10 @@ export default async function RootLayout({
         <SessionProvider session={session}>
           <CartProvider>
             <LogCartProvider>
-              <LogpackageProvider>
                 <Navbar />
                 <div className="h-[65px] lg:h-80px w-full bg-black"></div>
                 <div className="min-h-[calc(100vh_-_295px)] bg-cream-bg">{children}</div>
                 <Footer />
-              </LogpackageProvider>
             </LogCartProvider>
           </CartProvider>
         </SessionProvider>

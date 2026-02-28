@@ -123,10 +123,10 @@ export default function NavbarHome(): JSX.Element {
           <Link href="/">
             <Image
               alt="Logo"
-              width={84}
-              height={33}
+              width={100}
+              height={100}
               className="w-84px lg:w-115px h-full"
-              src="/logo/ampli5.png"
+              src="/logo.svg"
             />
           </Link>
           {token ? (

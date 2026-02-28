@@ -18,7 +18,7 @@ export default function NewVisibility() {
         <h3 className="!text-[#7B46F8] text-3xl sm:text-4xl lg:text-5xl pb-6 flex  gap-3 items-center justify-center">
           What is{" "}
           <Image
-            src="/logo/ampli5.png"
+            src="/logo.svg"
             alt="ampli5"
             width={200}
             height={200}

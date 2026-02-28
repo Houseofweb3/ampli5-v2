@@ -1,66 +1,87 @@
 /* eslint-disable indent */
 "use client";
-import React from "react";
+
+import React, { useState } from "react";
 import InflucenerTable from "./influencer-table";
 import { useRouter } from "next/navigation";
-import { useCart } from "@/src/context/CartContext";
-import PackagesTable from "./packages-table";
 import { useLogCart } from "@/src/context/InfluencersContext";
-import { useLogpackage } from "@/src/context/PackagesContext";
-import { signIn, useSession } from "next-auth/react";
+import { useCart } from "@/src/context/CartContext";
 import toast from "react-hot-toast";
 import { Button } from "@/src/components";
-import { ALLROUTES, BUTTON_SIZES, BUTTON_TYPES } from "@/src/utils/constants";
+import { BUTTON_SIZES, BUTTON_TYPES, ENDPOINTS } from "@/src/utils/constants";
+import type { CartInfluencer } from "@/src/lib/types";
+import { getToken, getClient } from "@/src/store/dashboardAuthStore";
+import { DASHBOARD_SIGN_IN } from "@/src/config/dashboardRoutes";
+import useHow3client from "@/src/hooks/usehow3client";
+
+function parsePrice(value: string | null | undefined): number {
+  if (value == null || value === "") return 0;
+  const num = parseFloat(String(value).replace(/[^0-9.-]/g, ""));
+  return Number.isFinite(num) ? num : 0;
+}
+
+function calcSubtotal(items: CartInfluencer[]): number {
+  return items.reduce((sum, item) => sum + parsePrice(item.sellPrice), 0);
+}
 
 const CartTable = () => {
-  const { cart } = useCart();
-  const { data: session } = useSession();
-  const user = session?.user;
-  const { Logpackage } = useLogpackage();
   const { Logcart } = useLogCart();
-
+  const { fetchCart } = useCart();
   const router = useRouter();
+  const how3 = useHow3client();
+  const [loading, setLoading] = useState(false);
 
-  const handleCheckout = async () => {
-    if (user) {
-      const influencers = cart?.influencerCartItems.map((data) => {
-        data.influencer.InfluencerCartId = data.id;
-        return data.influencer;
+  const handleProceedToCheckout = async () => {
+    const influencers = Logcart ?? [];
+    if (influencers.length === 0) {
+      toast.error("Please add influencers to cart to proceed.");
+      return;
+    }
+
+    if (!getToken()) {
+      router.push(DASHBOARD_SIGN_IN);
+      return;
+    }
+
+    const client = getClient();
+    if (!client?.id) {
+      toast.error("Please sign in to continue.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const cartRes = await how3.post<{ id: string }>(ENDPOINTS.CREATE_CART, {
+        userId: client.id,
       });
-      const packages = cart?.packageCartItems.map((data) => {
-        data.package.PackageCartId = data.id;
-        return data.package;
-      });
-
-      const Main = {
-        influencers: influencers,
-        packages: packages,
-      };
-
-      if (influencers?.length === 0 && packages?.length === 0) {
-        toast.error("Please add influencers or packages to cart to proceed to checkout");
+      const cartId = cartRes.data?.id;
+      if (!cartId) {
+        toast.error("Failed to create cart.");
+        setLoading(false);
         return;
       }
 
-      localStorage.setItem("CheckoutData", JSON.stringify(Main));
-
-      router.push(ALLROUTES.CHECKOUT);
-    } else {
-      const Main = {
-        influencers: Logcart,
-        packages: Logpackage,
-      };
-
-      if (Main.influencers.length === 0 && Main.packages.length === 0) {
-        toast.error("Please add influencers or packages to cart to proceed to checkout");
-        return;
+      for (const item of influencers) {
+        await how3.post(ENDPOINTS.INFLUENCER_CART_ITEM, {
+          influencerId: item.id,
+          cartId,
+        });
       }
 
-      localStorage.setItem("CheckoutData", JSON.stringify(Main));
-
-      signIn("google", { callbackUrl: ALLROUTES.REDIRECT_TO_CHECKOUT });
+      await fetchCart();
+      toast.success("Cart created successfully.");
+    } catch (error) {
+      console.error("Cart create / add items error:", error);
+      toast.error("Failed to create cart. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
+
+  const hasInfluencers = (Logcart?.length ?? 0) > 0;
+  const canCheckout = hasInfluencers;
+  const influencersForTable: CartInfluencer[] = Logcart ?? [];
+  const subtotal = calcSubtotal(influencersForTable);
 
   return (
     <div className="w-full h-full overflow-x-hidden">
@@ -69,40 +90,21 @@ const CartTable = () => {
       </div>
 
       <div className="w-full">
-        <InflucenerTable
-          influencers={
-            user
-              ? cart?.influencerCartItems.map((data: any) => {
-                  data.influencer.InfluencerCartId = data.id;
-                  return data.influencer;
-                })
-              : Logcart
-          }
-        />
+        <InflucenerTable influencers={influencersForTable} />
       </div>
-
-      <div className="rounded-xl bg-black w-full p-4 mt-8">
-        <span className="text-white font-semibold tracking-wider">PR Packages</span>
-      </div>
-
-      <PackagesTable
-        packages={
-          user
-            ? cart?.packageCartItems.map((data: any) => {
-                data.package.PackageCartId = data.id;
-                return data.package;
-              })
-            : Logpackage
-        }
-      />
 
       <div className="w-full flex md:flex-row flex-col justify-between mt-6 gap-6">
-        <div className=" flex gap-2 items-center">
-          <h1 className="font-semibold md:text-lg ">Subtotal : </h1>
-          <span className="font-bold text-primary md:text-xl">$ {cart?.subtotal}</span>
+        <div className="flex gap-2 items-center">
+          <h1 className="font-semibold md:text-lg">Subtotal :</h1>
+          <span className="font-bold text-primary md:text-xl">$ {subtotal.toFixed(2)}</span>
         </div>
-        <Button onClick={handleCheckout} size={BUTTON_SIZES.LARGE} type={BUTTON_TYPES.PRIMARY}>
-          Reserve your KOLs
+        <Button
+          onClick={handleProceedToCheckout}
+          size={BUTTON_SIZES.LARGE}
+          type={BUTTON_TYPES.PRIMARY}
+          disabled={!canCheckout || loading}
+        >
+          {loading ? "Creating cart…" : "Proceed to Checkout"}
         </Button>
       </div>
     </div>

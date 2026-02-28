@@ -1,27 +1,21 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import useHow3client from "@/src/hooks/usehow3client";
-import { ALLROUTES, BUTTON_SIZES, BUTTON_TYPES, ENDPOINTS } from "@/src/utils/constants";
+import { ALLROUTES, BUTTON_SIZES, BUTTON_TYPES } from "@/src/utils/constants";
 import MultiSelect from "@/src/components/ui/multi-select";
 import { Button } from "@/src/components";
 import { toast } from "react-hot-toast";
 import { useFilter } from "@/src/context/FilterContext";
-
-export interface PlatformData {
-  platform: string;
-  contentTypes: string[];
-}
-
-export interface FiltersData {
-  platformsWithContentTypes: PlatformData[];
-  niches: string[];
-  credibilityScores: string[];
-}
+import {
+  PLATFORM_OPTIONS,
+  INDUSTRY_OPTIONS,
+  INDUSTRY_CATEGORY_OPTIONS,
+  PLATFORM_INVENTORY_OPTIONS,
+  GEOGRAPHY_OPTIONS,
+} from "@/src/constants/creatorOnboardingFilters";
+import { getToken } from "@/src/store/dashboardAuthStore";
 
 const FilterSection = () => {
-  const { data: session } = useSession();
   const router = useRouter();
 
   const {
@@ -29,85 +23,74 @@ const FilterSection = () => {
     setPlatforms,
     contentTypes,
     setContentTypes,
-    credibility,
-    setCredibility,
     niche,
     setNiche,
+    industry,
+    setIndustry,
+    geography,
+    setGeography,
   } = useFilter();
 
-  const how3 = useHow3client();
-  const [filters, setFilters] = useState<FiltersData | null>(null);
   const [loading, setLoading] = useState(false);
-  const [availableContentTypes, setAvailableContentTypes] = useState<string[]>([]);
   const [showTooltip, setShowTooltip] = useState(false);
 
+  const platformOptions = useMemo(() => [...PLATFORM_OPTIONS], []);
+  const industryOptions = useMemo(() => [...INDUSTRY_OPTIONS], []);
+  const geographyOptionsList = useMemo(() => [...GEOGRAPHY_OPTIONS], []);
+
+  const availableInventoryOptions = useMemo(() => {
+    if (platforms.length === 0) return [];
+    const all = platforms.flatMap((p) => PLATFORM_INVENTORY_OPTIONS[p] ?? []);
+    return Array.from(new Set(all));
+  }, [platforms]);
+
+  const availableCategoryOptions = useMemo(() => {
+    const ind = industry[0];
+    if (!ind) return [];
+    return INDUSTRY_CATEGORY_OPTIONS[ind] ?? [];
+  }, [industry]);
+
   useEffect(() => {
-    const fetchFilters = async () => {
-      try {
-        const response = await how3.get(ENDPOINTS.FETCH_OPTIONS);
-        // Filter out YT Short from platforms
-        const filteredPlatforms = response.data.platformsWithContentTypes.filter(
-          (p: PlatformData) => p.platform !== "YT Short"
-        );
-        setFilters({
-          ...response.data,
-          platformsWithContentTypes: filteredPlatforms,
-        });
-      } catch (error) {
-        console.error("Error fetching filters:", error);
-      }
-    };
+    setContentTypes((prev: string[]) =>
+      prev.filter((type) => availableInventoryOptions.includes(type))
+    );
+  }, [platforms, availableInventoryOptions, setContentTypes]);
 
-    fetchFilters();
-  }, [how3]);
-
-  // Update available content types when platforms change
   useEffect(() => {
-    if (filters?.platformsWithContentTypes) {
-      const selectedPlatformData = filters.platformsWithContentTypes.filter((p) =>
-        platforms.includes(p.platform)
-      );
+    setNiche((prev: string[]) =>
+      prev.filter((c) => availableCategoryOptions.includes(c))
+    );
+  }, [industry, availableCategoryOptions, setNiche]);
 
-      const allContentTypes: string[] = selectedPlatformData.flatMap((p) => p.contentTypes);
-
-      // Remove duplicates
-      setAvailableContentTypes(Array.from(new Set(allContentTypes)));
-
-      // Clear content types that are no longer available
-      setContentTypes((prev: any[]) => prev.filter((type) => allContentTypes.includes(type)));
-    }
-  }, [platforms, filters?.platformsWithContentTypes, setContentTypes]);
-
-  // Check if required filters are selected (all except credibility)
   const isRequiredFiltersSelected = () => {
-    return platforms?.length > 0 && contentTypes?.length > 0 && niche?.length > 0;
+    return (
+      platforms?.length > 0 &&
+      contentTypes?.length > 0 &&
+      industry?.length > 0 &&
+      niche?.length > 0
+    );
   };
 
-  // Get missing required filters
   const getMissingRequiredFilters = () => {
     const missing = [];
-    if (platforms.length === 0) missing.push("Platforms");
-    if (contentTypes.length === 0) missing.push("Content Types");
-    if (niche.length === 0) missing.push("Niche");
+    if (platforms.length === 0) missing.push("Platform");
+    if (contentTypes.length === 0) missing.push("Inventory");
+    if (industry.length === 0) missing.push("Industry");
+    if (niche.length === 0) missing.push("Category");
     return missing;
   };
 
   const handleGenerateButton = async () => {
     if (!isRequiredFiltersSelected()) {
-      toast.error("Please select options for Platforms, Content Types, and Niche");
+      toast.error("Please select options for Platform, Inventory, Industry, and Category");
       return;
     }
-
     setLoading(true);
-    if (session?.user?.accessToken) {
-      router.push(ALLROUTES.HOME);
-    } else {
-      // redirect to new login page
-      router.push(ALLROUTES.SIGN_UP);
-    }
+    const hasToken = typeof window !== "undefined" && !!getToken();
+    router.push(hasToken ? ALLROUTES.HOME : ALLROUTES.SIGN_IN);
+    setLoading(false);
   };
 
-  // Required label component
   const RequiredLabel = ({ label }: { label: string }) => (
     <div className="flex items-center gap-1">
       <span>{label}</span>
@@ -119,43 +102,56 @@ const FilterSection = () => {
     <div className="w-full px-4 md:px-12 flex items-center justify-center mb-16">
       <div className="flex flex-col gap-4 max-w-esm w-full items-center">
         <div className="flex flex-col gap-2 w-full items-start">
-          <RequiredLabel label="Platforms" />
+          <RequiredLabel label="Platform" />
           <MultiSelect
-            options={filters?.platformsWithContentTypes?.map((p) => p.platform) || []}
+            options={platformOptions}
             setSelectedOptions={setPlatforms}
             selectedOptions={platforms}
-            placeholder="Platforms"
+            placeholder="Platform"
           />
         </div>
 
         {platforms.length > 0 && (
           <div className="flex flex-col gap-2 w-full items-start">
-            <RequiredLabel label="Content Types" />
+            <RequiredLabel label="Content Type" />
             <MultiSelect
-              options={availableContentTypes}
+              options={availableInventoryOptions}
               selectedOptions={contentTypes}
               setSelectedOptions={setContentTypes}
-              placeholder="Content Types"
+              placeholder="Inventory"
             />
           </div>
         )}
+
         <div className="flex flex-col gap-2 w-full items-start">
-          <RequiredLabel label="Niche" />
+          <RequiredLabel label="Industry" />
           <MultiSelect
-            options={filters?.niches || []}
-            selectedOptions={niche}
-            setSelectedOptions={setNiche}
-            placeholder="Niche"
+            options={industryOptions}
+            selectedOptions={industry}
+            setSelectedOptions={setIndustry}
+            placeholder="Industry"
           />
         </div>
 
+        {industry.length > 0 && (
+          <div className="flex flex-col gap-2 w-full items-start">
+            <RequiredLabel label="Category" />
+            <MultiSelect
+              options={availableCategoryOptions}
+              selectedOptions={niche}
+              setSelectedOptions={setNiche}
+              placeholder="Category"
+            />
+          </div>
+        )}
+
         <div className="flex flex-col gap-2 w-full items-start">
-          <span>Credibility Scores</span>
+          <span>Geography</span>
           <MultiSelect
-            options={filters?.credibilityScores || []}
-            selectedOptions={credibility}
-            setSelectedOptions={setCredibility}
-            placeholder="Credibility Scores"
+            options={geographyOptionsList}
+            selectedOptions={geography}
+            setSelectedOptions={setGeography}
+            placeholder="Geography"
           />
         </div>
 

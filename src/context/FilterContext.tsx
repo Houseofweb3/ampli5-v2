@@ -16,6 +16,10 @@ interface FilterContextType {
   setCredibility: React.Dispatch<React.SetStateAction<string[]>>;
   price: string[];
   setPrice: React.Dispatch<React.SetStateAction<string[]>>;
+  industry: string[];
+  setIndustry: React.Dispatch<React.SetStateAction<string[]>>;
+  geography: string[];
+  setGeography: React.Dispatch<React.SetStateAction<string[]>>;
   resetFilters: () => void;
 }
 
@@ -47,6 +51,12 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
   const [price, setPrice] = useState<string[]>(() =>
     typeof window !== "undefined" ? JSON.parse(localStorage.getItem("price") || "[]") : []
   );
+  const [industry, setIndustry] = useState<string[]>(() =>
+    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("industry") || "[]") : []
+  );
+  const [geography, setGeography] = useState<string[]>(() =>
+    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("geography") || "[]") : []
+  );
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -57,8 +67,10 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
       localStorage.setItem("contentTypes", JSON.stringify(contentTypes));
       localStorage.setItem("credibility", JSON.stringify(credibility));
       localStorage.setItem("price", JSON.stringify(price));
+      localStorage.setItem("industry", JSON.stringify(industry));
+      localStorage.setItem("geography", JSON.stringify(geography));
     }
-  }, [filterQueries, platforms, niche, er, contentTypes, credibility, price]);
+  }, [filterQueries, platforms, niche, er, contentTypes, credibility, price, industry, geography]);
 
   const resetFilters = () => {
     setFilterQueries("");
@@ -68,6 +80,8 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
     setContentTypes([]);
     setCredibility([]);
     setPrice([]);
+    setIndustry([]);
+    setGeography([]);
   };
 
   const value = {
@@ -85,6 +99,10 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
     setCredibility,
     price,
     setPrice,
+    industry,
+    setIndustry,
+    geography,
+    setGeography,
     resetFilters,
   };
 

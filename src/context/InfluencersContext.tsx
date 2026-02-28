@@ -27,32 +27,35 @@ export const LogCartProvider = ({ children }: { children: React.ReactNode }) => 
     }
   }, []);
 
+  const persistToStorage = (influencers: any[]) => {
+    try {
+      const raw = localStorage.getItem("cartData");
+      const parsed = raw ? JSON.parse(raw) : { influencers: []};
+      parsed.influencers = influencers;
+      localStorage.setItem("cartData", JSON.stringify(parsed));
+    } catch {
+      /* ignore */
+    }
+  };
+
   const handleChange = (data: any) => {
     const Id = data.id;
     let isProduct;
 
     if (Logcart.length > 0) {
-      isProduct = Logcart.find((data: any) => data.id === Id);
+      isProduct = Logcart.find((d: any) => d.id === Id);
     } else {
       isProduct = false;
     }
 
     if (isProduct) {
-      let storedCartData = localStorage.getItem("cartData");
-      if (storedCartData) {
-        let parsedCartData = JSON.parse(storedCartData);
-        parsedCartData.influencers = parsedCartData.influencers.filter(
-          (item: any) => item.id !== Id
-        );
-        localStorage.setItem("cartData", JSON.stringify(parsedCartData));
-      }
-      MakeCart(() => {
-        return Logcart.filter((item: any) => item.id !== Id);
-      });
+      const next = Logcart.filter((item: any) => item.id !== Id);
+      MakeCart(next);
+      persistToStorage(next);
     } else {
-      MakeCart((prev: any) => {
-        return [data, ...prev];
-      });
+      const next = [data, ...Logcart];
+      MakeCart(next);
+      persistToStorage(next);
     }
   };
 

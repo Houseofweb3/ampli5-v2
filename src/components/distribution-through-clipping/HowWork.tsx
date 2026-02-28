@@ -9,7 +9,7 @@ const HowWork: React.FC = (): JSX.Element => {
           <h2 className="text-center text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-12 lg:mb-16 !text-[#7B46F8] flex items-center justify-center gap-1 gap-2 lg:gap-4">
             <span className="inline-block"> Why </span>
             <Image
-              src="/logo/ampli5.png"
+              src="/logo.svg"
               alt="ampli5"
               width={100}
               height={100}

@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     siteName: "Ampli5",
     images: [
       {
-        url: "/logo/ampli5.png",
+        url: "/logo.svg",
         width: 1200,
         height: 630,
         alt: "Ampli5 - AI-Powered Influencer & PR Solutions for Web3",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     title: "Ampli5 | AI-Powered Influencer & PR Solutions for Web3",
     description:
       "Ampli5 (Ampli5) - The leading AI-powered influencer marketing and PR platform for web3 projects.",
-    images: ["/logo/ampli5.png"],
+    images: ["/logo.svg"],
   },
   alternates: {
     canonical: "/",

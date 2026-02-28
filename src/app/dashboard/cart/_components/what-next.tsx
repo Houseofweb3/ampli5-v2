@@ -1,3 +1,5 @@
+"use client";
+
 import { WHAT_NEXT } from "@/src/utils/constants";
 import React from "react";
 

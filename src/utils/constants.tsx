@@ -10,9 +10,9 @@ import {
 export const ENDPOINTS = {
   INFLUENCER_CART_ITEM: "/api/v1/influencer-cart-item",
   PACKAGES_CART_ITEM: "/api/v1/package-cart-item",
+  CREATE_CART: "/api/v1/cart",
   FETCH_INFLUENCER: "/api/v1/influencer/fetch",
   FETCH_PACKAGES: "/api/v1/packages",
-  CHECKOUT: "/api/v1/checkout",
   REFRESH_TOKEN: "/api/v1/auth/refresh-token",
   APPLY_COUPON: "/api/v1/coupons",
   FETCH_CART: "api/v1/cart/getCart",
@@ -21,14 +21,12 @@ export const ENDPOINTS = {
 
 export const ALLROUTES = {
   DASHBOARD: "/dashboard",
-  HOME: "/dashboard/home",
+  HOME: "/dashboard/influencers",
   ONBOARDING: "/onboarding",
   REDIRECT_TO_ONBOARDING: "/redirectSignup?page=onboarding",
-  CHECKOUT_TO_COMPLETE: "/dashboard/checkout/complete",
-  REDIRECT_TO_CHECKOUT: "/dashboard/redirectSignup?page=dashboard/checkout",
-  CHECKOUT: "/dashboard/checkout",
-  REDIRECT_TO_HOME: "/dashboard/redirectSignup?page=dashboard/home",
-  SIGN_UP: "/dashboard/signup",
+  REDIRECT_TO_HOME: "/dashboard/redirectSignup?page=dashboard/influencers",
+  SIGN_UP: "/brand-intake-form",
+  SIGN_IN: "/dashboard/sign-in",
 };
 
 export const BUTTON_TYPES = {
@@ -238,21 +236,18 @@ export const MANAGEMENT_FEE_TOOLTIP_CONTENT = [
 ];
 
 export const HEADINGS = [
-  // "Number",
   "Influencers",
   "Platform",
   "ContentType",
-  "Niche",
-  "ER",
+  "Category",
   "Credibility Score",
+  "CPM",
+  "Audience Geography",
   "Price",
   "Actions",
-];
+] as const;
+
 export const HEADINGS_WIDTH_MAPPING = [
-  // {
-  //   id: "Number",
-  //   width: "5%",
-  // },
   {
     id: "Influencers",
     width: "16%",
@@ -266,15 +261,19 @@ export const HEADINGS_WIDTH_MAPPING = [
     width: "12%",
   },
   {
-    id: "Niche",
-    width: "12%",
-  },
-  {
-    id: "ER",
+    id: "Category",
     width: "12%",
   },
   {
     id: "Credibility Score",
+    width: "12%",
+  },
+  {
+    id: "CPM",
+    width: "12%",
+  },
+  {
+    id: "Audience Geography",
     width: "12%",
   },
   {
@@ -298,7 +297,12 @@ export const getColumnWidth = (id: string): string | undefined => {
 export const PLATFORM_MAP: { [key: string]: string } = {
   x: "/socials/twitter.svg",
   youtube: "/socials/youtube.svg",
-  podcast: "/socials/mic.svg",
+  instagram: "/socials/Instagram.svg",
+  tiktok: "/socials/TikTok.svg",
+  newsletter: "/socials/news.svg",
+  spotify: "/socials/Spotify.svg",
+  "pr/editorial": "/socials/pr-editorial.svg",
+  podcast: "/socials/Mic.svg",
   telegram: "/socials/telegram.svg",
   "ama/spaces": "/socials/message.svg",
 };

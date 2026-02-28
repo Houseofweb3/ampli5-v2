@@ -1458,7 +1458,6 @@ const FounderInquiryForm: React.FC = () => {
           />
         </div>
         <div className="flex md:flex-row flex-col md:items-start items-center justify-center gap-2 max-w-5xl mx-auto px-2">
-          {/* <Image src="/logo/white.jpg" width={1000} height={1000} alt="ampli" className="h-[48px] md:h-[55px] w-auto pt-1" /> */}
           <h1 className="text-white text-center text-3xl sm:text-4xl md:text-5xl font-semibold ">
             A private space for founders of revenue-generating startups
           </h1>

@@ -25,29 +25,47 @@ export type Influencer = {
   contentType?: string;
 };
 
+/** Cart item in cartData.influencers. InfluencerCartId only for API cart (logged-in remove). */
 export type CartInfluencer = {
   id: string;
   name: string;
-  socialMediaLink: string;
-  dpLink: string;
-  influencer: string;
-  followers: number;
-  blockchain: string;
-  subscribers: number;
-  categoryName: string;
-  engagementRate: string;
-  niche: string;
-  geography: string;
-  platform: string;
-  price: string;
-  hiddenPrice: string;
-  InfluencerCartId: string;
-  credibilityScore: string;
+  sellPrice: string | null;
+  contentType: string | null;
+  platform: string | null;
+  platformLink: string | null;
+  views: string | null;
+  InfluencerCartId?: string;
 };
 
 export type InfluencerList = {
   pagination: Pagination;
   influencers: Influencer[];
+};
+
+/** Web list API: GET /api/v1/web/influencer response item */
+export type WebInfluencer = {
+  id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+  platform: string | null;
+  platformLink: string | null;
+  inventory: string | null;
+  primaryCountry: string | null;
+  sellPrice: string | null;
+  cpm: string | null;
+  avgViews: string | null;
+  industries: string | null;
+  categories: string | null;
+  primaryAudienceGeography: string | null;
+};
+
+export type WebInfluencerListResponse = {
+  influencers: WebInfluencer[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 };
 
 export type UserType = {

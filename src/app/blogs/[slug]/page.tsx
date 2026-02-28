@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
       siteName: "Ampli5",
       images: [
         {
-          url: "/logo/ampli5.png",
+          url: "/logo.svg",
           width: 1200,
           height: 630,
           alt: "Ampli5 - AI-Powered Influencer & PR Solutions",

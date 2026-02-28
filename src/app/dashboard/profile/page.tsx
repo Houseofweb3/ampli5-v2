@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { signOut, useSession } from "next-auth/react";
-
+import { useRouter } from "next/navigation";
 import { TbMailOpenedFilled } from "react-icons/tb";
-import useHow3client from "@/src/hooks/usehow3client";
+import useDashboardClient from "@/src/hooks/useDashboardClient";
+import { useDashboardAuth } from "@/src/context/DashboardAuthContext";
 import { ALLROUTES } from "@/src/utils/constants";
 
 type Profile = {
@@ -13,36 +13,40 @@ type Profile = {
 };
 
 const Page = () => {
-  const how3 = useHow3client();
-  const { data: session } = useSession();
+  const router = useRouter();
+  const dashboardClient = useDashboardClient();
+  const { client, logout } = useDashboardAuth();
   const [profile, setProfile] = useState<Profile>();
 
   useEffect(() => {
     const getProfile = async () => {
+      if (!client?.id) return;
       try {
-        const response = await how3.get(`/api/v1/auth/profile/${session?.user?.id}`);
-        const { fullname, email } = response.data.user;
-
-        // Ensure fullname is defined and can be split
+        const response = await dashboardClient.get(`/api/v1/auth/profile/${client.id}`);
+        const { fullname, email } = response.data?.user ?? {};
         if (fullname) {
           const [firstName, lastName] = fullname.split(" ");
-          setProfile({ firstName, lastName, email });
+          setProfile({ firstName, lastName, email: email ?? client.email });
         } else {
-          // Handle cases where fullname is not provided
-          setProfile({ firstName: "", lastName: "", email });
+          setProfile({ firstName: "", lastName: "", email: client.email });
         }
-      } catch (error) {
-        console.log(error);
+      } catch {
+        setProfile({
+          firstName: (client.name || "").split(" ")[0] ?? "",
+          lastName: (client.name || "").split(" ").slice(1).join(" ") ?? "",
+          email: client.email,
+        });
       }
     };
-    if (session) {
+    if (client) {
       getProfile();
     }
-  }, [session]);
+  }, [client, dashboardClient]);
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     localStorage.removeItem("cartData");
-    await signOut({ redirect: true, callbackUrl: ALLROUTES.DASHBOARD });
+    logout();
+    router.push(ALLROUTES.DASHBOARD);
   };
 
   return (

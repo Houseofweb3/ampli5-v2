@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import CartTable from "./_components/cart-table";
 import WhatNext from "./_components/what-next";

@@ -1,11 +1,15 @@
+"use client";
+
 import { ReactNode } from "react";
 import { FilterProvider } from "../../context/FilterContext";
+import DashboardAuthGuard from "./_components/DashboardAuthGuard";
+
 const layout = ({ children }: { children: ReactNode }) => {
   return (
     <FilterProvider>
-      <div className="h-full w-full flex flex-col bg-gray-150 min-h-screen bg-white">
-        <div className="h-full w-full pt-4">{children}</div>
-      </div>
+      <DashboardAuthGuard>
+          <div className="h-full w-full bg-white px-2 sm:px-4 ">{children}</div>
+      </DashboardAuthGuard>
     </FilterProvider>
   );
 };

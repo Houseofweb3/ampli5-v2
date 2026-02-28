@@ -24,7 +24,7 @@ export function getOrganizationSchema() {
     "@type": "Organization",
     name: "Ampli5",
     url: baseUrl,
-    logo: `${baseUrl}/logo/ampli5.png`,
+    logo: `${baseUrl}/logo.svg`,
     description: "AI-powered influencer marketing and PR solutions for web3 projects",
     foundingDate: "2024",
     legalName: "HOW3 PTE LTD",
