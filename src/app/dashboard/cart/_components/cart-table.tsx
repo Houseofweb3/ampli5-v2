@@ -14,16 +14,6 @@ import { getToken, getClient } from "@/src/store/dashboardAuthStore";
 import { DASHBOARD_SIGN_IN, CART_SUCCESS, DASHBOARD_HOME } from "@/src/config/dashboardRoutes";
 import { createWebCart } from "@/src/services/dashboardCart";
 
-function parsePrice(value: string | null | undefined): number {
-  if (value == null || value === "") return 0;
-  const num = parseFloat(String(value).replace(/[^0-9.-]/g, ""));
-  return Number.isFinite(num) ? num : 0;
-}
-
-function calcSubtotal(items: CartInfluencer[]): number {
-  return items.reduce((sum, item) => sum + parsePrice(item.sellPrice), 0);
-}
-
 const CartTable = () => {
   const { logCart, clearCart } = useCart();
   const router = useRouter();
@@ -71,7 +61,6 @@ const CartTable = () => {
 
   const hasInfluencers = (logCart?.length ?? 0) > 0;
   const influencersForTable = (logCart ?? []) as CartInfluencer[];
-  const subtotal = calcSubtotal(influencersForTable);
 
   if (!hasInfluencers) {
     return (
@@ -128,11 +117,7 @@ const CartTable = () => {
       <div className="w-full">
         <InflucenerTable influencers={influencersForTable} />
       </div>
-      <div className="w-full flex md:flex-row flex-col justify-between items-center mt-2 gap-6 pt-4 border-t border-gray-200">
-        <div className="flex gap-2 items-center">
-          <span className="font-semibold text-gray-700 md:text-lg">Subtotal</span>
-          <span className="font-bold text-primary md:text-xl">$ {subtotal.toFixed(2)}</span>
-        </div>
+      <div className="w-full flex md:flex-row flex-col justify-end items-center mt-2 gap-6 pt-4 border-t border-gray-200">
         <Button
           onClick={handleProceedToCheckout}
           size={BUTTON_SIZES.LARGE}

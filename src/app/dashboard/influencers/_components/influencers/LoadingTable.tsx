@@ -43,11 +43,6 @@ const LoadingTable: React.FC = () => {
               <div className="w-10 h-6 bg-gray-300 rounded-full animate-pulse"></div>
             </div>
           </TableCell>
-          <TableCell id="Price">
-            <div className="flex gap-2 items-center justify-center w-full">
-              <div className="w-12 h-3 bg-gray-300 rounded-full animate-pulse"></div>
-            </div>
-          </TableCell>
         </div>
       ))}
     </>

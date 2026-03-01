@@ -126,9 +126,6 @@ const TableRow: React.FC<TableRowProps> = React.memo(
           <TableCell id="Credibility Score">
             <Badge rate={data.credibilityScore} />
           </TableCell>
-          <TableCell id="Price">
-            <span className="text-sm text-[#757575]">{data.hiddenPrice}</span>
-          </TableCell>
           <TableCell id="Actions">{DetailsButton}</TableCell>
         </div>
         {/* Details section with animation */}

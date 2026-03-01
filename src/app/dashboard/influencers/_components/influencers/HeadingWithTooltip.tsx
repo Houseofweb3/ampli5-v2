@@ -2,8 +2,7 @@
 
 /* eslint-disable indent */
 import React from "react";
-import { PiInfo, PiSortAscendingBold, PiSortDescendingBold } from "react-icons/pi";
-import { MdFormatLineSpacing } from "react-icons/md";
+import { PiInfo, } from "react-icons/pi";
 
 import {
   TooltipProvider,
@@ -11,15 +10,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/src/components/ui/tooltip";
-import { PRICE_TOOLTIP_CONTENT } from "@/src/utils/constants";
-
 interface HeadingWithTooltipProps {
   heading: string;
   setOrder: React.Dispatch<React.SetStateAction<"" | "ASC" | "DESC">>;
   order: string;
 }
 
-const HeadingWithTooltip: React.FC<HeadingWithTooltipProps> = ({ heading, order, setOrder }) => {
+const HeadingWithTooltip: React.FC<HeadingWithTooltipProps> = ({ heading }) => {
   const tooltipContent = getTooltipContent(heading);
 
   return (
@@ -37,20 +34,6 @@ const HeadingWithTooltip: React.FC<HeadingWithTooltipProps> = ({ heading, order,
         </TooltipProvider>
       )}
       {heading}
-      {heading === "Price" && (
-        <span
-          className="font-lg cursor-pointer"
-          onClick={() => setOrder(order === "" ? "DESC" : order === "DESC" ? "ASC" : "")}
-        >
-          {order === "ASC" ? (
-            <PiSortAscendingBold />
-          ) : order === "DESC" ? (
-            <PiSortDescendingBold />
-          ) : (
-            <MdFormatLineSpacing />
-          )}
-        </span>
-      )}
     </div>
   );
 };
@@ -61,14 +44,6 @@ const getTooltipContent = (heading: string) => {
       return (
         <p>
           An approximation of how many followers <br /> engage on the KOL's posts.
-        </p>
-      );
-    case "Price":
-      return (
-        <p className="flex flex-col gap-2">
-          {PRICE_TOOLTIP_CONTENT.map((content, index) => (
-            <span key={index}>{content}</span>
-          ))}
         </p>
       );
     default:

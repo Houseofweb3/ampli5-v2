@@ -24,7 +24,6 @@ interface FilterProp {
   setPlatforms: React.Dispatch<React.SetStateAction<string[]>>;
   setCredibility: React.Dispatch<React.SetStateAction<string[]>>;
   setNiche: React.Dispatch<React.SetStateAction<string[]>>;
-  setPrice: React.Dispatch<React.SetStateAction<string[]>>;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   contentTypes: string[];
   setContentTypes: React.Dispatch<React.SetStateAction<string[]>>;

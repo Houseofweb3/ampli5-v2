@@ -75,8 +75,7 @@ const TableRow: React.FC<{ data: CartInfluencer; number: number }> = ({ data }) 
           ) : null}
         </div>
       </div>
-      <div className="w-full md:w-1/3 flex justify-between md:justify-end gap-4 font-semibold items-center">
-        <div className="text-gray-900">{data.sellPrice ?? "—"}</div>
+      <div className="w-full md:w-1/3 flex justify-end items-center">
         <button
           type="button"
           className="flex items-center text-sm text-red-600 gap-2 cursor-pointer hover:opacity-80 active:scale-95"

@@ -21,7 +21,6 @@ const HeroSection = () => {
     setCredibility,
     setFilterQueries,
     setNiche,
-    setPrice,
     contentTypes,
     setContentTypes,
     industry,
@@ -98,7 +97,6 @@ const HeroSection = () => {
         <div className="flex w-full">
           <Filters
             setFilterQueries={setFilterQueries}
-            setPrice={setPrice}
             credibility={credibility}
             niche={niche}
             platforms={platforms}

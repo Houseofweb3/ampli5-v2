@@ -15,7 +15,6 @@ import {
   GeographyIcon,
   Score,
   FollowerIcon,
-  MoneyBagIcon,
 } from "@/public/icons";
 import { useCart } from "@/src/context/CartContext";
 import type { CartInfluencer } from "@/src/lib/types";
@@ -275,11 +274,6 @@ export default function WebInfluencerTable({
                             label="Industries"
                             value={cell(item.industries)}
                             icon={<NicheIcon />}
-                          />
-                          <DetailCard
-                            label="Price"
-                            value={cell(item.sellPrice)}
-                            icon={<MoneyBagIcon />}
                           />
                         </div>
                         <div className="flex justify-end items-center mt-3">

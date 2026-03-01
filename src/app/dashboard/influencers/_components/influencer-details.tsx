@@ -45,10 +45,6 @@ const Details = () => {
               Est. Reach
               <span className="text-black text-xl">612.7K</span>
             </div>
-            <div className="border border-gray-200 p-2 md:p-4  flex flex-col text-[#00000045] gap-2 rounded-lg">
-              Est. Post Price
-              <span className="text-black text-xl">$6.6K</span>
-            </div>
           </div>
           <div className="flex flex-col p-4 border border-gray-200 rounded-lg w-full">
             <div className="border-b border-gray-200 pb-4">

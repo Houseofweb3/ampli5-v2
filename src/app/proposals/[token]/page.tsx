@@ -156,6 +156,7 @@ import {
   SpotifyIcon2,
 } from "@/public/icons";
 import ConfirmationModal from "@/src/components/ui/ConfirmationModal";
+import TermsOfServiceContent from "@/src/components/TermsOfServiceContent";
 import { GrDocumentText } from "react-icons/gr";
 
 interface Influencer {
@@ -574,7 +575,7 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
         return;
       }
       toast.success(resData?.message ?? "Proposal confirmed successfully.");
-      router.push("/proposals/success");
+      router.push("/");
     } catch (err: unknown) {
       const msg =
         err && typeof err === "object" && "message" in err
@@ -614,13 +615,13 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
           <div className="border-t border-gray-200 pt-6">
             <h1 className="text-2xl md:text-3xl font-bold text-[#7B46F8] mb-2">
               {step === 1 && "Proposal Review"}
-              {step === 2 && "Client Information"}
+              {step === 2 && "Billing Information"}
               {step === 3 && "Authorization"}
               {step === 4 && "Terms & Conditions"}
             </h1>
             <p className="text-gray-600">
               {step === 1 && "Review and approve influencers for your campaign"}
-              {step === 2 && "Please provide your company and signatory details"}
+              {step === 2 && "Please provide your billing information to complete the proposal"}
               {step === 3 && "Confirm authorization and sign"}
               {step === 4 && "Review and accept the terms"}
             </p>
@@ -1273,18 +1274,9 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
         {/* Step 4: Terms and conditions + Submit */}
         {step === 4 && (
           <div className="bg-white rounded-lg shadow-sm p-6 md:p-8 mb-8">
-            <div className="prose prose-sm max-w-none text-gray-700 mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Terms & Conditions</h3>
-              <p className="mb-2">
-                By proceeding, you agree to the terms of this proposal and confirm that the
-                authorized signatory has full authority to bind the company. Payment terms and
-                deliverables are as specified in the proposal. All fees are subject to the
-                management fee and any applicable discounts as shown.
-              </p>
-              <p className="mb-2">
-                You confirm that the information provided is accurate and that you accept the
-                pricing and conditions outlined in this proposal.
-              </p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">Terms & Conditions</h3>
+            <div className="max-h-[60vh] overflow-y-auto border border-gray-200 rounded-lg p-4 md:p-6 mb-6 bg-gray-50/50">
+              <TermsOfServiceContent />
             </div>
             <label className="flex items-center gap-3 mb-2 cursor-pointer">
               <input
