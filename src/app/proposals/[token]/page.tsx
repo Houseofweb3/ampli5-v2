@@ -1,7 +1,147 @@
 "use client";
 import { toast } from "react-hot-toast";
-import axiosInstance from "@/src/lib/axiosInstance";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
+
+const getProposalBaseUrl = () =>
+  process.env.NEXT_PUBLIC_DASHBOARD_API_URL || "";
+
+type Step = 1 | 2 | 3 | 4;
+
+interface SubmitFormData {
+  registeredCompanyName: string;
+  registeredCompanyAddress: string;
+  authorizedSignatoryName: string;
+  authorizedSignatoryDesignation: string;
+  officialEmailId: string;
+  phoneNumber: string;
+  preferredPaymentMode: "bank_transfer" | "crypto";
+}
+
+const initialSubmitForm: SubmitFormData = {
+  registeredCompanyName: "",
+  registeredCompanyAddress: "",
+  authorizedSignatoryName: "",
+  authorizedSignatoryDesignation: "",
+  officialEmailId: "",
+  phoneNumber: "",
+  preferredPaymentMode: "bank_transfer",
+};
+
+/** Avatar URL for influencer profile (same as influencer-table). */
+function getInfluencerAvatarUrl(name: string): string {
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || "U")}&background=random&size=128`;
+}
+
+/** Normalize proofOfWork: if array take first, if string use it. */
+function normalizeProofOfWork(value: unknown): string | null {
+  if (value == null) return null;
+  if (typeof value === "string") return value.trim() || null;
+  if (Array.isArray(value) && value.length > 0) {
+    const first = value[0];
+    return typeof first === "string" ? first.trim() || null : String(first);
+  }
+  return null;
+}
+
+/** Map dashboard API response (cart) to page shape (influencerItems, billingInfo, email). */
+function normalizeProposalResponse(data: Record<string, unknown>): ProposalDataShape {
+  const cart = data.cart as {
+    items?: Array<{
+      id: string;
+      influencerId: string;
+      quantity?: number;
+      price?: string;
+      notes?: string | null;
+      proofOfWork?: unknown;
+      isApproved?: boolean;
+      platform?: string;
+      platformLink?: string;
+      inventory?: string;
+      influencerName?: string;
+      influencer?: {
+        id?: string;
+        name?: string;
+        platform?: string;
+        contentType?: string;
+        socialMediaLink?: string;
+        dpLink?: string;
+        price?: string;
+        quantity?: string | number;
+      };
+    }>;
+    client?: { id?: string; name?: string; email?: string };
+    id?: string;
+    managementFeePercent?: string;
+    discountPercent?: string;
+  } | undefined;
+
+  if (cart?.items) {
+    const client = cart.client ?? {};
+    const clientName = (client.name ?? "").trim();
+    const parts = clientName ? clientName.split(/\s+/) : [];
+    const firstName = parts[0] ?? "";
+    const lastName = parts.slice(1).join(" ") ?? "";
+    const managementFeePercentNum = cart.managementFeePercent != null
+      ? parseFloat(String(cart.managementFeePercent))
+      : 15;
+    const discountNum = cart.discountPercent != null
+      ? parseFloat(String(cart.discountPercent))
+      : 0;
+    return {
+      cartId: cart.id ?? "",
+      email: (client.email as string) ?? "",
+      billingInfo: {
+        firstName,
+        lastName,
+        projectName: "",
+        telegramId: "",
+        projectUrl: "",
+        campaignLiveDate: "",
+        note: "",
+        managementFeePercentage: Number.isFinite(managementFeePercentNum) ? managementFeePercentNum : 15,
+        discount: Number.isFinite(discountNum) ? discountNum : 0,
+      },
+      influencerItems: cart.items.map((it) => {
+        const inf = it.influencer ?? {};
+        const name = (it.influencerName ?? inf.name ?? it.influencerId ?? "—") as string;
+        const platform = (it.platform ?? inf.platform ?? "—") as string;
+        const platformLink = (it.platformLink ?? inf.socialMediaLink ?? "") as string;
+        const contentType = (it.inventory ?? inf.contentType ?? "—") as string;
+        return {
+          id: it.id,
+          influencerId: it.influencerId,
+          price: it.price ?? (inf.price as string) ?? "0",
+          note: it.notes ?? null,
+          profOfWork: normalizeProofOfWork(it.proofOfWork),
+          quantity: it.quantity ?? inf.quantity ?? 1,
+          isClientApproved: it.isApproved ?? false,
+          pricing: it.price ?? (inf.price as string) ?? "0",
+          influencer: {
+            id: (inf.id as string) ?? it.influencerId,
+            name,
+            platform,
+            socialMediaLink: platformLink,
+            contentType,
+            dpLink: getInfluencerAvatarUrl(name),
+            quantity: inf.quantity != null ? String(inf.quantity) : undefined,
+            price: (inf.price as string) ?? it.price ?? "0",
+          },
+        };
+      }),
+    };
+  }
+
+  return data as unknown as ProposalDataShape;
+}
+
+interface ProposalDataShape {
+  cartId?: string;
+  email?: string;
+  billingInfo?: BillingInfo;
+  influencerItems?: Influencer[];
+  isSubmitted?: boolean;
+}
+
 import Image from "next/image";
 import Input from "@/src/components/ui/input";
 import { INPUT_VARIANTS } from "@/src/utils/constants";
@@ -67,12 +207,20 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
   const router = useRouter();
   const [proposal, setProposal] = useState<ProposalData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [showBillingForm, setShowBillingForm] = useState<boolean>(false);
+  const [step, setStep] = useState<Step>(1);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
   const [approvalStates, setApprovalStates] = useState<Record<string, boolean | null>>({});
+  const [submitForm, setSubmitForm] = useState<SubmitFormData>(initialSubmitForm);
+  const [signatureDataUrl, setSignatureDataUrl] = useState<string | null>(null);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [showTermsError, setShowTermsError] = useState(false);
+  const [showSignatureModal, setShowSignatureModal] = useState(false);
+  const signatureCanvasRef = useRef<HTMLCanvasElement>(null);
+  const hasDrawnRef = useRef(false);
+  const [isDrawing, setIsDrawing] = useState(false);
 
-  // Billing form state
+  // Billing form state (for pricing display only - managementFeePercentage from API)
   const [billingForm, setBillingForm] = useState<BillingInfo>({
     firstName: "",
     lastName: "",
@@ -95,50 +243,70 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
     const fetchProposal = async () => {
       try {
         setLoading(true);
-        const response = await axiosInstance.get(`/proposal/${token}`);
-        console.log(response.data, "response.data");
+        const baseUrl = getProposalBaseUrl();
+        const res = await fetch(`${baseUrl}/web/proposal/${encodeURIComponent(token)}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        let data: Record<string, unknown> = {};
+        try {
+          data = await res.json();
+        } catch {
+          data = {};
+        }
 
-        if (response.data.isSubmitted) {
+        if (data.isSubmitted) {
           router.push("/");
           return;
         }
-        if (response.status === 200) {
-          const data = response.data;
-          setProposal(data);
+        if (res.ok) {
+          const normalized = normalizeProposalResponse(data as Record<string, unknown>);
+          const proposalPayload: ProposalData = {
+            token,
+            cartId: normalized.cartId ?? "",
+            email: normalized.email ?? "",
+            billingInfo: normalized.billingInfo ?? billingForm,
+            influencerItems: normalized.influencerItems ?? [],
+          };
+          setProposal(proposalPayload);
 
-          // Initialize approval states based on isClientApproved from API
-          if (data.influencerItems) {
+          if (normalized.influencerItems?.length) {
             const initialApprovalStates: Record<string, boolean | null> = {};
-            data.influencerItems.forEach((item: Influencer) => {
+            normalized.influencerItems.forEach((item: Influencer) => {
               initialApprovalStates[item.id] = item.isClientApproved ? true : null;
             });
             setApprovalStates(initialApprovalStates);
           }
 
-          // Initialize billing form with existing data
-          if (data.billingInfo) {
+          if (normalized.billingInfo) {
             setBillingForm({
-              firstName: data.billingInfo.firstName || "",
-              lastName: data.billingInfo.lastName || "",
-              projectName: data.billingInfo.projectName || "",
-              telegramId: data.billingInfo.telegramId || "",
-              projectUrl: data.billingInfo.projectUrl || "",
-              campaignLiveDate: data.billingInfo.campaignLiveDate || "",
-              note: data.billingInfo.note || "",
-              managementFeePercentage: data.billingInfo.managementFeePercentage || 15,
-              discount: data.billingInfo.discount || 0,
+              firstName: normalized.billingInfo.firstName || "",
+              lastName: normalized.billingInfo.lastName || "",
+              projectName: normalized.billingInfo.projectName || "",
+              telegramId: normalized.billingInfo.telegramId || "",
+              projectUrl: normalized.billingInfo.projectUrl || "",
+              campaignLiveDate: normalized.billingInfo.campaignLiveDate || "",
+              note: normalized.billingInfo.note || "",
+              managementFeePercentage: normalized.billingInfo.managementFeePercentage || 15,
+              discount: normalized.billingInfo.discount || 0,
             });
           }
         } else {
-          toast.error(response.data.message || "Something went wrong", {
-            duration: 2000,
+          const errorMessage =
+            (typeof data?.error === "string" && data.error) ||
+            (typeof data?.message === "string" && data.message) ||
+            "Something went wrong";
+          toast.error(errorMessage, {
+            duration: 4000,
           });
           router.push("/");
           return;
         }
-      } catch (error: any) {
+      } catch (err: unknown) {
         const errorMessage =
-          error.response?.data?.message || error.message || "Something went wrong";
+          (err && typeof err === "object" && "message" in err && typeof (err as { message: string }).message === "string")
+            ? (err as { message: string }).message
+            : "Something went wrong";
         toast.error(errorMessage, { duration: 2000 });
         router.push("/");
         return;
@@ -168,7 +336,7 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
     });
   };
 
-  // Calculate pricing summary
+  // Pricing summary: based on selected (accepted) influencers only, not all items in the cart
   const calculatePricing = (): {
     subtotal: number;
     managementFee: number;
@@ -186,25 +354,19 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
       };
     }
 
-    // Calculate subtotal from accepted items only
-    const subtotal = proposal.influencerItems.reduce((sum, item) => {
-      if (approvalStates[item.id] === true) {
-        const price = parseFloat(item.price || item.influencer.price || "0");
-        const quantity = Number(item.quantity || item.influencer.quantity || 1);
-        return sum + price * quantity;
-      }
-      return sum;
+    const acceptedItemsOnly = proposal.influencerItems.filter(
+      (item) => approvalStates[item.id] === true
+    );
+    const subtotal = acceptedItemsOnly.reduce((sum, item) => {
+      const price = parseFloat(item.price || item.influencer?.price || "0");
+      const quantity = Number(item.quantity ?? item.influencer?.quantity ?? 1);
+      return sum + price * quantity;
     }, 0);
 
-    // Calculate management fee
     const managementFeePercentage = billingForm.managementFeePercentage || 15;
     const managementFee = (subtotal * managementFeePercentage) / 100;
-
-    // Calculate discount as percentage of subtotal
     const discountPercentage = billingForm.discount || 0;
     const discountAmount = (subtotal * discountPercentage) / 100;
-
-    // Calculate total
     const total = subtotal + managementFee - discountAmount;
 
     return {
@@ -257,65 +419,173 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
     }));
   };
 
-  const validateBillingForm = (): boolean => {
-    if (!billingForm.firstName.trim()) {
-      toast.error("First name is required");
-      return false;
-    }
-    if (!billingForm.lastName.trim()) {
-      toast.error("Last name is required");
-      return false;
-    }
-    if (!proposal?.email) {
-      toast.error("Email is required");
-      return false;
-    }
-    if (!billingForm.projectName.trim()) {
-      toast.error("Project name is required");
-      return false;
-    }
-    if (!billingForm.projectUrl.trim()) {
-      toast.error("Project URL is required");
-      return false;
-    }
-    if (billingForm.projectUrl && !/^https?:\/\/.+/.test(billingForm.projectUrl)) {
-      toast.error("Please enter a valid URL (must start with http:// or https://)");
-      return false;
-    }
-    if (!billingForm.telegramId.trim()) {
-      toast.error("Telegram ID is required");
+  const validateStep1 = (): boolean => {
+    const hasOne = proposal?.influencerItems?.some((item) => approvalStates[item.id] === true);
+    if (!hasOne) {
+      toast.error("Please accept at least one influencer to proceed.");
       return false;
     }
     return true;
   };
 
-  const handleUpdateProposal = async () => {
-    if (!validateBillingForm()) {
+  const validateSubmitForm = (): boolean => {
+    if (!submitForm.registeredCompanyName.trim()) {
+      toast.error("Registered Company Name is required.");
+      return false;
+    }
+    if (!submitForm.registeredCompanyAddress.trim()) {
+      toast.error("Registered Company Address is required.");
+      return false;
+    }
+    if (!submitForm.authorizedSignatoryName.trim()) {
+      toast.error("Authorized Signatory Name is required.");
+      return false;
+    }
+    if (!submitForm.authorizedSignatoryDesignation.trim()) {
+      toast.error("Authorized Signatory Designation is required.");
+      return false;
+    }
+    if (!submitForm.officialEmailId.trim()) {
+      toast.error("Official Email ID is required.");
+      return false;
+    }
+    if (!submitForm.phoneNumber.trim()) {
+      toast.error("Phone Number is required.");
+      return false;
+    }
+    return true;
+  };
+
+  const getCanvasPoint = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = signatureCanvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY,
+    };
+  }, []);
+
+  const startSignature = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      const canvas = signatureCanvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+      const { x, y } = getCanvasPoint(e);
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      hasDrawnRef.current = true;
+      setIsDrawing(true);
+    },
+    [getCanvasPoint]
+  );
+
+  const draw = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      if (!isDrawing) return;
+      const canvas = signatureCanvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      const { x, y } = getCanvasPoint(e);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    },
+    [isDrawing, getCanvasPoint]
+  );
+
+  const endSignature = useCallback(() => {
+    setIsDrawing(false);
+  }, []);
+
+  const saveSignature = useCallback(() => {
+    if (!hasDrawnRef.current) {
+      toast.error("Please draw your signature.");
       return;
     }
+    const canvas = signatureCanvasRef.current;
+    if (!canvas) return;
+    setSignatureDataUrl(canvas.toDataURL("image/png"));
+    setShowSignatureModal(false);
+    setStep(4);
+  }, []);
+
+  const clearSignature = useCallback(() => {
+    const canvas = signatureCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    hasDrawnRef.current = false;
+    setSignatureDataUrl(null);
+  }, []);
+
+  useEffect(() => {
+    if (showSignatureModal && signatureCanvasRef.current) {
+      const canvas = signatureCanvasRef.current;
+      const ctx = canvas.getContext("2d");
+      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hasDrawnRef.current = false;
+    }
+  }, [showSignatureModal]);
+
+  const handleSubmitProposal = async () => {
+    if (!validateStep1() || !validateSubmitForm()) return;
+    if (!signatureDataUrl) {
+      toast.error("Please provide your signature.");
+      return;
+    }
+    if (!termsAccepted) {
+      setShowTermsError(true);
+      toast.error("Please accept the Terms and Conditions.");
+      return;
+    }
+    setShowTermsError(false);
+    if (!proposal?.influencerItems?.length) return;
 
     setIsSubmitting(true);
     try {
-      // Prepare influencer items with approval status
-      const updatedInfluencerItems = proposal?.influencerItems.map((item) => ({
-        id: item.id,
-        isClientApproved: approvalStates[item.id] || false,
-      }));
-
-      // Prepare update payload
-      const updateData = {
-        billingInfo: {
-          ...billingForm,
-        },
-        influencerItems: updatedInfluencerItems,
+      const payload = {
+        items: proposal.influencerItems.map((item) => ({
+          id: item.id,
+          accepted: approvalStates[item.id] === true,
+        })),
+        registeredCompanyName: submitForm.registeredCompanyName.trim(),
+        registeredCompanyAddress: submitForm.registeredCompanyAddress.trim(),
+        authorizedSignatoryName: submitForm.authorizedSignatoryName.trim(),
+        authorizedSignatoryDesignation: submitForm.authorizedSignatoryDesignation.trim(),
+        officialEmailId: submitForm.officialEmailId.trim(),
+        phoneNumber: submitForm.phoneNumber.trim(),
+        preferredPaymentMode: submitForm.preferredPaymentMode,
+        docusignProofLink: signatureDataUrl || undefined,
+        isTermsConfirmed: true,
       };
-      await axiosInstance.put(`/proposal/${token}/submit`, updateData);
-
+      const baseUrl = getProposalBaseUrl();
+      const res = await fetch(`${baseUrl}/web/proposal/${encodeURIComponent(token)}/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const resData = await res.json();
+      if (!res.ok) {
+        toast.error(resData?.error ?? resData?.message ?? "Failed to submit proposal", {
+          duration: 2000,
+        });
+        return;
+      }
+      toast.success(resData?.message ?? "Proposal confirmed successfully.");
       router.push("/proposals/success");
-    } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.message || error.message || "Failed to update proposal";
-      toast.error(errorMessage, { duration: 2000 });
+    } catch (err: unknown) {
+      const msg =
+        err && typeof err === "object" && "message" in err
+          ? String((err as { message: string }).message)
+          : "Failed to submit proposal";
+      toast.error(msg, { duration: 2000 });
     } finally {
       setIsSubmitting(false);
     }
@@ -348,17 +618,21 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
           </div>
           <div className="border-t border-gray-200 pt-6">
             <h1 className="text-2xl md:text-3xl font-bold text-[#7B46F8] mb-2">
-              {showBillingForm ? "Billing Information" : "Proposal Review"}
+              {step === 1 && "Proposal Review"}
+              {step === 2 && "Client Information"}
+              {step === 3 && "Authorization"}
+              {step === 4 && "Terms & Conditions"}
             </h1>
             <p className="text-gray-600">
-              {showBillingForm
-                ? "Please provide your billing information to complete the proposal"
-                : "Review and approve influencers for your campaign"}
+              {step === 1 && "Review and approve influencers for your campaign"}
+              {step === 2 && "Please provide your company and signatory details"}
+              {step === 3 && "Confirm authorization and sign"}
+              {step === 4 && "Review and accept the terms"}
             </p>
           </div>
 
           {/* Pitch Section */}
-          {!showBillingForm && (
+          {step === 1 && (
             <div className="my-8">
               <p className="text-base md:text-lg text-gray-900 mb-6">
                 Confluence between Artificial & Human intelligence to deliver best ROI on influencer
@@ -445,10 +719,10 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
         </div>
 
         {/* Client Information Card */}
-        {!showBillingForm && proposal?.billingInfo && (
+        {step === 1 && proposal?.billingInfo && (
           <div className="mb-8 bg-white rounded-lg shadow-sm p-6 md:p-8">
             <h2 className="text-lg font-bold text-[#7B46F8] mb-4 pb-2 border-b border-gray-200">
-              Client Information
+              Billing Information
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               <div>
@@ -480,7 +754,7 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
         )}
 
         {/* Desktop Table View */}
-        {!showBillingForm && (
+        {step === 1 && (
           <div className="hidden md:block bg-white rounded-lg shadow-sm overflow-hidden mb-8">
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -539,14 +813,22 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
                       </td>
 
                       <td className="px-6 py-4 whitespace-nowrap text-center">
-                        <a
-                          href={item.influencer.socialMediaLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-2 "
-                        >
-                          {getPlatformIcon(item.influencer.platform)}
-                        </a>
+                        {item.influencer.socialMediaLink ? (
+                          <a
+                            href={item.influencer.socialMediaLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-2"
+                          >
+                            {getPlatformIcon(item.influencer.platform)}
+                            <span className="text-sm">{item.influencer.platform}</span>
+                          </a>
+                        ) : (
+                          <span className="flex items-center justify-center gap-2">
+                            {getPlatformIcon(item.influencer.platform)}
+                            <span className="text-sm">{item.influencer.platform}</span>
+                          </span>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
                         <div className="text-sm text-gray-900">{item.influencer.contentType}</div>
@@ -622,7 +904,7 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
         )}
 
         {/* Mobile Card View */}
-        {!showBillingForm && (
+        {step === 1 && (
           <div className="md:hidden space-y-4 mb-8 w-full">
             {proposal?.influencerItems?.map((item) => (
               <div key={item.id} className="bg-white rounded-lg shadow-sm p-4 w-full">
@@ -630,7 +912,7 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
                   <div className="flex justify-start items-center gap-2">
                     <div className="flex-shrink-0">
                       <Image
-                        src={item.influencer.dpLink || "/placeholder-avatar.png"}
+                        src={item.influencer.dpLink || getInfluencerAvatarUrl(item.influencer.name)}
                         alt={item.influencer.name}
                         width={60}
                         height={60}
@@ -643,14 +925,22 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
                       </div>
                       <div className="flex justify-start items-center gap-2">
                         <span className="font-semibold">Platform:</span>{" "}
-                        <a
-                          href={item.influencer.socialMediaLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-2"
-                        >
-                          {getPlatformIcon(item.influencer.platform)}
-                        </a>
+                        {item.influencer.socialMediaLink ? (
+                          <a
+                            href={item.influencer.socialMediaLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-2"
+                          >
+                            {getPlatformIcon(item.influencer.platform)}
+                            <span>{item.influencer.platform}</span>
+                          </a>
+                        ) : (
+                          <span className="flex items-center gap-2">
+                            {getPlatformIcon(item.influencer.platform)}
+                            {item.influencer.platform}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -658,7 +948,7 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
                     <div className="space-y-1 text-sm text-gray-600">
                       <div>
                         <span className="font-semibold">Content Type:</span>{" "}
-                        <span className="">{item.influencer.contentType}</span>
+                        <span className="">{item.influencer.contentType || "—"}</span>
                       </div>
                       {item.note && (
                         <div>
@@ -721,10 +1011,11 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
           </div>
         )}
 
-        {/* Pricing Summary */}
-        {!showBillingForm && (
+        {/* Pricing Summary — based on selected (accepted) influencers only */}
+        {step === 1 && (
           <div className="bg-white rounded-lg shadow-sm p-6 md:p-8 mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Pricing Summary</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-1">Pricing Summary</h3>
+            <p className="text-sm text-gray-500 mb-4">Based on accepted influencers only</p>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-gray-600">Subtotal</span>
@@ -759,21 +1050,19 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
         )}
 
         {/* Billing Information Button */}
-        {!showBillingForm && (
+        {step === 1 && (
           <div className="flex justify-end mb-8">
             <button
               type="button"
               onClick={() => {
-                // Check if any influencers are accepted
                 const hasAcceptedInfluencers = proposal?.influencerItems?.some(
                   (item) => approvalStates[item.id] === true
                 );
-
                 if (!hasAcceptedInfluencers) {
                   setShowConfirmModal(true);
-                } else {
-                  setShowBillingForm(true);
+                  return;
                 }
+                if (validateStep1()) setStep(2);
               }}
               className="px-6 py-2  bg-dark-purple1-bg text-white 
                 cursor-pointer
@@ -788,134 +1077,253 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
         <ConfirmationModal
           isOpen={showConfirmModal}
           onClose={() => setShowConfirmModal(false)}
-          onConfirm={() => setShowBillingForm(true)}
+          onConfirm={() => setShowConfirmModal(false)}
           title="No Influencers Selected"
           message="You haven't accepted any influencers. Are you sure you want to proceed without selecting any influencers?"
           confirmText="Yes, Proceed"
           cancelText="Cancel"
         />
 
-        {/* Billing Information Form */}
-        {showBillingForm && (
+        {/* Step 2: Client information form */}
+        {step === 2 && (
           <div className="bg-white rounded-lg shadow-sm p-6 md:p-8 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
+              <div className="md:col-span-2">
                 <Input
-                  label="First Name"
-                  name="firstName"
-                  value={billingForm.firstName}
-                  onChange={(e) => handleBillingFormChange("firstName", e.target.value)}
+                  label="Registered Company Name (as per your entity)"
+                  name="registeredCompanyName"
+                  value={submitForm.registeredCompanyName}
+                  onChange={(e) =>
+                    setSubmitForm((prev) => ({ ...prev, registeredCompanyName: e.target.value }))
+                  }
+                  required
+                  variant={INPUT_VARIANTS.OUTLINED}
+                />
+              </div>
+              <div className="md:col-span-2">
+                <Input
+                  label="Registered Company Address"
+                  name="registeredCompanyAddress"
+                  value={submitForm.registeredCompanyAddress}
+                  onChange={(e) =>
+                    setSubmitForm((prev) => ({ ...prev, registeredCompanyAddress: e.target.value }))
+                  }
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
               <div>
                 <Input
-                  label="Last Name"
-                  name="lastName"
-                  value={billingForm.lastName}
-                  onChange={(e) => handleBillingFormChange("lastName", e.target.value)}
+                  label="Authorized Signatory Name"
+                  name="authorizedSignatoryName"
+                  value={submitForm.authorizedSignatoryName}
+                  onChange={(e) =>
+                    setSubmitForm((prev) => ({ ...prev, authorizedSignatoryName: e.target.value }))
+                  }
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
               <div>
                 <Input
-                  label="Email"
-                  name="email"
+                  label="Authorized Signatory Designation"
+                  name="authorizedSignatoryDesignation"
+                  value={submitForm.authorizedSignatoryDesignation}
+                  onChange={(e) =>
+                    setSubmitForm((prev) => ({
+                      ...prev,
+                      authorizedSignatoryDesignation: e.target.value,
+                    }))
+                  }
+                  required
+                  variant={INPUT_VARIANTS.OUTLINED}
+                />
+              </div>
+              <div>
+                <Input
+                  label="Official Email ID for documentation"
+                  name="officialEmailId"
                   type="email"
-                  value={proposal?.email || ""}
-                  disabled
-                  variant={INPUT_VARIANTS.OUTLINED}
-                />
-              </div>
-              <div>
-                <Input
-                  label="Project Name"
-                  name="projectName"
-                  value={billingForm.projectName}
-                  onChange={(e) => handleBillingFormChange("projectName", e.target.value)}
+                  value={submitForm.officialEmailId}
+                  onChange={(e) =>
+                    setSubmitForm((prev) => ({ ...prev, officialEmailId: e.target.value }))
+                  }
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
               <div>
                 <Input
-                  label="Project URL"
-                  name="projectUrl"
-                  type="url"
-                  value={billingForm.projectUrl}
-                  onChange={(e) => handleBillingFormChange("projectUrl", e.target.value)}
-                  placeholder="https://example.com"
+                  label="Phone Number"
+                  name="phoneNumber"
+                  type="tel"
+                  value={submitForm.phoneNumber}
+                  onChange={(e) =>
+                    setSubmitForm((prev) => ({ ...prev, phoneNumber: e.target.value }))
+                  }
                   required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
-              <div>
-                <Input
-                  label="Telegram ID"
-                  name="telegramId"
-                  value={billingForm.telegramId}
-                  onChange={(e) => handleBillingFormChange("telegramId", e.target.value)}
-                  placeholder="@username or numeric ID"
-                  required
-                  variant={INPUT_VARIANTS.OUTLINED}
-                />
-              </div>
-            </div>
-
-            {/* Pricing Summary in Billing Form */}
-            <div className="mt-6 bg-gray-50 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Pricing Summary</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="text-gray-900 font-medium">{formatPrice(pricing.subtotal)}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">
-                    Management Fee ({billingForm.managementFeePercentage || 15}
-                    %)
-                  </span>
-                  <span className="text-gray-900 font-medium">
-                    {formatPrice(pricing.managementFee)}
-                  </span>
-                </div>
-                {pricing.discountPercentage > 0 && (
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Discount ({pricing.discountPercentage}%)</span>
-                    <span className="text-green-600 font-medium">
-                      -{formatPrice(pricing.discountAmount)}
-                    </span>
-                  </div>
-                )}
-                <div className="border-t border-gray-200 pt-3 mt-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-lg font-semibold text-gray-900">Total</span>
-                    <span className="text-lg font-bold text-[#7B46F8]">
-                      {formatPrice(pricing.total)}
-                    </span>
-                  </div>
+              <div className="md:col-span-2">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Preferred Mode of Payment
+                </label>
+                <div className="flex gap-4">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="preferredPaymentMode"
+                      checked={submitForm.preferredPaymentMode === "bank_transfer"}
+                      onChange={() =>
+                        setSubmitForm((prev) => ({ ...prev, preferredPaymentMode: "bank_transfer" }))
+                      }
+                      className="rounded border-gray-300 text-[#7B46F8] focus:ring-[#7B46F8]"
+                    />
+                    <span>Bank Transfer</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="preferredPaymentMode"
+                      checked={submitForm.preferredPaymentMode === "crypto"}
+                      onChange={() =>
+                        setSubmitForm((prev) => ({ ...prev, preferredPaymentMode: "crypto" }))
+                      }
+                      className="rounded border-gray-300 text-[#7B46F8] focus:ring-[#7B46F8]"
+                    />
+                    <span>Crypto</span>
+                  </label>
                 </div>
               </div>
             </div>
-
-            <div className="mt-6 flex justify-end gap-2">
+            <div className="mt-6 flex justify-between">
               <button
                 type="button"
-                onClick={() => setShowBillingForm(false)}
-                className="px-6 py-2  bg-white text-dark-purple1-bg 
-                cursor-pointer
-               disabled:opacity-50 disabled:pointer-events-none rounded-4xl hover:scale-105 transition-all duration-300"
+                onClick={() => setStep(1)}
+                className="px-6 py-2 bg-white text-dark-purple1-bg border border-gray-300 rounded-4xl hover:scale-105 transition-all duration-300"
               >
-                Cancel
+                Back
               </button>
               <button
-                onClick={handleUpdateProposal}
+                type="button"
+                onClick={() => {
+                  if (validateSubmitForm()) {
+                    setStep(3);
+                    setShowSignatureModal(true);
+                  }
+                }}
+                className="px-6 py-2 bg-dark-purple1-bg text-white rounded-4xl hover:scale-105 transition-all duration-300"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Step 3: Signature modal */}
+        {showSignatureModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <div className="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6">
+              <p className="text-gray-700 mb-4">
+                I, <strong>{submitForm.authorizedSignatoryName || "—"}</strong>, confirm that I am
+                duly authorized to act on behalf of{" "}
+                <strong>{submitForm.registeredCompanyName || "—"}</strong> and make binding
+                decisions regarding this matter.
+              </p>
+              <div className="border border-gray-300 rounded-lg overflow-hidden bg-gray-50">
+                <canvas
+                  ref={signatureCanvasRef}
+                  width={500}
+                  height={200}
+                  className="w-full h-48 touch-none cursor-crosshair block"
+                  onMouseDown={startSignature}
+                  onMouseMove={draw}
+                  onMouseUp={endSignature}
+                  onMouseLeave={endSignature}
+                />
+              </div>
+              <div className="mt-4 flex flex-wrap gap-2 justify-between">
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowSignatureModal(false);
+                      setStep(2);
+                    }}
+                    className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="button"
+                    onClick={clearSignature}
+                    className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+                  >
+                    Clear
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  onClick={saveSignature}
+                  className="px-4 py-2 bg-dark-purple1-bg text-white rounded-lg hover:opacity-90"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Step 4: Terms and conditions + Submit */}
+        {step === 4 && (
+          <div className="bg-white rounded-lg shadow-sm p-6 md:p-8 mb-8">
+            <div className="prose prose-sm max-w-none text-gray-700 mb-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Terms & Conditions</h3>
+              <p className="mb-2">
+                By proceeding, you agree to the terms of this proposal and confirm that the
+                authorized signatory has full authority to bind the company. Payment terms and
+                deliverables are as specified in the proposal. All fees are subject to the
+                management fee and any applicable discounts as shown.
+              </p>
+              <p className="mb-2">
+                You confirm that the information provided is accurate and that you accept the
+                pricing and conditions outlined in this proposal.
+              </p>
+            </div>
+            <label className="flex items-center gap-3 mb-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={termsAccepted}
+                onChange={(e) => {
+                  setTermsAccepted(e.target.checked);
+                  setShowTermsError(false);
+                }}
+                className="h-4 w-4 rounded border-gray-300 text-[#7B46F8] focus:ring-[#7B46F8]"
+              />
+              <span className="text-gray-700 font-medium">I accept</span>
+            </label>
+            {showTermsError && (
+              <p className="mt-1 text-sm text-red-600" role="alert">
+                You must accept the terms and conditions before submitting.
+              </p>
+            )}
+            <div className="flex justify-between mt-6">
+              <button
+                type="button"
+                onClick={() => {
+                  setStep(3);
+                  setShowSignatureModal(true);
+                }}
+                className="px-6 py-2 bg-white text-dark-purple1-bg border border-gray-300 rounded-4xl hover:scale-105 transition-all duration-300"
+              >
+                Back
+              </button>
+              <button
+                type="button"
+                onClick={handleSubmitProposal}
                 disabled={isSubmitting}
-                className="px-6 py-2  bg-dark-purple1-bg text-white 
-                cursor-pointer
-               disabled:opacity-50 disabled:pointer-events-none rounded-4xl hover:scale-105 transition-all duration-300"
+                className="px-6 py-2 bg-dark-purple1-bg text-white rounded-4xl hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none"
               >
                 {isSubmitting ? "Submitting..." : "Submit"}
               </button>
