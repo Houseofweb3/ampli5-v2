@@ -20,7 +20,7 @@ const Page = () => {
           <p className="text-gray-600 uppercase tracking-widest">Welcome{name ? ` ${name}` : ""}</p>
         </div>
         <span className="font-semibold text-2xl md:text-5xl tracking-wider text-center">
-          Discover Web3 Influencer
+          Ampli5 your distribution
         </span>
       </div>
       <FilterSection />
