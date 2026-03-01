@@ -8,12 +8,11 @@ const getBaseUrl = () =>
   process.env.NEXT_PUBLIC_DASHBOARD_API_URL || "";
 
 export class ProposalApiError extends Error {
-  constructor(
-    message: string,
-    public status: number
-  ) {
+  public readonly status: number;
+  constructor(message: string, statusCode: number) {
     super(message);
     this.name = "ProposalApiError";
+    this.status = statusCode;
   }
 }
 

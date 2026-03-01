@@ -191,6 +191,18 @@ interface BillingInfo {
   discount: number;
 }
 
+const DEFAULT_BILLING_INFO: BillingInfo = {
+  firstName: "",
+  lastName: "",
+  projectName: "",
+  telegramId: "",
+  projectUrl: "",
+  campaignLiveDate: "",
+  note: "",
+  managementFeePercentage: 15,
+  discount: 0,
+};
+
 interface ProposalData {
   token: string;
   billingInfo: BillingInfo;
@@ -221,17 +233,7 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
   const [isDrawing, setIsDrawing] = useState(false);
 
   // Billing form state (for pricing display only - managementFeePercentage from API)
-  const [billingForm, setBillingForm] = useState<BillingInfo>({
-    firstName: "",
-    lastName: "",
-    projectName: "",
-    telegramId: "",
-    projectUrl: "",
-    campaignLiveDate: "",
-    note: "",
-    managementFeePercentage: 15,
-    discount: 0,
-  });
+  const [billingForm, setBillingForm] = useState<BillingInfo>(DEFAULT_BILLING_INFO);
 
   useEffect(() => {
     if (!token) {
@@ -265,7 +267,7 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
             token,
             cartId: normalized.cartId ?? "",
             email: normalized.email ?? "",
-            billingInfo: normalized.billingInfo ?? billingForm,
+            billingInfo: normalized.billingInfo ?? DEFAULT_BILLING_INFO,
             influencerItems: normalized.influencerItems ?? [],
           };
           setProposal(proposalPayload);
@@ -410,13 +412,6 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
       return <InstagramIcon />;
     }
     return platform;
-  };
-
-  const handleBillingFormChange = (field: keyof BillingInfo, value: string | number) => {
-    setBillingForm((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
   };
 
   const validateStep1 = (): boolean => {

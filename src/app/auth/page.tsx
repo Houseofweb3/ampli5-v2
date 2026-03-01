@@ -57,7 +57,7 @@ const Page = () => {
       const cleanUrl = window.location.origin;
       router.replace(cleanUrl, { scroll: false });
     }
-  }, [error]);
+  }, [error, router]);
 
   return <div className="h-screen bg-white" />;
 };
