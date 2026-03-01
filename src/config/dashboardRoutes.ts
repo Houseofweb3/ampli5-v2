@@ -4,6 +4,7 @@
 
 export const DASHBOARD_SIGN_IN = "/dashboard/sign-in";
 export const DASHBOARD_HOME = "/dashboard/influencers";
+export const CART_SUCCESS = "/dashboard/cart/success";
 
 /** Public: anyone can access (e.g. sign-in, discover). */
 export const DASHBOARD_PUBLIC_PATHS: readonly string[] = ["/dashboard", "/dashboard/sign-in"];

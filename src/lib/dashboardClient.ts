@@ -5,9 +5,8 @@
 
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { getToken, clearAuth } from "@/src/store/dashboardAuthStore";
-
-const DASHBOARD_SIGN_IN = "/dashboard/sign-in";
-
+import { ALLROUTES } from "@/src/utils/constants";
+  
 function isAuthError(response: { status: number; data?: unknown }): boolean {
   if (response.status !== 401 && response.status !== 403) return false;
   const data = response.data as { success?: boolean; message?: string } | undefined;
@@ -40,14 +39,24 @@ dashboardClient.interceptors.request.use(
   (err) => Promise.reject(err)
 );
 
+function isAuthFlowRequest(config: { url?: string } | undefined): boolean {
+  const url = config?.url ?? "";
+  return (
+    url.includes("/web/client/auth/verify-otp") ||
+    url.includes("/web/client/auth/send-otp") ||
+    url.includes("/web/client/auth/signup")
+  );
+}
+
 dashboardClient.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error: AxiosError) => {
     const res = error.response;
-    if (res && isAuthError(res)) {
+    const isAuthFlow = isAuthFlowRequest(error.config);
+    if (res && isAuthError(res) && !isAuthFlow) {
       clearAuth();
       if (typeof window !== "undefined") {
-        window.location.href = DASHBOARD_SIGN_IN;
+        window.location.href = ALLROUTES.SIGN_IN;
       }
     }
     return Promise.reject(error);

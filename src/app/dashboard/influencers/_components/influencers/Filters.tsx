@@ -2,12 +2,11 @@
 
 /* eslint-disable no-unused-vars */
 /* eslint-disable indent */
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import MultiSelect from "@/src/components/ui/multi-select";
 import { FilterCross, Search } from "@/public/icons";
 import AiButton from "./AIButton";
-import { useFilter } from "@/src/context/FilterContext";
 import {
   PLATFORM_OPTIONS,
   INDUSTRY_OPTIONS,
@@ -27,10 +26,6 @@ interface FilterProp {
   setNiche: React.Dispatch<React.SetStateAction<string[]>>;
   setPrice: React.Dispatch<React.SetStateAction<string[]>>;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isAI?: boolean;
-  setIsAi?: React.Dispatch<React.SetStateAction<boolean>>;
-  fetchInfluencers?: () => Promise<void>;
-  fetchUserInfluencers?: () => Promise<void>;
   contentTypes: string[];
   setContentTypes: React.Dispatch<React.SetStateAction<string[]>>;
   industry: string[];
@@ -49,10 +44,6 @@ const Filters: React.FC<FilterProp> = ({
   onChange,
   setNiche,
   setCredibility,
-  isAI,
-  setIsAi,
-  fetchInfluencers,
-  fetchUserInfluencers,
   contentTypes,
   setContentTypes,
   industry,
@@ -60,7 +51,6 @@ const Filters: React.FC<FilterProp> = ({
   geography,
   setGeography,
 }) => {
-  const showAi = isAI !== undefined && setIsAi != null && fetchInfluencers != null && fetchUserInfluencers != null;
   const platformOptions = useMemo(() => [...PLATFORM_OPTIONS], []);
   const industryOptions = useMemo(() => [...INDUSTRY_OPTIONS], []);
   const geographyOptionsList = useMemo(() => [...GEOGRAPHY_OPTIONS], []);
@@ -159,9 +149,56 @@ const Filters: React.FC<FilterProp> = ({
     industry.length +
     geography.length;
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const filterDropdowns = (
+    <>
+      <div className="">
+        <MultiSelect
+          options={platformOptions}
+          setSelectedOptions={setPlatforms}
+          selectedOptions={platforms}
+          placeholder="Platform"
+        />
+      </div>
+      <div className="">
+        <MultiSelect
+          options={availableInventoryOptions}
+          selectedOptions={contentTypes}
+          setSelectedOptions={setContentTypes}
+          placeholder="Content Type"
+        />
+      </div>
+      <div className="">
+        <MultiSelect
+          options={industryOptions}
+          selectedOptions={industry}
+          setSelectedOptions={setIndustry}
+          placeholder="Industry"
+        />
+      </div>
+      <div className="">
+        <MultiSelect
+          options={availableCategoryOptions}
+          selectedOptions={niche}
+          setSelectedOptions={setNiche}
+          placeholder="Category"
+        />
+      </div>
+      <div className="">
+        <MultiSelect
+          options={geographyOptionsList}
+          selectedOptions={geography}
+          setSelectedOptions={setGeography}
+          placeholder="Geography"
+        />
+      </div>
+    </>
+  );
+
   return (
     <div className="space-y-4 w-full pb-8">
-      <div className="grid grid-cols-1 grid-flow-row-dense items-center md:grid-cols-6 gap-4">
+      <div className="grid grid-cols-4 sm:grid-cols-6 grid-flow-row-dense items-center md:grid-cols-6 gap-4">
         <div className="col-span-4 px-4 flex gap-2 rounded-xl justify-center items-center py-3 border border-gray-300 ">
           <Search />
           <input
@@ -172,69 +209,141 @@ const Filters: React.FC<FilterProp> = ({
           />
         </div>
 
-        {showAi && (
-          <div className="w-full col-span-2 md:block hidden">
-            <AiButton
-              isAI={isAI!}
-              setIsAi={setIsAi!}
-              fetchInfluencers={fetchInfluencers!}
-              fetchUserInfluencers={fetchUserInfluencers!}
-            />
-          </div>
-        )}
+        <div className="w-full hidden  sm:col-span-2 md:col-span-2 sm:flex items-center">
+          <AiButton />
+        </div>
       </div>
-      <div className="grid grid-cols-1 grid-flow-row-dense items-center md:grid-cols-5 gap-4">
-        <div className="">
-          <MultiSelect
-            options={platformOptions}
-            setSelectedOptions={setPlatforms}
-            selectedOptions={platforms}
-            placeholder="Platform"
-          />
-        </div>
-        <div className="">
-          <MultiSelect
-            options={availableInventoryOptions}
-            selectedOptions={contentTypes}
-            setSelectedOptions={setContentTypes}
-            placeholder="Content Type"
-          />
-        </div>
 
-        <div className="">
-          <MultiSelect
-            options={industryOptions}
-            selectedOptions={industry}
-            setSelectedOptions={setIndustry}
-            placeholder="Industry"
-          />
+      {/* md and below: Filters button opens drawer */}
+      <div className="flex items-center gap-2 md:hidden">
+        <div className="w-full sm:hidden block">
+          <AiButton />
         </div>
-        <div className="">
-          <MultiSelect
-            options={availableCategoryOptions}
-            selectedOptions={niche}
-            setSelectedOptions={setNiche}
-            placeholder="Category"
+        <button
+          type="button"
+          onClick={() => setDrawerOpen(true)}
+          className="flex items-center gap-2 px-4 py-3 rounded-xl border border-gray-300 font-Jakarta text-sm font-medium text-gray-700 hover:bg-gray-50"
+        >
+          <span>Filters</span>
+          {activeFilterCount > 0 && (
+            <span className="flex items-center justify-center min-w-5 h-5 px-1 text-xs rounded-full bg-primary text-white">
+              {activeFilterCount}
+            </span>
+          )}
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+        </button>
+
+      
+      </div>
+
+      {/* Drawer for md and below */}
+      {drawerOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/50 md:hidden"
+            onClick={() => setDrawerOpen(false)}
+            onKeyDown={(e) => e.key === "Escape" && setDrawerOpen(false)}
+            role="button"
+            tabIndex={0}
+            aria-label="Close filters"
           />
-        </div>
-        <div className="">
-          <MultiSelect
-            options={geographyOptionsList}
-            selectedOptions={geography}
-            setSelectedOptions={setGeography}
-            placeholder="Geography"
-          />
-        </div>
-        {showAi && (
-          <div className="w-full md:hidden block">
-            <AiButton
-              isAI={isAI!}
-              setIsAi={setIsAi!}
-              fetchInfluencers={fetchInfluencers!}
-              fetchUserInfluencers={fetchUserInfluencers!}
-            />
+          <div
+            className="fixed top-0 left-0 z-50 h-full w-[min(100%,320px)] bg-white shadow-xl flex flex-col md:hidden font-Jakarta animate-in slide-in-from-left duration-200"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Filters"
+          >
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+              <button
+                type="button"
+                onClick={() => setDrawerOpen(false)}
+                className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                aria-label="Close"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {filterDropdowns}
+              <button
+                type="button"
+                onClick={clearAllFilters}
+                className="w-full py-2.5 text-sm font-medium text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50"
+              >
+                Clear all
+              </button>
+              {activeFilterCount > 0 && (
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {platforms.map((platform) => (
+                    <div
+                      key={platform}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full"
+                    >
+                      <span>{platform}</span>
+                      <button onClick={() => removeFilter("Platform", platform)} className="text-gray-400 hover:text-gray-600">
+                        <FilterCross />
+                      </button>
+                    </div>
+                  ))}
+                  {contentTypes.map((contentType) => (
+                    <div
+                      key={contentType}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full"
+                    >
+                      <span>{contentType}</span>
+                      <button onClick={() => removeFilter("Inventory", contentType)} className="text-gray-400 hover:text-gray-600">
+                        <FilterCross />
+                      </button>
+                    </div>
+                  ))}
+                  {industry.map((i) => (
+                    <div key={i} className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full">
+                      <span>{i}</span>
+                      <button onClick={() => removeFilter("Industry", i)} className="text-gray-400 hover:text-gray-600">
+                        <FilterCross />
+                      </button>
+                    </div>
+                  ))}
+                  {niche.map((n) => (
+                    <div key={n} className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full">
+                      <span>{n}</span>
+                      <button onClick={() => removeFilter("Category", n)} className="text-gray-400 hover:text-gray-600">
+                        <FilterCross />
+                      </button>
+                    </div>
+                  ))}
+                  {geography.map((g) => (
+                    <div key={g} className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full">
+                      <span>{g}</span>
+                      <button onClick={() => removeFilter("Geography", g)} className="text-gray-400 hover:text-gray-600">
+                        <FilterCross />
+                      </button>
+                    </div>
+                  ))}
+                  {credibility.map((score) => (
+                    <div key={score} className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full">
+                      <span className="text-gray-600">Credibilty Score: </span>
+                      <span>{score}</span>
+                      <button onClick={() => removeFilter("Credibility", score)} className="text-gray-400 hover:text-gray-600">
+                        <FilterCross />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        </>
+      )}
+
+      {/* md and up: inline filter row */}
+      <div className="hidden md:grid grid-cols-1 grid-flow-row-dense items-center md:grid-cols-5 gap-4">
+        {filterDropdowns}
       </div>
 
       {activeFilterCount > 0 && (

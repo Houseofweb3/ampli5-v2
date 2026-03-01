@@ -4,53 +4,26 @@ import React from "react";
 
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FiExternalLink } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-import useHow3client from "@/src/hooks/usehow3client";
 import { VerifyIcon } from "../../../../../public/icons";
 import type { CartInfluencer } from "@/src/lib/types";
-import { useLogCart } from "@/src/context/InfluencersContext";
 import { useCart } from "@/src/context/CartContext";
 import PlatformIcon from "@/src/components/PlatformIcon";
-import { ENDPOINTS } from "@/src/utils/constants";
 
 interface TableProps {
   influencers: CartInfluencer[];
 }
 
-const TableRow: React.FC<{ data: CartInfluencer }> = ({ data }) => {
-  const { data: session } = useSession();
-  const user = session?.user;
-  const how3 = useHow3client();
-  const { cartId, fetchCart } = useCart();
-  const { handleChange } = useLogCart();
-
-  const RemoveFromCart = async () => {
-    try {
-      if (cartId && data.InfluencerCartId) {
-        const response = await how3.delete(
-          `${ENDPOINTS.INFLUENCER_CART_ITEM}/${data.InfluencerCartId}`
-        );
-        if (response.data) {
-          fetchCart();
-          toast.success("Product removed from cart successfully.");
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const TableRow: React.FC<{ data: CartInfluencer; number: number }> = ({ data }) => {
+  const { handleChange } = useCart();
 
   const handleRemoveFromCart = (event: React.MouseEvent) => {
     event.stopPropagation();
-    if (user && data.InfluencerCartId) {
-      RemoveFromCart();
-    } else {
-      handleChange(data);
-    }
+    handleChange(data);
+    toast.success("Product removed from cart successfully.");
   };
 
   return (
@@ -118,12 +91,12 @@ const TableRow: React.FC<{ data: CartInfluencer }> = ({ data }) => {
 
 const Table: React.FC<TableProps> = ({ influencers }) => {
   return (
-    <table className="w-full mt-2">
-      <tbody className="gap-2 flex flex-col w-full">
-        {influencers?.length > 0 &&
-          influencers?.map((item) => <TableRow key={item.id} data={item} />)}
-      </tbody>
-    </table>
+    <div className="w-full mt-2 flex flex-col gap-2">
+      {influencers?.length > 0 &&
+        influencers.map((item, index) => (
+          <TableRow key={item.id} data={item} number={index + 1} />
+        ))}
+    </div>
   );
 };
 

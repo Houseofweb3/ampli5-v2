@@ -65,8 +65,16 @@ export function getClient(): AuthClient | null {
     const id = typeof parsed.id === "string" ? parsed.id : String(parsed.id ?? parsed.userId ?? "");
     const name = typeof parsed.name === "string" ? parsed.name : String(parsed.name ?? parsed.email ?? "");
     const email = typeof parsed.email === "string" ? parsed.email : String(parsed.email ?? "");
+    const telegramId = parsed.telegramId != null && parsed.telegramId !== "" ? String(parsed.telegramId) : null;
+    const whatsAppNumber = parsed.whatsAppNumber != null && parsed.whatsAppNumber !== "" ? String(parsed.whatsAppNumber) : null;
     if (id || name || email) {
-      return { id, name, email } as AuthClient;
+      return {
+        id,
+        name,
+        email,
+        telegramId: telegramId ?? null,
+        whatsAppNumber: whatsAppNumber ?? null,
+      } as AuthClient;
     }
     return null;
   } catch {

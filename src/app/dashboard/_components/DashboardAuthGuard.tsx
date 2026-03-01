@@ -42,7 +42,7 @@ export default function DashboardAuthGuard({ children }: { children: React.React
 
   if (isPrivate && !hasRehydrated) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-white">
         <p className="text-gray-500">Loading...</p>
       </div>
     );
@@ -50,7 +50,7 @@ export default function DashboardAuthGuard({ children }: { children: React.React
 
   if (isPrivate && !canAccessPrivate) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-white">
         <p className="text-gray-500">Redirecting to sign in...</p>
       </div>
     );

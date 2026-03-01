@@ -81,8 +81,9 @@ const BrandDeserves: React.FC = (): JSX.Element => {
     window.addEventListener("scroll", checkCardPosition);
     window.addEventListener("resize", checkCardPosition);
 
-    if (secondCardRef.current) {
-      observer.observe(secondCardRef.current);
+    const secondCardEl = secondCardRef.current;
+    if (secondCardEl) {
+      observer.observe(secondCardEl);
       // Initial check
       checkCardPosition();
     }
@@ -90,9 +91,8 @@ const BrandDeserves: React.FC = (): JSX.Element => {
     return () => {
       window.removeEventListener("scroll", checkCardPosition);
       window.removeEventListener("resize", checkCardPosition);
-      const currentRef = secondCardRef.current;
-      if (currentRef) {
-        observer.unobserve(currentRef);
+      if (secondCardEl) {
+        observer.unobserve(secondCardEl);
       }
     };
   }, [hasReachedCenter]);

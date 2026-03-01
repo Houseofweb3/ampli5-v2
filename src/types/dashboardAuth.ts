@@ -6,10 +6,8 @@ export interface AuthClient {
   id: string;
   name: string;
   email: string;
-  projectName: string | null;
-  projectUrl: string | null;
   telegramId: string | null;
-  whatsAppNumber: string | null
+  whatsAppNumber: string | null;
 }
 
 export interface ClientAuthSuccess {
@@ -35,4 +33,27 @@ export interface ClientVerifyOtpPayload {
 export interface ApiError {
   error: string;
   code?: string;
+}
+
+/** Payload for POST /api/v1/web/client/auth/signup (brand intake signup). */
+export interface ClientSignupPayload {
+  brandProductName: string;
+  websiteLink: string;
+  primaryContactEmail: string;
+  telegramId?: string;
+  whatsappNumber?: string;
+  categories?: string[];
+  audienceReadinessLevel?: string;
+  campaignGoals?: string[];
+  monetizationModel?: string[];
+  revenueModel?: string;
+  marketFocus?: string;
+  primaryAudienceGeography?: string[];
+  ageRange?: string;
+  genderSkew?: string;
+  geographicLocation?: string;
+  campaignStartTimeline?: string;
+  campaignStartDate?: string;
+  campaignEndDate?: string;
+  customBrief?: string;
 }

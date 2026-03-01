@@ -14,7 +14,7 @@ const TableCell: React.FC<TableCellProps> = ({ children, id }) => (
       minWidth: getColumnWidth(id || ""),
       maxWidth: getColumnWidth(id || ""),
     }}
-    className={`p-4 overflow-hidden whitespace-normal break-words line-clamp-2`}
+    className={`p-4 overflow-hidden whitespace-normal text-wrap line-clamp-2`}
   >
     {children}
   </div>

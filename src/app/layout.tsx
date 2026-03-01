@@ -4,7 +4,6 @@ import { SessionProvider } from "next-auth/react";
 import { auth } from "../../auth";
 
 import "./globals.css";
-import { LogCartProvider } from "../context/InfluencersContext";
 import { CartProvider } from "../context/CartContext";
 import { ToastProvider } from "../components/toast";
 import Footer from "../components/ui/Footer";
@@ -115,12 +114,10 @@ export default async function RootLayout({
         <ToastProvider />
         <SessionProvider session={session}>
           <CartProvider>
-            <LogCartProvider>
-                <Navbar />
-                <div className="h-[65px] lg:h-80px w-full bg-black"></div>
-                <div className="min-h-[calc(100vh_-_295px)] bg-cream-bg">{children}</div>
-                <Footer />
-            </LogCartProvider>
+            <Navbar />
+            <div className="h-[65px] lg:h-80px w-full bg-black"></div>
+            <div className="min-h-[calc(100vh_-_295px)] bg-cream-bg">{children}</div>
+            <Footer />
           </CartProvider>
         </SessionProvider>
       </body>

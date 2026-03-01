@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from "react";
 import { NavCartIcon } from "../../public/icons";
-import { useLogCart } from "../context/InfluencersContext";
+import { useCart } from "../context/CartContext";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "./ui/button";
 import { ALLROUTES, BUTTON_SIZES, BUTTON_TYPES } from "../utils/constants";
@@ -15,7 +15,7 @@ import { useDashboardAuthStore, getClient } from "../store/dashboardAuthStore";
 import type { AuthClient } from "@/src/types/dashboardAuth";
 
 const NavbarDashBoard = () => {
-  const { Logcart } = useLogCart();
+  const { logCart } = useCart();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -30,7 +30,7 @@ const NavbarDashBoard = () => {
 
   const handleCartIconClick = () => {
     const Main = {
-      influencers: Logcart,
+      influencers: logCart,
     };
     localStorage.setItem("cartData", JSON.stringify(Main));
     router.push("/dashboard/cart");
@@ -38,7 +38,7 @@ const NavbarDashBoard = () => {
 
   return (
     <>
-      <div className="bg-white w-full fixed top-0 z-50">
+      <div className="bg-white w-full fixed top-0 z-50 border-b border-gray-200 ">
         <Container className="py-6">
           <div className=" flex items-center justify-between">
             <Link href="/">
@@ -55,6 +55,9 @@ const NavbarDashBoard = () => {
                 ""
               ) : (
                 <div className="flex  justify-center gap-[38px] items-center ">
+                    {client?.id && pathname !== ALLROUTES.HOME ? <Link href="/dashboard/influencers" className="hover:text-primary transition-all ease-in-out" >
+                    Influencers
+                  </Link> : null}
                   <div
                     className="flex cursor-pointer justify-center items-center gap-2 relative transition-all ease-in-out active:scale-95 "
                     onClick={() => handleCartIconClick()}
@@ -64,7 +67,7 @@ const NavbarDashBoard = () => {
                     </div>
 
                     <div className="bg-primary min-w-[18px] min-h-[18px] px-1 rounded-full flex justify-center items-center text-white font-Jakarta text-[10px] font-medium absolute -top-1 -right-2">
-                      {Logcart?.length ?? 0}
+                      {logCart?.length ?? 0}
                     </div>
                   </div>
                   <div>

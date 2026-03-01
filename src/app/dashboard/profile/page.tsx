@@ -1,92 +1,99 @@
 "use client";
-import React, { useState, useEffect } from "react";
+
+import React, { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { TbMailOpenedFilled } from "react-icons/tb";
-import useDashboardClient from "@/src/hooks/useDashboardClient";
 import { useDashboardAuth } from "@/src/context/DashboardAuthContext";
-import { ALLROUTES } from "@/src/utils/constants";
+import Link from "next/link";
 
-type Profile = {
-  firstName: string;
-  lastName: string;
-  email: string;
-};
+
+
 
 const Page = () => {
   const router = useRouter();
-  const dashboardClient = useDashboardClient();
   const { client, logout } = useDashboardAuth();
-  const [profile, setProfile] = useState<Profile>();
 
-  useEffect(() => {
-    const getProfile = async () => {
-      if (!client?.id) return;
-      try {
-        const response = await dashboardClient.get(`/api/v1/auth/profile/${client.id}`);
-        const { fullname, email } = response.data?.user ?? {};
-        if (fullname) {
-          const [firstName, lastName] = fullname.split(" ");
-          setProfile({ firstName, lastName, email: email ?? client.email });
-        } else {
-          setProfile({ firstName: "", lastName: "", email: client.email });
-        }
-      } catch {
-        setProfile({
-          firstName: (client.name || "").split(" ")[0] ?? "",
-          lastName: (client.name || "").split(" ").slice(1).join(" ") ?? "",
-          email: client.email,
-        });
-      }
-    };
-    if (client) {
-      getProfile();
+  const profile = useMemo(() => {
+    if (!client) {
+      return {
+        name: "",
+        email: "",
+        telegramId: null as string | null,
+        whatsAppNumber: null as string | null,
+      };
     }
-  }, [client, dashboardClient]);
+    return {
+      name: client.name || "",
+      email: client.email || "",
+      telegramId: client.telegramId ?? null,
+      whatsAppNumber: client.whatsAppNumber ?? null,
+    };
+  }, [client]);
 
   const handleLogout = () => {
-    localStorage.removeItem("cartData");
     logout();
-    router.push(ALLROUTES.DASHBOARD);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.removeItem("cartData");
+      } catch {
+        /* ignore */
+      }
+    }
+    router.push("/");
   };
 
   return (
-    <div className="w-full h-full flex flex-col py-[32px] px-[16px] md:px-[64px] bg-gray-150 gap-4 min-h-screen">
-      <div className="font-Jakarta text-3xl font-bold pb-[12px]">Overview</div>
-      <div className="bg-white rounded-lg p-4">
-        <span className="font-Jakarta text-xl font-bold">Profile</span>
+    <div className="flex flex-col min-h-screen w-full px-4 md:px-12 py-8 font-Jakarta">
+      <h1 className="text-2xl md:text-4xl font-semibold text-gray-900 mb-4">Profile</h1>
+      <div className="bg-white rounded-xl border border-gray-200/60 shadow-sm p-6 md:p-8 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700">Name</label>
+            <div className="px-4 py-3 rounded-lg border border-gray-200 bg-gray-50/80 text-gray-900 font-[400] text-[15px] min-h-[48px] flex items-center">
+              {profile.name || "—"}
+            </div>
+          </div>
+          
+          
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700">Email</label>
+            <div className="px-4 py-3 rounded-lg border border-gray-200 bg-gray-50/80 text-gray-900 font-[400] text-[15px] min-h-[48px] flex items-center gap-2">
+              <TbMailOpenedFilled className="text-gray-500 shrink-0 text-lg" />
+              <span>{profile.email || "—"}</span>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700">Telegram ID</label>
+            <div className="px-4 py-3 rounded-lg border border-gray-200 bg-gray-50/80 text-gray-900 font-[400] text-[15px] min-h-[48px] flex items-center">
+              {profile.telegramId || "—"}
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700">WhatsApp Number</label>
+            <div className="px-4 py-3 rounded-lg border border-gray-200 bg-gray-50/80 text-gray-900 font-[400] text-[15px] min-h-[48px] flex items-center">
+              {profile.whatsAppNumber || "—"}
+            </div>
+          </div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 font-Jakarta text-[14px] pt-4 gap-4">
-          <div className="font-[500] gap-2 flex flex-col">
-            First Name
-            <div className="font-Poppins px-[20px] flex rounded-[6px] h-12 justify-start items-center py-[12px] border border-black/50 text-black/50 font-[400]">
-              {profile?.firstName}
-            </div>
-          </div>
-          <div className="font-[500] gap-2 flex flex-col">
-            Last Name
-            <div className="font-Poppins px-[20px] flex rounded-[6px] h-12 justify-start items-center py-[12px] border border-black/50 text-black/50 font-[400]">
-              {profile?.lastName}
-            </div>
-          </div>
-          <div className="font-[500] gap-2 flex flex-col">
-            Email
-            <div className="font-Poppins px-[20px] flex rounded-[6px] h-12 gap-2 justify-start items-center py-[12px] border border-black/50 text-black/50 font-[400]">
-              <TbMailOpenedFilled className="text-black text-lg" />
-              {profile?.email}
-            </div>
-          </div>
+        <div className="mt-8 pt-6 border-t border-gray-200 flex gap-4 justify-between items-center">
+          <Link href="/dashboard/influencers">
+            <button
+              type="button"
+              className="px-5 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-800 font-medium hover:bg-gray-50 hover:border-gray-400 transition-colors"
+            >
+              Back
+            </button>
+          </Link>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="px-5 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-800 font-medium hover:bg-gray-50 hover:border-gray-400 transition-colors"
+          >
+            Logout
+          </button>
         </div>
-        <div
-          className="w-fit mt-6 bg-white py-2 px-4 font-Nunito rounded-lg border-black border cursor-pointer shadow-lg active:shadow-none ease-in-out"
-          onClick={() => handleLogout()}
-        >
-          Logout
-        </div>
-        {/* <button className="text-error flex gap-2 font-Poppins font-semibold items-center mt-2 p-2 hover:bg-error/10 w-fit rounded-lg transition-all ease-in-out">
-          <RiDeleteBinFill /> Delete Account
-        </button> */}
       </div>
-      {/* <History /> */}
     </div>
   );
 };

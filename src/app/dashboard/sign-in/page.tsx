@@ -66,7 +66,10 @@ export default function SignInPage() {
       toast.success("Signed in successfully");
       setTimeout(() => router.push(ALLROUTES.HOME), 0);
     } catch (err: unknown) {
-      toast.error(getAuthErrorMessage(err));
+      const is401 = axios.isAxiosError(err) && err.response?.status === 401;
+      toast.error(is401 ? "Invalid or expired code. Please try again." : getAuthErrorMessage(err));
+      setOtpDigits(Array(OTP_LENGTH).fill(""));
+      setTimeout(() => inputRefs.current[0]?.focus(), 100);
     } finally {
       setLoading(false);
     }

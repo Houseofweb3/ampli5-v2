@@ -10,13 +10,8 @@ import {
 export const ENDPOINTS = {
   INFLUENCER_CART_ITEM: "/api/v1/influencer-cart-item",
   PACKAGES_CART_ITEM: "/api/v1/package-cart-item",
-  CREATE_CART: "/api/v1/cart",
-  FETCH_INFLUENCER: "/api/v1/influencer/fetch",
   FETCH_PACKAGES: "/api/v1/packages",
   REFRESH_TOKEN: "/api/v1/auth/refresh-token",
-  APPLY_COUPON: "/api/v1/coupons",
-  FETCH_CART: "api/v1/cart/getCart",
-  FETCH_OPTIONS: "/api/v1/influencer/filter-options",
 };
 
 export const ALLROUTES = {
@@ -239,11 +234,22 @@ export const HEADINGS = [
   "Influencers",
   "Platform",
   "ContentType",
-  "Category",
-  "Credibility Score",
-  "CPM",
+  "Industries",
   "Audience Geography",
-  "Price",
+  "CPM",
+  "Avg View",
+  "Actions",
+] as const;
+
+/** Web influencer table column headers (reusable). */
+export const WEB_HEADINGS = [
+  "Influencers",
+  "Platform",
+  "ContentType",
+  "Industries",
+  "Audience Geography",
+  "CPM",
+  "Avg View",
   "Actions",
 ] as const;
 
@@ -254,18 +260,18 @@ export const HEADINGS_WIDTH_MAPPING = [
   },
   {
     id: "Platform",
-    width: "12%",
+    width: "6%",
   },
   {
     id: "ContentType",
-    width: "12%",
+    width: "18%",
   },
   {
     id: "Category",
     width: "12%",
   },
   {
-    id: "Credibility Score",
+    id: "Industries",
     width: "12%",
   },
   {
@@ -277,7 +283,7 @@ export const HEADINGS_WIDTH_MAPPING = [
     width: "12%",
   },
   {
-    id: "Price",
+    id: "Avg View",
     width: "12%",
   },
   {

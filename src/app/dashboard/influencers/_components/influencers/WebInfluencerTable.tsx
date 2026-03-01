@@ -8,7 +8,7 @@ import type { WebInfluencer } from "@/src/lib/types";
 import PlatformIcon from "@/src/components/PlatformIcon";
 import EmptyTable from "../empty-table";
 import TableCell from "./TableCell";
-import { getColumnWidth } from "@/src/utils/constants";
+import { getColumnWidth, WEB_HEADINGS } from "@/src/utils/constants";
 import {
   VerifyIcon,
   NicheIcon,
@@ -17,27 +17,11 @@ import {
   FollowerIcon,
   MoneyBagIcon,
 } from "@/public/icons";
-import { useLogCart } from "@/src/context/InfluencersContext";
+import { useCart } from "@/src/context/CartContext";
 import type { CartInfluencer } from "@/src/lib/types";
-
-const WEB_HEADINGS = [
-  "Influencers",
-  "Platform",
-  "ContentType",
-  "Category",
-  "Audience Geography",
-  "CPM",
-  "Price",
-  "Actions",
-] as const;
 
 function cell(value: string | null | undefined): string {
   return value != null && value !== "" ? String(value) : "—";
-}
-
-function nicheText(item: WebInfluencer): string {
-  const parts = [item.industries, item.categories].filter(Boolean);
-  return parts.length ? parts.join(", ") : "—";
 }
 
 function DetailCard({
@@ -76,9 +60,9 @@ function webToCartItem(w: WebInfluencer): CartInfluencer {
 }
 
 function AddToCartButton({ item }: { item: WebInfluencer }) {
-  const { Logcart, handleChange } = useLogCart();
+  const { logCart, handleChange } = useCart();
   const cartItem = webToCartItem(item);
-  const inCart = Logcart.some((d: { id: string }) => String(d.id) === String(item.id));
+  const inCart = logCart.some((d: { id: string }) => String(d.id) === String(item.id));
   return (
     <button
       type="button"
@@ -213,8 +197,8 @@ export default function WebInfluencerTable({
                     <TableCell id="ContentType">
                       <span className="text-sm text-[#757575]">{cell(item.inventory)}</span>
                     </TableCell>
-                    <TableCell id="Category">
-                      <span className="text-sm text-[#757575]">{nicheText(item)}</span>
+                    <TableCell id="Industries">
+                      <span className="text-sm text-[#757575]">{cell(item.industries)}</span>
                     </TableCell>
                     <TableCell id="Audience Geography">
                       <span className="text-sm text-[#757575]">{cell(item.primaryAudienceGeography)}</span>
@@ -222,8 +206,8 @@ export default function WebInfluencerTable({
                     <TableCell id="CPM">
                       <span className="text-sm text-[#757575]">{cell(item.cpm)}</span>
                     </TableCell>
-                    <TableCell id="Price">
-                      <span className="text-sm text-[#757575]">{cell(item.sellPrice)}</span>
+                    <TableCell id="Avg View">
+                      <span className="text-sm text-[#757575]">{cell(item.avgViews)}</span>
                     </TableCell>
                     <TableCell id="Actions">
                       <button
@@ -261,7 +245,7 @@ export default function WebInfluencerTable({
                         </div>
                       </div>
                       <div className="flex-1 flex flex-col gap-3">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                           <DetailCard
                             label="Avg Views"
                             value={cell(item.avgViews)}

@@ -5,18 +5,14 @@ import React, { useCallback, useMemo } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { FiExternalLink } from "react-icons/fi";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 import { VerifyIcon, NicheIcon, GeographyIcon, FollowerIcon, Score } from "@/public/icons";
 import { Influencer } from "@/src/lib/types";
 import { useCart } from "@/src/context/CartContext";
-import { useLogCart } from "@/src/context/InfluencersContext";
 import TableCell from "./TableCell";
-import useHow3client from "@/src/hooks/usehow3client";
 import PlatformIcon from "@/src/components/PlatformIcon";
 import Badge from "@/src/components/ui/badge";
-import { ENDPOINTS } from "@/src/utils/constants";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { formatNumber } from "@/src/utils/helpers";
 import { DetailCard } from "./DetailCard";
@@ -29,100 +25,22 @@ interface TableRowProps {
   number: number;
 }
 
-interface InfluencerCartItem {
-  id: string;
-  influencer: {
-    id: string;
-  };
-}
-
-interface CartState {
-  influencerCartItems?: InfluencerCartItem[];
-}
-
 const TableRow: React.FC<TableRowProps> = React.memo(
   ({ data, isOpen, onToggleDetails }) => {
-    const { data: session } = useSession();
-    const user = session?.user;
-    const { cartId, fetchCart, cart } = useCart();
-    const { handleChange, Logcart } = useLogCart();
-    const how3 = useHow3client();
+    const { handleChange, logCart } = useCart();
 
-    // Memoized cart operations
-    const cartOperations = useMemo(
-      () => ({
-        findInfluencer: (cart: CartState) =>
-          cart?.influencerCartItems?.find((item) => item.influencer.id === data.id),
-
-        isInfluencerInCart: (cart: CartState) =>
-          !!cart?.influencerCartItems?.some((item) => item.influencer.id === data.id),
-      }),
-      [data.id]
+    const isItemInCart = useMemo(
+      () => logCart?.some((item: { id: string }) => item.id === data.id),
+      [logCart, data.id]
     );
-
-    // Memoized API calls
-    const cartActions = useMemo(
-      () => ({
-        add: async () => {
-          try {
-            if (!cartId) return;
-
-            const response = await how3.post(ENDPOINTS.INFLUENCER_CART_ITEM, {
-              influencerId: data.id,
-              cartId,
-            });
-
-            if (response.data.id) {
-              await fetchCart();
-              toast.success("Product added to cart successfully.");
-            }
-          } catch (error) {
-            console.error("Add to cart error:", error);
-            toast.error("Failed to add product to cart.");
-          }
-        },
-
-        remove: async () => {
-          try {
-            if (!cartId || !cart) return;
-
-            const cartItem = cartOperations.findInfluencer(cart);
-            if (!cartItem) return;
-
-            const response = await how3.delete(`${ENDPOINTS.INFLUENCER_CART_ITEM}/${cartItem.id}`);
-
-            if (response.data) {
-              await fetchCart();
-              toast.success("Product removed from cart successfully.");
-            }
-          } catch (error) {
-            console.error("Remove from cart error:", error);
-            toast.error("Failed to remove product from cart.");
-          }
-        },
-      }),
-      [cartId, cart, data.id, fetchCart, how3, cartOperations]
-    );
-
-    // Determine if item is in cart (either logged in or local storage)
-    const isItemInCart = useMemo(() => {
-      if (user) {
-        return cartOperations.isInfluencerInCart(cart!);
-      }
-      return Logcart?.some((item: { id: string }) => item.id === data.id);
-    }, [user, cart, cartOperations, Logcart, data.id]);
 
     const handleAddToCart = useCallback(
       (event: React.MouseEvent) => {
         event.stopPropagation();
-
-        if (user) {
-          isItemInCart ? cartActions.remove() : cartActions.add();
-        } else {
-          handleChange(data);
-        }
+        handleChange(data);
+        toast.success(isItemInCart ? "Removed from cart." : "Added to cart.");
       },
-      [user, isItemInCart, cartActions, handleChange, data]
+      [handleChange, data, isItemInCart]
     );
 
     const ActionButton = useMemo(

@@ -1,4 +1,8 @@
-import type { ClientAuthSuccess, ClientSendOtpSuccess } from "@/src/types/dashboardAuth";
+import type {
+  ClientAuthSuccess,
+  ClientSendOtpSuccess,
+  ClientSignupPayload,
+} from "@/src/types/dashboardAuth";
 import { dashboardClient } from "@/src/lib/dashboardClient";
 
 export { getToken, getClient, clearAuth } from "@/src/store/dashboardAuthStore";
@@ -15,5 +19,16 @@ export async function verifyOtp(email: string, code: string): Promise<ClientAuth
     email: email.trim(),
     code: String(code).trim(),
   });
+  return res.data;
+}
+
+/** Brand intake signup: creates client and returns client + token (user logged in). */
+export async function signupWebClient(
+  payload: ClientSignupPayload
+): Promise<ClientAuthSuccess> {
+  const res = await dashboardClient.post<ClientAuthSuccess>(
+    "/web/client/auth/signup",
+    payload
+  );
   return res.data;
 }

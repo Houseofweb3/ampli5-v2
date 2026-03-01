@@ -15,7 +15,7 @@ import {
   FollowerIcon,
   CalendarIcon,
 } from "@/public/icons";
-import { useLogCart } from "@/src/context/InfluencersContext";
+import { useCart } from "@/src/context/CartContext";
 import type { CartInfluencer } from "@/src/lib/types";
 
 function cell(value: string | null | undefined): string {
@@ -58,9 +58,9 @@ function webToCartItem(w: WebInfluencer): CartInfluencer {
 }
 
 function AddToCartLink({ item }: { item: WebInfluencer }) {
-  const { Logcart, handleChange } = useLogCart();
+  const { logCart, handleChange } = useCart();
   const cartItem = webToCartItem(item);
-  const inCart = Logcart.some((d: { id: string }) => String(d.id) === String(item.id));
+  const inCart = logCart.some((d: { id: string }) => String(d.id) === String(item.id));
   return (
     <button
       type="button"
@@ -163,7 +163,7 @@ export default function WebInfluencerMobileList({
           </div>
           <div className="px-4 pb-3 flex flex-wrap gap-2 text-sm text-gray-600">
             <span>ContentType: {cell(item.inventory)}</span>
-            <span>Price: {cell(item.sellPrice)}</span>
+            <span>Industries: {cell(item.industries)}</span>
           </div>
           <div className="border-t border-gray-100 px-4 py-2 flex items-center justify-between gap-3">
             <button

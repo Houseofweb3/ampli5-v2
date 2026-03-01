@@ -12,6 +12,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useBrandIntakeFormStore } from "@/src/store/brandIntakeForm";
+import { signupWebClient } from "@/src/services/dashboardAuth";
+import { useDashboardAuthStore } from "@/src/store/dashboardAuthStore";
+import { DASHBOARD_HOME } from "@/src/config/dashboardRoutes";
+import type { AuthClient } from "@/src/types/dashboardAuth";
 
 interface Step {
   id: number;
@@ -75,6 +79,7 @@ const BRAND_STEP5_FIELD_TO_SLIDE: Record<string, number> = {
 export default function BrandIntakeForm() {
   const router = useRouter();
   const { formData, updateFormData, resetForm } = useBrandIntakeFormStore();
+  const login = useDashboardAuthStore((s) => s.login);
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -1739,32 +1744,93 @@ export default function BrandIntakeForm() {
 
                       setIsSubmitting(true);
                       try {
-                        const response = await fetch("/api/brand-intake", {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify(formData),
+                        const payload = {
+                          brandProductName: formData.brandProductName.trim(),
+                          websiteLink: formData.websiteLink.trim(),
+                          primaryContactEmail: formData.primaryContactEmail.trim(),
+                          ...(formData.telegramId?.trim() && {
+                            telegramId: formData.telegramId.trim(),
+                          }),
+                          ...(formData.whatsappNumber?.trim() && {
+                            whatsappNumber: formData.whatsappNumber.trim(),
+                          }),
+                          ...(formData.categories?.length
+                            ? { categories: formData.categories }
+                            : {}),
+                          ...(formData.audienceReadinessLevel?.trim() && {
+                            audienceReadinessLevel: formData.audienceReadinessLevel.trim(),
+                          }),
+                          ...(formData.campaignGoals?.length
+                            ? { campaignGoals: formData.campaignGoals }
+                            : {}),
+                          ...(formData.monetizationModel?.length
+                            ? { monetizationModel: formData.monetizationModel }
+                            : {}),
+                          ...(formData.revenueModel?.trim() && {
+                            revenueModel: formData.revenueModel.trim(),
+                          }),
+                          ...(formData.marketFocus?.trim() && {
+                            marketFocus: formData.marketFocus.trim(),
+                          }),
+                          ...(formData.primaryAudienceGeography?.length
+                            ? { primaryAudienceGeography: formData.primaryAudienceGeography }
+                            : {}),
+                          ...(formData.ageRange?.trim() && { ageRange: formData.ageRange.trim() }),
+                          ...(formData.genderSkew?.trim() && {
+                            genderSkew: formData.genderSkew.trim(),
+                          }),
+                          ...(formData.geographicLocation?.trim() && {
+                            geographicLocation: formData.geographicLocation.trim(),
+                          }),
+                          ...(formData.campaignStartTimeline?.trim() && {
+                            campaignStartTimeline: formData.campaignStartTimeline.trim(),
+                          }),
+                          ...(formData.campaignStartDate?.trim() && {
+                            campaignStartDate: formData.campaignStartDate.trim(),
+                          }),
+                          ...(formData.campaignEndDate?.trim() && {
+                            campaignEndDate: formData.campaignEndDate.trim(),
+                          }),
+                          ...(formData.customBrief?.trim() && {
+                            customBrief: formData.customBrief.trim(),
+                          }),
+                        };
+
+                        const data = await signupWebClient(payload);
+
+                        setCompletedSteps((prev) => {
+                          const newSet = new Set(prev);
+                          newSet.add(currentStep);
+                          return newSet;
                         });
+                        resetForm();
 
-                        const data = await response.json();
-
-                        if (response.ok) {
-                          setCompletedSteps((prev) => {
-                            const newSet = new Set(prev);
-                            newSet.add(currentStep);
-                            return newSet;
-                          });
-                          // Reset form data
-                          resetForm();
-                          // Redirect to thank you page
-                          router.push("/brand-intake-form/success");
-                        } else {
-                          toast.error(data.message || "Failed to submit form. Please try again.");
-                        }
-                      } catch (error) {
-                        console.error("Error submitting form:", error);
-                        toast.error("Something went wrong. Please try again later.");
+                        const client: AuthClient = {
+                          id: data.client.id,
+                          name: data.client.name,
+                          email: data.client.email,
+                          telegramId:
+                            (data.client as { telegramId?: string | null }).telegramId ?? null,
+                          whatsAppNumber:
+                            (data.client as { whatsAppNumber?: string | null }).whatsAppNumber ??
+                            null,
+                        };
+                        login(client, data.token);
+                        toast.success(data.message ?? "Account created. Redirecting...");
+                        router.push(DASHBOARD_HOME);
+                      } catch (err: unknown) {
+                        const message =
+                          err &&
+                          typeof err === "object" &&
+                          "response" in err &&
+                          err.response &&
+                          typeof err.response === "object" &&
+                          "data" in err.response &&
+                          err.response.data &&
+                          typeof (err.response.data as { error?: string }).error === "string"
+                            ? (err.response.data as { error: string }).error
+                            : "Failed to submit. Please try again.";
+                        toast.error(message);
                       } finally {
                         setIsSubmitting(false);
                       }
