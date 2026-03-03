@@ -21,6 +21,7 @@ import {
   PLATFORM_INVENTORY_OPTIONS,
   GEOGRAPHY_OPTIONS,
 } from "@/src/constants/creatorOnboardingFilters";
+import { submitCreatorOnboarding } from "@/src/services/creatorOnboardingApi";
 
 interface Step {
   id: number;
@@ -97,6 +98,19 @@ const CREATOR_STEP5_FIELD_TO_SLIDE: Record<string, number> = {
   primaryAudienceGeography: 0,
   secondaryAudienceGeography: 1,
 };
+/** Selling price = user price + 16%, rounded to nearest 100 (e.g. 554 → 600, 549 → 500). */
+function roundToNearest100(x: number): number {
+  return Math.round(x / 100) * 100;
+}
+function getSellingPrice(userPrice: number): number {
+  return roundToNearest100(userPrice * 1.16);
+}
+/** CPM = (sellingPrice / avgViews) × 1,000. Returns null if avgViews <= 0. */
+function getCpm(sellingPrice: number, avgViews: number): number | null {
+  if (!avgViews || avgViews <= 0) return null;
+  return (sellingPrice / avgViews) * 1000;
+}
+
 // Step 9: slide 0 = images, 1 = links
 const CREATOR_STEP9_FIELD_TO_SLIDE: Record<string, number> = {
   firstCollaborationImage1: 0,
@@ -1713,6 +1727,16 @@ export default function CreatorOnboardingForm() {
                             const hasInvalidRate =
                               isSelected && (!rateTrimmed || rateTrimmed === "0");
                             const hasInvalidAverageViews = isSelected && !avgViewsTrimmed;
+                            const userPriceNum = parseFloat(rateTrimmed) || 0;
+                            const avgViewsNum = parseFloat(avgViewsTrimmed) || 0;
+                            const sellingPrice = getSellingPrice(userPriceNum);
+                            const cpmValue = getCpm(sellingPrice, avgViewsNum);
+                            const cpmDisplay =
+                              cpmValue != null
+                                ? Number.isFinite(cpmValue)
+                                  ? cpmValue.toFixed(2)
+                                  : ""
+                                : "";
                             return (
                               <div
                                 key={item}
@@ -1793,6 +1817,19 @@ export default function CreatorOnboardingForm() {
                                     title="Average Views of last 5 posts"
                                     disabled={!isSelected}
                                     className={`w-24 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-70 ${hasInvalidAverageViews ? "border-red-500" : "border-gray-300"}`}
+                                  />
+                                </div>
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  <span className="text-sm text-gray-600 whitespace-nowrap">
+                                    CPM
+                                  </span>
+                                  <input
+                                    type="text"
+                                    value={cpmDisplay}
+                                    readOnly
+                                    disabled
+                                    title="CPM = (Selling Price ÷ Avg Views) × 1,000 (auto-calculated)"
+                                    className="w-24 px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-100 cursor-not-allowed opacity-90"
                                   />
                                 </div>
                               </div>
@@ -3669,29 +3706,40 @@ export default function CreatorOnboardingForm() {
 
                       setIsSubmitting(true);
                       try {
-                        const response = await fetch("/api/creator-onboarding", {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify(formData),
-                        });
-
-                        const data = await response.json();
-
-                        if (response.ok) {
-                          // Reset all UI state first so form shows step 1 and empty before redirect
-                          setCurrentStep(1);
-                          setCompletedSteps(new Set());
-                          setErrors({});
-                          resetForm();
-                          router.push("/creator-onboarding/success");
-                        } else {
-                          toast.error(data.message || "Failed to submit form. Please try again.");
+                        const inventoryItems = formData.inventoryItems || {};
+                        const inventoryItemsWithCpm: Record<
+                          string,
+                          { selected: boolean; rate: string; averageViews: string; cpm?: string }
+                        > = {};
+                        for (const key of Object.keys(inventoryItems)) {
+                          const item = inventoryItems[key];
+                          inventoryItemsWithCpm[key] = { ...item, averageViews: item.averageViews ?? "" };
+                          if (item.selected) {
+                            const userPrice = parseFloat(item.rate?.trim() || "0") || 0;
+                            const avgViews = parseFloat((item.averageViews ?? "").trim() || "0") || 0;
+                            const selling = getSellingPrice(userPrice);
+                            const cpm = getCpm(selling, avgViews);
+                            inventoryItemsWithCpm[key].cpm =
+                              cpm != null && Number.isFinite(cpm) ? String(cpm.toFixed(2)) : "";
+                          }
                         }
-                      } catch (error) {
+                        const payload = { ...formData, inventoryItems: inventoryItemsWithCpm };
+                        const data = await submitCreatorOnboarding(payload);
+
+                        // Success: reset and redirect
+                        setCurrentStep(1);
+                        setCompletedSteps(new Set());
+                        setErrors({});
+                        resetForm();
+                        toast.success(data.message ?? "Form submitted successfully!");
+                        router.push("/creator-onboarding/success");
+                      } catch (error: unknown) {
                         console.error("Error submitting form:", error);
-                        toast.error("Something went wrong. Please try again later.");
+                        const err = error as { response?: { data?: { message?: string }; status?: number } };
+                        const message =
+                          err?.response?.data?.message ||
+                          "Something went wrong. Please try again later.";
+                        toast.error(message);
                       } finally {
                         setIsSubmitting(false);
                       }

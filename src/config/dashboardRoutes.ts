@@ -6,15 +6,16 @@ export const DASHBOARD_SIGN_IN = "/dashboard/sign-in";
 export const DASHBOARD_HOME = "/dashboard/influencers";
 export const CART_SUCCESS = "/dashboard/cart/success";
 
-/** Public: anyone can access (e.g. sign-in, discover). */
-export const DASHBOARD_PUBLIC_PATHS: readonly string[] = ["/dashboard", "/dashboard/sign-in"];
-
-/** Private: require cookie token; else redirect to sign-in. */
-export const DASHBOARD_PRIVATE_PATHS: readonly string[] = [
+/** Public: anyone can access (e.g. sign-in, discover, influencers, cart). */
+export const DASHBOARD_PUBLIC_PATHS: readonly string[] = [
+  "/dashboard",
+  "/dashboard/sign-in",
   "/dashboard/influencers",
   "/dashboard/cart",
-  "/dashboard/profile",
 ];
+
+/** Private: require cookie token; else redirect to sign-in. */
+export const DASHBOARD_PRIVATE_PATHS: readonly string[] = ["/dashboard/profile"];
 
 function pathMatches(pathname: string | null, route: string): boolean {
   if (pathname == null) return false;

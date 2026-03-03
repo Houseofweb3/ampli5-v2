@@ -38,7 +38,7 @@ const TryAiSection = () => {
           onClick={handleTryAIClick}
         >
           <Stars />
-          Try our free AI recommendations
+          Build Your Audience Atlas
         </Button>
       </div>
     </div>

@@ -6,7 +6,6 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import { sendOtp, verifyOtp } from "@/src/services/dashboardAuth";
 import { useDashboardAuth } from "@/src/context/DashboardAuthContext";
-import { ALLROUTES } from "@/src/utils/constants";
 import { SignData } from "./data";
 import Image from "next/image";
 
@@ -64,7 +63,7 @@ export default function SignInPage() {
       const data = await verifyOtp(email.trim(), code);
       login(data.client, data.token);
       toast.success("Signed in successfully");
-      setTimeout(() => router.push(ALLROUTES.HOME), 0);
+      setTimeout(() => router.back(), 0);
     } catch (err: unknown) {
       const is401 = axios.isAxiosError(err) && err.response?.status === 401;
       toast.error(is401 ? "Invalid or expired code. Please try again." : getAuthErrorMessage(err));

@@ -18,8 +18,7 @@ const AiButton: React.FC = () => {
       onClick={handleAIButtonClick}
     >
       <Stars />
-      Try our free AI
-    </Button>
+      Build Your Audience Atlas</Button>
   );
 };
 
