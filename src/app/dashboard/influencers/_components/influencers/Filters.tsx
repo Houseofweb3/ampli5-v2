@@ -61,9 +61,9 @@ const Filters: React.FC<FilterProp> = ({
   }, [platforms]);
 
   const availableCategoryOptions = useMemo(() => {
-    const ind = industry[0];
-    if (!ind) return [];
-    return INDUSTRY_CATEGORY_OPTIONS[ind] ?? [];
+    if (industry.length === 0) return [];
+    const all = industry.flatMap((ind) => INDUSTRY_CATEGORY_OPTIONS[ind] ?? []);
+    return Array.from(new Set(all));
   }, [industry]);
 
   useEffect(() => {
