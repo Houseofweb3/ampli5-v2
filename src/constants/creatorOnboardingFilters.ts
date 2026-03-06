@@ -65,6 +65,7 @@ export const INDUSTRY_CATEGORY_OPTIONS: Record<string, string[]> = {
     "Fintech product reviews",
     "Fintech Podcasters",
     "Fintech clippers",
+    "Metals Forex Indice Trading",
   ],
   "Robotics & Hardware": [
     "R&H Tech & Gadget creators",
@@ -82,7 +83,6 @@ export const INDUSTRY_CATEGORY_OPTIONS: Record<string, string[]> = {
     "Health & Fitness - Mental Health",
     "Health & Fitness - Podcasters",
     "Health & Fitness - Clippers",
-    "Metals Forex Indice Trading",
   ],
 };
 

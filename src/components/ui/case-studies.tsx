@@ -6,6 +6,15 @@ import Link from "next/link";
 
 const caseStudies = [
   {
+    name: "Live Trading Infrastructure For Volume Activation",
+    img: "/logo.svg",
+    metrics: [
+      { value: "CEX/DEX & CFD's", label: "", hasBox: false },
+      { value: "LIVE TRADING", label: "", hasBox: false },
+    ],
+    link: "/case_studies/Live-Trading-Infrastructure-For-Volume-Activation.pdf",
+  },
+  {
     name: "sonic",
     img: "/images/brand/img4.png",
     metrics: [
@@ -81,6 +90,7 @@ const caseStudies = [
     ],
     link: "/case_studies/Ampli5+x+Cabbage.pdf",
   },
+ 
 ];
 
 export default function CaseStudies() {
