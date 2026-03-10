@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import Container from "@/src/components/ui/container";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -102,6 +103,19 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
         <nav className="mb-6 sm:mb-8">
           <BlogLink href="/blogs">← Back to Blogs</BlogLink>
         </nav>
+
+        {post.heroImage && (
+          <figure className="w-full -mx-4 sm:mx-0 sm:rounded-xl overflow-hidden mb-10 sm:mb-14 aspect-[16/10] sm:aspect-[2/1] min-h-[200px] relative bg-gray-100">
+            <Image
+              src={post.heroImage.src}
+              alt={post.heroImage.alt}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
+              className="object-cover"
+              priority
+            />
+          </figure>
+        )}
 
         <header className="max-w-3xl mb-10 sm:mb-14">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight tracking-tight">

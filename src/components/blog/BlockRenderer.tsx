@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import type { BlogContentBlock } from "@/src/data/blogs";
 
 const blockClasses = "text-gray-700 leading-relaxed";
@@ -66,6 +67,23 @@ export function BlockRenderer({ block }: { block: BlogContentBlock }) {
             </span>
           ))}
         </div>
+      );
+    case "image":
+      return (
+        <figure className="my-8 sm:my-10 w-full">
+          <div className="relative w-full aspect-[16/10] sm:aspect-[2/1] min-h-[200px] rounded-lg overflow-hidden bg-gray-100">
+            <Image
+              src={block.src}
+              alt={block.alt}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 672px"
+              className="object-contain"
+            />
+          </div>
+          {block.alt && (
+            <figcaption className="mt-2 text-sm text-gray-500 text-center">{block.alt}</figcaption>
+          )}
+        </figure>
       );
     default:
       return null;
