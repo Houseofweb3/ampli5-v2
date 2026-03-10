@@ -38,6 +38,10 @@ export const BLOG_POSTS: BlogPost[] = [
     excerpt:
       "Execution is no longer scarce. Distribution is. How Ampli5 aggregates attention and becomes the single growth engine for brands in the AI agent economy.",
     date: "Feb 20, 2025",
+    heroImage: {
+      src: "/blog/1.jpg",
+      alt: "uber-of-distribution",
+    },
     content: [
       // Intro
       { type: "paragraph", content: "We are entering a world where AI agents can write your copy, design your creatives, edit your videos, optimize your landing page, and even negotiate your media buys." },
@@ -131,7 +135,7 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "Mar 1, 2025",
     heroImage: {
       src: "/blog/1.jpg",
-      alt: "One-Click Distribution Engine — Unified Distribution Aggregator by Ampli5",
+      alt: "AEOvsSEO",
     },
     content: [
       { type: "paragraph", content: "The internet is quietly transitioning from a search indexed web to an answer synthesised web." },
