@@ -20,6 +20,7 @@ export const INDUSTRY_OPTIONS = [
   "Startups",
   "Robotics & Hardware",
   "Health & Fitness",
+  "Travel"
 ] as const;
 
 export const GEOGRAPHY_OPTIONS = [
@@ -84,6 +85,15 @@ export const INDUSTRY_CATEGORY_OPTIONS: Record<string, string[]> = {
     "Health & Fitness - Podcasters",
     "Health & Fitness - Clippers",
   ],
+  "Travel":[
+    "Couple travel",
+    "Solo Travel",
+    "City Guides & Hidden Gems",
+    "Hotel & Resort Reviews",
+    "Luxury Travel & Experiences",
+    "Travel Vlogger",
+    "Travel Podcast"
+  ]
 };
 
 export const PLATFORM_INVENTORY_OPTIONS: Record<string, string[]> = {
