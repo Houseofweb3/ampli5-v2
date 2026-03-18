@@ -517,20 +517,20 @@ export default function CreatorOnboardingForm() {
       }
       case 5:
         if (!formData.primaryAudienceGeography || formData.primaryAudienceGeography.length === 0) {
-          newErrors.primaryAudienceGeography = "Please select at least one primary audience region";
-        } else if (formData.primaryAudienceGeography.length > 2) {
+          newErrors.primaryAudienceGeography = "Please select one primary audience region";
+        } else if (formData.primaryAudienceGeography.length > 1) {
           newErrors.primaryAudienceGeography =
-            "Select at most 2 target geographies for primary audience";
+            "Select only one target geography for primary audience";
         }
         if (
           !formData.secondaryAudienceGeography ||
           formData.secondaryAudienceGeography.length === 0
         ) {
           newErrors.secondaryAudienceGeography =
-            "Please select at least one secondary audience region";
-        } else if (formData.secondaryAudienceGeography.length > 2) {
+            "Please select one secondary audience region";
+        } else if (formData.secondaryAudienceGeography.length > 1) {
           newErrors.secondaryAudienceGeography =
-            "Select at most 2 target geographies for secondary audience";
+            "Select only one target geography for secondary audience";
         }
         break;
       case 6:
@@ -1849,7 +1849,7 @@ export default function CreatorOnboardingForm() {
         );
       }
       case 5:
-        const MAX_GEOGRAPHY_SELECTIONS = 2;
+        const MAX_GEOGRAPHY_SELECTIONS = 1;
 
         const handlePrimaryGeographyChange = (option: string) => {
           const currentGeography = formData.primaryAudienceGeography || [];
@@ -1861,7 +1861,7 @@ export default function CreatorOnboardingForm() {
               primaryAudienceGeography: [...currentGeography, option],
             });
           } else {
-            toast.error("Select your target geography (only 2 allowed)");
+            toast.error("Select your target geography (only 1 allowed)");
             return;
           }
           if (errors.primaryAudienceGeography) {
@@ -1879,7 +1879,7 @@ export default function CreatorOnboardingForm() {
               secondaryAudienceGeography: [...currentGeography, option],
             });
           } else {
-            toast.error("Select your target geography (only 2 allowed)");
+            toast.error("Select your target geography (only 1 allowed)");
             return;
           }
           if (errors.secondaryAudienceGeography) {
@@ -1941,7 +1941,7 @@ export default function CreatorOnboardingForm() {
                 pagination={{ clickable: true }}
                 className="audience-geo-slider"
               >
-                {/* Slide 1: Primary Audience Geography (max 2) */}
+                {/* Slide 1: Primary Audience Geography (max 1) */}
                 <SwiperSlide>
                   <div className="max-w-full box-border">
                     <div className="flex items-center gap-2 mb-2">
@@ -1951,7 +1951,7 @@ export default function CreatorOnboardingForm() {
                       </h3>
                     </div>
                     <p className="text-sm text-gray-500 mb-4">
-                      Select your target geography (only 2 allowed)
+                      Select your target geography (only 1 allowed)
                     </p>
                     <div className="space-y-3">
                       {GEOGRAPHY_OPTIONS.map((option) => {
@@ -2012,7 +2012,7 @@ export default function CreatorOnboardingForm() {
                   </div>
                 </SwiperSlide>
 
-                {/* Slide 2: Secondary Audience Geography (max 2) */}
+                {/* Slide 2: Secondary Audience Geography (max 1) */}
                 <SwiperSlide>
                   <div className="max-w-full box-border">
                     <div className="flex items-center gap-2 mb-2">
@@ -2022,7 +2022,7 @@ export default function CreatorOnboardingForm() {
                       </h3>
                     </div>
                     <p className="text-sm text-gray-500 mb-4">
-                      Select your target geography (only 2 allowed)
+                      Select your target geography (only 1 allowed)
                     </p>
                     <div className="space-y-3">
                       {GEOGRAPHY_OPTIONS.map((option) => {
@@ -2096,7 +2096,7 @@ export default function CreatorOnboardingForm() {
                   </h3>
                 </div>
                 <p className="text-sm text-gray-500 mb-4">
-                  Select your target geography (only 2 allowed)
+                  Select your target geography (only 1 allowed)
                 </p>
                 <div className="space-y-3">
                   {GEOGRAPHY_OPTIONS.map((option) => {
@@ -2152,7 +2152,7 @@ export default function CreatorOnboardingForm() {
                   </h3>
                 </div>
                 <p className="text-sm text-gray-500 mb-4">
-                  Select your target geography (only 2 allowed)
+                  Select your target geography (only 1 allowed)
                 </p>
                 <div className="space-y-3">
                   {GEOGRAPHY_OPTIONS.map((option) => {
