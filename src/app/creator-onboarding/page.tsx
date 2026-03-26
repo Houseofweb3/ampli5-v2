@@ -393,7 +393,7 @@ export default function CreatorOnboardingForm() {
       completed.add(6);
     // Step 7: Payment Terms - check if payment term is selected
     if (formData.paymentTerms && formData.paymentTerms.trim()) completed.add(7);
-    // Step 8: Turnaround & Reliability - check if at least one turnaround time is selected
+    // Step 8: Turnaround & Reliability - turnaround time (single choice)
     if (formData.turnaroundTimes && formData.turnaroundTimes.length > 0) completed.add(8);
     // Step 9: Previous Collaborations - check if all three images and at least one link are provided
     const hasAtLeastOnePrevLink = [
@@ -552,7 +552,7 @@ export default function CreatorOnboardingForm() {
         break;
       case 8:
         if (!formData.turnaroundTimes || formData.turnaroundTimes.length === 0) {
-          newErrors.turnaroundTimes = "Please select at least one turnaround time";
+          newErrors.turnaroundTimes = "Please select a turnaround time";
         }
         break;
       case 9:
@@ -2719,11 +2719,7 @@ export default function CreatorOnboardingForm() {
         const turnaroundTimeOptions = ["Same day", "24 hours", "48-72 hours", "3-5 days"];
 
         const handleTurnaroundTimeChange = (time: string) => {
-          const currentTimes = formData.turnaroundTimes || [];
-          const newTimes = currentTimes.includes(time)
-            ? currentTimes.filter((t) => t !== time)
-            : [...currentTimes, time];
-          updateFormData({ turnaroundTimes: newTimes });
+          updateFormData({ turnaroundTimes: [time] });
           if (errors.turnaroundTimes) {
             setErrors((prev) => ({ ...prev, turnaroundTimes: "" }));
           }
@@ -2745,7 +2741,7 @@ export default function CreatorOnboardingForm() {
                 </div>
                 <div className="space-y-3">
                   {turnaroundTimeOptions.map((time) => {
-                    const isSelected = formData.turnaroundTimes?.includes(time) || false;
+                    const isSelected = formData.turnaroundTimes?.[0] === time;
                     return (
                       <label
                         key={time}
@@ -2756,33 +2752,21 @@ export default function CreatorOnboardingForm() {
                         }`}
                       >
                         <input
-                          type="checkbox"
+                          type="radio"
+                          name="turnaroundTime"
+                          value={time}
                           checked={isSelected}
                           onChange={() => handleTurnaroundTimeChange(time)}
                           className="sr-only"
                         />
                         <div
-                          className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${
+                          className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 flex-shrink-0 ${
                             isSelected
                               ? "bg-[#7B46F8] border-[#7B46F8]"
                               : "bg-white border-gray-300"
                           }`}
                         >
-                          {isSelected && (
-                            <svg
-                              className="w-3 h-3 text-white"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={3}
-                                d="M5 13l4 4L19 7"
-                              />
-                            </svg>
-                          )}
+                          {isSelected && <div className="w-2.5 h-2.5 bg-white rounded-full"></div>}
                         </div>
                         <span
                           className={`text-sm font-medium flex-1 ${
@@ -2791,6 +2775,21 @@ export default function CreatorOnboardingForm() {
                         >
                           {time}
                         </span>
+                        {isSelected && (
+                          <svg
+                            className="w-5 h-5 text-[#7B46F8] flex-shrink-0"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        )}
                       </label>
                     );
                   })}
@@ -3725,6 +3724,24 @@ export default function CreatorOnboardingForm() {
                         }
                         const payload = { ...formData, inventoryItems: inventoryItemsWithCpm };
                         const data = await submitCreatorOnboarding(payload);
+
+                        try {
+                          const sheetRes = await fetch("/api/creator-onboarding-sheet", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(payload),
+                          });
+                          if (!sheetRes.ok) {
+                            const errBody = await sheetRes.json().catch(() => ({}));
+                            console.error(
+                              "Creator onboarding Google Sheet sync failed:",
+                              sheetRes.status,
+                              errBody
+                            );
+                          }
+                        } catch (sheetErr) {
+                          console.error("Creator onboarding Google Sheet sync error:", sheetErr);
+                        }
 
                         // Success: reset and redirect
                         setCurrentStep(1);
