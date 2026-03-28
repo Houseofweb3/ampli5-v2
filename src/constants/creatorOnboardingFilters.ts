@@ -31,6 +31,15 @@ export const GEOGRAPHY_OPTIONS = [
   "MENA (includes Pakistan)",
   "SEA",
   "LATAM",
+  "MENA (Middle East & North Africa)",
+  "Sub-Saharan Africa",
+  "South Asia (Includes India and Pakistan)",
+  "CIS (Commonwealth of Independent States)",
+  "North America (US, Canada, Mexico)",
+  "LATAM (Central America & South America)",
+  "Europe (All Zones)",
+  "South East Asia",
+  "Oceania",
 ] as const;
 
 export const INDUSTRY_CATEGORY_OPTIONS: Record<string, string[]> = {

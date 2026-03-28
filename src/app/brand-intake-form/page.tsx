@@ -887,7 +887,22 @@ export default function BrandIntakeForm() {
           </div>
         );
       case 5:
-        const geographyOptions = ["US & Canada", "UK", "EU", "South Asia", "Mena", "SEA", "LATAM"];
+        const geographyOptions = [ "US & Canada",
+          "UK",
+          "EU",
+          "South Asia",
+          "MENA (includes Pakistan)",
+          "SEA",
+          "LATAM",
+          "MENA (Middle East & North Africa)",
+          "Sub-Saharan Africa",
+          "South Asia (Includes India and Pakistan)",
+          "CIS (Commonwealth of Independent States)",
+          "North America (US, Canada, Mexico)",
+          "LATAM (Central America & South America)",
+          "Europe (All Zones)",
+          "South East Asia",
+          "Oceania",];
         const ageRangeOptions = ["18 - 24", "25 - 45", "45 - 60"];
         const genderSkewOptions = ["Skewed male", "Balanced", "Skewed Female"];
 
