@@ -1798,6 +1798,17 @@ export default function BrandIntakeForm() {
 
                         const data = await signupWebClient(payload);
 
+                        try {
+                          await fetch("/api/brand-intake", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(payload),
+                          });
+                          
+                        } catch (sheetErr) {
+                          console.error("Brand intake Google Sheet request failed:", sheetErr);
+                        }
+
                         setCompletedSteps((prev) => {
                           const newSet = new Set(prev);
                           newSet.add(currentStep);

@@ -1,45 +1,13 @@
 import { NextResponse } from "next/server";
 import { google } from "googleapis";
-import { sendNewEntryNotification } from "@/src/lib/email";
+import type { ClientSignupPayload } from "@/src/types/dashboardAuth";
 
-interface BrandIntakeFormData {
-  // Step 1: Brand Snapshot
-  brandProductName: string;
-  websiteLink: string;
-  primaryContactEmail?: string;
-  telegramId?: string;
-  whatsappNumber?: string;
-
-  // Step 2: Market & Audience Readiness
-  categories: string[];
-  audienceReadinessLevel?: string;
-
-  // Step 3: Campaign Goal
-  campaignGoals: string[];
-
-  // Step 4: Revenue Model & Market focus
-  monetizationModel: string[];
-  revenueModel?: string;
-  marketFocus?: string;
-
-  // Step 5: Demographics
-  primaryAudienceGeography: string[];
-  ageRange: string;
-  genderSkew: string;
-  geographicLocation?: string;
-
-  // Step 6: Timeline
-  campaignStartTimeline: string;
-  campaignStartDate?: string;
-  campaignEndDate?: string;
-
-  // Step 7: Custom Brief
-  customBrief: string;
-}
+/** Same shape as the brand intake signup payload (direct POST body from the form). */
+type BrandIntakeSheetBody = ClientSignupPayload;
 
 export async function POST(request: Request) {
   try {
-    const body: BrandIntakeFormData = await request.json();
+    const body: BrandIntakeSheetBody = await request.json();
 
     // Validate required fields
     if (!body.brandProductName?.trim()) {
@@ -69,12 +37,10 @@ export async function POST(request: Request) {
 
     const indiaTime = new Intl.DateTimeFormat("en-US", options).format(new Date());
 
+    const spreadsheetIdForBrandIntake =   process.env.SPREAD_SHEET_ID_FOR_BRABD_INTAKE 
+
     // Ensure environment variables are set
-    if (
-      !process.env.SPREAD_SHEET_EMAIL ||
-      !process.env.GOOGLE_KEY ||
-      !process.env.SPREAD_SHEET_ID_FOR_BRABD_INTAKE
-    ) {
+    if (!process.env.SPREAD_SHEET_EMAIL || !process.env.GOOGLE_KEY || !spreadsheetIdForBrandIntake) {
       console.error("Missing environment variables");
       return NextResponse.json({ message: "Server configuration error." }, { status: 500 });
     }
@@ -149,31 +115,31 @@ export async function POST(request: Request) {
     }
 
     const sheets = google.sheets({ version: "v4", auth: client });
-    const spreadsheetId = process.env.SPREAD_SHEET_ID_FOR_BRABD_INTAKE;
+    const spreadsheetId = spreadsheetIdForBrandIntake;
 
-    // Prepare values array - all form data for sheet (match store fields)
-    // Column order: Date, Time, Brand Product Name, Website Link, Primary Contact Email,
-    // Telegram ID, WhatsApp Number, Categories, Target Market, Audience Readiness Level,
-    // Campaign Goals, Monetization Model, Revenue Model, Market Focus,
-    // Primary Audience Geography, Age Range, Gender Skew, Geographic Location,
-    // Campaign Start Timeline, Campaign Start Date, Campaign End Date, Custom Brief
+    // One row per submission (add matching header row in the sheet):
+    // Date | Time | Brand Product Name | Website | Email | Telegram | WhatsApp | Categories |
+    // Audience readiness | Campaign goals | Monetization | Revenue model | Market focus |
+    // Primary geography | Age range | Gender skew | Geographic location |
+    // Campaign timeline | Campaign start date | Campaign end date | Custom brief
+    console.log(body, "body");
     const values = [
       [
-        formattedDate, // Date
-        indiaTime, // Time
-        body.brandProductName || "", // Brand Product Name
-        body.websiteLink || "", // Website Link
-        body.primaryContactEmail || "", // Primary Contact Email
-        body.telegramId || "", // Telegram ID
-        body.whatsappNumber || "", // WhatsApp Number
-        body.categories?.join(", ") || "", // Categories
-        body.campaignGoals?.join(", ") || "", // Campaign Goals
-        body.monetizationModel?.join(", ") || "", // Monetization Model
-        body.primaryAudienceGeography?.join(", ") || "", // Primary Audience Geography
-        body.ageRange || "", // Age Range
-        body.genderSkew || "", // Gender Skew
-        body.campaignStartTimeline || "", // Campaign Start Timeline
-        body.customBrief || "", // Custom Brief
+        formattedDate,
+        indiaTime,
+        body.brandProductName || "",
+        body.websiteLink || "",
+        body.primaryContactEmail || "",
+        body.telegramId || "",
+        body.whatsappNumber || "",
+        body.categories?.join(", ") || "",
+        body.campaignGoals?.join(", ") || "",
+        body.monetizationModel?.join(", ") || "",
+        body.primaryAudienceGeography?.join(", ") || "",
+        body.ageRange || "",
+        body.genderSkew || "",
+        body.campaignStartTimeline || "",
+        body.customBrief || "",
       ],
     ];
 
@@ -191,19 +157,7 @@ export async function POST(request: Request) {
       requestBody: { values },
     });
 
-    // Notify team after successful sheet save
-    const summary = [
-      `New Brand Intake entry`,
-      `Brand/Product: ${body.brandProductName || "-"}`,
-      `Website: ${body.websiteLink || "-"}`,
-      `Email: ${body.primaryContactEmail || "-"}`,
-      `Submitted at: ${formattedDate} ${indiaTime}`,
-    ].join("\n");
-    await sendNewEntryNotification({
-      formType: "brand",
-      subject: "New Brand Intake – " + (body.brandProductName || "New entry"),
-      summary,
-    });
+
 
     return NextResponse.json({ status: 200, message: "Form submitted successfully!" });
   } catch (error: any) {

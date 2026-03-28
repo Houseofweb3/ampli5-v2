@@ -1849,39 +1849,15 @@ export default function CreatorOnboardingForm() {
         );
       }
       case 5:
-        const MAX_GEOGRAPHY_SELECTIONS = 1;
-
         const handlePrimaryGeographyChange = (option: string) => {
-          const currentGeography = formData.primaryAudienceGeography || [];
-          if (currentGeography.includes(option)) {
-            const newGeography = currentGeography.filter((g) => g !== option);
-            updateFormData({ primaryAudienceGeography: newGeography });
-          } else if (currentGeography.length < MAX_GEOGRAPHY_SELECTIONS) {
-            updateFormData({
-              primaryAudienceGeography: [...currentGeography, option],
-            });
-          } else {
-            toast.error("Select your target geography (only 1 allowed)");
-            return;
-          }
+          updateFormData({ primaryAudienceGeography: [option] });
           if (errors.primaryAudienceGeography) {
             setErrors((prev) => ({ ...prev, primaryAudienceGeography: "" }));
           }
         };
 
         const handleSecondaryGeographyChange = (option: string) => {
-          const currentGeography = formData.secondaryAudienceGeography || [];
-          if (currentGeography.includes(option)) {
-            const newGeography = currentGeography.filter((g) => g !== option);
-            updateFormData({ secondaryAudienceGeography: newGeography });
-          } else if (currentGeography.length < MAX_GEOGRAPHY_SELECTIONS) {
-            updateFormData({
-              secondaryAudienceGeography: [...currentGeography, option],
-            });
-          } else {
-            toast.error("Select your target geography (only 1 allowed)");
-            return;
-          }
+          updateFormData({ secondaryAudienceGeography: [option] });
           if (errors.secondaryAudienceGeography) {
             setErrors((prev) => ({ ...prev, secondaryAudienceGeography: "" }));
           }
@@ -1950,10 +1926,8 @@ export default function CreatorOnboardingForm() {
                         Primary Audience Geography <span className="text-red-500">*</span>
                       </h3>
                     </div>
-                    <p className="text-sm text-gray-500 mb-4">
-                      Select your target geography (only 1 allowed)
-                    </p>
-                    <div className="space-y-3">
+                    <p className="text-sm text-gray-500 mb-4">Select your target geography</p>
+                    <div className="space-y-3" role="radiogroup" aria-label="Primary audience geography">
                       {GEOGRAPHY_OPTIONS.map((option) => {
                         const isSelected =
                           formData.primaryAudienceGeography?.includes(option) || false;
@@ -1967,32 +1941,20 @@ export default function CreatorOnboardingForm() {
                             }`}
                           >
                             <input
-                              type="checkbox"
+                              type="radio"
+                              name="creator-primary-audience-geography"
+                              value={option}
                               checked={isSelected}
                               onChange={() => handlePrimaryGeographyChange(option)}
                               className="sr-only"
                             />
                             <div
-                              className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${
-                                isSelected
-                                  ? "bg-[#7B46F8] border-[#7B46F8]"
-                                  : "bg-white border-gray-300"
+                              className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 flex-shrink-0 ${
+                                isSelected ? "border-[#7B46F8] bg-white" : "border-gray-300 bg-white"
                               }`}
                             >
                               {isSelected && (
-                                <svg
-                                  className="w-3 h-3 text-white"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={3}
-                                    d="M5 13l4 4L19 7"
-                                  />
-                                </svg>
+                                <span className="w-2.5 h-2.5 rounded-full bg-[#7B46F8]" />
                               )}
                             </div>
                             <span
@@ -2021,10 +1983,8 @@ export default function CreatorOnboardingForm() {
                         Secondary Audience Geography <span className="text-red-500">*</span>
                       </h3>
                     </div>
-                    <p className="text-sm text-gray-500 mb-4">
-                      Select your target geography (only 1 allowed)
-                    </p>
-                    <div className="space-y-3">
+                    <p className="text-sm text-gray-500 mb-4">Select your target geography</p>
+                    <div className="space-y-3" role="radiogroup" aria-label="Secondary audience geography">
                       {GEOGRAPHY_OPTIONS.map((option) => {
                         const isSelected =
                           formData.secondaryAudienceGeography?.includes(option) || false;
@@ -2038,32 +1998,20 @@ export default function CreatorOnboardingForm() {
                             }`}
                           >
                             <input
-                              type="checkbox"
+                              type="radio"
+                              name="creator-secondary-audience-geography"
+                              value={option}
                               checked={isSelected}
                               onChange={() => handleSecondaryGeographyChange(option)}
                               className="sr-only"
                             />
                             <div
-                              className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${
-                                isSelected
-                                  ? "bg-[#7B46F8] border-[#7B46F8]"
-                                  : "bg-white border-gray-300"
+                              className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 flex-shrink-0 ${
+                                isSelected ? "border-[#7B46F8] bg-white" : "border-gray-300 bg-white"
                               }`}
                             >
                               {isSelected && (
-                                <svg
-                                  className="w-3 h-3 text-white"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={3}
-                                    d="M5 13l4 4L19 7"
-                                  />
-                                </svg>
+                                <span className="w-2.5 h-2.5 rounded-full bg-[#7B46F8]" />
                               )}
                             </div>
                             <span
@@ -2095,10 +2043,8 @@ export default function CreatorOnboardingForm() {
                     Primary Audience Geography <span className="text-red-500">*</span>
                   </h3>
                 </div>
-                <p className="text-sm text-gray-500 mb-4">
-                  Select your target geography (only 1 allowed)
-                </p>
-                <div className="space-y-3">
+                <p className="text-sm text-gray-500 mb-4">Select your target geography</p>
+                <div className="space-y-3" role="radiogroup" aria-label="Primary audience geography">
                   {GEOGRAPHY_OPTIONS.map((option) => {
                     const isSelected = formData.primaryAudienceGeography?.includes(option) || false;
                     return (
@@ -2107,28 +2053,18 @@ export default function CreatorOnboardingForm() {
                         className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${isSelected ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}
                       >
                         <input
-                          type="checkbox"
+                          type="radio"
+                          name="creator-primary-audience-geography-mobile"
+                          value={option}
                           checked={isSelected}
                           onChange={() => handlePrimaryGeographyChange(option)}
                           className="sr-only"
                         />
                         <div
-                          className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${isSelected ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}
+                          className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 flex-shrink-0 ${isSelected ? "border-[#7B46F8] bg-white" : "border-gray-300 bg-white"}`}
                         >
                           {isSelected && (
-                            <svg
-                              className="w-3 h-3 text-white"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={3}
-                                d="M5 13l4 4L19 7"
-                              />
-                            </svg>
+                            <span className="w-2.5 h-2.5 rounded-full bg-[#7B46F8]" />
                           )}
                         </div>
                         <span
@@ -2151,10 +2087,8 @@ export default function CreatorOnboardingForm() {
                     Secondary Audience Geography <span className="text-red-500">*</span>
                   </h3>
                 </div>
-                <p className="text-sm text-gray-500 mb-4">
-                  Select your target geography (only 1 allowed)
-                </p>
-                <div className="space-y-3">
+                <p className="text-sm text-gray-500 mb-4">Select your target geography</p>
+                <div className="space-y-3" role="radiogroup" aria-label="Secondary audience geography">
                   {GEOGRAPHY_OPTIONS.map((option) => {
                     const isSelected =
                       formData.secondaryAudienceGeography?.includes(option) || false;
@@ -2164,28 +2098,18 @@ export default function CreatorOnboardingForm() {
                         className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${isSelected ? "border-[#7B46F8] bg-white" : "border-gray-200 bg-white hover:border-gray-300"}`}
                       >
                         <input
-                          type="checkbox"
+                          type="radio"
+                          name="creator-secondary-audience-geography-mobile"
+                          value={option}
                           checked={isSelected}
                           onChange={() => handleSecondaryGeographyChange(option)}
                           className="sr-only"
                         />
                         <div
-                          className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${isSelected ? "bg-[#7B46F8] border-[#7B46F8]" : "bg-white border-gray-300"}`}
+                          className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 flex-shrink-0 ${isSelected ? "border-[#7B46F8] bg-white" : "border-gray-300 bg-white"}`}
                         >
                           {isSelected && (
-                            <svg
-                              className="w-3 h-3 text-white"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={3}
-                                d="M5 13l4 4L19 7"
-                              />
-                            </svg>
+                            <span className="w-2.5 h-2.5 rounded-full bg-[#7B46F8]" />
                           )}
                         </div>
                         <span
