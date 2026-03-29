@@ -6,6 +6,8 @@ import NewVisibility from "./NewVisibility";
 import BrandDeserves from "./BrandDeserves";
 import AeoVsSeo from "./AeoVsSeo";
 import HowWork from "./HowWork";
+import WhatIsAeo from "./WhatIsAeo";
+import HowItWorksSteps from "./HowItWorksSteps";
 import Ecosystem from "./Ecosystem";
 import PricingPlans from "./PricingPlans";
 import FAQ from "./FAQ";
@@ -30,8 +32,14 @@ export default function AeoLlmMarketing() {
       <div className="relative md:sticky top-0 z-0  w-full  bg-white py-14 lg:py-16">
         <HowWork />
       </div>
+      <div className="relative z-0 w-full bg-white">
+        <WhatIsAeo />
+      </div>
       <div className="sticky md:relative top-0 z-0  w-full  bg-white pt-14 md:pt-0">
         <AeoVsSeo />
+      </div>
+      <div className="relative z-0 w-full bg-[#F8F8F8]">
+        <HowItWorksSteps />
       </div>
       <div className="relative md:sticky top-0 z-0  w-full  bg-white py-14 lg:py-16">
         <EcosystemLoves />

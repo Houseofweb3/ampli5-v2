@@ -5,15 +5,25 @@
 
 // ----- Block types (content blocks can differ per post) -----
 
+/** Inline piece inside a `richParagraph`: plain text or a link (internal `/path` or external URL). */
+export type BlogRichSegment =
+  | { kind: "text"; text: string }
+  | { kind: "link"; text: string; href: string; external?: boolean };
+
+/** List row: plain string, or rich segments (e.g. one `link` for the whole line). */
+export type BlogListItem = string | { segments: BlogRichSegment[] };
+
 export type BlogContentBlock =
   | { type: "paragraph"; content: string }
+  /** Paragraph with inline links. Mix `text` and `link` segments in order. Internal: href="/"; external: href="https://..." and external: true */
+  | { type: "richParagraph"; segments: BlogRichSegment[] }
   | { type: "paragraphSmall"; content: string }
-  | { type: "heading"; content: string }
-  | { type: "list"; items: string[]; ordered?: boolean }
+  | { type: "heading"; content: string; href?: string }
+  | { type: "list"; items: BlogListItem[]; ordered?: boolean }
   | { type: "listSimple"; items: string[] }
   | { type: "blockquote"; lines: string[] }
   | { type: "emphasis"; content: string; variant?: "bold" | "primary" }
-  | { type: "emphasisLarge"; content: string; variant?: "bold" | "primary" }
+  | { type: "emphasisLarge"; content: string; variant?: "bold" | "primary"; href?: string }
   | { type: "lines"; lines: string[] }
   | { type: "image"; src: string; alt: string };
 
@@ -71,7 +81,52 @@ export const BLOG_POSTS: BlogPost[] = [
       // What Ampli5 Actually Does
       { type: "heading", content: "What Ampli5 Actually Does" },
       { type: "paragraph", content: "Ampli5 is the world's first true distribution aggregator. It brings together:" },
-      { type: "list", items: ["YouTube creators", "X influencers", "TikTok creators", "Newsletter operators", "Reddit power users", "Podcasters", "Clipping networks", "Programmatic ad engines", "AEO, Answer Engine Optimization for LLM visibility"] },
+      {
+        type: "list",
+        items: [
+          {
+            segments: [
+              { kind: "link", text: "YouTube creators", href: "/services/influencer-marketing" },
+            ],
+          },
+          {
+            segments: [
+              { kind: "link", text: "X influencers", href: "/services/influencer-marketing" },
+            ],
+          },
+          {
+            segments: [
+              { kind: "link", text: "TikTok creators", href: "/services/influencer-marketing" },
+            ],
+          },
+          "Newsletter operators",
+          {
+            segments: [
+              { kind: "link", text: "Reddit power users", href: "/services/influencer-marketing" },
+            ],
+          },
+          {
+            segments: [
+              { kind: "link", text: "Podcasters", href: "/services/influencer-marketing" },
+            ],
+          },
+          {
+            segments: [
+              { kind: "link", text: "Clipping networks", href: "/services/influencer-marketing" },
+            ],
+          },
+          "Programmatic ad engines",
+          {
+            segments: [
+              {
+                kind: "link",
+                text: "AEO, Answer Engine Optimization for LLM visibility",
+                href: "/services/aeo-llm-marketing",
+              },
+            ],
+          },
+        ],
+      },
       { type: "paragraph", content: "All under one unified growth engine." },
       { type: "paragraph", content: "Instead of brands negotiating separately with 50 creators, 10 newsletters, 5 podcasters, and 3 ad networks, they plug into a single system." },
       { type: "emphasis", content: "Ampli5 becomes the Uber layer for distribution.", variant: "bold" },
@@ -96,7 +151,7 @@ export const BLOG_POSTS: BlogPost[] = [
       { type: "emphasis", content: "One command center.", variant: "bold" },
 
       // AEO: Owning the LLM Layer
-      { type: "heading", content: "AEO: Owning the LLM Layer" },
+      { type: "heading", content: "AEO: Owning the LLM Layer", href: "/services/aeo-llm-marketing" },
       { type: "paragraph", content: "Search is shifting from Google links to AI answers." },
       { type: "paragraph", content: "Brands that are not optimized for LLM citations will slowly disappear from discovery." },
       { type: "paragraph", content: "Ampli5 integrates AEO, ensuring brands do not just rank on Google but appear inside AI-generated answers." },
@@ -123,7 +178,7 @@ export const BLOG_POSTS: BlogPost[] = [
       { type: "paragraph", content: "AI agents will build. AI agents will write. AI agents will automate." },
       { type: "emphasis", content: "But distribution will remain the moat.", variant: "bold" },
       { type: "paragraph", content: "If you need a growth engine that activates YouTube, X, TikTok, newsletters, podcasts, Reddit, programmatic ads, and AI visibility in one motion, there is now a single entry point." },
-      { type: "emphasisLarge", content: "Ampli5.", variant: "primary" },
+      { type: "emphasisLarge", content: "Ampli5.", variant: "primary", href: "/" },
       { type: "lines", lines: ["One command.", "Full distribution.", "The Uber of attention."] },
     ],
   },
@@ -177,7 +232,16 @@ export const BLOG_POSTS: BlogPost[] = [
       { type: "emphasis", content: "That requires distributing knowledge across the ecosystem rather than concentrating authority in a single URL.", variant: "bold" },
 
       { type: "heading", content: "Building Answer Distribution Infrastructure" },
-      { type: "paragraph", content: "At Ampli5 we approach this challenge as an infrastructure problem." },
+      {
+        type: "richParagraph",
+        segments: [
+          { kind: "link", text: "At Ampli5", href: "/" },
+          {
+            kind: "text",
+            text: " we approach this challenge as an infrastructure problem.",
+          },
+        ],
+      },
       { type: "paragraph", content: "The objective is not simply publishing content. The objective is building a system that engineers Answer Consensus across the internet." },
       { type: "paragraph", content: "We refer to this system as Answer Distribution Infrastructure." },
       { type: "paragraph", content: "It operates through three layers." },
@@ -202,7 +266,31 @@ export const BLOG_POSTS: BlogPost[] = [
       { type: "paragraph", content: "That is only part of the solution." },
       { type: "paragraph", content: "AI assistants learn from a wide range of internet surfaces. Therefore answers must exist across multiple environments." },
       { type: "paragraph", content: "The Answer Distribution layer deploys answers across platforms such as:" },
-      { type: "list", items: ["Reddit communities", "creator videos", "podcasts", "expert blogs", "industry forums", "community Q and A threads"] },
+      {
+        type: "list",
+        items: [
+          {
+            segments: [
+              { kind: "link", text: "Reddit communities", href: "/services/influencer-marketing" },
+            ],
+          },
+          {
+            segments: [
+              { kind: "link", text: "creator videos", href: "/services/influencer-marketing" },
+            ],
+          },
+          {
+            segments: [{ kind: "link", text: "podcasts", href: "/services/influencer-marketing" }],
+          },
+          {
+            segments: [
+              { kind: "link", text: "expert blogs", href: "/services/influencer-marketing" },
+            ],
+          },
+          "industry forums",
+          "community Q and A threads",
+        ],
+      },
       { type: "paragraph", content: "Each platform contributes a different signal to the knowledge ecosystem." },
       { type: "paragraph", content: "The goal is not repetition. The goal is corroboration." },
       { type: "paragraph", content: "When an AI assistant encounters the same answer expressed across multiple independent sources, the signal begins to resemble public knowledge rather than marketing." },
@@ -239,7 +327,25 @@ export const BLOG_POSTS: BlogPost[] = [
 
       { type: "heading", content: "What This Means for Brands Operating Now" },
       { type: "paragraph", content: "The window for establishing Answer Consensus in most categories is still open, but it is closing. The brands that move first to build Answer Distribution Infrastructure will establish the consensus signals that AI models learn to trust. The brands that wait will find themselves optimising documents for a retrieval system that the industry has already moved past." },
-      { type: "paragraph", content: "The question is not whether to invest in AEO. The question is whether you understand that AEO is an infrastructure problem, and whether you are building the right infrastructure to solve it." },
+      {
+        type: "richParagraph",
+        segments: [
+          { kind: "text", text: "The question is not whether to " },
+          {
+            kind: "link",
+            text: "invest in AEO",
+            href: "/services/aeo-llm-marketing",
+          },
+          { kind: "text", text: ". The question is whether you " },
+          { kind: "link", text: "understand", href: "/services/aeo-llm-marketing" },
+          { kind: "text", text: " " },
+          { kind: "link", text: "that AEO", href: "/services/aeo-llm-marketing" },
+          {
+            kind: "text",
+            text: " is an infrastructure problem, and whether you are building the right infrastructure to solve it.",
+          },
+        ],
+      },
       { type: "paragraph", content: "Ampli5 builds Answer Distribution Infrastructure for brands competing in AI-mediated search. Our three-layer system, Atlas Question Intelligence, Answer Distribution and Authority Amplification, is designed to engineer Answer Consensus at category scale." },
     ],
   },

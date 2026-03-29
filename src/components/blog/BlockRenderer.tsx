@@ -2,20 +2,76 @@
 
 import React from "react";
 import Image from "next/image";
-import type { BlogContentBlock } from "@/src/data/blogs";
+import Link from "next/link";
+import type { BlogContentBlock, BlogListItem, BlogRichSegment } from "@/src/data/blogs";
 
 const blockClasses = "text-gray-700 leading-relaxed";
+
+const linkClassName =
+  "text-primary hover:text-primaryHover font-medium underline underline-offset-2";
+
+function ListItemContent({ item }: { item: BlogListItem }) {
+  if (typeof item === "string") {
+    return <>{item}</>;
+  }
+  return (
+    <>
+      {item.segments.map((segment, j) => (
+        <RichSegment key={j} segment={segment} />
+      ))}
+    </>
+  );
+}
+
+function RichSegment({ segment }: { segment: BlogRichSegment }) {
+  if (segment.kind === "text") {
+    return <>{segment.text}</>;
+  }
+  const isExternal =
+    segment.external === true ||
+    segment.href.startsWith("http://") ||
+    segment.href.startsWith("https://");
+  if (isExternal) {
+    return (
+      <a href={segment.href} target="_blank" rel="noopener noreferrer" className={linkClassName}>
+        {segment.text}
+      </a>
+    );
+  }
+  return (
+    <Link href={segment.href} className={linkClassName}>
+      {segment.text}
+    </Link>
+  );
+}
 
 export function BlockRenderer({ block }: { block: BlogContentBlock }) {
   switch (block.type) {
     case "paragraph":
       return <p className={blockClasses}>{block.content}</p>;
+    case "richParagraph":
+      return (
+        <p className={blockClasses}>
+          {block.segments.map((segment, i) => (
+            <RichSegment key={i} segment={segment} />
+          ))}
+        </p>
+      );
     case "paragraphSmall":
       return <p className={`${blockClasses} text-sm sm:text-base text-gray-600`}>{block.content}</p>;
     case "heading":
       return (
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 mt-10 sm:mt-14 first:mt-0">
-          {block.content}
+          {block.href ? (
+            <Link
+              href={block.href}
+              className="text-gray-900 underline underline-offset-4 decoration-primary text-primary"
+            >
+              {block.content}
+            </Link>
+          ) : (
+            block.content
+          )}
         </h2>
       );
     case "list":
@@ -24,7 +80,9 @@ export function BlockRenderer({ block }: { block: BlogContentBlock }) {
           className={`list-disc pl-6 space-y-2 ${blockClasses} ${block.ordered ? "list-decimal" : ""}`}
         >
           {block.items.map((item, i) => (
-            <li key={i}>{item}</li>
+            <li key={i}>
+              <ListItemContent item={item} />
+            </li>
           ))}
         </ul>
       );
@@ -54,9 +112,35 @@ export function BlockRenderer({ block }: { block: BlogContentBlock }) {
       return <p className={`${blockClasses} font-semibold text-gray-900`}>{block.content}</p>;
     case "emphasisLarge":
       if (block.variant === "primary") {
-        return <p className="text-lg sm:text-xl font-bold text-primary">{block.content}</p>;
+        return (
+          <p className="text-lg sm:text-xl font-bold text-primary">
+            {block.href ? (
+              <Link
+                href={block.href}
+                className="text-primary hover:text-primaryHover underline underline-offset-4"
+              >
+                {block.content}
+              </Link>
+            ) : (
+              block.content
+            )}
+          </p>
+        );
       }
-      return <p className="text-lg sm:text-xl font-bold text-gray-900">{block.content}</p>;
+      return (
+        <p className="text-lg sm:text-xl font-bold text-gray-900">
+          {block.href ? (
+            <Link
+              href={block.href}
+              className="text-gray-900 hover:text-primary underline underline-offset-4"
+            >
+              {block.content}
+            </Link>
+          ) : (
+            block.content
+          )}
+        </p>
+      );
     case "lines":
       return (
         <div className={blockClasses}>

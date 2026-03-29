@@ -18,13 +18,22 @@ export default function NewVisibility() {
         <h3 className="!text-[#7B46F8] text-20 sm:text-24 lg:text-32  pb-6">
           The New Visibility Layer
         </h3>
-        <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-8 max-w-2xl mx-auto">
-          People have stopped typing long searches. They ask one question and trust one answer. That
-          answer is written by a model that has already made up its mind about which brands matter.
+        <p className="sm:!text-18 !text-16 !font-normal pb-4 max-w-2xl mx-auto">
+          People don&apos;t search anymore. They ask. One question. One answer. That answer is
+          written by a language model that already decided which brands matter.
+        </p>
+        <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-6 max-w-2xl mx-auto">
+          Google still works. But the first answer now comes from ChatGPT. From Claude. From
+          Perplexity. If your brand isn&apos;t in that answer, you don&apos;t exist in the
+          conversation.
+        </p>
+        <p className="sm:!text-18 !text-16 !font-normal pb-4 sm:pb-6 max-w-2xl mx-auto">
+          This is Answer Engine Optimization. AEO. The shift from ranking in a list to being the
+          answer itself.
         </p>
 
         <p className="sm:!text-18 !text-16 !font-normal !text-[#FE8616] ">
-          If you are still optimising for google search?
+          If you are still optimising only for Google search?
         </p>
         <p className="sm:!text-18 !text-16 !font-normal !text-[#FE8616] ">
           Low visibility. Low discovery. Low growth.

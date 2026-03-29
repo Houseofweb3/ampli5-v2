@@ -6,23 +6,24 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AEO & LLM Marketing for Web3 | Ampli5",
+  title: "AEO & LLM Marketing Agency | Answer Engine Optimization | Ampli5",
   description:
-    "Ampli5's AEO (Answer Engine Optimization) and LLM Marketing services help your web3 brand appear in AI-generated responses. Increase answer share, brand mentions, and visibility across AI platforms like ChatGPT, Perplexity, and more.",
+    "Ampli5 helps brands rank in AI search engines like ChatGPT, Claude, and Perplexity through answer engine optimization, narrative engineering, and distributed signal building.",
   keywords: [
     "AEO marketing",
     "LLM marketing",
     "Answer Engine Optimization",
-    "AI marketing web3",
+    "Answer engine optimization agency",
     "Ampli5 AEO",
     "Ampli5 LLM",
     "ChatGPT optimization",
+    "Claude Perplexity visibility",
     "AI answer share",
   ],
   openGraph: {
-    title: "AEO & LLM Marketing for Web3 | Ampli5",
+    title: "AEO & LLM Marketing Agency | Answer Engine Optimization | Ampli5",
     description:
-      "Help your web3 brand appear in AI-generated responses. Increase answer share and visibility across AI platforms.",
+      "Ampli5 helps brands rank in AI search engines like ChatGPT, Claude, and Perplexity through AEO, narrative engineering, and distributed signal building.",
     url: `${process.env.NEXTAUTH_URL || "https://ampli5.ai"}/services/aeo-llm-marketing`,
   },
   alternates: {

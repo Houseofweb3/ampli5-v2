@@ -8,13 +8,13 @@ const cardData = [
   {
     number: "Narrative Engineering",
     description:
-      "We write articles like FAQ's that resonate natural human queries on LLM not SEO optimised content",
+      "We write articles like FAQs that resonate with natural human queries on LLMs — not SEO-optimised content built for crawlers.",
     isHighlighted: true,
   },
   {
     number: "Distributed Signal Building",
     description:
-      "We deploy content across media outlets, Substack, Medium, Reddit, X and community platforms so your brand appears where it matters.",
+      "We deploy content across media outlets, Substack, Medium, Reddit, X and community platforms so your brand appears where models actually pull from.",
     isHighlighted: false,
   },
   {
