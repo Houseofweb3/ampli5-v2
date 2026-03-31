@@ -49,7 +49,7 @@ function normalizeProposalResponse(data: Record<string, unknown>): ProposalDataS
     items?: Array<{
       id: string;
       influencerId: string;
-      quantity?: number;
+      quantity?: string;
       price?: string;
       notes?: string | null;
       proofOfWork?: unknown;
@@ -71,6 +71,8 @@ function normalizeProposalResponse(data: Record<string, unknown>): ProposalDataS
     }>;
     client?: { id?: string; name?: string; email?: string };
     id?: string;
+     currency?: string;
+     priceRatio?: number;
     managementFeePercent?: string;
     discountPercent?: string;
   } | undefined;
@@ -90,6 +92,8 @@ function normalizeProposalResponse(data: Record<string, unknown>): ProposalDataS
     return {
       cartId: cart.id ?? "",
       email: (client.email as string) ?? "",
+      currency: cart.currency ?? "USD",
+      priceRatio: cart.priceRatio ?? 1,
       billingInfo: {
         firstName,
         lastName,
@@ -137,6 +141,8 @@ function normalizeProposalResponse(data: Record<string, unknown>): ProposalDataS
 interface ProposalDataShape {
   cartId?: string;
   email?: string;
+  currency?: string;
+  priceRatio?: number;
   billingInfo?: BillingInfo;
   influencerItems?: Influencer[];
   isSubmitted?: boolean;
@@ -206,6 +212,8 @@ const DEFAULT_BILLING_INFO: BillingInfo = {
 
 interface ProposalData {
   token: string;
+  currency?: string;
+  priceRatio?: number;
   billingInfo: BillingInfo;
   influencerItems: Influencer[];
   cartId: string;
@@ -268,6 +276,8 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
             token,
             cartId: normalized.cartId ?? "",
             email: normalized.email ?? "",
+            currency: normalized.currency ?? "USD",
+            priceRatio: normalized.priceRatio ?? 1,
             billingInfo: normalized.billingInfo ?? DEFAULT_BILLING_INFO,
             influencerItems: normalized.influencerItems ?? [],
           };
@@ -383,15 +393,40 @@ export default function ProposalPage({ params }: { params: { token: string } }) 
 
   const pricing = calculatePricing();
 
-  // Format price with comma separators
+  const getCurrencySymbol = (currency: string | null | undefined): string => {
+    switch ((currency ?? "USD").toUpperCase()) {
+      case "INR":
+        return "₹";
+      case "AED":
+        return "AED";
+      case "USD":
+      default:
+        return "$";
+    }
+  };
+
+  // Format price with comma separators + correct currency symbol (USD/INR/AED)
   const formatPrice = (price: string | number | null | undefined): string => {
-    if (!price) return "$0";
-    const numPrice = typeof price === "string" ? parseFloat(price) : price;
-    if (isNaN(numPrice)) return "$0";
-    return `$${numPrice.toLocaleString("en-US", {
+    const currencyCode = (proposal?.currency ?? "USD").toUpperCase();
+    const symbol = getCurrencySymbol(currencyCode);
+
+    const raw =
+      typeof price === "number"
+        ? price
+        : typeof price === "string"
+          ? parseFloat(price)
+          : 0;
+
+    const numPrice = Number.isFinite(raw) ? raw : 0;
+
+    const formatted = numPrice.toLocaleString("en-US", {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    })}`;
+    });
+
+    // AED reads better as currency code prefix: "AED 1,000"
+    if (currencyCode === "AED") return `${symbol} ${formatted}`;
+    return `${symbol}${formatted}`;
   };
 
   // Get platform icon component
