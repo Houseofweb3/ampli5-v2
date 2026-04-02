@@ -95,6 +95,37 @@ export const INDUSTRY_CATEGORY_OPTIONS: Record<string, string[]> = {
   ]
 };
 
+/** Shown only when Instagram is selected; user picks one (not sent in API payload). */
+export type InstagramInventoryMode = "influencer" | "clipping";
+
+/** Instagram inventory when "For Influencers" is selected. */
+export const INSTAGRAM_INVENTORY_INFLUENCER: string[] = [
+  "IG Reel – Original (Creator produces content)",
+  "IG Reel – Repost (Brand provides content)",
+  "Carousel (3–5 slides)",
+  "Story sequence (3 slides)",
+  "Reel / TikTok pinned (7 days)",
+];
+
+/** Instagram inventory when "For Clipping Channels" is selected. */
+export const INSTAGRAM_INVENTORY_CLIPPING: string[] = [
+  "IG Reel – Original (Creator produces content) ( 24 hours )",
+  "IG Reel – Adapted (Brand provides content) ( 24 hours )",
+  "IG Reel – Repost (Brand provides content) ( 24 hours )",
+  "IG Reel – Original (Creator produces content) ( 7 days )",
+  "IG Reel – Adapted (Brand provides content) ( 7 days )",
+  "IG Reel – Repost (Brand provides content) ( 7 days )",
+  "Carousel (3–5 slides)",
+  "Story sequence (3 slides)",
+  "Link in bio placement (7 days)",
+  "Reel / TikTok pinned (7 days)",
+];
+
+/** All possible Instagram row keys (for reset / clearing hidden selections). */
+export const ALL_INSTAGRAM_INVENTORY_KEYS: string[] = Array.from(
+  new Set([...INSTAGRAM_INVENTORY_INFLUENCER, ...INSTAGRAM_INVENTORY_CLIPPING])
+);
+
 export const PLATFORM_INVENTORY_OPTIONS: Record<string, string[]> = {
   X: [
     "Single tweet",
@@ -111,20 +142,7 @@ export const PLATFORM_INVENTORY_OPTIONS: Record<string, string[]> = {
     "Streams/Live trading video",
     "Shorts",
   ],
-  Instagram: [
-    "IG Reel – Original (Creator produces content) ( 24 hours )",
-    "IG Reel – Adapted (Brand provides content)( 24 hours )",
-    "IG Reel – Repost (Brand provides content) ( 24h )",
-    "IG Reel – Original (Creator produces content) ( 7 hours )",
-    "IG Reel – Adapted (Brand provides content)( 7 hours )",
-    "IG Reel – Repost (Brand provides content) ( 7h )",
-    "Carousel (3–5 slides)",
-    "Story sequence (3 slides)",
-    "Link in bio placement (7 days)",
-    "Reel pinned (7 days)",
-    "TikTok pinned (7 days)",
-    "IG Reel – Original (Creator produces content)",
-  ],
+  Instagram: ALL_INSTAGRAM_INVENTORY_KEYS,
   TikTok: [
     "Tik Tok Original(with collab tag)",
     "Tik Tok Adapted(with collab tag)",
@@ -147,3 +165,15 @@ export const PLATFORM_INVENTORY_OPTIONS: Record<string, string[]> = {
     "Short virtual podcast (IG / Shorts / TikTok)",
   ],
 };
+
+export function getInventoryOptionsForPlatform(
+  platform: string,
+  instagramMode: InstagramInventoryMode | null
+): string[] {
+  if (platform === "Instagram") {
+    if (instagramMode === "influencer") return [...INSTAGRAM_INVENTORY_INFLUENCER];
+    if (instagramMode === "clipping") return [...INSTAGRAM_INVENTORY_CLIPPING];
+    return [];
+  }
+  return PLATFORM_INVENTORY_OPTIONS[platform] ?? [];
+}

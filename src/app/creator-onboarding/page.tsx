@@ -20,6 +20,9 @@ import {
   INDUSTRY_CATEGORY_OPTIONS,
   PLATFORM_INVENTORY_OPTIONS,
   GEOGRAPHY_OPTIONS,
+  ALL_INSTAGRAM_INVENTORY_KEYS,
+  getInventoryOptionsForPlatform,
+  type InstagramInventoryMode,
 } from "@/src/constants/creatorOnboardingFilters";
 import { submitCreatorOnboarding } from "@/src/services/creatorOnboardingApi";
 
@@ -335,6 +338,15 @@ export default function CreatorOnboardingForm() {
   const collaborationSwiperRef = useRef<SwiperType | null>(null);
   const stepContentRef = useRef<HTMLDivElement | null>(null);
   const [stepSlideIndex, setStepSlideIndex] = useState<Record<number, number>>({});
+  /** UI-only: which Instagram inventory list to show (not sent in submit payload). */
+  const [instagramInventoryMode, setInstagramInventoryMode] =
+    useState<InstagramInventoryMode | null>(null);
+
+  useEffect(() => {
+    if (!formData.platforms?.includes("Instagram")) {
+      setInstagramInventoryMode(null);
+    }
+  }, [formData.platforms]);
 
   // Load completed steps from formData
   useEffect(() => {
@@ -368,7 +380,8 @@ export default function CreatorOnboardingForm() {
     const step4Complete =
       platformsStep4.length > 0 &&
       platformsStep4.every((platform: string) => {
-        const optionsStep4 = PLATFORM_INVENTORY_OPTIONS[platform] ?? [];
+        if (platform === "Instagram" && instagramInventoryMode === null) return false;
+        const optionsStep4 = getInventoryOptionsForPlatform(platform, instagramInventoryMode);
         if (optionsStep4.length === 0) return true;
         const selectedForPlatform = optionsStep4.filter(
           (item: string) => inventoryItems[item]?.selected
@@ -413,7 +426,7 @@ export default function CreatorOnboardingForm() {
     // Step 10: Final Confirmation - check if confirmation is checked
     if (formData.finalConfirmation) completed.add(10);
     setCompletedSteps(completed);
-  }, [formData]);
+  }, [formData, instagramInventoryMode]);
 
   const handleStepClick = (stepId: number) => {
     if (completedSteps.has(stepId) || stepId === currentStep) {
@@ -483,8 +496,13 @@ export default function CreatorOnboardingForm() {
       case 4: {
         const platforms = formData.platforms || [];
         const inventoryItems = formData.inventoryItems || {};
+        if (platforms.includes("Instagram") && instagramInventoryMode === null) {
+          newErrors.instagramInventoryMode =
+            "Please select whether you are an Influencer or Clipping Channel for Instagram.";
+          break;
+        }
         for (const platform of platforms) {
-          const optionsForPlatform = PLATFORM_INVENTORY_OPTIONS[platform] ?? [];
+          const optionsForPlatform = getInventoryOptionsForPlatform(platform, instagramInventoryMode);
           if (optionsForPlatform.length > 0) {
             const selectedForPlatform = optionsForPlatform.filter(
               (item) => inventoryItems[item]?.selected
@@ -1658,11 +1676,37 @@ export default function CreatorOnboardingForm() {
           }
         };
 
+        const handleInstagramModeChange = (mode: InstagramInventoryMode) => {
+          setInstagramInventoryMode(mode);
+          const visible = new Set(getInventoryOptionsForPlatform("Instagram", mode));
+          const current = formData.inventoryItems || {};
+          const newItems = { ...current };
+          for (const key of ALL_INSTAGRAM_INVENTORY_KEYS) {
+            if (!visible.has(key) && newItems[key] != null) {
+              delete newItems[key];
+            }
+          }
+          updateFormData({ inventoryItems: newItems });
+          if (errors.inventoryItems || errors.instagramInventoryMode) {
+            setErrors((prev) => ({
+              ...prev,
+              inventoryItems: "",
+              instagramInventoryMode: "",
+            }));
+          }
+        };
+
         const resetInventoryForPlatform = (platform: string) => {
-          const optionsForPlatform = PLATFORM_INVENTORY_OPTIONS[platform] ?? [];
+          if (platform === "Instagram") {
+            setInstagramInventoryMode(null);
+          }
+          const keysToReset =
+            platform === "Instagram"
+              ? ALL_INSTAGRAM_INVENTORY_KEYS
+              : PLATFORM_INVENTORY_OPTIONS[platform] ?? [];
           const currentItems = formData.inventoryItems || {};
           const newItems = { ...currentItems };
-          optionsForPlatform.forEach((k) => {
+          keysToReset.forEach((k) => {
             newItems[k] = defaultInventoryItem();
           });
           updateFormData({ inventoryItems: newItems });
@@ -1681,7 +1725,11 @@ export default function CreatorOnboardingForm() {
                 </p>
               ) : (
                 selectedPlatforms.map((platform) => {
-                  const inventoryOptions = PLATFORM_INVENTORY_OPTIONS[platform] ?? [];
+                  const inventoryOptions = getInventoryOptionsForPlatform(
+                    platform,
+                    instagramInventoryMode
+                  );
+                  const showInstagramTypePicker = platform === "Instagram";
                   return (
                     <div key={platform}>
                       <div className="flex items-center justify-between mb-4">
@@ -1689,7 +1737,7 @@ export default function CreatorOnboardingForm() {
                           <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
                           <h3 className="text-lg font-semibold text-gray-900">{platform}</h3>
                         </div>
-                        {inventoryOptions.length > 0 && (
+                        {(showInstagramTypePicker || inventoryOptions.length > 0) && (
                           <button
                             type="button"
                             onClick={() => resetInventoryForPlatform(platform)}
@@ -1712,7 +1760,65 @@ export default function CreatorOnboardingForm() {
                           </button>
                         )}
                       </div>
-                      {inventoryOptions.length === 0 ? (
+                      {showInstagramTypePicker && (
+                        <div
+                          className="mb-6 rounded-lg border-2 border-gray-200 bg-white p-4 sm:p-5"
+                          role="group"
+                          aria-label="Instagram creator type"
+                        >
+                          <p className="text-sm font-semibold text-gray-900 mb-3">
+                            Are you an Influencer or Clipping Channel?
+                          </p>
+                          <div className="flex flex-col sm:flex-row gap-3">
+                            <label
+                              className={`flex cursor-pointer items-center gap-3 rounded-lg border-2 p-4 transition-all ${
+                                instagramInventoryMode === "influencer"
+                                  ? "border-[#7B46F8] bg-violet-50/50"
+                                  : "border-gray-200 hover:border-gray-300"
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="instagram-inventory-mode"
+                                checked={instagramInventoryMode === "influencer"}
+                                onChange={() => handleInstagramModeChange("influencer")}
+                                className="h-4 w-4 shrink-0 cursor-pointer border-gray-300 accent-[#7B46F8] focus:outline-none "
+                              />
+                              <span className="text-sm font-medium text-gray-900">
+                                For Influencers
+                              </span>
+                            </label>
+                            <label
+                              className={`flex cursor-pointer items-center gap-3 rounded-lg border-2 p-4 transition-all ${
+                                instagramInventoryMode === "clipping"
+                                  ? "border-[#7B46F8] bg-violet-50/50"
+                                  : "border-gray-200 hover:border-gray-300"
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="instagram-inventory-mode"
+                                checked={instagramInventoryMode === "clipping"}
+                                onChange={() => handleInstagramModeChange("clipping")}
+                                className="h-4 w-4 shrink-0 cursor-pointer border-gray-300 accent-[#7B46F8] focus:outline-none"
+                              />
+                              <span className="text-sm font-medium text-gray-900">
+                                For Clipping Channels
+                              </span>
+                            </label>
+                          </div>
+                          {errors.instagramInventoryMode && (
+                            <p className="mt-3 text-sm text-red-500" role="alert">
+                              {errors.instagramInventoryMode}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                      {showInstagramTypePicker && instagramInventoryMode === null ? (
+                        <p className="text-sm text-gray-500">
+                          Select an option above to see Instagram inventory and rates.
+                        </p>
+                      ) : inventoryOptions.length === 0 ? (
                         <p className="text-sm text-gray-500">
                           No inventory options for this platform.
                         </p>

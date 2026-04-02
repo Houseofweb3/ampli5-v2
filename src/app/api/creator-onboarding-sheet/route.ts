@@ -6,6 +6,7 @@ import {
   sellingPriceFromBuyingPrice,
   stripPriceToNumeric,
 } from "@/src/lib/creatorOnboardingPricing";
+import { ALL_INSTAGRAM_INVENTORY_KEYS } from "@/src/constants/creatorOnboardingFilters";
 
 // Must match creator-onboarding page Step 4 options (platform -> inventory item labels)
 const PLATFORM_INVENTORY_OPTIONS: Record<string, string[]> = {
@@ -24,19 +25,7 @@ const PLATFORM_INVENTORY_OPTIONS: Record<string, string[]> = {
     "Streams/Live trading video",
     "Shorts",
   ],
-  Instagram: [
-    "IG Reel – Original (Creator produces content) ( 24 hours )",
-    "IG Reel – Adapted (Brand provides content)( 24 hours )",
-    "IG Reel – Repost (Brand provides content) ( 24h )",
-    "IG Reel – Original (Creator produces content) ( 7 hours )",
-    "IG Reel – Adapted (Brand provides content)( 7 hours )",
-    "IG Reel – Repost (Brand provides content) ( 7h )",
-    "Carousel (3–5 slides)",
-    "Story sequence (3 slides)",
-    "Link in bio placement (7 days)",
-    "Reel pinned (7 days)",
-    "IG Reel – Original (Creator produces content)",
-  ],
+  Instagram: ALL_INSTAGRAM_INVENTORY_KEYS,
   TikTok: [
     "Tik Tok Original(with collab tag)",
     "Tik Tok Adapted(with collab tag)",
