@@ -105,6 +105,7 @@ export const INSTAGRAM_INVENTORY_INFLUENCER: string[] = [
   "Carousel (3–5 slides)",
   "Story sequence (3 slides)",
   "Reel / TikTok pinned (7 days)",
+  "Collab Tag"
 ];
 
 /** Instagram inventory when "For Clipping Channels" is selected. */
@@ -119,6 +120,7 @@ export const INSTAGRAM_INVENTORY_CLIPPING: string[] = [
   "Story sequence (3 slides)",
   "Link in bio placement (7 days)",
   "Reel / TikTok pinned (7 days)",
+  "Collab Tag"
 ];
 
 /** All possible Instagram row keys (for reset / clearing hidden selections). */
