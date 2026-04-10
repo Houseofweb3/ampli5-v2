@@ -24,14 +24,18 @@ export const INDUSTRY_OPTIONS = [
 ] as const;
 
 export const GEOGRAPHY_OPTIONS = [
-  "North America (US, Canada)",
-  "Europe (All Zones)",
-  "South Asia (Includes India and Pakistan)",
-  "South East Asia",
-  "MENA (Middle East & North Africa)",
-  "LATAM (Central America & South America)"
+"North America (US, Canada)",
+"Europe (All Zones)",
+"South Asia (Includes India and Pakistan)",
+"South East Asia",
+"LATAM (Central America & South America)",
+"MENA (includes Pakistan)",
+"MENA (Middle East & North Africa)",
+"South Asia (Includes India and Pakistan)",
+"MENA (Middle East & North Africa)",
+"South Asia (Includes India and Pakistan)"
 ] as const;
-
+  
 export const INDUSTRY_CATEGORY_OPTIONS: Record<string, string[]> = {
   Crypto: [
     "Crypto DeFi",
