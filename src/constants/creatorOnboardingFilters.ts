@@ -24,16 +24,13 @@ export const INDUSTRY_OPTIONS = [
 ] as const;
 
 export const GEOGRAPHY_OPTIONS = [
-"North America (US, Canada)",
-"Europe (All Zones)",
-"South Asia (Includes India and Pakistan)",
-"South East Asia",
-"LATAM (Central America & South America)",
-"MENA (includes Pakistan)",
-"MENA (Middle East & North Africa)",
-"South Asia (Includes India and Pakistan)",
-"MENA (Middle East & North Africa)",
-"South Asia (Includes India and Pakistan)"
+  'North America (US, Canada)',
+  'Europe (All Zones)',
+  'South Asia (Includes India and Pakistan)',
+  'South East Asia',
+  'LATAM (Central America & South America)',
+  "MENA (Middle East & North Africa)",
+  'MENA (includes Pakistan)',
 ] as const;
   
 export const INDUSTRY_CATEGORY_OPTIONS: Record<string, string[]> = {
@@ -147,6 +144,7 @@ export const PLATFORM_INVENTORY_OPTIONS: Record<string, string[]> = {
     "Dedicated review / breakdown video",
     "Streams/Live trading video",
     "Shorts",
+    "Collab Tag"
   ],
   Instagram: ALL_INSTAGRAM_INVENTORY_KEYS,
   TikTok: [
