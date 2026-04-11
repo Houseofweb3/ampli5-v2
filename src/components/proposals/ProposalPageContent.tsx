@@ -260,7 +260,8 @@ export function ProposalPageContent({
   const [showSignatureModal, setShowSignatureModal] = useState(false);
   const signatureCanvasRef = useRef<HTMLCanvasElement>(null);
   const hasDrawnRef = useRef(false);
-  const [isDrawing, setIsDrawing] = useState(false);
+  const isDrawingSignatureRef = useRef(false);
+  const signatureActivePointerIdRef = useRef<number | null>(null);
 
   // Billing form state (for pricing display only - managementFeePercentage from API)
   const [billingForm, setBillingForm] = useState<BillingInfo>(DEFAULT_BILLING_INFO);
@@ -536,20 +537,25 @@ export function ProposalPageContent({
     return true;
   };
 
-  const getCanvasPoint = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+  const getCanvasPointFromClient = useCallback((clientX: number, clientY: number) => {
     const canvas = signatureCanvasRef.current;
     if (!canvas) return { x: 0, y: 0 };
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
     return {
-      x: (e.clientX - rect.left) * scaleX,
-      y: (e.clientY - rect.top) * scaleY,
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY,
     };
   }, []);
 
-  const startSignature = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const handleSignaturePointerDown = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (e.button !== 0) return;
+      e.preventDefault();
+      e.currentTarget.setPointerCapture(e.pointerId);
+      signatureActivePointerIdRef.current = e.pointerId;
+
       const canvas = signatureCanvasRef.current;
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
@@ -557,32 +563,57 @@ export function ProposalPageContent({
       ctx.strokeStyle = "#000";
       ctx.lineWidth = 2;
       ctx.lineCap = "round";
-      const { x, y } = getCanvasPoint(e);
+      const { x, y } = getCanvasPointFromClient(e.clientX, e.clientY);
       ctx.beginPath();
       ctx.moveTo(x, y);
       hasDrawnRef.current = true;
-      setIsDrawing(true);
+      isDrawingSignatureRef.current = true;
     },
-    [getCanvasPoint]
+    [getCanvasPointFromClient]
   );
 
-  const draw = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
-      if (!isDrawing) return;
+  const handleSignaturePointerMove = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (
+        !isDrawingSignatureRef.current ||
+        signatureActivePointerIdRef.current !== e.pointerId
+      ) {
+        return;
+      }
+      e.preventDefault();
       const canvas = signatureCanvasRef.current;
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
-      const { x, y } = getCanvasPoint(e);
+      const { x, y } = getCanvasPointFromClient(e.clientX, e.clientY);
       ctx.lineTo(x, y);
       ctx.stroke();
     },
-    [isDrawing, getCanvasPoint]
+    [getCanvasPointFromClient]
   );
 
-  const endSignature = useCallback(() => {
-    setIsDrawing(false);
+  const handleSignaturePointerUp = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (signatureActivePointerIdRef.current !== e.pointerId) return;
+    signatureActivePointerIdRef.current = null;
+    isDrawingSignatureRef.current = false;
+    try {
+      if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      }
+    } catch {
+      // releasePointerCapture can throw if capture was already cleared
+    }
   }, []);
+
+  const handleSignatureLostPointerCapture = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (signatureActivePointerIdRef.current === e.pointerId) {
+        signatureActivePointerIdRef.current = null;
+        isDrawingSignatureRef.current = false;
+      }
+    },
+    []
+  );
 
   const saveSignature = useCallback(() => {
     if (!hasDrawnRef.current) {
@@ -611,6 +642,8 @@ export function ProposalPageContent({
       const ctx = canvas.getContext("2d");
       if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
       hasDrawnRef.current = false;
+      isDrawingSignatureRef.current = false;
+      signatureActivePointerIdRef.current = null;
     }
   }, [showSignatureModal]);
 
@@ -1338,10 +1371,12 @@ export function ProposalPageContent({
                   width={500}
                   height={200}
                   className="w-full h-48 touch-none cursor-crosshair block"
-                  onMouseDown={startSignature}
-                  onMouseMove={draw}
-                  onMouseUp={endSignature}
-                  onMouseLeave={endSignature}
+                  style={{ touchAction: "none" }}
+                  onPointerDown={handleSignaturePointerDown}
+                  onPointerMove={handleSignaturePointerMove}
+                  onPointerUp={handleSignaturePointerUp}
+                  onPointerCancel={handleSignaturePointerUp}
+                  onLostPointerCapture={handleSignatureLostPointerCapture}
                 />
               </div>
               <div className="mt-4 flex flex-wrap gap-2 justify-between">
