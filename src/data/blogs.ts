@@ -25,12 +25,16 @@ export type BlogContentBlock =
   | { type: "emphasis"; content: string; variant?: "bold" | "primary" }
   | { type: "emphasisLarge"; content: string; variant?: "bold" | "primary"; href?: string }
   | { type: "lines"; lines: string[] }
-  | { type: "image"; src: string; alt: string };
+  | { type: "image"; src: string; alt: string }
+  /** CMS / preview: sanitized HTML rendered with blog-adjacent typography */
+  | { type: "htmlBody"; html: string };
 
 export interface BlogPost {
   slug: string;
   title: string;
   excerpt: string;
+  /** Optional: byline when set (e.g. from CMS) */
+  author?: string;
   /** Optional: for list display (e.g. "Feb 20, 2025") */
   date?: string;
   /** Optional: hero image shown at the start of the post. Set src (e.g. "/blog/1.jpg") and alt. */

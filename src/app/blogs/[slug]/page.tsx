@@ -107,8 +107,12 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight tracking-tight">
             {post.title}
           </h1>
-          {post.date && (
-            <p className="mt-3 text-sm text-gray-500">{post.date}</p>
+          {(post.author || post.date) && (
+            <p className="mt-3 text-sm text-gray-500">
+              {post.author ? <span>By {post.author}</span> : null}
+              {post.author && post.date ? " · " : null}
+              {post.date ? <span>{post.date}</span> : null}
+            </p>
           )}
         </header>
         {post.heroImage && (

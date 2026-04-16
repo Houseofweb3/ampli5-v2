@@ -47,6 +47,12 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
     const file = formData.get("file") as File;
+    const folderRaw = formData.get("folder");
+    const folderAllowed = ["creator-onboarding", "manage-blogs"] as const;
+    const folder =
+      typeof folderRaw === "string" && (folderAllowed as readonly string[]).includes(folderRaw)
+        ? folderRaw
+        : "creator-onboarding";
 
     if (!file) {
       return NextResponse.json({ message: "No file provided" }, { status: 400 });
@@ -90,7 +96,7 @@ export async function POST(request: Request) {
       result = await new Promise<{ secure_url: string; public_id: string }>((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           {
-            folder: "creator-onboarding",
+            folder,
             resource_type: "image",
             timeout: 120000, // 2 minutes for large files
           },
@@ -116,7 +122,7 @@ export async function POST(request: Request) {
       const dataURI = `data:${file.type};base64,${base64}`;
 
       const uploadResult = (await cloudinary.uploader.upload(dataURI, {
-        folder: "creator-onboarding",
+        folder,
         resource_type: "image",
         timeout: 120000, // 2 minutes timeout
       })) as { secure_url: string; public_id: string };
