@@ -72,7 +72,7 @@ export default async function BlogsPage(): Promise<JSX.Element> {
 
   return (
     <div className="w-full h-full min-h-screen bg-cream-bg">
-      <div className="max-w-4xl mx-auto px-4 py-12 sm:py-16 lg:py-20">
+      <div className="max-w-7xl mx-auto px-4 py-12 sm:py-16 lg:py-20">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
           <span className="text-dark-purple1-bg">Blogs</span>
         </h1>

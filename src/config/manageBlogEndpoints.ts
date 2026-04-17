@@ -21,8 +21,3 @@ export function manageBlogItemUrl(id: string): string {
 export function manageBlogBySlugUrl(slug: string): string {
   return `/${MANAGE_BLOG_LIST_PATH}/slug/${encodeURIComponent(slug)}`;
 }
-
-/** When "true", list/create/update/delete use browser localStorage instead of HTTP. */
-export function isManageBlogMockMode(): boolean {
-  return process.env.NEXT_PUBLIC_MANAGE_BLOG_MOCK === "true";
-}

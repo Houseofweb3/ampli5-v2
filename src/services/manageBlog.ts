@@ -1,30 +1,10 @@
 import { manageBlogClient } from "@/src/lib/manageBlogClient";
 import {
-  isManageBlogMockMode,
   manageBlogBySlugUrl,
   manageBlogItemUrl,
   manageBlogListUrl,
 } from "@/src/config/manageBlogEndpoints";
 import type { ManageBlog, ManageBlogPayload } from "@/src/types/manageBlog";
-
-const MOCK_STORAGE_KEY = "ampli5-manage-blog-mock-v1";
-
-function readMock(): ManageBlog[] {
-  if (typeof localStorage === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(MOCK_STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw) as unknown;
-    return Array.isArray(parsed) ? (parsed as ManageBlog[]) : [];
-  } catch {
-    return [];
-  }
-}
-
-function writeMock(posts: ManageBlog[]): void {
-  if (typeof localStorage === "undefined") return;
-  localStorage.setItem(MOCK_STORAGE_KEY, JSON.stringify(posts));
-}
 
 function unwrapBlog(data: unknown): unknown {
   if (data && typeof data === "object" && "blog" in data) {
@@ -107,18 +87,12 @@ function payloadToPatchBody(payload: ManageBlogPayload): Record<string, string> 
 }
 
 export async function listManageBlogs(): Promise<ManageBlog[]> {
-  if (isManageBlogMockMode()) {
-    return readMock();
-  }
   const res = await manageBlogClient.get(manageBlogListUrl());
   return normalizeListResponse(res.data);
 }
 
 /** Load full post for editing (API: GET /web/blogs/slug/:slug). */
 export async function getManageBlogBySlug(slug: string): Promise<ManageBlog | null> {
-  if (isManageBlogMockMode()) {
-    return readMock().find((p) => p.slug === slug) ?? null;
-  }
   try {
     const res = await manageBlogClient.get(manageBlogBySlugUrl(slug));
     return mapRow(unwrapBlog(res.data));
@@ -128,17 +102,6 @@ export async function getManageBlogBySlug(slug: string): Promise<ManageBlog | nu
 }
 
 export async function createManageBlog(payload: ManageBlogPayload): Promise<ManageBlog> {
-  if (isManageBlogMockMode()) {
-    const posts = readMock();
-    const row: ManageBlog = {
-      id: typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-      ...payload,
-      updatedAt: new Date().toISOString(),
-    };
-    posts.unshift(row);
-    writeMock(posts);
-    return row;
-  }
   const res = await manageBlogClient.post(manageBlogListUrl(), payloadToCreateBody(payload));
   const mapped = mapRow(unwrapBlog(res.data));
   if (mapped) return mapped;
@@ -146,19 +109,6 @@ export async function createManageBlog(payload: ManageBlogPayload): Promise<Mana
 }
 
 export async function updateManageBlog(id: string, payload: ManageBlogPayload): Promise<ManageBlog> {
-  if (isManageBlogMockMode()) {
-    const posts = readMock();
-    const idx = posts.findIndex((p) => p.id === id);
-    const row: ManageBlog = {
-      id,
-      ...payload,
-      updatedAt: new Date().toISOString(),
-    };
-    if (idx >= 0) posts[idx] = row;
-    else posts.unshift(row);
-    writeMock(posts);
-    return row;
-  }
   const res = await manageBlogClient.patch(manageBlogItemUrl(id), payloadToPatchBody(payload));
   const mapped = mapRow(unwrapBlog(res.data));
   if (mapped) return mapped;
@@ -166,9 +116,5 @@ export async function updateManageBlog(id: string, payload: ManageBlogPayload): 
 }
 
 export async function deleteManageBlog(id: string): Promise<void> {
-  if (isManageBlogMockMode()) {
-    writeMock(readMock().filter((p) => p.id !== id));
-    return;
-  }
   await manageBlogClient.delete(manageBlogItemUrl(id));
 }

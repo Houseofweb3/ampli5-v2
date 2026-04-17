@@ -3,8 +3,8 @@
  * Full list: GET `/web/blogs/public`, detail: GET `/web/blogs/public/slug/:slug` (no JWT).
  */
 
-/** ISR: regenerate static blog pages at most every 5 minutes */
-export const PUBLIC_BLOG_REVALIDATE_SECONDS = 300;
+/** ISR: regenerate static blog pages at most every 2 minutes */
+export const PUBLIC_BLOG_REVALIDATE_SECONDS = 120;
 
 /** Path segment after API base, no leading slash. */
 export function publicBlogsBasePath(): string {
