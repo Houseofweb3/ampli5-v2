@@ -1,4 +1,7 @@
-import { getAllBlogs } from "@/src/data/blogs";
+import { PUBLIC_BLOG_REVALIDATE_SECONDS } from "@/src/config/publicBlogEndpoints";
+import { fetchPublicBlogList } from "@/src/services/publicBlogs";
+
+export const revalidate = PUBLIC_BLOG_REVALIDATE_SECONDS;
 
 /* eslint-disable no-unused-vars */
 const getLastModified = async (path: string) => {
@@ -35,14 +38,18 @@ export default async function sitemap() {
     { path: "/founder-signal", priority: 0.6, changeFrequency: "monthly" as const },
   ];
 
-  // Dynamic blog post pages (from blogs data)
-  const blogPosts = getAllBlogs();
-  const blogPages = blogPosts.map((post) => ({
-    path: `/blogs/${post.slug}`,
-    priority: 0.8 as const,
-    changeFrequency: "weekly" as const,
-    lastModified: post.date ? new Date(post.date) : new Date(),
-  }));
+  // Dynamic blog post pages (public blogs API)
+  const blogPosts = await fetchPublicBlogList();
+  const blogPages = blogPosts.map((post) => {
+    const raw = post.updatedAt ?? post.createdAt;
+    const lastModified = raw ? new Date(raw) : new Date();
+    return {
+      path: `/blogs/${post.slug}`,
+      priority: 0.8 as const,
+      changeFrequency: "weekly" as const,
+      lastModified: Number.isNaN(lastModified.getTime()) ? new Date() : lastModified,
+    };
+  });
 
   // Combine static pages
   const allStaticPages = [...publicPages, ...servicePages, ...otherPages];

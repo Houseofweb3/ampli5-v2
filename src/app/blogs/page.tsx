@@ -1,8 +1,10 @@
 import React from "react";
+import Image from "next/image";
 import PrimaryButton from "@/src/components/ui/PrimaryButton";
 import Link from "next/link";
-import { getAllBlogs } from "@/src/data/blogs";
 import type { Metadata } from "next";
+import { PUBLIC_BLOG_REVALIDATE_SECONDS } from "@/src/config/publicBlogEndpoints";
+import { fetchPublicBlogList, formatBlogDate } from "@/src/services/publicBlogs";
 
 const BLOG_BASE_URL = process.env.NEXTAUTH_URL || "https://ampli5.ai";
 const BLOG_LIST_KEYWORDS = [
@@ -16,8 +18,7 @@ const BLOG_LIST_KEYWORDS = [
   "LLM marketing",
 ];
 
-/** Static build: list page is pre-rendered at build time */
-export const dynamic = "force-static";
+export const revalidate = PUBLIC_BLOG_REVALIDATE_SECONDS;
 
 export const metadata: Metadata = {
   title: "Blogs",
@@ -66,8 +67,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BlogsPage(): JSX.Element {
-  const posts = getAllBlogs();
+export default async function BlogsPage(): Promise<JSX.Element> {
+  const posts = await fetchPublicBlogList();
 
   return (
     <div className="w-full h-full min-h-screen bg-cream-bg">
@@ -80,27 +81,45 @@ export default function BlogsPage(): JSX.Element {
         </p>
 
         <div className="space-y-8">
-          {posts.map((post) => (
-            <article
-              key={post.slug}
-              className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-            >
-              <Link href={`/blogs/${post.slug}`} className="block p-6 sm:p-8">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 hover:text-primary transition-colors line-clamp-2">
-                  {post.title}
-                </h2>
-                {post.date && (
-                  <p className="text-sm text-gray-500 mb-2">{post.date}</p>
-                )}
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed line-clamp-2">
-                  {post.excerpt}
-                </p>
-                <span className="inline-block mt-4 text-primary font-medium text-sm sm:text-base">
-                  Read more →
-                </span>
-              </Link>
-            </article>
-          ))}
+          {posts.length === 0 ? (
+            <p className="text-gray-600 text-center py-12">No posts yet. Check back soon.</p>
+          ) : (
+            posts.map((post) => {
+              const dateLabel = formatBlogDate(post.createdAt);
+              return (
+                <article
+                  key={post.id}
+                  className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <Link href={`/blogs/${post.slug}`} className="block sm:flex sm:gap-0">
+                    {post.coverImage ? (
+                      <div className="relative w-full sm:w-52 shrink-0 aspect-[16/10] sm:aspect-auto sm:min-h-[140px] bg-gray-100">
+                        <Image
+                          src={post.coverImage}
+                          alt=""
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 640px) 100vw, 208px"
+                        />
+                      </div>
+                    ) : null}
+                    <div className="p-6 sm:p-8 flex-1 min-w-0">
+                      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 hover:text-primary transition-colors line-clamp-2">
+                        {post.title}
+                      </h2>
+                      {dateLabel ? <p className="text-sm text-gray-500 mb-2">{dateLabel}</p> : null}
+                      <p className="text-gray-600 text-sm sm:text-base leading-relaxed line-clamp-2">
+                        {post.teaser}
+                      </p>
+                      <span className="inline-block mt-4 text-primary font-medium text-sm sm:text-base">
+                        Read more →
+                      </span>
+                    </div>
+                  </Link>
+                </article>
+              );
+            })
+          )}
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-200 mx-auto">

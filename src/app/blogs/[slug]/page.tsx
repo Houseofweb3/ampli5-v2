@@ -4,8 +4,16 @@ import Container from "@/src/components/ui/container";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getBlogBySlug, getBlogSlugs } from "@/src/data/blogs";
+import { PUBLIC_BLOG_REVALIDATE_SECONDS } from "@/src/config/publicBlogEndpoints";
 import { BlogContent } from "@/src/components/blog/BlockRenderer";
+import {
+  type PublicBlogDetail,
+  fetchPublicBlogBySlug,
+  fetchPublicBlogList,
+  formatBlogDate,
+  isValidPublicBlogSlug,
+  publicBlogContentBlocks,
+} from "@/src/services/publicBlogs";
 
 const BLOG_BASE_URL = process.env.NEXTAUTH_URL || "https://ampli5.ai";
 const BLOG_DEFAULT_KEYWORDS = [
@@ -23,49 +31,67 @@ interface BlogDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
-/** Static build: pre-render all blog post pages at build time */
-export const dynamic = "force-static";
-export const dynamicParams = false;
+export const revalidate = PUBLIC_BLOG_REVALIDATE_SECONDS;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  return getBlogSlugs().map((slug) => ({ slug }));
+  const blogs = await fetchPublicBlogList();
+  return blogs.filter((b) => isValidPublicBlogSlug(b.slug)).map((b) => ({ slug: b.slug }));
+}
+
+function keywordList(post: PublicBlogDetail): string[] {
+  const fromSeo = post.seoKeywords
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return [...BLOG_DEFAULT_KEYWORDS, ...fromSeo, post.title];
 }
 
 export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogBySlug(slug);
+  if (!isValidPublicBlogSlug(slug)) return { title: "Blog | Ampli5" };
+
+  const post = await fetchPublicBlogBySlug(slug);
   if (!post) return { title: "Blog | Ampli5" };
+
+  const title = post.seoTitle?.trim() || post.title;
+  const description = post.seoDescription?.trim() || post.teaser || post.title;
   const canonical = `${BLOG_BASE_URL}/blogs/${slug}`;
+  const ogImage =
+    post.coverImage && (post.coverImage.startsWith("https://") || post.coverImage.startsWith("http://"))
+      ? [{ url: post.coverImage, width: 1200, height: 630, alt: post.title }]
+      : [
+          {
+            url: "/logo.svg",
+            width: 1200,
+            height: 630,
+            alt: "Ampli5 - AI-Powered Influencer & PR Solutions",
+          },
+        ];
+
   return {
-    title: post.title,
-    description: post.excerpt,
-    keywords: [...BLOG_DEFAULT_KEYWORDS, post.title],
-    authors: [{ name: "Ampli5" }],
+    title,
+    description,
+    keywords: keywordList(post),
+    authors: [{ name: post.author?.trim() || "Ampli5" }],
     creator: "Ampli5",
     publisher: "HOW3 PTE LTD",
     alternates: {
       canonical,
     },
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title,
+      description,
       type: "article",
       url: canonical,
       siteName: "Ampli5",
-      images: [
-        {
-          url: "/logo.svg",
-          width: 1200,
-          height: 630,
-          alt: "Ampli5 - AI-Powered Influencer & PR Solutions",
-        },
-      ],
+      images: ogImage,
       locale: "en_US",
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
+      title,
+      description,
     },
     robots: {
       index: true,
@@ -94,8 +120,14 @@ function BlogLink({ href, children }: { href: string; children: React.ReactNode 
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
-  const post = getBlogBySlug(slug);
+  if (!isValidPublicBlogSlug(slug)) notFound();
+
+  const post = await fetchPublicBlogBySlug(slug);
   if (!post) notFound();
+
+  const dateLabel = formatBlogDate(post.createdAt);
+  const blocks = publicBlogContentBlocks(post.content);
+  const heroSrc = post.coverImage?.trim() || null;
 
   return (
     <article className="bg-cream-bg min-h-screen">
@@ -107,31 +139,29 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight tracking-tight">
             {post.title}
           </h1>
-          {(post.author || post.date) && (
+          {(post.author?.trim() || dateLabel) && (
             <p className="mt-3 text-sm text-gray-500">
-              {post.author ? <span>By {post.author}</span> : null}
-              {post.author && post.date ? " · " : null}
-              {post.date ? <span>{post.date}</span> : null}
+              {post.author?.trim() ? <span>By {post.author.trim()}</span> : null}
+              {post.author?.trim() && dateLabel ? " · " : null}
+              {dateLabel ? <span>{dateLabel}</span> : null}
             </p>
           )}
         </header>
-        {post.heroImage && (
+        {heroSrc ? (
           <figure className="w-full -mx-4 sm:mx-0 sm:rounded-xl overflow-hidden mb-10 sm:mb-14 aspect-[16/10]  relative bg-gray-100">
             <Image
-              src={post.heroImage.src}
-              alt={post.heroImage.alt}
+              src={heroSrc}
+              alt=""
               fill
-              sizes="w-full h-full"
+              sizes="(max-width: 768px) 100vw, 896px"
               className="object-cover"
               priority
             />
           </figure>
-        )}
-
-       
+        ) : null}
 
         <div className="max-w-2xl space-y-14 sm:space-y-16">
-          <BlogContent blocks={post.content} />
+          <BlogContent blocks={blocks} />
         </div>
 
         <footer className="mt-14 sm:mt-20 pt-10 border-t border-gray-200">
