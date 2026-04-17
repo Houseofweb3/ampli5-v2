@@ -69,6 +69,9 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
           },
         ];
 
+  const publishedTime = post.createdAt?.trim() || undefined;
+  const modifiedTime = post.updatedAt?.trim() || publishedTime;
+
   return {
     title,
     description,
@@ -87,11 +90,14 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
       siteName: "Ampli5",
       images: ogImage,
       locale: "en_US",
+      ...(publishedTime ? { publishedTime } : {}),
+      ...(modifiedTime ? { modifiedTime } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: ogImage.map((img) => img.url),
     },
     robots: {
       index: true,
@@ -151,11 +157,16 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           <figure className="w-full -mx-4 sm:mx-0 sm:rounded-xl overflow-hidden mb-10 sm:mb-14 aspect-[16/10]  relative bg-gray-100">
             <Image
               src={heroSrc}
-              alt=""
+              alt={post.title}
               fill
               sizes="(max-width: 768px) 100vw, 896px"
               className="object-cover"
               priority
+              unoptimized={
+                heroSrc.startsWith("data:") ||
+                heroSrc.startsWith("blob:") ||
+                heroSrc.startsWith("//")
+              }
             />
           </figure>
         ) : null}
