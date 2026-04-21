@@ -13,6 +13,10 @@ import Image from "next/image";
 export const NEW_CASE_STUDY_DATA = [
   {
     brandLogo: null,
+    video: "/video/Healthy_Cola_Token.mp4",
+  },
+  {
+    brandLogo: null,
     video: "/video/cabbage by stader labs.mov",
   },
   {
