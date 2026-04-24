@@ -55,13 +55,13 @@ export interface SubmitProposalItem {
 
 export interface SubmitProposalPayload {
   items: SubmitProposalItem[];
-  registeredCompanyName: string;
-  registeredCompanyAddress: string;
-  authorizedSignatoryName: string;
-  authorizedSignatoryDesignation: string;
-  officialEmailId: string;
-  phoneNumber: string;
-  preferredPaymentMode: "bank_transfer" | "crypto";
+  registeredCompanyName?: string;
+  registeredCompanyAddress?: string;
+  authorizedSignatoryName?: string;
+  authorizedSignatoryDesignation?: string;
+  officialEmailId?: string;
+  phoneNumber?: string;
+  preferredPaymentMode?: "bank_transfer" | "crypto";
   docusignProofLink?: string;
   isTermsConfirmed: boolean;
 }

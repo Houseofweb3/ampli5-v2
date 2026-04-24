@@ -510,30 +510,6 @@ export function ProposalPageContent({
   };
 
   const validateSubmitForm = (): boolean => {
-    if (!submitForm.registeredCompanyName.trim()) {
-      toast.error("Registered Company Name is required.");
-      return false;
-    }
-    if (!submitForm.registeredCompanyAddress.trim()) {
-      toast.error("Registered Company Address is required.");
-      return false;
-    }
-    if (!submitForm.authorizedSignatoryName.trim()) {
-      toast.error("Authorized Signatory Name is required.");
-      return false;
-    }
-    if (!submitForm.authorizedSignatoryDesignation.trim()) {
-      toast.error("Authorized Signatory Designation is required.");
-      return false;
-    }
-    if (!submitForm.officialEmailId.trim()) {
-      toast.error("Official Email ID is required.");
-      return false;
-    }
-    if (!submitForm.phoneNumber.trim()) {
-      toast.error("Phone Number is required.");
-      return false;
-    }
     return true;
   };
 
@@ -1230,7 +1206,6 @@ export function ProposalPageContent({
                   onChange={(e) =>
                     setSubmitForm((prev) => ({ ...prev, registeredCompanyName: e.target.value }))
                   }
-                  required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
@@ -1242,7 +1217,6 @@ export function ProposalPageContent({
                   onChange={(e) =>
                     setSubmitForm((prev) => ({ ...prev, registeredCompanyAddress: e.target.value }))
                   }
-                  required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
@@ -1254,7 +1228,6 @@ export function ProposalPageContent({
                   onChange={(e) =>
                     setSubmitForm((prev) => ({ ...prev, authorizedSignatoryName: e.target.value }))
                   }
-                  required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
@@ -1269,7 +1242,6 @@ export function ProposalPageContent({
                       authorizedSignatoryDesignation: e.target.value,
                     }))
                   }
-                  required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
@@ -1282,7 +1254,6 @@ export function ProposalPageContent({
                   onChange={(e) =>
                     setSubmitForm((prev) => ({ ...prev, officialEmailId: e.target.value }))
                   }
-                  required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
@@ -1295,7 +1266,6 @@ export function ProposalPageContent({
                   onChange={(e) =>
                     setSubmitForm((prev) => ({ ...prev, phoneNumber: e.target.value }))
                   }
-                  required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>

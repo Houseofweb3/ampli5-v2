@@ -223,32 +223,8 @@ export default function PRProposalPage({ params }: { params: { token: string } }
   };
 
   const validateBillingForm = (): boolean => {
-    if (!billingForm.firstName.trim()) {
-      toast.error("First name is required");
-      return false;
-    }
-    if (!billingForm.lastName.trim()) {
-      toast.error("Last name is required");
-      return false;
-    }
-    if (!proposal?.email) {
-      toast.error("Email is required");
-      return false;
-    }
-    if (!billingForm.projectName.trim()) {
-      toast.error("Project name is required");
-      return false;
-    }
-    if (!billingForm.projectUrl.trim()) {
-      toast.error("Project URL is required");
-      return false;
-    }
     if (billingForm.projectUrl && !/^https?:\/\/.+/.test(billingForm.projectUrl)) {
       toast.error("Please enter a valid URL (must start with http:// or https://)");
-      return false;
-    }
-    if (!billingForm.telegramId.trim()) {
-      toast.error("Telegram ID is required");
       return false;
     }
     return true;
@@ -673,7 +649,6 @@ export default function PRProposalPage({ params }: { params: { token: string } }
                   name="firstName"
                   value={billingForm.firstName}
                   onChange={(e) => handleBillingFormChange("firstName", e.target.value)}
-                  required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
@@ -683,7 +658,6 @@ export default function PRProposalPage({ params }: { params: { token: string } }
                   name="lastName"
                   value={billingForm.lastName}
                   onChange={(e) => handleBillingFormChange("lastName", e.target.value)}
-                  required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
@@ -703,7 +677,6 @@ export default function PRProposalPage({ params }: { params: { token: string } }
                   name="projectName"
                   value={billingForm.projectName}
                   onChange={(e) => handleBillingFormChange("projectName", e.target.value)}
-                  required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
@@ -715,7 +688,6 @@ export default function PRProposalPage({ params }: { params: { token: string } }
                   value={billingForm.projectUrl}
                   onChange={(e) => handleBillingFormChange("projectUrl", e.target.value)}
                   placeholder="https://example.com"
-                  required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
@@ -726,7 +698,6 @@ export default function PRProposalPage({ params }: { params: { token: string } }
                   value={billingForm.telegramId}
                   onChange={(e) => handleBillingFormChange("telegramId", e.target.value)}
                   placeholder="@username or numeric ID"
-                  required
                   variant={INPUT_VARIANTS.OUTLINED}
                 />
               </div>
