@@ -41,7 +41,20 @@ export interface ProposalCart {
   items: ProposalCartItem[];
 }
 
+export interface BillingInfoPrefill {
+  registeredCompanyName: string;
+  registeredCompanyAddress: string;
+  authorizedSignatoryName: string;
+  authorizedSignatoryDesignation: string;
+  officialEmailId: string;
+  phoneNumber: string;
+  preferredPaymentMode: "bank_transfer" | "crypto";
+  docusignProofLink: string | null;
+  isTermsConfirmed: boolean;
+}
+
 export interface GetProposalResponse {
+  billingInfoPrefill?: BillingInfoPrefill | null;
   cart: ProposalCart;
 }
 

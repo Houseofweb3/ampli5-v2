@@ -220,10 +220,7 @@ export function BlogRichEditor({
         />
       </div>
       <EditorContent editor={editor} />
-      <p className="text-xs text-gray-500 px-3 py-2 border-t border-gray-100 bg-gray-50">
-        Images upload via <code className="text-[11px]">…/web/blog-images/upload</code>. Paste, drop,
-        or use Image.
-      </p>
+   
     </div>
   );
 }

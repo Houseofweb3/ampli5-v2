@@ -35,6 +35,16 @@ const initialSubmitForm: SubmitFormData = {
   preferredPaymentMode: "bank_transfer",
 };
 
+function asNonEmptyString(value: unknown): string {
+  if (typeof value !== "string") return "";
+  const s = value.trim();
+  return s;
+}
+
+function normalizePaymentMode(value: unknown): "bank_transfer" | "crypto" {
+  return value === "crypto" ? "crypto" : "bank_transfer";
+}
+
 /** Avatar URL for influencer profile (same as influencer-table). */
 function getInfluencerAvatarUrl(name: string): string {
   return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || "U")}&background=random&size=128`;
@@ -255,6 +265,8 @@ export function ProposalPageContent({
   const [approvalStates, setApprovalStates] = useState<Record<string, boolean | null>>({});
   const [submitForm, setSubmitForm] = useState<SubmitFormData>(initialSubmitForm);
   const [signatureDataUrl, setSignatureDataUrl] = useState<string | null>(null);
+  const [existingSignatureUrl, setExistingSignatureUrl] = useState<string | null>(null);
+  const [signatureMode, setSignatureMode] = useState<"existing" | "draw">("draw");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [showTermsError, setShowTermsError] = useState(false);
   const [showSignatureModal, setShowSignatureModal] = useState(false);
@@ -332,6 +344,40 @@ export function ProposalPageContent({
             influencerItems: normalized.influencerItems ?? [],
           };
           setProposal(proposalPayload);
+
+          // Billing auto-fill (prefill) from API: billingInfoPrefill (client_billing_info)
+          const prefill = (data as { billingInfoPrefill?: unknown })?.billingInfoPrefill as
+            | Record<string, unknown>
+            | null
+            | undefined;
+          if (prefill && typeof prefill === "object") {
+            const prefillSignature = asNonEmptyString(prefill.docusignProofLink);
+            if (prefillSignature) {
+              setExistingSignatureUrl(prefillSignature);
+              setSignatureDataUrl(prefillSignature);
+              setSignatureMode("existing");
+            }
+
+            setSubmitForm((prev) => ({
+              ...prev,
+              registeredCompanyName: asNonEmptyString(prefill.registeredCompanyName) || prev.registeredCompanyName,
+              registeredCompanyAddress:
+                asNonEmptyString(prefill.registeredCompanyAddress) || prev.registeredCompanyAddress,
+              authorizedSignatoryName:
+                asNonEmptyString(prefill.authorizedSignatoryName) || prev.authorizedSignatoryName,
+              authorizedSignatoryDesignation:
+                asNonEmptyString(prefill.authorizedSignatoryDesignation) ||
+                prev.authorizedSignatoryDesignation,
+              officialEmailId: asNonEmptyString(prefill.officialEmailId) || prev.officialEmailId,
+              phoneNumber: asNonEmptyString(prefill.phoneNumber) || prev.phoneNumber,
+              preferredPaymentMode: normalizePaymentMode(prefill.preferredPaymentMode),
+            }));
+
+            if (prefill.isTermsConfirmed === true) {
+              setTermsAccepted(true);
+              setShowTermsError(false);
+            }
+          }
 
           if (normalized.influencerItems?.length) {
             const initialApprovalStates: Record<string, boolean | null> = {};
@@ -614,14 +660,50 @@ export function ProposalPageContent({
 
   useEffect(() => {
     if (showSignatureModal && signatureCanvasRef.current) {
+      if (signatureMode === "existing") return;
       const canvas = signatureCanvasRef.current;
       const ctx = canvas.getContext("2d");
-      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
-      hasDrawnRef.current = false;
+      if (!ctx) return;
+
+      // Persist signature across step navigation:
+      // - if we already captured a signatureDataUrl (data:image/*), re-render it into the canvas
+      // - otherwise, clear canvas for a new draw
+      if (signatureDataUrl && signatureDataUrl.startsWith("data:image/")) {
+        const ImgCtor =
+          typeof window !== "undefined" && typeof window.Image !== "undefined" ? window.Image : null;
+        if (!ImgCtor) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          hasDrawnRef.current = false;
+          return;
+        }
+        const img = new ImgCtor();
+        img.onload = () => {
+          try {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Fit image into canvas while preserving aspect ratio
+            const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+            const w = img.width * scale;
+            const h = img.height * scale;
+            const x = (canvas.width - w) / 2;
+            const y = (canvas.height - h) / 2;
+            ctx.drawImage(img, x, y, w, h);
+            hasDrawnRef.current = true;
+          } catch {
+            // if rendering fails, fall back to blank canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hasDrawnRef.current = false;
+          }
+        };
+        img.src = signatureDataUrl;
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        hasDrawnRef.current = false;
+      }
+
       isDrawingSignatureRef.current = false;
       signatureActivePointerIdRef.current = null;
     }
-  }, [showSignatureModal]);
+  }, [showSignatureModal, signatureMode, signatureDataUrl]);
 
   if (mode === "legacy" && (!legacyToken || !legacyToken.trim())) {
     notFound();
@@ -1335,48 +1417,100 @@ export function ProposalPageContent({
                 <strong>{submitForm.registeredCompanyName || "—"}</strong> and make binding
                 decisions regarding this matter.
               </p>
-              <div className="border border-gray-300 rounded-lg overflow-hidden bg-gray-50">
-                <canvas
-                  ref={signatureCanvasRef}
-                  width={500}
-                  height={200}
-                  className="w-full h-48 touch-none cursor-crosshair block"
-                  style={{ touchAction: "none" }}
-                  onPointerDown={handleSignaturePointerDown}
-                  onPointerMove={handleSignaturePointerMove}
-                  onPointerUp={handleSignaturePointerUp}
-                  onPointerCancel={handleSignaturePointerUp}
-                  onLostPointerCapture={handleSignatureLostPointerCapture}
-                />
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2 justify-between">
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowSignatureModal(false);
-                      setStep(2);
-                    }}
-                    className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="button"
-                    onClick={clearSignature}
-                    className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
-                  >
-                    Clear
-                  </button>
-                </div>
-                <button
-                  type="button"
-                  onClick={saveSignature}
-                  className="px-4 py-2 bg-dark-purple1-bg text-white rounded-lg hover:opacity-90"
-                >
-                  Next
-                </button>
-              </div>
+
+              {signatureMode === "existing" && existingSignatureUrl ? (
+                <>
+                  <div className="border border-gray-300 rounded-lg overflow-hidden bg-gray-50 p-3">
+                    <div className="flex items-center justify-between gap-3 mb-2">
+                      <p className="text-sm text-gray-700 font-medium">Existing signature</p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSignatureMode("draw");
+                          setSignatureDataUrl(null);
+                          clearSignature();
+                        }}
+                        className="px-3 py-1.5 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 text-sm"
+                      >
+                        Create new signature
+                      </button>
+                    </div>
+                    <img
+                      src={existingSignatureUrl}
+                      alt="Existing signature"
+                      className="w-full h-48 object-contain bg-white rounded-md"
+                    />
+                  </div>
+                  <div className="mt-4 flex flex-wrap gap-2 justify-between">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowSignatureModal(false);
+                        setStep(2);
+                      }}
+                      className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSignatureDataUrl(existingSignatureUrl);
+                        setShowSignatureModal(false);
+                        setStep(4);
+                      }}
+                      className="px-4 py-2 bg-dark-purple1-bg text-white rounded-lg hover:opacity-90"
+                    >
+                      Use this signature
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="border border-gray-300 rounded-lg overflow-hidden bg-gray-50">
+                    <canvas
+                      ref={signatureCanvasRef}
+                      width={500}
+                      height={200}
+                      className="w-full h-48 touch-none cursor-crosshair block"
+                      style={{ touchAction: "none" }}
+                      onPointerDown={handleSignaturePointerDown}
+                      onPointerMove={handleSignaturePointerMove}
+                      onPointerUp={handleSignaturePointerUp}
+                      onPointerCancel={handleSignaturePointerUp}
+                      onLostPointerCapture={handleSignatureLostPointerCapture}
+                    />
+                  </div>
+                  <div className="mt-4 flex flex-wrap gap-2 justify-between">
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowSignatureModal(false);
+                          setStep(2);
+                        }}
+                        className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+                      >
+                        Back
+                      </button>
+                      <button
+                        type="button"
+                        onClick={clearSignature}
+                        className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+                      >
+                        Clear
+                      </button>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={saveSignature}
+                      className="px-4 py-2 bg-dark-purple1-bg text-white rounded-lg hover:opacity-90"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}
