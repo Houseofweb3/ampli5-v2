@@ -6,9 +6,6 @@ import { TbMailOpenedFilled } from "react-icons/tb";
 import { useDashboardAuth } from "@/src/context/DashboardAuthContext";
 import Link from "next/link";
 
-
-
-
 const Page = () => {
   const router = useRouter();
   const { client, logout } = useDashboardAuth();
@@ -53,8 +50,7 @@ const Page = () => {
               {profile.name || "—"}
             </div>
           </div>
-          
-          
+
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700">Email</label>
             <div className="px-4 py-3 rounded-lg border border-gray-200 bg-gray-50/80 text-gray-900 font-[400] text-[15px] min-h-[48px] flex items-center gap-2">

@@ -149,7 +149,9 @@ function ManageLoginInner() {
 
   if (!ready) {
     return (
-      <div className="flex items-center justify-center min-h-[50vh] text-gray-500 text-sm">Loading…</div>
+      <div className="flex items-center justify-center min-h-[50vh] text-gray-500 text-sm">
+        Loading…
+      </div>
     );
   }
 
@@ -165,12 +167,17 @@ function ManageLoginInner() {
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
         <h1 className="text-2xl font-bold text-gray-900 mb-1">Manage blogs</h1>
-        <p className="text-sm text-gray-600 mb-8">Sign in with the email on your Ampli5 user account. We will email you a one-time code.</p>
+        <p className="text-sm text-gray-600 mb-8">
+          Sign in with the email on your Ampli5 user account. We will email you a one-time code.
+        </p>
 
         {step === "email" ? (
           <form onSubmit={handleSendOtp} className="space-y-4">
             <div>
-              <label htmlFor="manage-email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="manage-email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Email
               </label>
               <input
@@ -247,7 +254,9 @@ export default function ManageLoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center min-h-[50vh] text-gray-500 text-sm">Loading…</div>
+        <div className="flex items-center justify-center min-h-[50vh] text-gray-500 text-sm">
+          Loading…
+        </div>
       }
     >
       <ManageLoginInner />

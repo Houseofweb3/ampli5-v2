@@ -1,4 +1,7 @@
-import { publicBlogsBasePath, PUBLIC_BLOG_REVALIDATE_SECONDS } from "@/src/config/publicBlogEndpoints";
+import {
+  publicBlogsBasePath,
+  PUBLIC_BLOG_REVALIDATE_SECONDS,
+} from "@/src/config/publicBlogEndpoints";
 import type { BlogContentBlock } from "@/src/data/blogs";
 
 const fetchNext = { revalidate: PUBLIC_BLOG_REVALIDATE_SECONDS } as const;

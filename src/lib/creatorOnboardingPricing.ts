@@ -4,7 +4,9 @@
  */
 
 export function stripPriceToNumeric(rate: string): number | null {
-  const cleaned = String(rate).replace(/[$,\s]/g, "").trim();
+  const cleaned = String(rate)
+    .replace(/[$,\s]/g, "")
+    .trim();
   if (cleaned === "" || cleaned === "0") return null;
   const n = parseFloat(cleaned);
   return Number.isFinite(n) ? n : null;

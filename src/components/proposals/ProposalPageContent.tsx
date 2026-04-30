@@ -10,8 +10,7 @@ import {
   type ProposalSlugParams,
 } from "@/src/lib/proposalApiPaths";
 
-const getProposalBaseUrl = () =>
-  process.env.NEXT_PUBLIC_DASHBOARD_API_URL || "";
+const getProposalBaseUrl = () => process.env.NEXT_PUBLIC_DASHBOARD_API_URL || "";
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -63,37 +62,39 @@ function normalizeProofOfWork(value: unknown): string | null {
 
 /** Map dashboard API response (cart) to page shape (influencerItems, billingInfo, email). */
 function normalizeProposalResponse(data: Record<string, unknown>): ProposalDataShape {
-  const cart = data.cart as {
-    items?: Array<{
-      id: string;
-      influencerId: string;
-      quantity?: string;
-      price?: string;
-      notes?: string | null;
-      proofOfWork?: unknown;
-      isApproved?: boolean;
-      platform?: string;
-      platformLink?: string;
-      inventory?: string;
-      influencerName?: string;
-      influencer?: {
+  const cart = data.cart as
+    | {
+        items?: Array<{
+          id: string;
+          influencerId: string;
+          quantity?: string;
+          price?: string;
+          notes?: string | null;
+          proofOfWork?: unknown;
+          isApproved?: boolean;
+          platform?: string;
+          platformLink?: string;
+          inventory?: string;
+          influencerName?: string;
+          influencer?: {
+            id?: string;
+            name?: string;
+            platform?: string;
+            contentType?: string;
+            socialMediaLink?: string;
+            dpLink?: string;
+            price?: string;
+            quantity?: string | number;
+          };
+        }>;
+        client?: { id?: string; name?: string; email?: string };
         id?: string;
-        name?: string;
-        platform?: string;
-        contentType?: string;
-        socialMediaLink?: string;
-        dpLink?: string;
-        price?: string;
-        quantity?: string | number;
-      };
-    }>;
-    client?: { id?: string; name?: string; email?: string };
-    id?: string;
-     currency?: string;
-     priceRatio?: number;
-    managementFeePercent?: string;
-    discountPercent?: string;
-  } | undefined;
+        currency?: string;
+        priceRatio?: number;
+        managementFeePercent?: string;
+        discountPercent?: string;
+      }
+    | undefined;
 
   if (cart?.items) {
     const client = cart.client ?? {};
@@ -101,12 +102,9 @@ function normalizeProposalResponse(data: Record<string, unknown>): ProposalDataS
     const parts = clientName ? clientName.split(/\s+/) : [];
     const firstName = parts[0] ?? "";
     const lastName = parts.slice(1).join(" ") ?? "";
-    const managementFeePercentNum = cart.managementFeePercent != null
-      ? parseFloat(String(cart.managementFeePercent))
-      : 15;
-    const discountNum = cart.discountPercent != null
-      ? parseFloat(String(cart.discountPercent))
-      : 0;
+    const managementFeePercentNum =
+      cart.managementFeePercent != null ? parseFloat(String(cart.managementFeePercent)) : 15;
+    const discountNum = cart.discountPercent != null ? parseFloat(String(cart.discountPercent)) : 0;
     return {
       cartId: cart.id ?? "",
       email: (client.email as string) ?? "",
@@ -120,7 +118,9 @@ function normalizeProposalResponse(data: Record<string, unknown>): ProposalDataS
         projectUrl: "",
         campaignLiveDate: "",
         note: "",
-        managementFeePercentage: Number.isFinite(managementFeePercentNum) ? managementFeePercentNum : 15,
+        managementFeePercentage: Number.isFinite(managementFeePercentNum)
+          ? managementFeePercentNum
+          : 15,
         discount: Number.isFinite(discountNum) ? discountNum : 0,
       },
       influencerItems: cart.items.map((it) => {
@@ -360,7 +360,8 @@ export function ProposalPageContent({
 
             setSubmitForm((prev) => ({
               ...prev,
-              registeredCompanyName: asNonEmptyString(prefill.registeredCompanyName) || prev.registeredCompanyName,
+              registeredCompanyName:
+                asNonEmptyString(prefill.registeredCompanyName) || prev.registeredCompanyName,
               registeredCompanyAddress:
                 asNonEmptyString(prefill.registeredCompanyAddress) || prev.registeredCompanyAddress,
               authorizedSignatoryName:
@@ -413,7 +414,10 @@ export function ProposalPageContent({
         }
       } catch (err: unknown) {
         const errorMessage =
-          (err && typeof err === "object" && "message" in err && typeof (err as { message: string }).message === "string")
+          err &&
+          typeof err === "object" &&
+          "message" in err &&
+          typeof (err as { message: string }).message === "string"
             ? (err as { message: string }).message
             : "Something went wrong";
         toast.error(errorMessage, { duration: 2000 });
@@ -507,11 +511,7 @@ export function ProposalPageContent({
     const symbol = getCurrencySymbol(currencyCode);
 
     const raw =
-      typeof price === "number"
-        ? price
-        : typeof price === "string"
-          ? parseFloat(price)
-          : 0;
+      typeof price === "number" ? price : typeof price === "string" ? parseFloat(price) : 0;
 
     const numPrice = Number.isFinite(raw) ? raw : 0;
 
@@ -596,10 +596,7 @@ export function ProposalPageContent({
 
   const handleSignaturePointerMove = useCallback(
     (e: React.PointerEvent<HTMLCanvasElement>) => {
-      if (
-        !isDrawingSignatureRef.current ||
-        signatureActivePointerIdRef.current !== e.pointerId
-      ) {
+      if (!isDrawingSignatureRef.current || signatureActivePointerIdRef.current !== e.pointerId) {
         return;
       }
       e.preventDefault();
@@ -670,7 +667,9 @@ export function ProposalPageContent({
       // - otherwise, clear canvas for a new draw
       if (signatureDataUrl && signatureDataUrl.startsWith("data:image/")) {
         const ImgCtor =
-          typeof window !== "undefined" && typeof window.Image !== "undefined" ? window.Image : null;
+          typeof window !== "undefined" && typeof window.Image !== "undefined"
+            ? window.Image
+            : null;
         if (!ImgCtor) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           hasDrawnRef.current = false;
@@ -1144,8 +1143,7 @@ export function ProposalPageContent({
                       </div>
                       {item.note && (
                         <div>
-                          <span className="font-semibold">Note:</span>{" "}
-                          <span>{item.note}</span>
+                          <span className="font-semibold">Note:</span> <span>{item.note}</span>
                         </div>
                       )}
                       {item.profOfWork && (
@@ -1362,7 +1360,10 @@ export function ProposalPageContent({
                       name="preferredPaymentMode"
                       checked={submitForm.preferredPaymentMode === "bank_transfer"}
                       onChange={() =>
-                        setSubmitForm((prev) => ({ ...prev, preferredPaymentMode: "bank_transfer" }))
+                        setSubmitForm((prev) => ({
+                          ...prev,
+                          preferredPaymentMode: "bank_transfer",
+                        }))
                       }
                       className="rounded border-gray-300 text-[#7B46F8] focus:ring-[#7B46F8]"
                     />

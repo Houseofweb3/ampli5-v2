@@ -25,6 +25,11 @@ import {
   type InstagramInventoryMode,
 } from "@/src/constants/creatorOnboardingFilters";
 import { submitCreatorOnboarding } from "@/src/services/creatorOnboardingApi";
+import {
+  buildOnboardingFolderName,
+  deleteAmpli5ImageByUrl,
+  uploadAmpli5Image,
+} from "@/src/services/ampli5Images";
 
 interface Step {
   id: number;
@@ -401,14 +406,25 @@ export default function CreatorOnboardingForm() {
       formData.secondaryAudienceGeography.length > 0
     )
       completed.add(5);
-    // Step 6: Audience Proof - check if at least one image is uploaded
-    if (formData.ageScreenshot || formData.genderScreenshot || formData.topCountriesScreenshot)
-      completed.add(6);
+    // Step 6: Audience Proof - require all 3 screenshots per selected platform
+    const platformsForProof = formData.platforms || [];
+    const proofMap = formData.platformAudienceProof || {};
+    const step6Complete =
+      platformsForProof.length > 0 &&
+      platformsForProof.every((p: string) => {
+        const proof = proofMap[p];
+        return (
+          !!proof?.ageScreenshot?.trim() &&
+          !!proof?.genderScreenshot?.trim() &&
+          !!proof?.topCountriesScreenshot?.trim()
+        );
+      });
+    if (step6Complete) completed.add(6);
     // Step 7: Payment Terms - check if payment term is selected
     if (formData.paymentTerms && formData.paymentTerms.trim()) completed.add(7);
     // Step 8: Turnaround & Reliability - turnaround time (single choice)
     if (formData.turnaroundTimes && formData.turnaroundTimes.length > 0) completed.add(8);
-    // Step 9: Previous Collaborations - check if all three images and at least one link are provided
+    // Step 9: Previous Collaborations - require 3 images per selected platform + at least one link
     const hasAtLeastOnePrevLink = [
       formData.xLink,
       formData.instagramLink,
@@ -416,13 +432,15 @@ export default function CreatorOnboardingForm() {
       formData.tiktokLink,
       formData.newsletterLink,
     ].some((v) => v != null && String(v).trim() !== "");
-    if (
-      formData.firstCollaborationImage1 &&
-      formData.firstCollaborationImage2 &&
-      formData.firstCollaborationImage3 &&
-      hasAtLeastOnePrevLink
-    )
-      completed.add(9);
+    const platformsForCollab = formData.platforms || [];
+    const collabMap = formData.platformCollaborationProof || {};
+    const step9ImagesComplete =
+      platformsForCollab.length > 0 &&
+      platformsForCollab.every((p: string) => {
+        const proof = collabMap[p];
+        return !!proof?.image1?.trim() && !!proof?.image2?.trim() && !!proof?.image3?.trim();
+      });
+    if (step9ImagesComplete && hasAtLeastOnePrevLink) completed.add(9);
     // Step 10: Final Confirmation - check if confirmation is checked
     if (formData.finalConfirmation) completed.add(10);
     setCompletedSteps(completed);
@@ -502,7 +520,10 @@ export default function CreatorOnboardingForm() {
           break;
         }
         for (const platform of platforms) {
-          const optionsForPlatform = getInventoryOptionsForPlatform(platform, instagramInventoryMode);
+          const optionsForPlatform = getInventoryOptionsForPlatform(
+            platform,
+            instagramInventoryMode
+          );
           if (optionsForPlatform.length > 0) {
             const selectedForPlatform = optionsForPlatform.filter(
               (item) => inventoryItems[item]?.selected
@@ -544,23 +565,35 @@ export default function CreatorOnboardingForm() {
           !formData.secondaryAudienceGeography ||
           formData.secondaryAudienceGeography.length === 0
         ) {
-          newErrors.secondaryAudienceGeography =
-            "Please select one secondary audience region";
+          newErrors.secondaryAudienceGeography = "Please select one secondary audience region";
         } else if (formData.secondaryAudienceGeography.length > 1) {
           newErrors.secondaryAudienceGeography =
             "Select only one target geography for secondary audience";
         }
         break;
       case 6:
-        // Audience Proof - validate image uploads
-        if (!formData.ageScreenshot || !formData.ageScreenshot.trim()) {
-          newErrors.ageScreenshot = "Age screenshot is required";
+        // Audience Proof - validate image uploads for each selected platform
+        if (!formData.platforms || formData.platforms.length === 0) {
+          newErrors.platforms = "Please select at least one platform first";
+          break;
         }
-        if (!formData.genderScreenshot || !formData.genderScreenshot.trim()) {
-          newErrors.genderScreenshot = "Gender screenshot is required";
-        }
-        if (!formData.topCountriesScreenshot || !formData.topCountriesScreenshot.trim()) {
-          newErrors.topCountriesScreenshot = "Top countries screenshot is required";
+        for (const platform of formData.platforms) {
+          const proof = (formData.platformAudienceProof || {})[platform];
+          if (!proof?.ageScreenshot?.trim()) {
+            newErrors[`audienceProof_${platform}_ageScreenshot`] =
+              `Age screenshot is required for ${platform}`;
+            break;
+          }
+          if (!proof?.genderScreenshot?.trim()) {
+            newErrors[`audienceProof_${platform}_genderScreenshot`] =
+              `Gender screenshot is required for ${platform}`;
+            break;
+          }
+          if (!proof?.topCountriesScreenshot?.trim()) {
+            newErrors[`audienceProof_${platform}_topCountriesScreenshot`] =
+              `Top countries screenshot is required for ${platform}`;
+            break;
+          }
         }
         break;
       case 7:
@@ -575,15 +608,27 @@ export default function CreatorOnboardingForm() {
         break;
       case 9:
         // Previous Collaborations - validate image uploads and links
-        // First slide - validate all three images
-        if (!formData.firstCollaborationImage1 || !formData.firstCollaborationImage1.trim()) {
-          newErrors.firstCollaborationImage1 = "First collaboration image is required";
+        if (!formData.platforms || formData.platforms.length === 0) {
+          newErrors.platforms = "Please select at least one platform first";
+          break;
         }
-        if (!formData.firstCollaborationImage2 || !formData.firstCollaborationImage2.trim()) {
-          newErrors.firstCollaborationImage2 = "Second collaboration image is required";
-        }
-        if (!formData.firstCollaborationImage3 || !formData.firstCollaborationImage3.trim()) {
-          newErrors.firstCollaborationImage3 = "Third collaboration image is required";
+        for (const platform of formData.platforms) {
+          const proof = (formData.platformCollaborationProof || {})[platform];
+          if (!proof?.image1?.trim()) {
+            newErrors[`collaborationProof_${platform}_image1`] =
+              `Collaboration proof image 1 is required for ${platform}`;
+            break;
+          }
+          if (!proof?.image2?.trim()) {
+            newErrors[`collaborationProof_${platform}_image2`] =
+              `Collaboration proof image 2 is required for ${platform}`;
+            break;
+          }
+          if (!proof?.image3?.trim()) {
+            newErrors[`collaborationProof_${platform}_image3`] =
+              `Collaboration proof image 3 is required for ${platform}`;
+            break;
+          }
         }
         // Second slide - at least one link is required
         const hasAtLeastOneLink = [
@@ -1703,7 +1748,7 @@ export default function CreatorOnboardingForm() {
           const keysToReset =
             platform === "Instagram"
               ? ALL_INSTAGRAM_INVENTORY_KEYS
-              : PLATFORM_INVENTORY_OPTIONS[platform] ?? [];
+              : (PLATFORM_INVENTORY_OPTIONS[platform] ?? []);
           const currentItems = formData.inventoryItems || {};
           const newItems = { ...currentItems };
           keysToReset.forEach((k) => {
@@ -2033,7 +2078,11 @@ export default function CreatorOnboardingForm() {
                       </h3>
                     </div>
                     <p className="text-sm text-gray-500 mb-4">Select your target geography</p>
-                    <div className="space-y-3" role="radiogroup" aria-label="Primary audience geography">
+                    <div
+                      className="space-y-3"
+                      role="radiogroup"
+                      aria-label="Primary audience geography"
+                    >
                       {GEOGRAPHY_OPTIONS.map((option) => {
                         const isSelected =
                           formData.primaryAudienceGeography?.includes(option) || false;
@@ -2056,7 +2105,9 @@ export default function CreatorOnboardingForm() {
                             />
                             <div
                               className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 flex-shrink-0 ${
-                                isSelected ? "border-[#7B46F8] bg-white" : "border-gray-300 bg-white"
+                                isSelected
+                                  ? "border-[#7B46F8] bg-white"
+                                  : "border-gray-300 bg-white"
                               }`}
                             >
                               {isSelected && (
@@ -2090,7 +2141,11 @@ export default function CreatorOnboardingForm() {
                       </h3>
                     </div>
                     <p className="text-sm text-gray-500 mb-4">Select your target geography</p>
-                    <div className="space-y-3" role="radiogroup" aria-label="Secondary audience geography">
+                    <div
+                      className="space-y-3"
+                      role="radiogroup"
+                      aria-label="Secondary audience geography"
+                    >
                       {GEOGRAPHY_OPTIONS.map((option) => {
                         const isSelected =
                           formData.secondaryAudienceGeography?.includes(option) || false;
@@ -2113,7 +2168,9 @@ export default function CreatorOnboardingForm() {
                             />
                             <div
                               className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 flex-shrink-0 ${
-                                isSelected ? "border-[#7B46F8] bg-white" : "border-gray-300 bg-white"
+                                isSelected
+                                  ? "border-[#7B46F8] bg-white"
+                                  : "border-gray-300 bg-white"
                               }`}
                             >
                               {isSelected && (
@@ -2150,7 +2207,11 @@ export default function CreatorOnboardingForm() {
                   </h3>
                 </div>
                 <p className="text-sm text-gray-500 mb-4">Select your target geography</p>
-                <div className="space-y-3" role="radiogroup" aria-label="Primary audience geography">
+                <div
+                  className="space-y-3"
+                  role="radiogroup"
+                  aria-label="Primary audience geography"
+                >
                   {GEOGRAPHY_OPTIONS.map((option) => {
                     const isSelected = formData.primaryAudienceGeography?.includes(option) || false;
                     return (
@@ -2169,9 +2230,7 @@ export default function CreatorOnboardingForm() {
                         <div
                           className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 flex-shrink-0 ${isSelected ? "border-[#7B46F8] bg-white" : "border-gray-300 bg-white"}`}
                         >
-                          {isSelected && (
-                            <span className="w-2.5 h-2.5 rounded-full bg-[#7B46F8]" />
-                          )}
+                          {isSelected && <span className="w-2.5 h-2.5 rounded-full bg-[#7B46F8]" />}
                         </div>
                         <span
                           className={`text-sm font-medium ${isSelected ? "text-gray-900" : "text-gray-700"}`}
@@ -2194,7 +2253,11 @@ export default function CreatorOnboardingForm() {
                   </h3>
                 </div>
                 <p className="text-sm text-gray-500 mb-4">Select your target geography</p>
-                <div className="space-y-3" role="radiogroup" aria-label="Secondary audience geography">
+                <div
+                  className="space-y-3"
+                  role="radiogroup"
+                  aria-label="Secondary audience geography"
+                >
                   {GEOGRAPHY_OPTIONS.map((option) => {
                     const isSelected =
                       formData.secondaryAudienceGeography?.includes(option) || false;
@@ -2214,9 +2277,7 @@ export default function CreatorOnboardingForm() {
                         <div
                           className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 flex-shrink-0 ${isSelected ? "border-[#7B46F8] bg-white" : "border-gray-300 bg-white"}`}
                         >
-                          {isSelected && (
-                            <span className="w-2.5 h-2.5 rounded-full bg-[#7B46F8]" />
-                          )}
+                          {isSelected && <span className="w-2.5 h-2.5 rounded-full bg-[#7B46F8]" />}
                         </div>
                         <span
                           className={`text-sm font-medium ${isSelected ? "text-gray-900" : "text-gray-700"}`}
@@ -2235,23 +2296,72 @@ export default function CreatorOnboardingForm() {
           </div>
         );
       case 6:
-        const handleImageUpload = async (
-          field: "ageScreenshot" | "genderScreenshot" | "topCountriesScreenshot",
+        type AudienceProofField = "ageScreenshot" | "genderScreenshot" | "topCountriesScreenshot";
+        const allowedAudienceProofImageTypes = [
+          "image/jpeg",
+          "image/jpg",
+          "image/png",
+          "image/gif",
+          "image/webp",
+          "image/bmp",
+          "image/svg+xml",
+        ];
+
+        const getPlatformProof = (platform: string) => {
+          const proof = (formData.platformAudienceProof || {})[platform];
+          return (
+            proof ?? {
+              ageScreenshot: "",
+              genderScreenshot: "",
+              topCountriesScreenshot: "",
+              ageScreenshotPublicId: "",
+              genderScreenshotPublicId: "",
+              topCountriesScreenshotPublicId: "",
+            }
+          );
+        };
+
+        const getLatestPlatformProof = (platform: string) => {
+          const latestMap =
+            useCreatorOnboardingFormStore.getState().formData.platformAudienceProof || {};
+          const proof = latestMap[platform];
+          return (
+            proof ?? {
+              ageScreenshot: "",
+              genderScreenshot: "",
+              topCountriesScreenshot: "",
+              ageScreenshotPublicId: "",
+              genderScreenshotPublicId: "",
+              topCountriesScreenshotPublicId: "",
+            }
+          );
+        };
+
+        const setPlatformProof = (
+          platform: string,
+          patch: Partial<ReturnType<typeof getPlatformProof>>
+        ) => {
+          // IMPORTANT: read latest state from the store to avoid race overwrites
+          // when multiple uploads finish out-of-order.
+          const prevMap =
+            useCreatorOnboardingFormStore.getState().formData.platformAudienceProof || {};
+          const prev = getLatestPlatformProof(platform);
+          updateFormData({
+            platformAudienceProof: {
+              ...prevMap,
+              [platform]: { ...prev, ...patch },
+            },
+          });
+        };
+
+        const handlePlatformImageUpload = async (
+          platform: string,
+          field: AudienceProofField,
           file: File
         ) => {
-          // Validate file type - only allow image files
-          const allowedImageTypes = [
-            "image/jpeg",
-            "image/jpg",
-            "image/png",
-            "image/gif",
-            "image/webp",
-            "image/bmp",
-            "image/svg+xml",
-          ];
           if (
             !file.type.startsWith("image/") ||
-            !allowedImageTypes.includes(file.type.toLowerCase())
+            !allowedAudienceProofImageTypes.includes(file.type.toLowerCase())
           ) {
             toast.error(
               "Please upload an image file only (JPG, PNG, GIF, WebP, BMP, or SVG). Documents and videos are not allowed."
@@ -2259,167 +2369,101 @@ export default function CreatorOnboardingForm() {
             return;
           }
 
-          // Validate file size (10MB)
           if (file.size > 10 * 1024 * 1024) {
             toast.error("File size must be less than 10MB");
             return;
           }
 
-          setUploadingFields((prev) => new Set(prev).add(field));
+          const uploadingKey = `audienceProof:${platform}:${field}`;
+          setUploadingFields((prev) => new Set(prev).add(uploadingKey));
 
           try {
-            const formData = new FormData();
-            formData.append("file", file);
+            const folderName = buildOnboardingFolderName(formData.channelBrandName);
+            const { url } = await uploadAmpli5Image(file, folderName);
+            const publicIdKey = `${field}PublicId`;
+            setPlatformProof(platform, { [field]: url, [publicIdKey]: "" } as any);
 
-            const response = await fetch("/api/cloudinary/upload", {
-              method: "POST",
-              body: formData,
-            });
-
-            if (!response.ok) {
-              const errorData = await response.json().catch(() => ({}));
-              if (response.status === 408 || errorData.error === "TIMEOUT") {
-                throw new Error("TIMEOUT");
-              }
-              throw new Error(errorData.message || "Upload failed");
+            const errKey = `audienceProof_${platform}_${field}`;
+            if (errors[errKey]) {
+              setErrors((prev) => ({ ...prev, [errKey]: "" }));
             }
 
-            const data = await response.json();
-            // Store URL directly in form data for Excel export
-            // Also store publicId in a separate field for deletion if needed
-            updateFormData({
-              [field]: data.url, // Store URL as string for Excel
-              [`${field}PublicId`]: data.publicId, // Store publicId separately for deletion
-            });
-            // Clear error for this field if it exists
-            if (errors[field]) {
-              setErrors((prev) => ({ ...prev, [field]: "" }));
-            }
             toast.success("Image uploaded successfully");
           } catch (error: any) {
             console.error("Error uploading image:", error);
-            if (error.message === "TIMEOUT") {
-              toast.error(
-                "Upload timeout. The image may be too large or your connection is slow. Please try again with a smaller image."
-              );
-            } else {
-              toast.error(error.message || "Failed to upload image. Please try again.");
-            }
+            toast.error(error.message || "Failed to upload image. Please try again.");
           } finally {
             setUploadingFields((prev) => {
-              const newSet = new Set(prev);
-              newSet.delete(field);
-              return newSet;
+              const next = new Set(prev);
+              next.delete(uploadingKey);
+              return next;
             });
           }
         };
 
-        const handleImageDelete = async (
-          field: "ageScreenshot" | "genderScreenshot" | "topCountriesScreenshot"
-        ) => {
-          const currentData = formData[field];
-          if (!currentData) return;
+        const handlePlatformImageDelete = async (platform: string, field: AudienceProofField) => {
+          const proof = getPlatformProof(platform);
+          const currentUrl = (proof as any)[field] as string;
+          if (!currentUrl) return;
+
+          const publicIdKey = `${field}PublicId`;
+          const deletingKey = `audienceProof:delete:${platform}:${field}`;
+          setUploadingFields((prev) => new Set(prev).add(deletingKey));
 
           try {
-            // Get publicId from the separate field
-            const publicIdField = `${field}PublicId` as keyof typeof formData;
-            const publicId = formData[publicIdField] as string;
-
-            if (publicId) {
-              const response = await fetch("/api/cloudinary/delete", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ publicId }),
-              });
-
-              if (response.ok) {
-                updateFormData({
-                  [field]: "",
-                  [publicIdField]: "",
-                });
-                toast.success("Image deleted successfully");
-              } else {
-                toast.error("Failed to delete image");
-              }
-            } else {
-              // If no publicId, just clear from form
-              updateFormData({
-                [field]: "",
-                [publicIdField]: "",
-              });
-            }
+            await deleteAmpli5ImageByUrl(currentUrl);
+            setPlatformProof(platform, { [field]: "", [publicIdKey]: "" } as any);
+            toast.success("Image deleted successfully");
           } catch (error) {
             console.error("Error deleting image:", error);
-            // If error, just clear the fields
-            const publicIdField = `${field}PublicId` as keyof typeof formData;
-            updateFormData({
-              [field]: "",
-              [publicIdField]: "",
-            });
+            setPlatformProof(platform, { [field]: "", [publicIdKey]: "" } as any);
             toast.error("Error deleting image");
+          } finally {
+            setUploadingFields((prev) => {
+              const next = new Set(prev);
+              next.delete(deletingKey);
+              return next;
+            });
           }
         };
 
-        const getImageData = (
-          field: "ageScreenshot" | "genderScreenshot" | "topCountriesScreenshot"
-        ) => {
-          const data = formData[field];
-          if (!data) return null;
-
-          // Handle backward compatibility - check if it's JSON string
-          try {
-            const parsed = JSON.parse(data);
-            if (parsed.url) {
-              return { url: parsed.url, publicId: parsed.publicId || null };
-            }
-          } catch {
-            // Not JSON, treat as URL string
-          }
-
-          // New format: URL is stored as string, publicId in separate field
-          const publicIdField = `${field}PublicId` as keyof typeof formData;
-          const publicId = formData[publicIdField] as string;
-          return { url: data, publicId: publicId || null };
-        };
-
-        const ImageUploadField = ({
+        const PlatformImageUploadField = ({
+          platform,
           field,
           label,
         }: {
-          field: "ageScreenshot" | "genderScreenshot" | "topCountriesScreenshot";
+          platform: string;
+          field: AudienceProofField;
           label: string;
         }) => {
-          const imageData = getImageData(field);
-          const hasImage = !!imageData?.url;
-          const isUploading = uploadingFields.has(field);
+          const proof = getPlatformProof(platform);
+          const url = ((proof as any)[field] as string) || "";
+          const hasImage = !!url;
+          const uploadingKey = `audienceProof:${platform}:${field}`;
+          const isUploading = uploadingFields.has(uploadingKey);
+          const deletingKey = `audienceProof:delete:${platform}:${field}`;
+          const isDeleting = uploadingFields.has(deletingKey);
+          const isBusy = isUploading || isDeleting;
           const fileInputRef = useRef<HTMLInputElement>(null);
           const [isFocused, setIsFocused] = useState(false);
-          const fieldError = errors[field];
+          const errKey = `audienceProof_${platform}_${field}`;
+          const fieldError = errors[errKey];
 
           const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
-
-            // Only allow single file upload
             if (files.length > 1) {
               toast.error("Please upload only one image at a time");
-              if (fileInputRef.current) {
-                fileInputRef.current.value = "";
-              }
+              if (fileInputRef.current) fileInputRef.current.value = "";
               return;
             }
 
             const file = files[0];
-            if (file) {
-              handleImageUpload(field, file);
-            }
-            // Reset input so same file can be selected again
-            if (fileInputRef.current) {
-              fileInputRef.current.value = "";
-            }
+            if (file) handlePlatformImageUpload(platform, field, file);
+            if (fileInputRef.current) fileInputRef.current.value = "";
           };
+
+          const inputId = `file-input-${platform}-${field}`.replace(/\s+/g, "-");
 
           return (
             <div className="space-y-3">
@@ -2428,27 +2472,60 @@ export default function CreatorOnboardingForm() {
                 <div className="relative border-2 border-gray-300 rounded-lg p-4">
                   <div className="relative w-full h-64 mb-3 bg-gray-50 rounded-lg overflow-hidden">
                     <Image
-                      src={imageData.url}
-                      alt={label}
+                      src={url}
+                      alt={`${platform}: ${label}`}
                       fill
                       className="object-contain rounded-lg"
                       unoptimized
                     />
                   </div>
                   <button
-                    onClick={() => handleImageDelete(field)}
-                    disabled={isUploading}
+                    onClick={() => handlePlatformImageDelete(platform, field)}
+                    disabled={isBusy}
                     className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                    Delete Image
+                    {isDeleting ? (
+                      <>
+                        <svg
+                          className="animate-spin h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        <span>Deleting...</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                        <span>Delete Image</span>
+                      </>
+                    )}
                   </button>
                 </div>
               ) : (
@@ -2460,24 +2537,24 @@ export default function CreatorOnboardingForm() {
                     onChange={handleFileChange}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
-                    disabled={isUploading}
+                    disabled={isBusy}
                     className="hidden"
-                    id={`file-input-${field}`}
+                    id={inputId}
                   />
                   <label
-                    htmlFor={`file-input-${field}`}
+                    htmlFor={inputId}
                     className={`w-full px-4 py-3 rounded-lg flex items-center justify-between cursor-pointer transition-all ${
-                      isUploading
+                      isBusy
                         ? "opacity-50 cursor-not-allowed bg-gray-50 border border-gray-200"
-                        : isFocused || (field === "ageScreenshot" && !hasImage)
+                        : isFocused
                           ? "border-2 border-[#7B46F8] bg-white"
                           : "bg-gray-50 border border-gray-200 hover:border-gray-300"
                     }`}
                   >
                     <span className="text-sm font-medium text-gray-700">
-                      {isUploading ? "Uploading..." : label}
+                      {isUploading ? "Uploading..." : isDeleting ? "Deleting..." : label}
                     </span>
-                    {isUploading ? (
+                    {isBusy ? (
                       <svg
                         className="animate-spin h-5 w-5 text-[#7B46F8]"
                         xmlns="http://www.w3.org/2000/svg"
@@ -2530,54 +2607,43 @@ export default function CreatorOnboardingForm() {
               <button
                 onClick={async () => {
                   setIsResetting(true);
-                  const imagesToDelete = [
-                    {
-                      field: "ageScreenshot" as const,
-                      publicId: formData.ageScreenshotPublicId,
-                    },
-                    {
-                      field: "genderScreenshot" as const,
-                      publicId: formData.genderScreenshotPublicId,
-                    },
-                    {
-                      field: "topCountriesScreenshot" as const,
-                      publicId: formData.topCountriesScreenshotPublicId,
-                    },
-                  ].filter((img) => img.publicId && img.publicId.trim() !== "");
+                  const proofMap = formData.platformAudienceProof || {};
+                  const urls = Object.values(proofMap)
+                    .flatMap((p: any) => [
+                      p?.ageScreenshot,
+                      p?.genderScreenshot,
+                      p?.topCountriesScreenshot,
+                    ])
+                    .filter((u) => typeof u === "string" && u.trim() !== "");
 
-                  // Delete all images from Cloudinary
-                  if (imagesToDelete.length > 0) {
+                  if (urls.length > 0) {
                     try {
-                      const deletePromises = imagesToDelete.map(({ publicId }) =>
-                        fetch("/api/cloudinary/delete", {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify({ publicId }),
-                        })
+                      const deletePromises = urls.map((url) =>
+                        deleteAmpli5ImageByUrl(url).catch(() => ({ deleted: false }))
                       );
 
                       const results = await Promise.allSettled(deletePromises);
 
                       // Check if all deletions were successful
                       const allSuccessful = results.every(
-                        (result) => result.status === "fulfilled" && result.value.ok
+                        (result) => result.status === "fulfilled"
                       );
 
                       if (allSuccessful) {
-                        toast.success("All images deleted from Cloudinary");
+                        toast.success("All images deleted successfully");
                       } else {
                         toast.error("Some images could not be deleted");
                       }
                     } catch (error) {
                       console.error("Error deleting images:", error);
-                      toast.error("Error deleting images from Cloudinary");
+                      toast.error("Error deleting images");
                     }
                   }
 
                   // Clear form data regardless of deletion result
                   updateFormData({
+                    platformAudienceProof: {},
+                    // also clear legacy fields (kept only for backward compatibility)
                     ageScreenshot: "",
                     genderScreenshot: "",
                     topCountriesScreenshot: "",
@@ -2637,19 +2703,42 @@ export default function CreatorOnboardingForm() {
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Upload Audience Demographics Screenshot
+                  Upload Audience Demographics Screenshots (per platform)
                 </h3>
               </div>
 
-              <div className="space-y-4">
-                <ImageUploadField field="ageScreenshot" label="Upload Age screenshot" />
+              {(!formData.platforms || formData.platforms.length === 0) && (
+                <p className="text-sm text-gray-500">
+                  Please select at least one platform in Step 1.
+                </p>
+              )}
 
-                <ImageUploadField field="genderScreenshot" label="Upload gender screenshot" />
-
-                <ImageUploadField
-                  field="topCountriesScreenshot"
-                  label="Upload top countries screenshot"
-                />
+              <div className="space-y-8">
+                {(formData.platforms || []).map((platform) => (
+                  <div key={platform} className="border border-gray-200 rounded-lg p-4 sm:p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
+                      <h4 className="text-base font-semibold text-gray-900">{platform}</h4>
+                    </div>
+                    <div className="space-y-4">
+                      <PlatformImageUploadField
+                        platform={platform}
+                        field="ageScreenshot"
+                        label="Upload Age screenshot"
+                      />
+                      <PlatformImageUploadField
+                        platform={platform}
+                        field="genderScreenshot"
+                        label="Upload gender screenshot"
+                      />
+                      <PlatformImageUploadField
+                        platform={platform}
+                        field="topCountriesScreenshot"
+                        label="Upload top countries screenshot"
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -2832,26 +2921,72 @@ export default function CreatorOnboardingForm() {
           </div>
         );
       case 9:
-        const handleCollaborationImageUpload = async (
-          field:
-            | "firstCollaborationImage1"
-            | "firstCollaborationImage2"
-            | "firstCollaborationImage3",
+        type CollaborationProofField = "image1" | "image2" | "image3";
+        const allowedCollaborationProofImageTypes = [
+          "image/jpeg",
+          "image/jpg",
+          "image/png",
+          "image/gif",
+          "image/webp",
+          "image/bmp",
+          "image/svg+xml",
+        ];
+
+        const getPlatformCollab = (platform: string) => {
+          const proof = (formData.platformCollaborationProof || {})[platform];
+          return (
+            proof ?? {
+              image1: "",
+              image2: "",
+              image3: "",
+              image1PublicId: "",
+              image2PublicId: "",
+              image3PublicId: "",
+            }
+          );
+        };
+
+        const getLatestPlatformCollab = (platform: string) => {
+          const latestMap =
+            useCreatorOnboardingFormStore.getState().formData.platformCollaborationProof || {};
+          const proof = latestMap[platform];
+          return (
+            proof ?? {
+              image1: "",
+              image2: "",
+              image3: "",
+              image1PublicId: "",
+              image2PublicId: "",
+              image3PublicId: "",
+            }
+          );
+        };
+
+        const setPlatformCollab = (
+          platform: string,
+          patch: Partial<ReturnType<typeof getPlatformCollab>>
+        ) => {
+          // IMPORTANT: read latest state from the store to avoid race overwrites
+          // when multiple uploads finish out-of-order.
+          const prevMap =
+            useCreatorOnboardingFormStore.getState().formData.platformCollaborationProof || {};
+          const prev = getLatestPlatformCollab(platform);
+          updateFormData({
+            platformCollaborationProof: {
+              ...prevMap,
+              [platform]: { ...prev, ...patch },
+            },
+          });
+        };
+
+        const handlePlatformCollabUpload = async (
+          platform: string,
+          field: CollaborationProofField,
           file: File
         ) => {
-          // Validate file type - only allow image files
-          const allowedImageTypes = [
-            "image/jpeg",
-            "image/jpg",
-            "image/png",
-            "image/gif",
-            "image/webp",
-            "image/bmp",
-            "image/svg+xml",
-          ];
           if (
             !file.type.startsWith("image/") ||
-            !allowedImageTypes.includes(file.type.toLowerCase())
+            !allowedCollaborationProofImageTypes.includes(file.type.toLowerCase())
           ) {
             toast.error(
               "Please upload an image file only (JPG, PNG, GIF, WebP, BMP, or SVG). Documents and videos are not allowed."
@@ -2859,177 +2994,110 @@ export default function CreatorOnboardingForm() {
             return;
           }
 
-          // Validate file size (10MB)
           if (file.size > 10 * 1024 * 1024) {
             toast.error("File size must be less than 10MB");
             return;
           }
 
-          setUploadingFields((prev) => new Set(prev).add(field));
+          const uploadingKey = `collaborationProof:${platform}:${field}`;
+          setUploadingFields((prev) => new Set(prev).add(uploadingKey));
 
           try {
-            const formData = new FormData();
-            formData.append("file", file);
+            const folderName = buildOnboardingFolderName(formData.channelBrandName);
+            const { url } = await uploadAmpli5Image(file, folderName);
+            const publicIdKey = `${field}PublicId`;
+            setPlatformCollab(platform, { [field]: url, [publicIdKey]: "" } as any);
 
-            const response = await fetch("/api/cloudinary/upload", {
-              method: "POST",
-              body: formData,
-            });
-
-            if (!response.ok) {
-              const errorData = await response.json().catch(() => ({}));
-              if (response.status === 408 || errorData.error === "TIMEOUT") {
-                throw new Error("TIMEOUT");
-              }
-              throw new Error(errorData.message || "Upload failed");
+            const errKey = `collaborationProof_${platform}_${field}`;
+            if (errors[errKey]) {
+              setErrors((prev) => ({ ...prev, [errKey]: "" }));
             }
 
-            const data = await response.json();
-            updateFormData({
-              [field]: data.url,
-              [`${field}PublicId`]: data.publicId,
-            });
-            // Clear error for this field if it exists
-            if (errors[field]) {
-              setErrors((prev) => ({ ...prev, [field]: "" }));
-            }
             toast.success("Image uploaded successfully");
           } catch (error: any) {
             console.error("Error uploading image:", error);
-            if (error.message === "TIMEOUT") {
-              toast.error(
-                "Upload timeout. The image may be too large or your connection is slow. Please try again with a smaller image."
-              );
-            } else {
-              toast.error(error.message || "Failed to upload image. Please try again.");
-            }
+            toast.error(error.message || "Failed to upload image. Please try again.");
           } finally {
             setUploadingFields((prev) => {
-              const newSet = new Set(prev);
-              newSet.delete(field);
-              return newSet;
+              const next = new Set(prev);
+              next.delete(uploadingKey);
+              return next;
             });
           }
         };
 
-        const handleCollaborationImageDelete = async (
-          field:
-            | "firstCollaborationImage1"
-            | "firstCollaborationImage2"
-            | "firstCollaborationImage3"
+        const handlePlatformCollabDelete = async (
+          platform: string,
+          field: CollaborationProofField
         ) => {
-          const currentData = formData[field];
-          if (!currentData) return;
+          const proof = getPlatformCollab(platform);
+          const currentUrl = (proof as any)[field] as string;
+          if (!currentUrl) return;
+
+          const publicIdKey = `${field}PublicId`;
+          const deletingKey = `collaborationProof:delete:${platform}:${field}`;
+          setUploadingFields((prev) => new Set(prev).add(deletingKey));
 
           try {
-            const publicIdField = `${field}PublicId` as keyof typeof formData;
-            const publicId = formData[publicIdField] as string;
-
-            if (publicId) {
-              const response = await fetch("/api/cloudinary/delete", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ publicId }),
-              });
-
-              if (response.ok) {
-                updateFormData({
-                  [field]: "",
-                  [publicIdField]: "",
-                });
-                toast.success("Image deleted successfully");
-              } else {
-                toast.error("Failed to delete image");
-              }
-            } else {
-              updateFormData({
-                [field]: "",
-                [publicIdField]: "",
-              });
-            }
+            await deleteAmpli5ImageByUrl(currentUrl);
+            setPlatformCollab(platform, { [field]: "", [publicIdKey]: "" } as any);
+            toast.success("Image deleted successfully");
           } catch (error) {
             console.error("Error deleting image:", error);
-            const publicIdField = `${field}PublicId` as keyof typeof formData;
-            updateFormData({
-              [field]: "",
-              [publicIdField]: "",
-            });
+            setPlatformCollab(platform, { [field]: "", [publicIdKey]: "" } as any);
             toast.error("Error deleting image");
+          } finally {
+            setUploadingFields((prev) => {
+              const next = new Set(prev);
+              next.delete(deletingKey);
+              return next;
+            });
           }
         };
 
-        const getCollaborationImageData = (
-          field:
-            | "firstCollaborationImage1"
-            | "firstCollaborationImage2"
-            | "firstCollaborationImage3"
-        ) => {
-          const data = formData[field];
-          if (!data) return null;
-
-          try {
-            const parsed = JSON.parse(data);
-            if (parsed.url) {
-              return { url: parsed.url, publicId: parsed.publicId || null };
-            }
-          } catch {
-            // Not JSON, treat as URL string
-          }
-
-          const publicIdField = `${field}PublicId` as keyof typeof formData;
-          const publicId = formData[publicIdField] as string;
-          return { url: data, publicId: publicId || null };
-        };
-
-        const CollaborationImageField = ({
+        const PlatformCollabImageField = ({
+          platform,
           field,
           label,
-          showAsterisk = false,
         }: {
-          field:
-            | "firstCollaborationImage1"
-            | "firstCollaborationImage2"
-            | "firstCollaborationImage3";
+          platform: string;
+          field: CollaborationProofField;
           label: string;
-          showAsterisk?: boolean;
         }) => {
-          const imageData = getCollaborationImageData(field);
-          const hasImage = !!imageData?.url;
-          const isUploading = uploadingFields.has(field);
+          const proof = getPlatformCollab(platform);
+          const url = ((proof as any)[field] as string) || "";
+          const hasImage = !!url;
+          const uploadingKey = `collaborationProof:${platform}:${field}`;
+          const isUploading = uploadingFields.has(uploadingKey);
+          const deletingKey = `collaborationProof:delete:${platform}:${field}`;
+          const isDeleting = uploadingFields.has(deletingKey);
+          const isBusy = isUploading || isDeleting;
           const fileInputRef = useRef<HTMLInputElement>(null);
           const [isFocused, setIsFocused] = useState(false);
-          const fieldError = errors[field];
+          const errKey = `collaborationProof_${platform}_${field}`;
+          const fieldError = errors[errKey];
 
           const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
-
-            // Only allow single file upload
             if (files.length > 1) {
               toast.error("Please upload only one image at a time");
-              if (fileInputRef.current) {
-                fileInputRef.current.value = "";
-              }
+              if (fileInputRef.current) fileInputRef.current.value = "";
               return;
             }
-
             const file = files[0];
-            if (file) {
-              handleCollaborationImageUpload(field, file);
-            }
-            if (fileInputRef.current) {
-              fileInputRef.current.value = "";
-            }
+            if (file) handlePlatformCollabUpload(platform, field, file);
+            if (fileInputRef.current) fileInputRef.current.value = "";
           };
+
+          const inputId = `collab-file-input-${platform}-${field}`.replace(/\s+/g, "-");
 
           return (
             <div className="space-y-3">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
                 <label className="block text-sm font-medium text-gray-700">
-                  {label} {showAsterisk && <span className="text-red-500">*</span>}
+                  {label} <span className="text-red-500">*</span>
                 </label>
               </div>
               {fieldError && <p className="text-sm text-red-500">{fieldError}</p>}
@@ -3037,27 +3105,60 @@ export default function CreatorOnboardingForm() {
                 <div className="relative border-2 border-gray-300 rounded-lg p-4">
                   <div className="relative w-full h-64 mb-3 bg-gray-50 rounded-lg overflow-hidden">
                     <Image
-                      src={imageData.url}
-                      alt={label}
+                      src={url}
+                      alt={`${platform}: ${label}`}
                       fill
                       className="object-contain rounded-lg"
                       unoptimized
                     />
                   </div>
                   <button
-                    onClick={() => handleCollaborationImageDelete(field)}
-                    disabled={isUploading}
+                    onClick={() => handlePlatformCollabDelete(platform, field)}
+                    disabled={isBusy}
                     className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                    Delete Image
+                    {isDeleting ? (
+                      <>
+                        <svg
+                          className="animate-spin h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        <span>Deleting...</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                        <span>Delete Image</span>
+                      </>
+                    )}
                   </button>
                 </div>
               ) : (
@@ -3069,14 +3170,14 @@ export default function CreatorOnboardingForm() {
                     onChange={handleFileChange}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
-                    disabled={isUploading}
+                    disabled={isBusy}
                     className="hidden"
-                    id={`collab-file-input-${field}`}
+                    id={inputId}
                   />
                   <label
-                    htmlFor={`collab-file-input-${field}`}
+                    htmlFor={inputId}
                     className={`w-full px-4 py-3 rounded-lg flex items-center justify-between cursor-pointer transition-all ${
-                      isUploading
+                      isBusy
                         ? "opacity-50 cursor-not-allowed bg-gray-50 border border-gray-200"
                         : isFocused
                           ? "border-2 border-[#7B46F8] bg-white"
@@ -3084,9 +3185,13 @@ export default function CreatorOnboardingForm() {
                     }`}
                   >
                     <span className="text-sm font-medium text-gray-700">
-                      {isUploading ? "Uploading..." : "Upload screenshots"}
+                      {isUploading
+                        ? "Uploading..."
+                        : isDeleting
+                          ? "Deleting..."
+                          : "Upload screenshots"}
                     </span>
-                    {isUploading ? (
+                    {isBusy ? (
                       <svg
                         className="animate-spin h-5 w-5 text-[#7B46F8]"
                         xmlns="http://www.w3.org/2000/svg"
@@ -3195,24 +3300,45 @@ export default function CreatorOnboardingForm() {
                           Proof of last collaboration and results
                         </h3>
                       </div>
-                      <CollaborationImageField
-                        field="firstCollaborationImage1"
-                        label="Upload screenshots"
-                        showAsterisk={true}
-                      />
-                      <CollaborationImageField
-                        field="firstCollaborationImage2"
-                        label="Upload screenshots"
-                        showAsterisk={true}
-                      />
-                      <CollaborationImageField
-                        field="firstCollaborationImage3"
-                        label="Upload screenshots"
-                        showAsterisk={true}
-                      />
-                      <p className="mt-2 text-xs text-gray-500">
-                        Post screenshots, analytics screenshots
-                      </p>
+                      {(!formData.platforms || formData.platforms.length === 0) && (
+                        <p className="text-sm text-gray-500">
+                          Please select at least one platform in Step 1.
+                        </p>
+                      )}
+
+                      <div className="space-y-8">
+                        {(formData.platforms || []).map((platform) => (
+                          <div
+                            key={platform}
+                            className="border border-gray-200 rounded-lg p-4 sm:p-6"
+                          >
+                            <div className="flex items-center gap-2 mb-4">
+                              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
+                              <h4 className="text-base font-semibold text-gray-900">{platform}</h4>
+                            </div>
+                            <div className="space-y-4">
+                              <PlatformCollabImageField
+                                platform={platform}
+                                field="image1"
+                                label="Upload screenshots"
+                              />
+                              <PlatformCollabImageField
+                                platform={platform}
+                                field="image2"
+                                label="Upload screenshots"
+                              />
+                              <PlatformCollabImageField
+                                platform={platform}
+                                field="image3"
+                                label="Upload screenshots"
+                              />
+                            </div>
+                            <p className="mt-2 text-xs text-gray-500">
+                              Post screenshots, analytics screenshots
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </SwiperSlide>
                   <SwiperSlide>
@@ -3325,24 +3451,42 @@ export default function CreatorOnboardingForm() {
                       Proof of last collaboration and results
                     </h3>
                   </div>
-                  <CollaborationImageField
-                    field="firstCollaborationImage1"
-                    label="Upload screenshots"
-                    showAsterisk={true}
-                  />
-                  <CollaborationImageField
-                    field="firstCollaborationImage2"
-                    label="Upload screenshots"
-                    showAsterisk={true}
-                  />
-                  <CollaborationImageField
-                    field="firstCollaborationImage3"
-                    label="Upload screenshots"
-                    showAsterisk={true}
-                  />
-                  <p className="mt-2 text-xs text-gray-500">
-                    Post screenshots, analytics screenshots
-                  </p>
+                  {(!formData.platforms || formData.platforms.length === 0) && (
+                    <p className="text-sm text-gray-500">
+                      Please select at least one platform in Step 1.
+                    </p>
+                  )}
+
+                  <div className="space-y-8">
+                    {(formData.platforms || []).map((platform) => (
+                      <div key={platform} className="border border-gray-200 rounded-lg p-4">
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
+                          <h4 className="text-base font-semibold text-gray-900">{platform}</h4>
+                        </div>
+                        <div className="space-y-4">
+                          <PlatformCollabImageField
+                            platform={platform}
+                            field="image1"
+                            label="Upload screenshots"
+                          />
+                          <PlatformCollabImageField
+                            platform={platform}
+                            field="image2"
+                            label="Upload screenshots"
+                          />
+                          <PlatformCollabImageField
+                            platform={platform}
+                            field="image3"
+                            label="Upload screenshots"
+                          />
+                        </div>
+                        <p className="mt-2 text-xs text-gray-500">
+                          Post screenshots, analytics screenshots
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <div className="max-w-full box-border">
                   <div className="flex items-center gap-2 mb-4">
@@ -3742,17 +3886,61 @@ export default function CreatorOnboardingForm() {
                         > = {};
                         for (const key of Object.keys(inventoryItems)) {
                           const item = inventoryItems[key];
-                          inventoryItemsWithCpm[key] = { ...item, averageViews: item.averageViews ?? "" };
+                          inventoryItemsWithCpm[key] = {
+                            ...item,
+                            averageViews: item.averageViews ?? "",
+                          };
                           if (item.selected) {
                             const userPrice = parseFloat(item.rate?.trim() || "0") || 0;
-                            const avgViews = parseFloat((item.averageViews ?? "").trim() || "0") || 0;
+                            const avgViews =
+                              parseFloat((item.averageViews ?? "").trim() || "0") || 0;
                             const selling = getSellingPrice(userPrice);
                             const cpm = getCpm(selling, avgViews);
                             inventoryItemsWithCpm[key].cpm =
                               cpm != null && Number.isFinite(cpm) ? String(cpm.toFixed(2)) : "";
                           }
                         }
-                        const payload = { ...formData, inventoryItems: inventoryItemsWithCpm };
+                        const selectedPlatforms = formData.platforms || [];
+                        const proofMap = formData.platformAudienceProof || {};
+                        const filteredProofMap: typeof proofMap = {};
+                        for (const p of selectedPlatforms) {
+                          if (proofMap[p]) filteredProofMap[p] = proofMap[p];
+                        }
+
+                        const collabMap = formData.platformCollaborationProof || {};
+                        const filteredCollabMap: typeof collabMap = {};
+                        for (const p of selectedPlatforms) {
+                          if (collabMap[p]) filteredCollabMap[p] = collabMap[p];
+                        }
+
+                        // Backward-compatible fields: keep populated using the first selected platform
+                        const firstPlatform = selectedPlatforms[0];
+                        const firstProof = firstPlatform
+                          ? filteredProofMap[firstPlatform]
+                          : undefined;
+                        const firstCollab = firstPlatform
+                          ? filteredCollabMap[firstPlatform]
+                          : undefined;
+
+                        const payload = {
+                          ...formData,
+                          inventoryItems: inventoryItemsWithCpm,
+                          platformAudienceProof: filteredProofMap,
+                          platformCollaborationProof: filteredCollabMap,
+                          ageScreenshot: firstProof?.ageScreenshot ?? "",
+                          genderScreenshot: firstProof?.genderScreenshot ?? "",
+                          topCountriesScreenshot: firstProof?.topCountriesScreenshot ?? "",
+                          ageScreenshotPublicId: firstProof?.ageScreenshotPublicId ?? "",
+                          genderScreenshotPublicId: firstProof?.genderScreenshotPublicId ?? "",
+                          topCountriesScreenshotPublicId:
+                            firstProof?.topCountriesScreenshotPublicId ?? "",
+                          firstCollaborationImage1: firstCollab?.image1 ?? "",
+                          firstCollaborationImage2: firstCollab?.image2 ?? "",
+                          firstCollaborationImage3: firstCollab?.image3 ?? "",
+                          firstCollaborationImage1PublicId: firstCollab?.image1PublicId ?? "",
+                          firstCollaborationImage2PublicId: firstCollab?.image2PublicId ?? "",
+                          firstCollaborationImage3PublicId: firstCollab?.image3PublicId ?? "",
+                        };
                         const data = await submitCreatorOnboarding(payload);
 
                         try {
@@ -3782,7 +3970,9 @@ export default function CreatorOnboardingForm() {
                         router.push("/creator-onboarding/success");
                       } catch (error: unknown) {
                         console.error("Error submitting form:", error);
-                        const err = error as { response?: { data?: { message?: string }; status?: number } };
+                        const err = error as {
+                          response?: { data?: { message?: string }; status?: number };
+                        };
                         const message =
                           err?.response?.data?.message ||
                           "Something went wrong. Please try again later.";

@@ -4,10 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getToken } from "@/src/store/dashboardAuthStore";
 import { rehydrateDashboardAuth } from "@/src/store/dashboardAuthStore";
-import {
-  isPrivateDashboardPath,
-  DASHBOARD_SIGN_IN,
-} from "@/src/config/dashboardRoutes";
+import { isPrivateDashboardPath, DASHBOARD_SIGN_IN } from "@/src/config/dashboardRoutes";
 
 export default function DashboardAuthGuard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

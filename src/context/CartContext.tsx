@@ -36,7 +36,9 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       const raw = typeof document !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
       if (raw) {
-        const parsed = JSON.parse(raw) as { influencers?: { id: string; [key: string]: unknown }[] };
+        const parsed = JSON.parse(raw) as {
+          influencers?: { id: string; [key: string]: unknown }[];
+        };
         if (Array.isArray(parsed?.influencers)) {
           setLogCart(parsed.influencers);
         }
@@ -62,7 +64,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const handleChange = useCallback(
     (data: { id: string; [key: string]: unknown }) => {
       const id = data.id;
-      const isProduct = logCart.length > 0 ? logCart.find((d) => String(d.id) === String(id)) : false;
+      const isProduct =
+        logCart.length > 0 ? logCart.find((d) => String(d.id) === String(id)) : false;
       const next = isProduct
         ? logCart.filter((item) => String(item.id) !== String(id))
         : [data, ...logCart];

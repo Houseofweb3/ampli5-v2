@@ -98,8 +98,9 @@ export default function ManageBlogsListPage() {
             const dateLabel = formatBlogDate(row.createdAt || row.updatedAt);
             const editHref = `/manage/blog/update/${encodeURIComponent(row.slug)}`;
             const cover = row.coverImageUrl?.trim() || null;
-            const coverUnoptimized =
-              Boolean(cover?.startsWith("data:") || cover?.startsWith("blob:"));
+            const coverUnoptimized = Boolean(
+              cover?.startsWith("data:") || cover?.startsWith("blob:")
+            );
             return (
               <li key={row.id}>
                 <article className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col sm:flex-row sm:items-stretch">
@@ -125,7 +126,9 @@ export default function ManageBlogsListPage() {
                         <h2 className="text-xl sm:text-2xl font-bold text-gray-900 line-clamp-2 mb-2">
                           {row.title}
                         </h2>
-                        {dateLabel ? <p className="text-sm text-gray-500 mb-1">{dateLabel}</p> : null}
+                        {dateLabel ? (
+                          <p className="text-sm text-gray-500 mb-1">{dateLabel}</p>
+                        ) : null}
                         <p className="text-xs text-gray-500 font-mono truncate mb-2">{row.slug}</p>
                         <p className="text-gray-600 text-sm sm:text-base leading-relaxed line-clamp-3">
                           {row.teaser || "No teaser available for this post."}

@@ -58,7 +58,8 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
   const description = post.seoDescription?.trim() || post.teaser || post.title;
   const canonical = `${BLOG_BASE_URL}/blogs/${slug}`;
   const ogImage =
-    post.coverImage && (post.coverImage.startsWith("https://") || post.coverImage.startsWith("http://"))
+    post.coverImage &&
+    (post.coverImage.startsWith("https://") || post.coverImage.startsWith("http://"))
       ? [{ url: post.coverImage, width: 1200, height: 630, alt: post.title }]
       : [
           {

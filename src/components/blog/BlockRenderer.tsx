@@ -58,7 +58,9 @@ export function BlockRenderer({ block }: { block: BlogContentBlock }) {
         </p>
       );
     case "paragraphSmall":
-      return <p className={`${blockClasses} text-sm sm:text-base text-gray-600`}>{block.content}</p>;
+      return (
+        <p className={`${blockClasses} text-sm sm:text-base text-gray-600`}>{block.content}</p>
+      );
     case "heading":
       return (
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 mt-10 sm:mt-14 first:mt-0">

@@ -58,7 +58,9 @@ const AeoVsSeo: React.FC = (): JSX.Element => {
               {rows.map((row) => (
                 <tr key={row.label} className="border-b border-white/25">
                   <td className="py-3 pr-4 font-medium align-top">{row.label}</td>
-                  <td className="py-3 px-3 border-l border-white/20 align-top">{row.traditional}</td>
+                  <td className="py-3 px-3 border-l border-white/20 align-top">
+                    {row.traditional}
+                  </td>
                   <td className="py-3 pl-3 border-l border-white/20 align-top">{row.aeo}</td>
                 </tr>
               ))}

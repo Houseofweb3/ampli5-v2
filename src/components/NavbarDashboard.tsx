@@ -50,47 +50,51 @@ const NavbarDashBoard = () => {
                 src="/logo.svg"
               />
             </Link>
-            {
-              pathname === ALLROUTES.DASHBOARD ? (
-                ""
-              ) : (
-                <div className="flex  justify-center gap-[38px] items-center ">
-                    {client?.id && pathname !== ALLROUTES.HOME ? <Link href="/dashboard/influencers" className="hover:text-primary transition-all ease-in-out" >
-                    Influencers
-                  </Link> : null}
-                  <div
-                    className="flex cursor-pointer justify-center items-center gap-2 relative transition-all ease-in-out active:scale-95 "
-                    onClick={() => handleCartIconClick()}
+            {pathname === ALLROUTES.DASHBOARD ? (
+              ""
+            ) : (
+              <div className="flex  justify-center gap-[38px] items-center ">
+                {client?.id && pathname !== ALLROUTES.HOME ? (
+                  <Link
+                    href="/dashboard/influencers"
+                    className="hover:text-primary transition-all ease-in-out"
                   >
-                    <div>
-                      <NavCartIcon />
-                    </div>
-
-                    <div className="bg-primary min-w-[18px] min-h-[18px] px-1 rounded-full flex justify-center items-center text-white font-Jakarta text-[10px] font-medium absolute -top-1 -right-2">
-                      {logCart?.length ?? 0}
-                    </div>
-                  </div>
+                    Influencers
+                  </Link>
+                ) : null}
+                <div
+                  className="flex cursor-pointer justify-center items-center gap-2 relative transition-all ease-in-out active:scale-95 "
+                  onClick={() => handleCartIconClick()}
+                >
                   <div>
-                    {client?.id ? (
-                      <div
-                        className="w-10 h-10 rounded-full bg-[#7B46F8] flex items-center justify-center text-white font-semibold cursor-pointer hover:opacity-90 transition-opacity"
-                        onClick={() => router.push("/dashboard/profile")}
-                        title={client.name || client.email}
-                      >
-                        {(client.name || client.email || "?").charAt(0).toUpperCase()}
-                      </div>
-                    ) : (
-                      <Button
-                        type={BUTTON_TYPES.PRIMARY}
-                        size={BUTTON_SIZES.SMALL}
-                        onClick={() => router.push(ALLROUTES.SIGN_UP)}
-                      >
-                        Sign Up
-                      </Button>
-                    )}
+                    <NavCartIcon />
+                  </div>
+
+                  <div className="bg-primary min-w-[18px] min-h-[18px] px-1 rounded-full flex justify-center items-center text-white font-Jakarta text-[10px] font-medium absolute -top-1 -right-2">
+                    {logCart?.length ?? 0}
                   </div>
                 </div>
-              )}
+                <div>
+                  {client?.id ? (
+                    <div
+                      className="w-10 h-10 rounded-full bg-[#7B46F8] flex items-center justify-center text-white font-semibold cursor-pointer hover:opacity-90 transition-opacity"
+                      onClick={() => router.push("/dashboard/profile")}
+                      title={client.name || client.email}
+                    >
+                      {(client.name || client.email || "?").charAt(0).toUpperCase()}
+                    </div>
+                  ) : (
+                    <Button
+                      type={BUTTON_TYPES.PRIMARY}
+                      size={BUTTON_SIZES.SMALL}
+                      onClick={() => router.push(ALLROUTES.SIGN_UP)}
+                    >
+                      Sign Up
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </Container>
       </div>

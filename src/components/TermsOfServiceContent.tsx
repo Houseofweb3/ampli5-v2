@@ -15,8 +15,9 @@ export default function TermsOfServiceContent() {
       <section className="space-y-4">
         <p className="leading-relaxed text-gray-700">
           By accessing, engaging with, subscribing to, or using Ampli5 or any related services
-          provided by HOW3 Pte Ltd (&quot;Company&quot;, &quot;we&quot;, &quot;our&quot;, &quot;us&quot;), you (&quot;Client&quot;, &quot;you&quot;) agree to
-          be bound by the following Terms and Conditions (&quot;Terms&quot;).
+          provided by HOW3 Pte Ltd (&quot;Company&quot;, &quot;we&quot;, &quot;our&quot;,
+          &quot;us&quot;), you (&quot;Client&quot;, &quot;you&quot;) agree to be bound by the
+          following Terms and Conditions (&quot;Terms&quot;).
         </p>
         <p className="leading-relaxed text-gray-700 font-semibold">
           If you do not agree, you must not use the services.
@@ -32,19 +33,21 @@ export default function TermsOfServiceContent() {
         </p>
         <p className="leading-relaxed text-gray-700">
           All services are provided on an execution-only, best-effort basis. The Company does not
-          provide financial, investment, trading, legal, or regulatory advice. The Company does
-          not act as an exchange, broker, market maker, custodian, or liquidity provider.
+          provide financial, investment, trading, legal, or regulatory advice. The Company does not
+          act as an exchange, broker, market maker, custodian, or liquidity provider.
         </p>
         <p className="leading-relaxed text-gray-700">
-          The Client acknowledges that marketing outcomes are speculative and influenced by
-          factors outside the Company&apos;s control.
+          The Client acknowledges that marketing outcomes are speculative and influenced by factors
+          outside the Company&apos;s control.
         </p>
       </section>
 
       <hr className="border-gray-300" />
 
       <section className="space-y-4">
-        <h3 className="text-xl font-semibold text-gray-900">2. Scope of Services and Deliverables</h3>
+        <h3 className="text-xl font-semibold text-gray-900">
+          2. Scope of Services and Deliverables
+        </h3>
         <p className="leading-relaxed text-gray-700">Services may include, without limitation:</p>
         <ul className="list-disc pl-6 space-y-2 text-gray-700">
           <li>Video creation, editing, and repurposing</li>
@@ -59,7 +62,9 @@ export default function TermsOfServiceContent() {
           All deliverables and timelines, shall be defined only in written proposals, invoices,
           statements of work, or written confirmations issued by the Company.
         </p>
-        <p className="leading-relaxed text-gray-700">Any service not expressly listed in writing is excluded.</p>
+        <p className="leading-relaxed text-gray-700">
+          Any service not expressly listed in writing is excluded.
+        </p>
       </section>
 
       <hr className="border-gray-300" />
@@ -83,7 +88,9 @@ export default function TermsOfServiceContent() {
       <hr className="border-gray-300" />
 
       <section className="space-y-4">
-        <h3 className="text-xl font-semibold text-gray-900">4. Third-Party Platforms and Dependencies</h3>
+        <h3 className="text-xl font-semibold text-gray-900">
+          4. Third-Party Platforms and Dependencies
+        </h3>
         <p className="leading-relaxed text-gray-700">
           Services may rely on third-party platforms, publishers, influencers, contractors, and
           distribution partners.
@@ -112,15 +119,17 @@ export default function TermsOfServiceContent() {
           <li>Compliance with all applicable laws and regulations</li>
         </ul>
         <p className="leading-relaxed text-gray-700">
-          Any change to branding, tokenomics, liquidity structure, governance, or public
-          positioning during or after a campaign is outside the Company&apos;s control and liability.
+          Any change to branding, tokenomics, liquidity structure, governance, or public positioning
+          during or after a campaign is outside the Company&apos;s control and liability.
         </p>
       </section>
 
       <hr className="border-gray-300" />
 
       <section className="space-y-4">
-        <h3 className="text-xl font-semibold text-gray-900">6. Quality, Timelines, and Acceptance</h3>
+        <h3 className="text-xl font-semibold text-gray-900">
+          6. Quality, Timelines, and Acceptance
+        </h3>
         <p className="leading-relaxed text-gray-700">
           Services shall be performed using commercially reasonable skill consistent with industry
           standards.
@@ -132,14 +141,13 @@ export default function TermsOfServiceContent() {
         <p className="leading-relaxed text-gray-700">
           Where the Client fails to provide feedback, objections, or approvals within five (5)
           calendar days of delivery or request, such deliverables shall be deemed approved and
-          accepted for all purposes. Any such deliverables shall be deemed as final and
-          irrevocable for which all payments shall be due and payable, including any advances
-          already paid.
+          accepted for all purposes. Any such deliverables shall be deemed as final and irrevocable
+          for which all payments shall be due and payable, including any advances already paid.
         </p>
         <p className="leading-relaxed text-gray-700">
-          Creative quality, stylistic preference, or subjective dissatisfaction shall not
-          constitute grounds for refund, rework, non-payment, chargeback, or dispute once
-          execution has commenced or deemed approval has occurred.
+          Creative quality, stylistic preference, or subjective dissatisfaction shall not constitute
+          grounds for refund, rework, non-payment, chargeback, or dispute once execution has
+          commenced or deemed approval has occurred.
         </p>
       </section>
 
@@ -150,13 +158,17 @@ export default function TermsOfServiceContent() {
         <p className="leading-relaxed text-gray-700">
           Fees are charged for time, execution, and access, not outcomes.
         </p>
-        <p className="leading-relaxed text-gray-700">Unless expressly stated otherwise in writing:</p>
+        <p className="leading-relaxed text-gray-700">
+          Unless expressly stated otherwise in writing:
+        </p>
         <ul className="list-disc pl-6 space-y-2 text-gray-700">
           <li>Fees are non-refundable once services have commenced</li>
           <li>Free, bonus, or goodwill services do not create ongoing obligations</li>
           <li>Delayed Client feedback does not suspend payment obligations</li>
         </ul>
-        <p className="leading-relaxed text-gray-700">Non-payment results in immediate suspension of services.</p>
+        <p className="leading-relaxed text-gray-700">
+          Non-payment results in immediate suspension of services.
+        </p>
       </section>
 
       <hr className="border-gray-300" />
@@ -168,28 +180,30 @@ export default function TermsOfServiceContent() {
           issue arises.
         </p>
         <p className="leading-relaxed text-gray-700">
-          For the avoidance of doubt, this refers strictly to calendar days, not working or
-          business days, irrespective of weekends or public holidays.
+          For the avoidance of doubt, this refers strictly to calendar days, not working or business
+          days, irrespective of weekends or public holidays.
         </p>
         <p className="leading-relaxed text-gray-700">
           Failure to raise a dispute within this period constitutes acceptance of services and
           waiver of claims.
         </p>
         <p className="leading-relaxed text-gray-700">
-          All disputes shall first be attempted to be resolved in good faith between the parties.
-          If unresolved, disputes shall be resolved exclusively by mediation, whereby a neutral
+          All disputes shall first be attempted to be resolved in good faith between the parties. If
+          unresolved, disputes shall be resolved exclusively by mediation, whereby a neutral
           mediator shall be appointed by the Company, for which costs are to be borne jointly
-          between the Client and the Company. Any disputes unresolved by mediation shall be
-          referred to arbitration, whereby a sole arbitrator shall be appointed by the Company,
-          from the Singapore International Arbitration Centre panel, for which costs are to be
-          borne jointly between the Client and the Company.
+          between the Client and the Company. Any disputes unresolved by mediation shall be referred
+          to arbitration, whereby a sole arbitrator shall be appointed by the Company, from the
+          Singapore International Arbitration Centre panel, for which costs are to be borne jointly
+          between the Client and the Company.
         </p>
         <ul className="list-disc pl-6 space-y-2 text-gray-700">
           <li>Governing law: Singapore</li>
           <li>Arbitration venue: Singapore</li>
           <li>Language: English</li>
         </ul>
-        <p className="leading-relaxed text-gray-700">The Client waives any right to class actions or public court proceedings.</p>
+        <p className="leading-relaxed text-gray-700">
+          The Client waives any right to class actions or public court proceedings.
+        </p>
       </section>
 
       <hr className="border-gray-300" />
@@ -197,9 +211,9 @@ export default function TermsOfServiceContent() {
       <section className="space-y-4">
         <h3 className="text-xl font-semibold text-gray-900">9. Limitation of Liability</h3>
         <p className="leading-relaxed text-gray-700">
-          To the maximum extent permitted by applicable law, the total cumulative liability of
-          HOW3 Pte Ltd, whether arising in contract, tort, negligence, statute, or otherwise,
-          shall be strictly limited to the lower of:
+          To the maximum extent permitted by applicable law, the total cumulative liability of HOW3
+          Pte Ltd, whether arising in contract, tort, negligence, statute, or otherwise, shall be
+          strictly limited to the lower of:
         </p>
         <p className="leading-relaxed text-gray-700 pl-4">
           (a) the value of the most recent invoice actually paid by the Client to the Company, or
@@ -211,8 +225,8 @@ export default function TermsOfServiceContent() {
         <ul className="list-disc pl-6 space-y-2 text-gray-700">
           <li>This limitation applies per claim and in aggregate</li>
           <li>
-            Liability shall not extend to invoices paid prior to the latest paid invoice or
-            outside the said 15-calendar-day period
+            Liability shall not extend to invoices paid prior to the latest paid invoice or outside
+            the said 15-calendar-day period
           </li>
           <li>Fully performed and paid invoices are deemed closed, settled, and non-claimable</li>
           <li>
@@ -229,7 +243,9 @@ export default function TermsOfServiceContent() {
       <hr className="border-gray-300" />
 
       <section className="space-y-4">
-        <h3 className="text-xl font-semibold text-gray-900">10. Crypto & Token Risk Addendum (Mandatory)</h3>
+        <h3 className="text-xl font-semibold text-gray-900">
+          10. Crypto & Token Risk Addendum (Mandatory)
+        </h3>
         <p className="leading-relaxed text-gray-700">
           Where services relate to cryptocurrency, tokens, NFTs, or blockchain-based assets, the
           Client expressly acknowledges that:
@@ -237,11 +253,12 @@ export default function TermsOfServiceContent() {
         <ul className="list-disc pl-6 space-y-2 text-gray-700">
           <li>Token markets are volatile, speculative, and sentiment-driven</li>
           <li>
-            Token price, liquidity, volume, and holder behavior are outside the Company&apos;s control
+            Token price, liquidity, volume, and holder behavior are outside the Company&apos;s
+            control
           </li>
           <li>
-            Any liquidity actions, burns, mints, unlocks, vesting, treasury movements, or
-            governance decisions are solely the Client&apos;s responsibility
+            Any liquidity actions, burns, mints, unlocks, vesting, treasury movements, or governance
+            decisions are solely the Client&apos;s responsibility
           </li>
         </ul>
         <p className="leading-relaxed text-gray-700">
@@ -268,7 +285,9 @@ export default function TermsOfServiceContent() {
           <li>Abuse, harassment, or misconduct</li>
           <li>Regulatory, legal, or reputational risk</li>
         </ul>
-        <p className="leading-relaxed text-gray-700">Termination does not affect outstanding payment obligations.</p>
+        <p className="leading-relaxed text-gray-700">
+          Termination does not affect outstanding payment obligations.
+        </p>
       </section>
 
       <hr className="border-gray-300" />
@@ -276,8 +295,8 @@ export default function TermsOfServiceContent() {
       <section className="space-y-4">
         <h3 className="text-xl font-semibold text-gray-900">12. Confidentiality</h3>
         <p className="leading-relaxed text-gray-700">
-          All non-public information exchanged shall be treated as confidential unless disclosure
-          is required by law or regulation.
+          All non-public information exchanged shall be treated as confidential unless disclosure is
+          required by law or regulation.
         </p>
       </section>
 
@@ -289,7 +308,9 @@ export default function TermsOfServiceContent() {
           These Terms constitute the entire agreement between the parties and supersede all prior
           discussions, communications, or representations.
         </p>
-        <p className="leading-relaxed text-gray-700">No amendment shall be valid unless made in writing by the Company.</p>
+        <p className="leading-relaxed text-gray-700">
+          No amendment shall be valid unless made in writing by the Company.
+        </p>
       </section>
 
       <hr className="border-gray-300" />

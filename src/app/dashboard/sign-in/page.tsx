@@ -136,18 +136,21 @@ export default function SignInPage() {
               <div className="xl:w-[32px] w-[24px] h-[24px] xl:h-[32px]">
                 <Image src={data.icon} alt="img" className="w-full h-full object-cover " />
               </div>
-              <div className="font-Nunito font-[600] text-[12px] xl:text-[16px]">
-                {data.text}
-              </div>
+              <div className="font-Nunito font-[600] text-[12px] xl:text-[16px]">{data.text}</div>
             </div>
           ))}
         </div>
       </div>
 
       <div className="w-full md:w-[50%] flex flex-col items-center justify-center gap-4">
-
         <div className="w-full max-w-xl font-Jakarta">
-          <Image src={"/logo.svg"} alt="img" width={100} height={100} className="w-fit h-10 object-cover mb-2 " />
+          <Image
+            src={"/logo.svg"}
+            alt="img"
+            width={100}
+            height={100}
+            className="w-fit h-10 object-cover mb-2 "
+          />
           <div className="font-[400] text-[16px] font-Jakarta text-gray-half">
             Use your work email to receive a one-time verification code.
           </div>
@@ -183,7 +186,9 @@ export default function SignInPage() {
               <p className="text-sm text-gray-600">
                 Code sent to <strong>{email}</strong>. Check your inbox.
                 {expiresInMinutes != null && (
-                  <span className="block mt-1 text-gray-500">Expires in {expiresInMinutes} minutes</span>
+                  <span className="block mt-1 text-gray-500">
+                    Expires in {expiresInMinutes} minutes
+                  </span>
                 )}
               </p>
               <div>
@@ -194,7 +199,9 @@ export default function SignInPage() {
                   {otpDigits.map((digit, index) => (
                     <input
                       key={index}
-                      ref={(el) => { inputRefs.current[index] = el; }}
+                      ref={(el) => {
+                        inputRefs.current[index] = el;
+                      }}
                       type="text"
                       inputMode="numeric"
                       autoComplete={index === 0 ? "one-time-code" : "off"}

@@ -230,11 +230,14 @@ const Filters: React.FC<FilterProp> = ({
             </span>
           )}
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+            />
           </svg>
         </button>
-
-      
       </div>
 
       {/* Drawer for md and below */}
@@ -263,7 +266,12 @@ const Filters: React.FC<FilterProp> = ({
                 aria-label="Close"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
@@ -284,7 +292,10 @@ const Filters: React.FC<FilterProp> = ({
                       className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full"
                     >
                       <span>{platform}</span>
-                      <button onClick={() => removeFilter("Platform", platform)} className="text-gray-400 hover:text-gray-600">
+                      <button
+                        onClick={() => removeFilter("Platform", platform)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
                         <FilterCross />
                       </button>
                     </div>
@@ -295,40 +306,67 @@ const Filters: React.FC<FilterProp> = ({
                       className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full"
                     >
                       <span>{contentType}</span>
-                      <button onClick={() => removeFilter("Inventory", contentType)} className="text-gray-400 hover:text-gray-600">
+                      <button
+                        onClick={() => removeFilter("Inventory", contentType)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
                         <FilterCross />
                       </button>
                     </div>
                   ))}
                   {industry.map((i) => (
-                    <div key={i} className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full">
+                    <div
+                      key={i}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full"
+                    >
                       <span>{i}</span>
-                      <button onClick={() => removeFilter("Industry", i)} className="text-gray-400 hover:text-gray-600">
+                      <button
+                        onClick={() => removeFilter("Industry", i)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
                         <FilterCross />
                       </button>
                     </div>
                   ))}
                   {niche.map((n) => (
-                    <div key={n} className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full">
+                    <div
+                      key={n}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full"
+                    >
                       <span>{n}</span>
-                      <button onClick={() => removeFilter("Category", n)} className="text-gray-400 hover:text-gray-600">
+                      <button
+                        onClick={() => removeFilter("Category", n)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
                         <FilterCross />
                       </button>
                     </div>
                   ))}
                   {geography.map((g) => (
-                    <div key={g} className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full">
+                    <div
+                      key={g}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full"
+                    >
                       <span>{g}</span>
-                      <button onClick={() => removeFilter("Geography", g)} className="text-gray-400 hover:text-gray-600">
+                      <button
+                        onClick={() => removeFilter("Geography", g)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
                         <FilterCross />
                       </button>
                     </div>
                   ))}
                   {credibility.map((score) => (
-                    <div key={score} className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full">
+                    <div
+                      key={score}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#F5F8FA] rounded-full"
+                    >
                       <span className="text-gray-600">Credibilty Score: </span>
                       <span>{score}</span>
-                      <button onClick={() => removeFilter("Credibility", score)} className="text-gray-400 hover:text-gray-600">
+                      <button
+                        onClick={() => removeFilter("Credibility", score)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
                         <FilterCross />
                       </button>
                     </div>

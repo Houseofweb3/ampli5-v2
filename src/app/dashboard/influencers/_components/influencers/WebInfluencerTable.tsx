@@ -9,13 +9,7 @@ import PlatformIcon from "@/src/components/PlatformIcon";
 import EmptyTable from "../empty-table";
 import TableCell from "./TableCell";
 import { getColumnWidth, WEB_HEADINGS } from "@/src/utils/constants";
-import {
-  VerifyIcon,
-  NicheIcon,
-  GeographyIcon,
-  Score,
-  FollowerIcon,
-} from "@/public/icons";
+import { VerifyIcon, NicheIcon, GeographyIcon, Score, FollowerIcon } from "@/public/icons";
 import { useCart } from "@/src/context/CartContext";
 import type { CartInfluencer } from "@/src/lib/types";
 
@@ -34,9 +28,7 @@ function DetailCard({
 }) {
   return (
     <div className="relative flex flex-col p-4 rounded-xl bg-gray-100/80 border border-gray-200/60 min-h-[72px]">
-      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-        {label}
-      </p>
+      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{label}</p>
       <p className="mt-1 font-semibold text-gray-900 text-sm">{value}</p>
       <div className="absolute top-4 right-4 w-6 h-6 flex items-center justify-center text-gray-600 [&_svg]:w-5 [&_svg]:h-5">
         {icon}
@@ -131,7 +123,7 @@ export default function WebInfluencerTable({
               <div className="text-center py-4 font-Jakarta">
                 <EmptyTable
                   setFilterQueries={setFilterQueries}
-                  setCredibility={() => { }}
+                  setCredibility={() => {}}
                   setNiche={setNiche}
                   setPlatforms={setPlatforms}
                   setSearchQuery={setSearchQuery}
@@ -200,7 +192,9 @@ export default function WebInfluencerTable({
                       <span className="text-sm text-[#757575]">{cell(item.industries)}</span>
                     </TableCell>
                     <TableCell id="Audience Geography">
-                      <span className="text-sm text-[#757575]">{cell(item.primaryAudienceGeography)}</span>
+                      <span className="text-sm text-[#757575]">
+                        {cell(item.primaryAudienceGeography)}
+                      </span>
                     </TableCell>
                     <TableCell id="CPM">
                       <span className="text-sm text-[#757575]">{cell(item.cpm)}</span>
@@ -224,12 +218,15 @@ export default function WebInfluencerTable({
                     aria-hidden={openId !== item.id}
                   >
                     <div
-                      className={`transform transition-all duration-300 flex md:flex-row flex-col md:w-[70%] w-full md:gap-6 gap-3 ${openId === item.id ? "opacity-100 max-h-[500px] py-6" : "opacity-0 max-h-0 py-0 overflow-hidden"
-                        }`}
+                      className={`transform transition-all duration-300 flex md:flex-row flex-col md:w-[70%] w-full md:gap-6 gap-3 ${
+                        openId === item.id
+                          ? "opacity-100 max-h-[500px] py-6"
+                          : "opacity-0 max-h-0 py-0 overflow-hidden"
+                      }`}
                     >
                       <div className="flex md:flex-col flex-row md:justify-center items-center gap-2 bg-primary-light rounded-lg md:p-5 p-3 shrink-0">
                         <Image
-                          src={`https://ui-avatars.com/api/?name=${item.name}&background=random&color=random&size=128`} 
+                          src={`https://ui-avatars.com/api/?name=${item.name}&background=random&color=random&size=128`}
                           alt={item.name}
                           width={40}
                           height={40}
@@ -237,9 +234,9 @@ export default function WebInfluencerTable({
                         />
                         <div className="md:text-center text-left">
                           <p className="text-base font-semibold text-black flex items-center justify-center gap-1">
-                          {cell(item.name)}
-                          <VerifyIcon />
-                        </p>
+                            {cell(item.name)}
+                            <VerifyIcon />
+                          </p>
                           <p className="text-[#757575] text-xs font-light">{cell(item.email)}</p>
                         </div>
                       </div>
@@ -260,11 +257,7 @@ export default function WebInfluencerTable({
                             value={cell(item.primaryAudienceGeography)}
                             icon={<GeographyIcon />}
                           />
-                          <DetailCard
-                            label="CPM"
-                            value={cell(item.cpm)}
-                            icon={<Score />}
-                          />
+                          <DetailCard label="CPM" value={cell(item.cpm)} icon={<Score />} />
                           <DetailCard
                             label="Primary Country"
                             value={cell(item.primaryCountry)}

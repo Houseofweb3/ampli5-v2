@@ -58,12 +58,7 @@ export interface BlogEditorFormProps {
   submitLabel?: string;
 }
 
-export function BlogEditorForm({
-  mode,
-  initialBlog,
-  onSubmit,
-  submitLabel,
-}: BlogEditorFormProps) {
+export function BlogEditorForm({ mode, initialBlog, onSubmit, submitLabel }: BlogEditorFormProps) {
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [teaser, setTeaser] = useState("");
@@ -144,7 +139,10 @@ export function BlogEditorForm({
     if (!kwRaw) {
       next.seoKeywords = "Keywords are required (comma-separated).";
     } else {
-      const parts = kwRaw.split(",").map((s) => s.trim()).filter(Boolean);
+      const parts = kwRaw
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
       if (parts.length === 0) {
         next.seoKeywords = "Enter at least one keyword, separated by commas.";
       }
@@ -265,7 +263,9 @@ export function BlogEditorForm({
             disabled={saving}
             className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primaryHover disabled:opacity-50 ml-auto"
           >
-            {saving ? "Saving…" : submitLabel ?? (mode === "add" ? "Create post" : "Save changes")}
+            {saving
+              ? "Saving…"
+              : (submitLabel ?? (mode === "add" ? "Create post" : "Save changes"))}
           </button>
         )}
       </div>
@@ -380,11 +380,17 @@ export function BlogEditorForm({
                     {errors.coverImageUrl}
                   </p>
                 ) : null}
-                {coverUploading ? <p className="text-xs text-gray-500 mt-1">Uploading cover…</p> : null}
+                {coverUploading ? (
+                  <p className="text-xs text-gray-500 mt-1">Uploading cover…</p>
+                ) : null}
                 {coverImageUrl ? (
                   <div className="mt-3 relative w-full max-w-md aspect-[16/10] rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={coverImageUrl} alt="Cover preview" className="w-full h-full object-cover" />
+                    <img
+                      src={coverImageUrl}
+                      alt="Cover preview"
+                      className="w-full h-full object-cover"
+                    />
                     <button
                       type="button"
                       onClick={() => {
@@ -400,7 +406,11 @@ export function BlogEditorForm({
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Content</label>
-                <div className={errors.contentHtml ? "rounded-lg ring-2 ring-red-500 ring-offset-1" : ""}>
+                <div
+                  className={
+                    errors.contentHtml ? "rounded-lg ring-2 ring-red-500 ring-offset-1" : ""
+                  }
+                >
                   <BlogRichEditor
                     key={editorKey}
                     value={contentHtml}
@@ -438,7 +448,9 @@ export function BlogEditorForm({
                 ) : null}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">SEO description</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  SEO description
+                </label>
                 <textarea
                   value={seoDescription}
                   onChange={(e) => {
@@ -457,7 +469,9 @@ export function BlogEditorForm({
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Keywords</label>
-                <p className="text-xs text-gray-500 mb-2">Comma-separated (e.g. web3, marketing, AEO)</p>
+                <p className="text-xs text-gray-500 mb-2">
+                  Comma-separated (e.g. web3, marketing, AEO)
+                </p>
                 <input
                   type="text"
                   value={seoKeywords}
@@ -483,7 +497,9 @@ export function BlogEditorForm({
               disabled={saving}
               className="px-6 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-primaryHover disabled:opacity-50"
             >
-              {saving ? "Saving…" : submitLabel ?? (mode === "add" ? "Create post" : "Save changes")}
+              {saving
+                ? "Saving…"
+                : (submitLabel ?? (mode === "add" ? "Create post" : "Save changes"))}
             </button>
           </div>
         </form>

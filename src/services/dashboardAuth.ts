@@ -23,12 +23,7 @@ export async function verifyOtp(email: string, code: string): Promise<ClientAuth
 }
 
 /** Brand intake signup: creates client and returns client + token (user logged in). */
-export async function signupWebClient(
-  payload: ClientSignupPayload
-): Promise<ClientAuthSuccess> {
-  const res = await dashboardClient.post<ClientAuthSuccess>(
-    "/web/client/auth/signup",
-    payload
-  );
+export async function signupWebClient(payload: ClientSignupPayload): Promise<ClientAuthSuccess> {
+  const res = await dashboardClient.post<ClientAuthSuccess>("/web/client/auth/signup", payload);
   return res.data;
 }

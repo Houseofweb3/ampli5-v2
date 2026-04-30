@@ -82,7 +82,11 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   const handleConfirm = async () => {
     if (isPending) return;
     const result = onConfirm();
-    if (result !== undefined && result !== null && typeof (result as Promise<void>).then === "function") {
+    if (
+      result !== undefined &&
+      result !== null &&
+      typeof (result as Promise<void>).then === "function"
+    ) {
       await result;
     }
     if (closeOnConfirm) {

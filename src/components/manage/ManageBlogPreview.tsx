@@ -50,9 +50,7 @@ export function ManageBlogPreview({
               fill
               sizes="(max-width: 768px) 100vw, 896px"
               className="object-cover"
-              unoptimized={
-                coverImageUrl.startsWith("data:") || coverImageUrl.startsWith("blob:")
-              }
+              unoptimized={coverImageUrl.startsWith("data:") || coverImageUrl.startsWith("blob:")}
             />
           </figure>
         ) : null}

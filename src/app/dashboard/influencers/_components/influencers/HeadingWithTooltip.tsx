@@ -2,7 +2,7 @@
 
 /* eslint-disable indent */
 import React from "react";
-import { PiInfo, } from "react-icons/pi";
+import { PiInfo } from "react-icons/pi";
 
 import {
   TooltipProvider,

@@ -33,9 +33,7 @@ function DetailCard({
 }) {
   return (
     <div className="relative flex flex-col p-3 rounded-xl bg-gray-100/80 border border-gray-200/60 min-h-[64px]">
-      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-        {label}
-      </p>
+      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{label}</p>
       <p className="mt-0.5 font-semibold text-gray-900 text-sm">{value}</p>
       <div className="absolute top-3 right-3 w-5 h-5 flex items-center justify-center text-gray-600 [&_svg]:w-4 [&_svg]:h-4">
         {icon}
@@ -106,7 +104,7 @@ export default function WebInfluencerMobileList({
       <div className="w-full sm:hidden block">
         <EmptyTable
           setFilterQueries={setFilterQueries}
-          setCredibility={() => { }}
+          setCredibility={() => {}}
           setNiche={setNiche}
           setPlatforms={setPlatforms}
           setSearchQuery={setSearchQuery}
@@ -118,10 +116,7 @@ export default function WebInfluencerMobileList({
   return (
     <div className="w-full space-y-4 sm:hidden block">
       {influencers.map((item) => (
-        <div
-          key={item.id}
-          className="border border-gray-200 rounded-lg bg-white overflow-hidden"
-        >
+        <div key={item.id} className="border border-gray-200 rounded-lg bg-white overflow-hidden">
           <div className="p-4 flex items-start gap-3">
             <Image
               src={`https://ui-avatars.com/api/?name=${item.name}&background=random&color=fff&size=128`}
@@ -177,26 +172,10 @@ export default function WebInfluencerMobileList({
           </div>
           {openId === item.id && (
             <div className="px-4 pb-4 pt-2 grid grid-cols-2 gap-2 text-sm bg-gray-50 border-t border-gray-100">
-              <DetailCard
-                label="Avg Views"
-                value={cell(item.avgViews)}
-                icon={<FollowerIcon />}
-              />
-              <DetailCard
-                label="CPM"
-                value={cell(item.cpm)}
-                icon={<Score />}
-              />
-              <DetailCard
-                label="Categories"
-                value={cell(item.categories)}
-                icon={<NicheIcon />}
-              />
-              <DetailCard
-                label="Industries"
-                value={cell(item.industries)}
-                icon={<NicheIcon />}
-              />
+              <DetailCard label="Avg Views" value={cell(item.avgViews)} icon={<FollowerIcon />} />
+              <DetailCard label="CPM" value={cell(item.cpm)} icon={<Score />} />
+              <DetailCard label="Categories" value={cell(item.categories)} icon={<NicheIcon />} />
+              <DetailCard label="Industries" value={cell(item.industries)} icon={<NicheIcon />} />
               <DetailCard
                 label="Primary Country"
                 value={cell(item.primaryCountry)}
@@ -209,11 +188,7 @@ export default function WebInfluencerMobileList({
               />
               <DetailCard
                 label="Created"
-                value={
-                  item.createdAt
-                    ? new Date(item.createdAt).toLocaleDateString()
-                    : "—"
-                }
+                value={item.createdAt ? new Date(item.createdAt).toLocaleDateString() : "—"}
                 icon={<CalendarIcon />}
               />
             </div>

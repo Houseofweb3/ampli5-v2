@@ -37,10 +37,14 @@ export async function POST(request: Request) {
 
     const indiaTime = new Intl.DateTimeFormat("en-US", options).format(new Date());
 
-    const spreadsheetIdForBrandIntake =   process.env.SPREAD_SHEET_ID_FOR_BRABD_INTAKE 
+    const spreadsheetIdForBrandIntake = process.env.SPREAD_SHEET_ID_FOR_BRABD_INTAKE;
 
     // Ensure environment variables are set
-    if (!process.env.SPREAD_SHEET_EMAIL || !process.env.GOOGLE_KEY || !spreadsheetIdForBrandIntake) {
+    if (
+      !process.env.SPREAD_SHEET_EMAIL ||
+      !process.env.GOOGLE_KEY ||
+      !spreadsheetIdForBrandIntake
+    ) {
       console.error("Missing environment variables");
       return NextResponse.json({ message: "Server configuration error." }, { status: 500 });
     }
@@ -156,8 +160,6 @@ export async function POST(request: Request) {
       valueInputOption: "RAW",
       requestBody: { values },
     });
-
-
 
     return NextResponse.json({ status: 200, message: "Form submitted successfully!" });
   } catch (error: any) {

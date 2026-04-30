@@ -56,7 +56,9 @@ const TableRow: React.FC<{ data: CartInfluencer; number: number }> = ({ data }) 
         </div>
         <div className="flex flex-wrap gap-3 items-center text-sm text-gray-600">
           {data.contentType ? (
-            <span className="border border-gray-300 rounded-lg px-2 py-1">Content: {data.contentType}</span>
+            <span className="border border-gray-300 rounded-lg px-2 py-1">
+              Content: {data.contentType}
+            </span>
           ) : null}
           {data.platform ? (
             <span className="border border-gray-300 rounded-lg px-2 py-1 flex items-center gap-1.5">
@@ -92,9 +94,7 @@ const Table: React.FC<TableProps> = ({ influencers }) => {
   return (
     <div className="w-full mt-2 flex flex-col gap-2">
       {influencers?.length > 0 &&
-        influencers.map((item, index) => (
-          <TableRow key={item.id} data={item} number={index + 1} />
-        ))}
+        influencers.map((item, index) => <TableRow key={item.id} data={item} number={index + 1} />)}
     </div>
   );
 };

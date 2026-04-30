@@ -220,7 +220,6 @@ export function BlogRichEditor({
         />
       </div>
       <EditorContent editor={editor} />
-   
     </div>
   );
 }
@@ -242,7 +241,9 @@ function ToolbarButton({
       onClick={onClick}
       disabled={disabled}
       className={`px-2 py-1 text-xs font-medium rounded disabled:opacity-50 disabled:cursor-not-allowed ${
-        active ? "bg-primary text-white" : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-100"
+        active
+          ? "bg-primary text-white"
+          : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-100"
       }`}
     >
       {label}

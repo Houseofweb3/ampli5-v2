@@ -7,7 +7,8 @@
 
 /** Path segment after API base, no leading slash. */
 export const MANAGE_BLOG_LIST_PATH =
-  process.env.NEXT_PUBLIC_MANAGE_BLOG_LIST_PATH?.replace(/^\//, "").replace(/\/$/, "") ?? "web/blogs";
+  process.env.NEXT_PUBLIC_MANAGE_BLOG_LIST_PATH?.replace(/^\//, "").replace(/\/$/, "") ??
+  "web/blogs";
 
 export function manageBlogListUrl(): string {
   return `/${MANAGE_BLOG_LIST_PATH}`;

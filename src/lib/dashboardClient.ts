@@ -6,7 +6,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { getToken, clearAuth } from "@/src/store/dashboardAuthStore";
 import { ALLROUTES } from "@/src/utils/constants";
-  
+
 function isAuthError(response: { status: number; data?: unknown }): boolean {
   if (response.status !== 401 && response.status !== 403) return false;
   const data = response.data as { success?: boolean; message?: string } | undefined;

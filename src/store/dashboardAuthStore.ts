@@ -63,10 +63,15 @@ export function getClient(): AuthClient | null {
     const decoded = decodeURIComponent(raw);
     const parsed = JSON.parse(decoded) as Record<string, unknown>;
     const id = typeof parsed.id === "string" ? parsed.id : String(parsed.id ?? parsed.userId ?? "");
-    const name = typeof parsed.name === "string" ? parsed.name : String(parsed.name ?? parsed.email ?? "");
+    const name =
+      typeof parsed.name === "string" ? parsed.name : String(parsed.name ?? parsed.email ?? "");
     const email = typeof parsed.email === "string" ? parsed.email : String(parsed.email ?? "");
-    const telegramId = parsed.telegramId != null && parsed.telegramId !== "" ? String(parsed.telegramId) : null;
-    const whatsAppNumber = parsed.whatsAppNumber != null && parsed.whatsAppNumber !== "" ? String(parsed.whatsAppNumber) : null;
+    const telegramId =
+      parsed.telegramId != null && parsed.telegramId !== "" ? String(parsed.telegramId) : null;
+    const whatsAppNumber =
+      parsed.whatsAppNumber != null && parsed.whatsAppNumber !== ""
+        ? String(parsed.whatsAppNumber)
+        : null;
     if (id || name || email) {
       return {
         id,
@@ -104,7 +109,9 @@ const cookieStorage = {
   },
   setItem: (_n: string, value: string): void => {
     try {
-      const { state } = JSON.parse(value) as { state: { client: AuthClient | null; token: string | null } };
+      const { state } = JSON.parse(value) as {
+        state: { client: AuthClient | null; token: string | null };
+      };
       if (state.token) writeTokenCookie(state.token);
       if (state.client) writeClientCookie(state.client);
     } catch {
@@ -160,14 +167,16 @@ export const useDashboardAuthStore = create<DashboardAuthState>()(
           }
         }, 0);
       },
-    // eslint-disable-next-line -- persist custom storage type
+      // eslint-disable-next-line -- persist custom storage type
     } as any
   )
 );
 
 export function rehydrateDashboardAuth(): Promise<void> {
   if (typeof document === "undefined") return Promise.resolve();
-  const store = useDashboardAuthStore as unknown as { persist?: { rehydrate?: () => Promise<void> } };
+  const store = useDashboardAuthStore as unknown as {
+    persist?: { rehydrate?: () => Promise<void> };
+  };
   return store.persist?.rehydrate?.() ?? Promise.resolve();
 }
 

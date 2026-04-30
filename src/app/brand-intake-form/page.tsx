@@ -887,14 +887,14 @@ export default function BrandIntakeForm() {
           </div>
         );
       case 5:
-        const geographyOptions = [ 
-          'North America (US, Canada)',
-          'Europe (All Zones)',
-          'South Asia (Includes India and Pakistan)',
-          'South East Asia',
-          'LATAM (Central America & South America)',
+        const geographyOptions = [
+          "North America (US, Canada)",
+          "Europe (All Zones)",
+          "South Asia (Includes India and Pakistan)",
+          "South East Asia",
+          "LATAM (Central America & South America)",
           "MENA (Middle East & North Africa)",
-          'MENA (includes Pakistan)',
+          "MENA (includes Pakistan)",
         ];
         const ageRangeOptions = ["18 - 24", "25 - 45", "45 - 60"];
         const genderSkewOptions = ["Skewed male", "Balanced", "Skewed Female"];
@@ -1812,7 +1812,6 @@ export default function BrandIntakeForm() {
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(payload),
                           });
-                          
                         } catch (sheetErr) {
                           console.error("Brand intake Google Sheet request failed:", sheetErr);
                         }

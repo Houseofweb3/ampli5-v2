@@ -90,7 +90,6 @@ const caseStudies = [
     ],
     link: "/case_studies/Ampli5+x+Cabbage.pdf",
   },
- 
 ];
 
 export default function CaseStudies() {

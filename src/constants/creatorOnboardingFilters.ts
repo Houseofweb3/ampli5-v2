@@ -20,19 +20,19 @@ export const INDUSTRY_OPTIONS = [
   "Startups",
   "Robotics & Hardware",
   "Health & Fitness",
-  "Travel"
+  "Travel",
 ] as const;
 
 export const GEOGRAPHY_OPTIONS = [
-  'North America (US, Canada)',
-  'Europe (All Zones)',
-  'South Asia (Includes India and Pakistan)',
-  'South East Asia',
-  'LATAM (Central America & South America)',
+  "North America (US, Canada)",
+  "Europe (All Zones)",
+  "South Asia (Includes India and Pakistan)",
+  "South East Asia",
+  "LATAM (Central America & South America)",
   "MENA (Middle East & North Africa)",
-  'MENA (includes Pakistan)',
+  "MENA (includes Pakistan)",
 ] as const;
-  
+
 export const INDUSTRY_CATEGORY_OPTIONS: Record<string, string[]> = {
   Crypto: [
     "Crypto DeFi",
@@ -85,15 +85,15 @@ export const INDUSTRY_CATEGORY_OPTIONS: Record<string, string[]> = {
     "Health & Fitness - Podcasters",
     "Health & Fitness - Clippers",
   ],
-  "Travel":[
+  Travel: [
     "Couple travel",
     "Solo Travel",
     "City Guides & Hidden Gems",
     "Hotel & Resort Reviews",
     "Luxury Travel & Experiences",
     "Travel Vlogger",
-    "Travel Podcast"
-  ]
+    "Travel Podcast",
+  ],
 };
 
 /** Shown only when Instagram is selected; user picks one (not sent in API payload). */
@@ -106,7 +106,7 @@ export const INSTAGRAM_INVENTORY_INFLUENCER: string[] = [
   "Carousel (3–5 slides)",
   "Story sequence (3 slides)",
   "Reel / TikTok pinned (7 days)",
-  "Collab Tag"
+  "Collab Tag",
 ];
 
 /** Instagram inventory when "For Clipping Channels" is selected. */
@@ -121,7 +121,7 @@ export const INSTAGRAM_INVENTORY_CLIPPING: string[] = [
   "Story sequence (3 slides)",
   "Link in bio placement (7 days)",
   "Reel / TikTok pinned (7 days)",
-  "Collab Tag"
+  "Collab Tag",
 ];
 
 /** All possible Instagram row keys (for reset / clearing hidden selections). */
@@ -144,7 +144,7 @@ export const PLATFORM_INVENTORY_OPTIONS: Record<string, string[]> = {
     "Dedicated review / breakdown video",
     "Streams/Live trading video",
     "Shorts",
-    "Collab Tag"
+    "Collab Tag",
   ],
   Instagram: ALL_INSTAGRAM_INVENTORY_KEYS,
   TikTok: [
@@ -158,10 +158,7 @@ export const PLATFORM_INVENTORY_OPTIONS: Record<string, string[]> = {
     "Sponsored-by mention (footer)",
     "Contextual integration within main content",
   ],
-  "PR/Editorial": [
-    "Organic PR with backlink",
-    "Thematic article (brand included in narrative)",
-  ],
+  "PR/Editorial": ["Organic PR with backlink", "Thematic article (brand included in narrative)"],
   Spotify: [
     "Dedicated podcast episode",
     "Podcast sponsored mention",

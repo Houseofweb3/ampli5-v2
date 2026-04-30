@@ -8,7 +8,7 @@ const layout = ({ children }: { children: ReactNode }) => {
   return (
     <FilterProvider>
       <DashboardAuthGuard>
-          <div className="h-full w-full bg-white px-2 sm:px-4 ">{children}</div>
+        <div className="h-full w-full bg-white px-2 sm:px-4 ">{children}</div>
       </DashboardAuthGuard>
     </FilterProvider>
   );

@@ -4,8 +4,7 @@ import type {
   SubmitProposalResponse,
 } from "@/src/types/proposal";
 
-const getBaseUrl = () =>
-  process.env.NEXT_PUBLIC_DASHBOARD_API_URL || "";
+const getBaseUrl = () => process.env.NEXT_PUBLIC_DASHBOARD_API_URL || "";
 
 export class ProposalApiError extends Error {
   public readonly status: number;
@@ -36,14 +35,11 @@ export async function submitProposal(
   token: string,
   payload: SubmitProposalPayload
 ): Promise<SubmitProposalResponse> {
-  const res = await fetch(
-    `${getBaseUrl()}/web/proposal/${encodeURIComponent(token)}/submit`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    }
-  );
+  const res = await fetch(`${getBaseUrl()}/web/proposal/${encodeURIComponent(token)}/submit`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
   const data = await res.json();
   if (!res.ok) {
     const message =

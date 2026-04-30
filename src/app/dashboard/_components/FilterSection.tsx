@@ -117,10 +117,7 @@ const FilterSection = () => {
   }, [industry, availableCategoryOptions, setNiche]);
 
   const isRequiredFiltersSelected = () =>
-    platforms?.length > 0 &&
-    contentTypes?.length > 0 &&
-    industry?.length > 0 &&
-    niche?.length > 0;
+    platforms?.length > 0 && contentTypes?.length > 0 && industry?.length > 0 && niche?.length > 0;
 
   const getMissingRequiredFilters = () => {
     const missing: string[] = [];

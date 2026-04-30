@@ -19,8 +19,9 @@ function mapRow(row: unknown): ManageBlog | null {
   const id = r.id ?? r._id;
   if (id == null || id === "") return null;
   const hero = r.heroImage;
-  let cover: string | null =
-    (r.coverImage ?? r.coverImageUrl ?? r.cover_image_url) as string | null;
+  let cover: string | null = (r.coverImage ?? r.coverImageUrl ?? r.cover_image_url) as
+    | string
+    | null;
   if (!cover && hero && typeof hero === "object" && "src" in hero) {
     cover = String((hero as { src: string }).src);
   }
@@ -108,7 +109,10 @@ export async function createManageBlog(payload: ManageBlogPayload): Promise<Mana
   throw new Error("Create succeeded but response shape was unexpected.");
 }
 
-export async function updateManageBlog(id: string, payload: ManageBlogPayload): Promise<ManageBlog> {
+export async function updateManageBlog(
+  id: string,
+  payload: ManageBlogPayload
+): Promise<ManageBlog> {
   const res = await manageBlogClient.patch(manageBlogItemUrl(id), payloadToPatchBody(payload));
   const mapped = mapRow(unwrapBlog(res.data));
   if (mapped) return mapped;

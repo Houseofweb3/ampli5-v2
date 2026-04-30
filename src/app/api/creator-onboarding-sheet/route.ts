@@ -71,11 +71,27 @@ interface CreatorOnboardingFormData {
   ageScreenshot?: string;
   genderScreenshot?: string;
   topCountriesScreenshot?: string;
+  platformAudienceProof?: Record<
+    string,
+    {
+      ageScreenshot?: string;
+      genderScreenshot?: string;
+      topCountriesScreenshot?: string;
+    }
+  >;
   paymentTerms?: string;
   turnaroundTimes?: string[];
   firstCollaborationImage1?: string;
   firstCollaborationImage2?: string;
   firstCollaborationImage3?: string;
+  platformCollaborationProof?: Record<
+    string,
+    {
+      image1?: string;
+      image2?: string;
+      image3?: string;
+    }
+  >;
   xLink?: string;
   instagramLink?: string;
   youtubeLink?: string;
@@ -188,6 +204,24 @@ export async function POST(request: Request) {
      * Age / Gender / Top countries screenshots, Payment terms, Turnaround,
      * Collab images 1–3, X/IG/YT/TikTok/Newsletter links, Final confirmation
      */
+    const getProofForPlatform = (platform: string) => {
+      const proof = body.platformAudienceProof?.[platform];
+      return {
+        ageScreenshot: proof?.ageScreenshot || body.ageScreenshot || "",
+        genderScreenshot: proof?.genderScreenshot || body.genderScreenshot || "",
+        topCountriesScreenshot: proof?.topCountriesScreenshot || body.topCountriesScreenshot || "",
+      };
+    };
+
+    const getCollabForPlatform = (platform: string) => {
+      const proof = body.platformCollaborationProof?.[platform];
+      return {
+        image1: proof?.image1 || body.firstCollaborationImage1 || "",
+        image2: proof?.image2 || body.firstCollaborationImage2 || "",
+        image3: proof?.image3 || body.firstCollaborationImage3 || "",
+      };
+    };
+
     const commonFields = (
       platform: string,
       platformLink: string,
@@ -220,14 +254,14 @@ export async function POST(request: Request) {
       body.categories?.join(", ") || "",
       body.primaryAudienceGeography?.join(", ") || "",
       body.secondaryAudienceGeography?.join(", ") || "",
-      body.ageScreenshot || "",
-      body.genderScreenshot || "",
-      body.topCountriesScreenshot || "",
+      getProofForPlatform(platform).ageScreenshot,
+      getProofForPlatform(platform).genderScreenshot,
+      getProofForPlatform(platform).topCountriesScreenshot,
       body.paymentTerms || "",
       body.turnaroundTimes?.join(", ") || "",
-      body.firstCollaborationImage1 || "",
-      body.firstCollaborationImage2 || "",
-      body.firstCollaborationImage3 || "",
+      getCollabForPlatform(platform).image1,
+      getCollabForPlatform(platform).image2,
+      getCollabForPlatform(platform).image3,
       body.xLink || "",
       body.instagramLink || "",
       body.youtubeLink || "",
@@ -250,8 +284,7 @@ export async function POST(request: Request) {
         const priceDisplay = rate.startsWith("$") ? rate : `$${rate}`;
 
         const buyPrice = stripPriceToNumeric(rate);
-        const sellPrice =
-          buyPrice != null ? sellingPriceFromBuyingPrice(buyPrice) : null;
+        const sellPrice = buyPrice != null ? sellingPriceFromBuyingPrice(buyPrice) : null;
         const buyPriceStr = buyPrice != null ? String(buyPrice) : "";
         const sellPriceStr = sellPrice != null ? String(sellPrice) : "";
 
@@ -288,12 +321,10 @@ export async function POST(request: Request) {
     }
 
     if (values.length === 0) {
-      values.push(
-        commonFields("", "", "", "", "", "", "", "", "")
-      );
+      values.push(commonFields("", "", "", "", "", "", "", "", ""));
     }
 
-    const sheetName ="creator-onboarding";
+    const sheetName = "creator-onboarding";
     const range = `${sheetName}!A:AI`;
 
     await sheets.spreadsheets.values.append({

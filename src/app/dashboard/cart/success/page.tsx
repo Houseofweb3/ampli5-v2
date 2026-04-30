@@ -19,34 +19,21 @@ export default function CartSuccessPage() {
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h1 className="text-2xl md:text-3xl font-semibold text-black mb-3">
-          Nicely done!
-        </h1>
+        <h1 className="text-2xl md:text-3xl font-semibold text-black mb-3">Nicely done!</h1>
         <p className="text-secondary-text text-base md:text-lg leading-relaxed mb-8">
           We&apos;ve got your proposal and will get back within 72 hours.
         </p>
         <p className="text-black/80 text-sm md:text-base mb-8">
           Questions? Reach out to us at{" "}
-          <a
-            href={`mailto:${SUPPORT_EMAIL}`}
-            className="text-primary font-medium hover:underline"
-          >
+          <a href={`mailto:${SUPPORT_EMAIL}`} className="text-primary font-medium hover:underline">
             {SUPPORT_EMAIL}
           </a>
         </p>
         <Link href={DASHBOARD_HOME}>
-          <Button
-            size={BUTTON_SIZES.LARGE}
-            type={BUTTON_TYPES.PRIMARY}
-          >
+          <Button size={BUTTON_SIZES.LARGE} type={BUTTON_TYPES.PRIMARY}>
             Back to Influencers
           </Button>
         </Link>

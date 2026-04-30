@@ -69,6 +69,21 @@ interface CreatorOnboardingFormData {
   firstCollaborationImage1PublicId?: string; // PublicId for deletion
   firstCollaborationImage2PublicId?: string; // PublicId for deletion
   firstCollaborationImage3PublicId?: string; // PublicId for deletion
+  /**
+   * Per-platform proof of last collaboration and results.
+   * Key = platform name (must match `platforms` values).
+   */
+  platformCollaborationProof: Record<
+    string,
+    {
+      image1: string;
+      image2: string;
+      image3: string;
+      image1PublicId?: string;
+      image2PublicId?: string;
+      image3PublicId?: string;
+    }
+  >;
   // Second slide - links to previous content
   xLink: string; // X (Twitter) link
   instagramLink: string; // Instagram link
@@ -90,6 +105,22 @@ interface CreatorOnboardingFormData {
   ageScreenshotPublicId?: string; // PublicId for deletion
   genderScreenshotPublicId?: string; // PublicId for deletion
   topCountriesScreenshotPublicId?: string; // PublicId for deletion
+
+  /**
+   * Per-platform audience proof screenshots.
+   * Key = platform name (must match `platforms` values).
+   */
+  platformAudienceProof: Record<
+    string,
+    {
+      ageScreenshot: string;
+      genderScreenshot: string;
+      topCountriesScreenshot: string;
+      ageScreenshotPublicId?: string;
+      genderScreenshotPublicId?: string;
+      topCountriesScreenshotPublicId?: string;
+    }
+  >;
 }
 
 interface CreatorOnboardingFormState {
@@ -140,6 +171,7 @@ const initialFormData: CreatorOnboardingFormData = {
   firstCollaborationImage1PublicId: "",
   firstCollaborationImage2PublicId: "",
   firstCollaborationImage3PublicId: "",
+  platformCollaborationProof: {},
   xLink: "",
   instagramLink: "",
   youtubeLink: "",
@@ -154,6 +186,7 @@ const initialFormData: CreatorOnboardingFormData = {
   ageScreenshotPublicId: "",
   genderScreenshotPublicId: "",
   topCountriesScreenshotPublicId: "",
+  platformAudienceProof: {},
 };
 
 export const useCreatorOnboardingFormStore = create<CreatorOnboardingFormState>()(
