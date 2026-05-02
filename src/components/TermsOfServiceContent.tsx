@@ -159,6 +159,9 @@ export default function TermsOfServiceContent() {
           Fees are charged for time, execution, and access, not outcomes.
         </p>
         <p className="leading-relaxed text-gray-700">
+          We only accept 100% advance payments. No credit.
+        </p>
+        <p className="leading-relaxed text-gray-700">
           Unless expressly stated otherwise in writing:
         </p>
         <ul className="list-disc pl-6 space-y-2 text-gray-700">
