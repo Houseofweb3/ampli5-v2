@@ -5,12 +5,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
-import type { Swiper as SwiperType } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 import { useCreatorOnboardingFormStore } from "@/src/store/creatorOnboardingForm";
 import Select from "react-select";
 import type { StylesConfig } from "react-select";
@@ -31,81 +25,31 @@ import {
   uploadAmpli5Image,
 } from "@/src/services/ampli5Images";
 
-interface Step {
-  id: number;
-  title: string;
-  description: string;
+const SECTION_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
+
+function getErrorKeyToSectionId(key: string): number {
+  if (
+    key === "channelBrandName" ||
+    key === "primaryContactEmail" ||
+    key === "telegramOrWhatsApp" ||
+    key === "primaryCountry" ||
+    key === "primaryTimezone" ||
+    key === "platforms" ||
+    key.startsWith("platformUrl_")
+  )
+    return 1;
+  if (key === "industries") return 2;
+  if (key === "categories") return 3;
+  if (key === "inventoryItems" || key === "instagramInventoryMode") return 4;
+  if (key === "primaryAudienceGeography" || key === "secondaryAudienceGeography") return 5;
+  if (key.startsWith("audienceProof_")) return 6;
+  if (key === "paymentTerms") return 7;
+  if (key === "turnaroundTimes") return 8;
+  if (key.startsWith("collaborationProof_") || key === "previousBrandedLinks") return 9;
+  if (key === "finalConfirmation") return 10;
+  return 1;
 }
 
-const STEPS: Step[] = [
-  {
-    id: 1,
-    title: "Basic Details",
-    description: "Short answer (required)",
-  },
-  {
-    id: 2,
-    title: "Industry selection",
-    description: "",
-  },
-  {
-    id: 3,
-    title: "Category Selection",
-    description: "",
-  },
-  {
-    id: 4,
-    title: "Inventory selection & Rates",
-    description: "",
-  },
-  {
-    id: 5,
-    title: "Audience & GEO",
-    description: "",
-  },
-  {
-    id: 6,
-    title: "Audience Proof",
-    description: "",
-  },
-  {
-    id: 7,
-    title: "Payment Terms",
-    description: "",
-  },
-  {
-    id: 8,
-    title: "Turnaround & Reliability",
-    description: "",
-  },
-  {
-    id: 9,
-    title: "Previous Collaborations",
-    description: "",
-  },
-  {
-    id: 10,
-    title: "Final Confirmation",
-    description: "",
-  },
-];
-
-// Step 1: slide 0 = channelBrandName, primaryContactEmail; 1 = telegramId, whatsappNumber, telegramOrWhatsApp; 2 = primaryCountry, primaryTimezone; 3 = platforms + platformUrls
-const CREATOR_STEP1_FIELD_TO_SLIDE: Record<string, number> = {
-  channelBrandName: 0,
-  primaryContactEmail: 0,
-  telegramId: 1,
-  whatsappNumber: 1,
-  telegramOrWhatsApp: 1,
-  primaryCountry: 2,
-  primaryTimezone: 2,
-  platforms: 3,
-};
-// Step 5: slide 0 = primaryAudienceGeography, 1 = secondaryAudienceGeography
-const CREATOR_STEP5_FIELD_TO_SLIDE: Record<string, number> = {
-  primaryAudienceGeography: 0,
-  secondaryAudienceGeography: 1,
-};
 /** Selling price = user price + 16%, rounded to nearest 100 (e.g. 554 → 600, 549 → 500). */
 function roundToNearest100(x: number): number {
   return Math.round(x / 100) * 100;
@@ -118,19 +62,6 @@ function getCpm(sellingPrice: number, avgViews: number): number | null {
   if (!avgViews || avgViews <= 0) return null;
   return (sellingPrice / avgViews) * 1000;
 }
-
-// Step 9: slide 0 = images, 1 = links
-const CREATOR_STEP9_FIELD_TO_SLIDE: Record<string, number> = {
-  firstCollaborationImage1: 0,
-  firstCollaborationImage2: 0,
-  firstCollaborationImage3: 0,
-  previousBrandedLinks: 1,
-  xLink: 1,
-  instagramLink: 1,
-  youtubeLink: 1,
-  tiktokLink: 1,
-  newsletterLink: 1,
-};
 
 const COUNTRY_OPTIONS = [
   "Afghanistan",
@@ -330,19 +261,12 @@ const LocationPinIcon = () => (
 export default function CreatorOnboardingForm() {
   const router = useRouter();
   const { formData, updateFormData, resetForm } = useCreatorOnboardingFormStore();
-  const [currentStep, setCurrentStep] = useState<number>(1);
-  const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [numberPickupCountry] = useState<string>("us");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [uploadingFields, setUploadingFields] = useState<Set<string>>(new Set());
   const [isResetting, setIsResetting] = useState<boolean>(false);
-  const [pendingSlideToField, setPendingSlideToField] = useState<string | null>(null);
-  const creatorStep1SwiperRef = useRef<SwiperType | null>(null);
-  const audienceGeoSwiperRef = useRef<SwiperType | null>(null);
-  const collaborationSwiperRef = useRef<SwiperType | null>(null);
-  const stepContentRef = useRef<HTMLDivElement | null>(null);
-  const [stepSlideIndex, setStepSlideIndex] = useState<Record<number, number>>({});
+  const sectionRefs = useRef<Record<number, HTMLDivElement | null>>({});
   /** UI-only: which Instagram inventory list to show (not sent in submit payload). */
   const [instagramInventoryMode, setInstagramInventoryMode] =
     useState<InstagramInventoryMode | null>(null);
@@ -353,109 +277,15 @@ export default function CreatorOnboardingForm() {
     }
   }, [formData.platforms]);
 
-  // Load completed steps from formData
-  useEffect(() => {
-    const completed = new Set<number>();
-    // Check which steps have data - will be updated as we implement each step
-    const step1PlatformsOk = formData.platforms && formData.platforms.length > 0;
-    const step1PlatformUrlsOk =
-      step1PlatformsOk &&
-      formData.platformUrls &&
-      formData.platforms.every((p: string) => (formData.platformUrls?.[p] ?? "").trim().length > 0);
-    if (
-      formData.channelBrandName &&
-      formData.primaryContactEmail &&
-      (formData.telegramId?.trim() || formData.whatsappNumber?.trim()) &&
-      formData.primaryCountry &&
-      formData.primaryTimezone &&
-      step1PlatformsOk &&
-      step1PlatformUrlsOk
-    )
-      completed.add(1);
-    if (formData.industries && formData.industries.length > 0) completed.add(2);
-    const selInd = formData.industries?.[0];
-    const hasCats = selInd && (INDUSTRY_CATEGORY_OPTIONS[selInd]?.length ?? 0) > 0;
-    if (
-      formData.industries?.length === 1 &&
-      (!hasCats || (formData.categories && formData.categories.length > 0))
-    )
-      completed.add(3);
-    const platformsStep4 = formData.platforms || [];
-    const inventoryItems = formData.inventoryItems || {};
-    const step4Complete =
-      platformsStep4.length > 0 &&
-      platformsStep4.every((platform: string) => {
-        if (platform === "Instagram" && instagramInventoryMode === null) return false;
-        const optionsStep4 = getInventoryOptionsForPlatform(platform, instagramInventoryMode);
-        if (optionsStep4.length === 0) return true;
-        const selectedForPlatform = optionsStep4.filter(
-          (item: string) => inventoryItems[item]?.selected
-        );
-        if (selectedForPlatform.length === 0) return false;
-        return selectedForPlatform.every((item: string) => {
-          const r = inventoryItems[item]?.rate?.trim() ?? "";
-          const avgViews = (inventoryItems[item]?.averageViews ?? "").trim();
-          return r !== "" && r !== "0" && avgViews !== "";
-        });
-      });
-    if (step4Complete) completed.add(4);
-    if (
-      formData.primaryAudienceGeography &&
-      formData.primaryAudienceGeography.length > 0 &&
-      formData.secondaryAudienceGeography &&
-      formData.secondaryAudienceGeography.length > 0
-    )
-      completed.add(5);
-    // Step 6: Audience Proof - require all 3 screenshots per selected platform
-    const platformsForProof = formData.platforms || [];
-    const proofMap = formData.platformAudienceProof || {};
-    const step6Complete =
-      platformsForProof.length > 0 &&
-      platformsForProof.every((p: string) => {
-        const proof = proofMap[p];
-        return (
-          !!proof?.ageScreenshot?.trim() &&
-          !!proof?.genderScreenshot?.trim() &&
-          !!proof?.topCountriesScreenshot?.trim()
-        );
-      });
-    if (step6Complete) completed.add(6);
-    // Step 7: Payment Terms - check if payment term is selected
-    if (formData.paymentTerms && formData.paymentTerms.trim()) completed.add(7);
-    // Step 8: Turnaround & Reliability - turnaround time (single choice)
-    if (formData.turnaroundTimes && formData.turnaroundTimes.length > 0) completed.add(8);
-    // Step 9: Previous Collaborations - require 3 images per selected platform + at least one link
-    const hasAtLeastOnePrevLink = [
-      formData.xLink,
-      formData.instagramLink,
-      formData.youtubeLink,
-      formData.tiktokLink,
-      formData.newsletterLink,
-    ].some((v) => v != null && String(v).trim() !== "");
-    const platformsForCollab = formData.platforms || [];
-    const collabMap = formData.platformCollaborationProof || {};
-    const step9ImagesComplete =
-      platformsForCollab.length > 0 &&
-      platformsForCollab.every((p: string) => {
-        const proof = collabMap[p];
-        return !!proof?.image1?.trim() && !!proof?.image2?.trim() && !!proof?.image3?.trim();
-      });
-    if (step9ImagesComplete && hasAtLeastOnePrevLink) completed.add(9);
-    // Step 10: Final Confirmation - check if confirmation is checked
-    if (formData.finalConfirmation) completed.add(10);
-    setCompletedSteps(completed);
-  }, [formData, instagramInventoryMode]);
-
-  const handleStepClick = (stepId: number) => {
-    if (completedSteps.has(stepId) || stepId === currentStep) {
-      setCurrentStep(stepId);
+  const scrollToSectionForError = (errorKey: string) => {
+    const sectionId = getErrorKeyToSectionId(errorKey);
+    const el = sectionRefs.current[sectionId];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
-  type ValidateResult =
-    | { valid: true; firstErrorMessage?: undefined; firstErrorKey?: undefined }
-    | { valid: false; firstErrorMessage: string; firstErrorKey: string };
-  const validateStep = (step: number): ValidateResult => {
+  const collectStepErrors = (step: number): Record<string, string> => {
     const newErrors: Record<string, string> = {};
 
     switch (step) {
@@ -649,93 +479,31 @@ export default function CreatorOnboardingForm() {
         break;
     }
 
-    setErrors(newErrors);
-    const keys = Object.keys(newErrors);
-    if (keys.length === 0)
-      return {
-        valid: true as const,
-        firstErrorMessage: undefined,
-        firstErrorKey: undefined,
-      };
+    return newErrors;
+  };
+
+  type ValidateAllResult =
+    | { valid: true; firstErrorMessage?: undefined; firstErrorKey?: undefined }
+    | { valid: false; firstErrorMessage: string; firstErrorKey: string };
+  const validateAll = (): ValidateAllResult => {
+    const all: Record<string, string> = {};
+    for (const step of SECTION_IDS) {
+      Object.assign(all, collectStepErrors(step));
+    }
+    setErrors(all);
+    const keys = Object.keys(all);
+    if (keys.length === 0) {
+      return { valid: true };
+    }
     return {
-      valid: false as const,
-      firstErrorMessage: newErrors[keys[0]],
+      valid: false,
+      firstErrorMessage: all[keys[0]],
       firstErrorKey: keys[0],
     };
   };
 
-  // When validation fails, slide to the field's slide (if step has Swiper) and scroll step into view
-  useEffect(() => {
-    if (!pendingSlideToField || !currentStep) return;
-    const step = currentStep;
-    if (step === 1) {
-      const slideIndex =
-        CREATOR_STEP1_FIELD_TO_SLIDE[pendingSlideToField] ??
-        (pendingSlideToField.startsWith("platformUrl_") ? 3 : undefined);
-      if (slideIndex !== undefined) creatorStep1SwiperRef.current?.slideTo(slideIndex);
-    } else if (step === 5 && CREATOR_STEP5_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
-      audienceGeoSwiperRef.current?.slideTo(CREATOR_STEP5_FIELD_TO_SLIDE[pendingSlideToField]);
-    } else if (step === 9 && CREATOR_STEP9_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
-      collaborationSwiperRef.current?.slideTo(CREATOR_STEP9_FIELD_TO_SLIDE[pendingSlideToField]);
-    }
-    stepContentRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-    });
-    setPendingSlideToField(null);
-  }, [currentStep, pendingSlideToField]);
-
-  const handleNext = () => {
-    const result = validateStep(currentStep);
-    if (!result.valid) {
-      toast.error(result.firstErrorMessage ?? "Please fill in all required fields");
-      if (result.firstErrorKey) setPendingSlideToField(result.firstErrorKey);
-      return;
-    }
-
-    if (currentStep < STEPS.length) {
-      setCompletedSteps((prev) => {
-        const newSet = new Set(prev);
-        newSet.add(currentStep);
-        return newSet;
-      });
-      setCurrentStep(currentStep + 1);
-      setErrors({});
-    }
-  };
-
-  const handleBack = () => {
-    const stepsWithSwiper: Record<number, React.RefObject<SwiperType | null>> = {
-      1: creatorStep1SwiperRef,
-      5: audienceGeoSwiperRef,
-      9: collaborationSwiperRef,
-    };
-    const ref = stepsWithSwiper[currentStep];
-    const currentSlide = stepSlideIndex[currentStep] ?? 0;
-    if (ref?.current && currentSlide > 0) {
-      ref.current.slideTo(currentSlide - 1);
-      setStepSlideIndex((prev) => ({
-        ...prev,
-        [currentStep]: currentSlide - 1,
-      }));
-    } else {
-      setCurrentStep(currentStep - 1);
-      setErrors({});
-    }
-  };
-
-  const showBackButton = currentStep > 1 || (currentStep === 1 && (stepSlideIndex[1] ?? 0) > 0);
-
-  const isStepCompleted = (stepId: number) => completedSteps.has(stepId);
-  const isStepActive = (stepId: number) => stepId === currentStep;
-  // Only allow clicking: current step, any previous step, or the immediate next step when current is completed (all fields required, no jumping ahead)
-  const isStepClickable = (stepId: number) =>
-    stepId === currentStep ||
-    stepId < currentStep ||
-    (stepId === currentStep + 1 && isStepCompleted(currentStep));
-
-  const renderStepContent = () => {
-    switch (currentStep) {
+  const renderSection = (step: number) => {
+    switch (step) {
       case 1:
         const handlePlatformChange = (platform: string) => {
           const currentPlatforms = formData.platforms || [];
@@ -756,416 +524,8 @@ export default function CreatorOnboardingForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">Basic Details</h2>
-            </div>
-            <div className="hidden md:block w-full overflow-hidden">
-              <Swiper
-                onSwiper={(swiper) => {
-                  creatorStep1SwiperRef.current = swiper;
-                }}
-                onSlideChangeTransitionEnd={(swiper) =>
-                  setStepSlideIndex((prev) => ({
-                    ...prev,
-                    1: swiper.activeIndex,
-                  }))
-                }
-                modules={[Pagination]}
-                spaceBetween={24}
-                slidesPerView={1}
-                pagination={{ clickable: true }}
-                noSwipingClass="creator-step1-no-swipe"
-                className="brand-snapshot-slider"
-              >
-                <SwiperSlide>
-                  <div className="space-y-6 w-full">
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Channel / Brand Name <span className="text-red-500">*</span>
-                        </label>
-                      </div>
-                      <input
-                        type="text"
-                        value={formData.channelBrandName}
-                        onChange={(e) => {
-                          updateFormData({ channelBrandName: e.target.value });
-                          if (errors.channelBrandName) {
-                            setErrors((prev) => ({
-                              ...prev,
-                              channelBrandName: "",
-                            }));
-                          }
-                        }}
-                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                          errors.channelBrandName ? "border-red-500" : "border-gray-300"
-                        }`}
-                        placeholder="Enter channel or brand name"
-                      />
-                      {errors.channelBrandName && (
-                        <p className="mt-1 text-sm text-red-500">{errors.channelBrandName}</p>
-                      )}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Primary Contact Email <span className="text-red-500">*</span>
-                        </label>
-                      </div>
-                      <div className="relative">
-                        <input
-                          type="email"
-                          value={formData.primaryContactEmail}
-                          onChange={(e) => {
-                            updateFormData({
-                              primaryContactEmail: e.target.value,
-                            });
-                            if (errors.primaryContactEmail) {
-                              setErrors((prev) => ({
-                                ...prev,
-                                primaryContactEmail: "",
-                              }));
-                            }
-                          }}
-                          className={`w-full px-4 py-3 pr-10 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                            errors.primaryContactEmail ? "border-red-500" : "border-gray-300"
-                          }`}
-                          placeholder="arun@abc.com"
-                        />
-                        <svg
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                          />
-                        </svg>
-                      </div>
-                      {errors.primaryContactEmail && (
-                        <p className="mt-1 text-sm text-red-500">{errors.primaryContactEmail}</p>
-                      )}
-                    </div>
-                  </div>
-                </SwiperSlide>
-                {/* Second Slide: Telegram ID and WhatsApp Number (at least one required) */}
-                <SwiperSlide>
-                  <div className="space-y-6 w-full">
-                    <p className="text-sm text-gray-500">At least one required</p>
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Telegram ID
-                        </label>
-                      </div>
-                      <input
-                        type="text"
-                        value={formData.telegramId}
-                        onChange={(e) => {
-                          updateFormData({ telegramId: e.target.value });
-                          if (errors.telegramOrWhatsApp) {
-                            setErrors((prev) => ({
-                              ...prev,
-                              telegramOrWhatsApp: "",
-                            }));
-                          }
-                        }}
-                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                          errors.telegramOrWhatsApp ? "border-red-500" : "border-gray-300"
-                        }`}
-                        placeholder="XXX XXX XXXX"
-                      />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          WhatsApp Number
-                        </label>
-                      </div>
-                      <PhoneInput
-                        country={numberPickupCountry}
-                        value={formData.whatsappNumber}
-                        onChange={(value: string) => {
-                          updateFormData({ whatsappNumber: value });
-                          if (errors.telegramOrWhatsApp) {
-                            setErrors((prev) => ({
-                              ...prev,
-                              telegramOrWhatsApp: "",
-                            }));
-                          }
-                        }}
-                        enableLongNumbers
-                        disableCountryCode={false}
-                        inputStyle={{
-                          width: "100%",
-                          height: "48px",
-                          padding: "14px 60px",
-                          border: errors.telegramOrWhatsApp
-                            ? "2px solid #ef4444"
-                            : "2px solid #D1D5DB",
-                          borderRadius: "8px",
-                          fontSize: "16px",
-                          backgroundColor: "#fff",
-                          color: "#1F2937",
-                        }}
-                        containerStyle={{
-                          width: "100%",
-                        }}
-                        buttonStyle={{
-                          border: errors.telegramOrWhatsApp
-                            ? "2px solid #ef4444"
-                            : "2px solid #D1D5DB",
-                          borderRadius: "8px 0 0 8px",
-                          backgroundColor: "#fff",
-                        }}
-                        dropdownStyle={{
-                          backgroundColor: "#fff",
-                          border: "2px solid #D1D5DB",
-                          borderRadius: "8px",
-                        }}
-                      />
-                      {errors.telegramOrWhatsApp && (
-                        <p className="mt-1 text-sm text-red-500">{errors.telegramOrWhatsApp}</p>
-                      )}
-                    </div>
-                  </div>
-                </SwiperSlide>
-                {/* Third Slide: Primary Country and Primary Timezone */}
-                <SwiperSlide>
-                  <div
-                    className="space-y-6 w-full creator-step1-no-swipe"
-                    onMouseDown={(e) => e.stopPropagation()}
-                  >
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Primary Country <span className="text-red-500">*</span>
-                        </label>
-                      </div>
-                      <div className="relative">
-                        <Select<SelectOption>
-                          isClearable
-                          isSearchable
-                          placeholder="Select Country"
-                          options={countrySelectOptions}
-                          value={
-                            formData.primaryCountry
-                              ? {
-                                  value: formData.primaryCountry,
-                                  label: formData.primaryCountry,
-                                }
-                              : null
-                          }
-                          onChange={(opt: SelectOption | null) => {
-                            updateFormData({
-                              primaryCountry: opt?.value ?? "",
-                            });
-                            if (errors.primaryCountry)
-                              setErrors((prev) => ({
-                                ...prev,
-                                primaryCountry: "",
-                              }));
-                          }}
-                          styles={getSelectStyles(!!errors.primaryCountry, true)}
-                          classNamePrefix="creator-country-select"
-                        />
-                        <LocationPinIcon />
-                      </div>
-                      {errors.primaryCountry && (
-                        <p className="mt-1 text-sm text-red-500">{errors.primaryCountry}</p>
-                      )}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Primary Timezone <span className="text-red-500">*</span>
-                        </label>
-                      </div>
-                      <Select<SelectOption>
-                        isClearable
-                        isSearchable
-                        placeholder="GMT+"
-                        options={timezoneSelectOptions}
-                        value={
-                          formData.primaryTimezone
-                            ? {
-                                value: formData.primaryTimezone,
-                                label: formData.primaryTimezone,
-                              }
-                            : null
-                        }
-                        onChange={(opt: SelectOption | null) => {
-                          updateFormData({ primaryTimezone: opt?.value ?? "" });
-                          if (errors.primaryTimezone)
-                            setErrors((prev) => ({
-                              ...prev,
-                              primaryTimezone: "",
-                            }));
-                        }}
-                        styles={getSelectStyles(!!errors.primaryTimezone)}
-                        classNamePrefix="creator-timezone-select"
-                      />
-                      {errors.primaryTimezone && (
-                        <p className="mt-1 text-sm text-red-500">{errors.primaryTimezone}</p>
-                      )}
-                    </div>
-                  </div>
-                </SwiperSlide>
-                {/* Fourth Slide: Platform You're Active On + URL per platform (inventory-style row) */}
-                <SwiperSlide>
-                  <div className="space-y-6 w-full">
-                    <div>
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            Platform You're Active On <span className="text-red-500">*</span>
-                          </h3>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            updateFormData({ platforms: [], platformUrls: {} });
-                            setErrors((prev) => {
-                              const next = { ...prev };
-                              PLATFORM_OPTIONS.forEach((p) => delete next[`platformUrl_${p}`]);
-                              delete next.platforms;
-                              return next;
-                            });
-                          }}
-                          className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                            />
-                          </svg>
-                          Reset
-                        </button>
-                      </div>
-                      <p className="text-sm text-gray-500 mb-3">
-                        Select platforms and enter your profile/channel URL in the box. Required
-                        when checked.
-                      </p>
-                      <div className="space-y-3">
-                        {PLATFORM_OPTIONS.map((platform) => {
-                          const isSelected = formData.platforms?.includes(platform) || false;
-                          const url = (formData.platformUrls || {})[platform] ?? "";
-                          const errKey = `platformUrl_${platform}`;
-                          const hasError = !!errors[errKey];
-                          return (
-                            <div
-                              key={platform}
-                              className={`flex items-center gap-4 p-4 rounded-lg transition-all border-2 ${
-                                isSelected
-                                  ? "border-[#7B46F8] bg-white"
-                                  : "border-gray-200 bg-white hover:border-gray-300"
-                              }`}
-                            >
-                              <label className="flex items-center cursor-pointer flex-1 min-w-0">
-                                <input
-                                  type="checkbox"
-                                  name="platform-selection"
-                                  checked={isSelected}
-                                  onChange={() => handlePlatformChange(platform)}
-                                  className="sr-only"
-                                />
-                                <div
-                                  className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 flex-shrink-0 ${
-                                    isSelected
-                                      ? "bg-[#7B46F8] border-[#7B46F8]"
-                                      : "bg-white border-gray-300"
-                                  }`}
-                                >
-                                  {isSelected && (
-                                    <svg
-                                      className="w-3 h-3 text-white"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={3}
-                                        d="M5 13l4 4L19 7"
-                                      />
-                                    </svg>
-                                  )}
-                                </div>
-                                <span
-                                  className={`text-sm font-medium ${isSelected ? "text-gray-900" : "text-gray-700"} break-words`}
-                                >
-                                  {platform}
-                                </span>
-                              </label>
-                              <div
-                                className="flex items-center gap-2 flex-shrink-0 w-full max-w-[280px]"
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                <span className="text-sm text-gray-500 whitespace-nowrap">URL</span>
-                                <input
-                                  type="url"
-                                  value={url}
-                                  onChange={(e) => {
-                                    updateFormData({
-                                      platformUrls: {
-                                        ...(formData.platformUrls || {}),
-                                        [platform]: e.target.value,
-                                      },
-                                    });
-                                    if (errors[errKey])
-                                      setErrors((prev) => ({
-                                        ...prev,
-                                        [errKey]: "",
-                                      }));
-                                  }}
-                                  placeholder="Enter URL"
-                                  disabled={!isSelected}
-                                  className={`flex-1 min-w-0 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-70 ${hasError ? "border-red-500" : "border-gray-300"}`}
-                                />
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      {errors.platforms && (
-                        <p className="mt-2 text-sm text-red-500">{errors.platforms}</p>
-                      )}
-                      {(() => {
-                        const urlErrorKey = Object.keys(errors).find((k) =>
-                          k.startsWith("platformUrl_")
-                        );
-                        return urlErrorKey ? (
-                          <p className="mt-2 text-sm text-red-500">{errors[urlErrorKey]}</p>
-                        ) : null;
-                      })()}
-                    </div>
-                  </div>
-                </SwiperSlide>
-              </Swiper>
-            </div>
-            {/* Mobile view - stacked fields */}
-            <div className="md:hidden space-y-6">
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
@@ -1219,7 +579,7 @@ export default function CreatorOnboardingForm() {
                   <p className="mt-1 text-sm text-red-500">{errors.primaryContactEmail}</p>
                 )}
               </div>
-              <p className="text-sm text-gray-500">At least one required</p>
+              <p className="text-sm text-gray-500 md:col-span-2">At least one required</p>
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
@@ -1357,6 +717,7 @@ export default function CreatorOnboardingForm() {
                   <p className="mt-1 text-sm text-red-500">{errors.primaryTimezone}</p>
                 )}
               </div>
+              </div>
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
@@ -1393,7 +754,7 @@ export default function CreatorOnboardingForm() {
                   Select platforms and enter your profile/channel URL in the box. Required when
                   checked.
                 </p>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {PLATFORM_OPTIONS.map((platform) => {
                     const isSelected = formData.platforms?.includes(platform) || false;
                     const url = (formData.platformUrls || {})[platform] ?? "";
@@ -1500,10 +861,6 @@ export default function CreatorOnboardingForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">Industry selection</h2>
-            </div>
             <div className="space-y-6">
               <div>
                 <div className="flex items-center gap-2 mb-4">
@@ -1512,7 +869,7 @@ export default function CreatorOnboardingForm() {
                     Select The Industry You Operate In <span className="text-red-500">*</span>
                   </h3>
                 </div>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                   {INDUSTRY_OPTIONS.map((industry) => {
                     const isSelected = formData.industries?.includes(industry) || false;
                     return (
@@ -1577,12 +934,6 @@ export default function CreatorOnboardingForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">
-                Category Selection <span className="text-red-500">*</span>
-              </h2>
-            </div>
             <div className="space-y-6">
               <div>
                 <div className="flex items-center gap-2 mb-4">
@@ -1600,7 +951,7 @@ export default function CreatorOnboardingForm() {
                     No categories for this industry. You can proceed to the next step.
                   </p>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                     {categoryOptions.map((category) => {
                       const isSelected = formData.categories?.includes(category) || false;
                       return (
@@ -1759,10 +1110,6 @@ export default function CreatorOnboardingForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">Inventory selection & Rates</h2>
-            </div>
             <div className="space-y-8">
               {selectedPlatforms.length === 0 ? (
                 <p className="text-sm text-gray-500">
@@ -2016,189 +1363,7 @@ export default function CreatorOnboardingForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">Audience & GEO</h2>
-            </div>
-            {/* Desktop: slider */}
-            <div className="hidden md:block w-full overflow-hidden">
-              <style jsx global>{`
-                .audience-geo-slider .swiper {
-                  width: 100%;
-                  max-width: 100%;
-                  box-sizing: border-box;
-                }
-                .audience-geo-slider .swiper-wrapper {
-                  max-width: 100%;
-                  box-sizing: border-box;
-                  flex-shrink: 0;
-                }
-                .audience-geo-slider .swiper-slide {
-                  max-width: 100%;
-                  box-sizing: border-box;
-                  flex-shrink: 0;
-                }
-                .audience-geo-slider .swiper-pagination {
-                  position: relative;
-                  margin-top: 24px;
-                }
-                .audience-geo-slider .swiper-pagination-bullet {
-                  width: 8px;
-                  height: 8px;
-                  background: #d1d5db;
-                  opacity: 1;
-                }
-                .audience-geo-slider .swiper-pagination-bullet-active {
-                  background: #7b46f8;
-                }
-              `}</style>
-              <Swiper
-                onSwiper={(swiper) => {
-                  audienceGeoSwiperRef.current = swiper;
-                }}
-                onSlideChangeTransitionEnd={(swiper) =>
-                  setStepSlideIndex((prev) => ({
-                    ...prev,
-                    5: swiper.activeIndex,
-                  }))
-                }
-                modules={[Pagination]}
-                spaceBetween={24}
-                slidesPerView={1}
-                pagination={{ clickable: true }}
-                className="audience-geo-slider"
-              >
-                {/* Slide 1: Primary Audience Geography (max 1) */}
-                <SwiperSlide>
-                  <div className="max-w-full box-border">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        Primary Audience Geography <span className="text-red-500">*</span>
-                      </h3>
-                    </div>
-                    <p className="text-sm text-gray-500 mb-4">Select your target geography</p>
-                    <div
-                      className="space-y-3"
-                      role="radiogroup"
-                      aria-label="Primary audience geography"
-                    >
-                      {GEOGRAPHY_OPTIONS.map((option) => {
-                        const isSelected =
-                          formData.primaryAudienceGeography?.includes(option) || false;
-                        return (
-                          <label
-                            key={option}
-                            className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${
-                              isSelected
-                                ? "border-[#7B46F8] bg-white"
-                                : "border-gray-200 bg-white hover:border-gray-300"
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name="creator-primary-audience-geography"
-                              value={option}
-                              checked={isSelected}
-                              onChange={() => handlePrimaryGeographyChange(option)}
-                              className="sr-only"
-                            />
-                            <div
-                              className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 flex-shrink-0 ${
-                                isSelected
-                                  ? "border-[#7B46F8] bg-white"
-                                  : "border-gray-300 bg-white"
-                              }`}
-                            >
-                              {isSelected && (
-                                <span className="w-2.5 h-2.5 rounded-full bg-[#7B46F8]" />
-                              )}
-                            </div>
-                            <span
-                              className={`text-sm font-medium ${
-                                isSelected ? "text-gray-900" : "text-gray-700"
-                              }`}
-                            >
-                              {option}
-                            </span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                    {errors.primaryAudienceGeography && (
-                      <p className="mt-2 text-sm text-red-500">{errors.primaryAudienceGeography}</p>
-                    )}
-                  </div>
-                </SwiperSlide>
-
-                {/* Slide 2: Secondary Audience Geography (max 1) */}
-                <SwiperSlide>
-                  <div className="max-w-full box-border">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        Secondary Audience Geography <span className="text-red-500">*</span>
-                      </h3>
-                    </div>
-                    <p className="text-sm text-gray-500 mb-4">Select your target geography</p>
-                    <div
-                      className="space-y-3"
-                      role="radiogroup"
-                      aria-label="Secondary audience geography"
-                    >
-                      {GEOGRAPHY_OPTIONS.map((option) => {
-                        const isSelected =
-                          formData.secondaryAudienceGeography?.includes(option) || false;
-                        return (
-                          <label
-                            key={option}
-                            className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${
-                              isSelected
-                                ? "border-[#7B46F8] bg-white"
-                                : "border-gray-200 bg-white hover:border-gray-300"
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name="creator-secondary-audience-geography"
-                              value={option}
-                              checked={isSelected}
-                              onChange={() => handleSecondaryGeographyChange(option)}
-                              className="sr-only"
-                            />
-                            <div
-                              className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 flex-shrink-0 ${
-                                isSelected
-                                  ? "border-[#7B46F8] bg-white"
-                                  : "border-gray-300 bg-white"
-                              }`}
-                            >
-                              {isSelected && (
-                                <span className="w-2.5 h-2.5 rounded-full bg-[#7B46F8]" />
-                              )}
-                            </div>
-                            <span
-                              className={`text-sm font-medium ${
-                                isSelected ? "text-gray-900" : "text-gray-700"
-                              }`}
-                            >
-                              {option}
-                            </span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                    {errors.secondaryAudienceGeography && (
-                      <p className="mt-2 text-sm text-red-500">
-                        {errors.secondaryAudienceGeography}
-                      </p>
-                    )}
-                  </div>
-                </SwiperSlide>
-              </Swiper>
-            </div>
-            {/* Mobile: single step - both geography sections stacked */}
-            <div className="md:hidden space-y-8">
+            <div className="space-y-8">
               <div className="max-w-full box-border">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
@@ -2208,7 +1373,7 @@ export default function CreatorOnboardingForm() {
                 </div>
                 <p className="text-sm text-gray-500 mb-4">Select your target geography</p>
                 <div
-                  className="space-y-3"
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"
                   role="radiogroup"
                   aria-label="Primary audience geography"
                 >
@@ -2254,7 +1419,7 @@ export default function CreatorOnboardingForm() {
                 </div>
                 <p className="text-sm text-gray-500 mb-4">Select your target geography</p>
                 <div
-                  className="space-y-3"
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"
                   role="radiogroup"
                   aria-label="Secondary audience geography"
                 >
@@ -2599,11 +1764,7 @@ export default function CreatorOnboardingForm() {
 
         return (
           <div>
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                <h2 className="text-2xl font-semibold text-gray-900">Audience Proof</h2>
-              </div>
+            <div className="flex items-center justify-end mb-6">
               <button
                 onClick={async () => {
                   setIsResetting(true);
@@ -2761,17 +1922,13 @@ export default function CreatorOnboardingForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">Payment Terms</h2>
-            </div>
             <div className="space-y-6">
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
                   <h3 className="text-lg font-semibold text-gray-900">Select Payment Terms</h3>
                 </div>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {paymentTermOptions.map((term) => {
                     const isSelected = formData.paymentTerms === term;
                     return (
@@ -2846,10 +2003,6 @@ export default function CreatorOnboardingForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">Turnaround & Reliability</h2>
-            </div>
             <div className="space-y-6">
               <div>
                 <div className="flex items-center gap-2 mb-4">
@@ -2858,7 +2011,7 @@ export default function CreatorOnboardingForm() {
                     Average Turnaround Time After Confirmation
                   </h3>
                 </div>
-                <div className="space-y-3">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {turnaroundTimeOptions.map((time) => {
                     const isSelected = formData.turnaroundTimes?.[0] === time;
                     return (
@@ -3236,214 +2389,8 @@ export default function CreatorOnboardingForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">Previous Collaborations</h2>
-            </div>
             <div className="space-y-6">
-              {/* <div className="flex items-center gap-2 mb-4">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h3 className="text-lg font-semibold text-gray-900">Proof of last collaboration and results</h3>
-            </div>
-             */}
-              {/* Desktop: slider */}
-              <div className="hidden md:block w-full overflow-hidden">
-                <style jsx global>{`
-                  .collaboration-slider .swiper {
-                    width: 100%;
-                    max-width: 100%;
-                    box-sizing: border-box;
-                  }
-                  .collaboration-slider .swiper-wrapper {
-                    max-width: 100%;
-                    box-sizing: border-box;
-                  }
-                  .collaboration-slider .swiper-slide {
-                    max-width: 100%;
-                    box-sizing: border-box;
-                  }
-                  .collaboration-slider .swiper-pagination {
-                    position: relative;
-                    margin-top: 24px;
-                  }
-                  .collaboration-slider .swiper-pagination-bullet {
-                    width: 8px;
-                    height: 8px;
-                    background: #d1d5db;
-                    opacity: 1;
-                  }
-                  .collaboration-slider .swiper-pagination-bullet-active {
-                    background: #7b46f8;
-                  }
-                `}</style>
-                <Swiper
-                  onSwiper={(swiper) => {
-                    collaborationSwiperRef.current = swiper;
-                  }}
-                  onSlideChangeTransitionEnd={(swiper) =>
-                    setStepSlideIndex((prev) => ({
-                      ...prev,
-                      9: swiper.activeIndex,
-                    }))
-                  }
-                  modules={[Pagination]}
-                  spaceBetween={24}
-                  slidesPerView={1}
-                  pagination={{ clickable: true }}
-                  className="collaboration-slider"
-                >
-                  <SwiperSlide>
-                    <div className="max-w-full box-border space-y-4">
-                      <div className="flex items-center gap-2 mb-4">
-                        <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                        <h3 className="text-lg font-semibold text-gray-900">
-                          Proof of last collaboration and results
-                        </h3>
-                      </div>
-                      {(!formData.platforms || formData.platforms.length === 0) && (
-                        <p className="text-sm text-gray-500">
-                          Please select at least one platform in Step 1.
-                        </p>
-                      )}
-
-                      <div className="space-y-8">
-                        {(formData.platforms || []).map((platform) => (
-                          <div
-                            key={platform}
-                            className="border border-gray-200 rounded-lg p-4 sm:p-6"
-                          >
-                            <div className="flex items-center gap-2 mb-4">
-                              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                              <h4 className="text-base font-semibold text-gray-900">{platform}</h4>
-                            </div>
-                            <div className="space-y-4">
-                              <PlatformCollabImageField
-                                platform={platform}
-                                field="image1"
-                                label="Upload screenshots"
-                              />
-                              <PlatformCollabImageField
-                                platform={platform}
-                                field="image2"
-                                label="Upload screenshots"
-                              />
-                              <PlatformCollabImageField
-                                platform={platform}
-                                field="image3"
-                                label="Upload screenshots"
-                              />
-                            </div>
-                            <p className="mt-2 text-xs text-gray-500">
-                              Post screenshots, analytics screenshots
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <div className="max-w-full box-border">
-                      <div className="flex items-center gap-2 mb-4">
-                        <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                        <h3 className="text-lg font-semibold text-gray-900">
-                          Links To Previous Branded / Sponsored Content
-                        </h3>
-                        <span className="text-sm text-gray-500">(at least one required)</span>
-                      </div>
-                      {errors.previousBrandedLinks && (
-                        <p className="mb-2 text-sm text-red-500">{errors.previousBrandedLinks}</p>
-                      )}
-                      <div className="space-y-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">X</label>
-                          <input
-                            type="text"
-                            value={formData.xLink}
-                            onChange={(e) => {
-                              updateFormData({ xLink: e.target.value });
-                              if (errors.previousBrandedLinks) {
-                                setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
-                              }
-                            }}
-                            className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
-                            placeholder="X"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Instagram
-                          </label>
-                          <input
-                            type="text"
-                            value={formData.instagramLink}
-                            onChange={(e) => {
-                              updateFormData({ instagramLink: e.target.value });
-                              if (errors.previousBrandedLinks) {
-                                setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
-                              }
-                            }}
-                            className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
-                            placeholder="Instagram"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Youtube
-                          </label>
-                          <input
-                            type="text"
-                            value={formData.youtubeLink}
-                            onChange={(e) => {
-                              updateFormData({ youtubeLink: e.target.value });
-                              if (errors.previousBrandedLinks) {
-                                setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
-                              }
-                            }}
-                            className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
-                            placeholder="Youtube"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            TikTok
-                          </label>
-                          <input
-                            type="text"
-                            value={formData.tiktokLink}
-                            onChange={(e) => {
-                              updateFormData({ tiktokLink: e.target.value });
-                              if (errors.previousBrandedLinks) {
-                                setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
-                              }
-                            }}
-                            className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
-                            placeholder="TikTok"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Newsletter links
-                          </label>
-                          <input
-                            type="text"
-                            value={formData.newsletterLink}
-                            onChange={(e) => {
-                              updateFormData({ newsletterLink: e.target.value });
-                              if (errors.previousBrandedLinks) {
-                                setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
-                              }
-                            }}
-                            className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
-                            placeholder="Newsletter links"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                </Swiper>
-              </div>
-              {/* Mobile: single step - images + links stacked */}
-              <div className="md:hidden space-y-8">
+              <div className="space-y-8">
                 <div className="max-w-full box-border space-y-4">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
@@ -3499,7 +2446,7 @@ export default function CreatorOnboardingForm() {
                   {errors.previousBrandedLinks && (
                     <p className="mb-2 text-sm text-red-500">{errors.previousBrandedLinks}</p>
                   )}
-                  <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">X</label>
                       <input
@@ -3592,10 +2539,6 @@ export default function CreatorOnboardingForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">Final Confirmation</h2>
-            </div>
             <div className="space-y-6">
               <div>
                 <label
@@ -3657,71 +2600,6 @@ export default function CreatorOnboardingForm() {
 
   return (
     <>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-                .brand-snapshot-slider .swiper-button-next,
-                .brand-snapshot-slider .swiper-button-prev {
-                    color: #7B46F8;
-                    width: 40px;
-                    height: 40px;
-                    background: white;
-                    border-radius: 50%;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                }
-                .brand-snapshot-slider .swiper-button-next:after,
-                .brand-snapshot-slider .swiper-button-prev:after {
-                    font-size: 18px;
-                    font-weight: bold;
-                }
-                .brand-snapshot-slider {
-                    width: 100%;
-                    overflow: hidden;
-                }
-                .brand-snapshot-slider .swiper-wrapper {
-                    width: 100%;
-                }
-                .brand-snapshot-slider .swiper-slide {
-                    width: 100%;
-                    box-sizing: border-box;
-                }
-                .brand-snapshot-slider .swiper-pagination {
-                    position: relative;
-                    margin-top: 24px;
-                    display: flex;
-                    justify-content: center;
-                    gap: 8px;
-                }
-                .brand-snapshot-slider .swiper-pagination-bullet {
-                    background: #D1D5DB;
-                    width: 8px;
-                    height: 8px;
-                    opacity: 1;
-                    margin: 0 4px;
-                }
-                .brand-snapshot-slider .swiper-pagination-bullet-active {
-                    background: #7B46F8;
-                }
-                .demographics-slider .swiper-pagination {
-                    position: relative;
-                    margin-top: 24px;
-                    display: flex;
-                    justify-content: center;
-                    gap: 8px;
-                }
-                .demographics-slider .swiper-pagination-bullet {
-                    background: #D1D5DB;
-                    width: 8px;
-                    height: 8px;
-                    opacity: 1;
-                    margin: 0 4px;
-                }
-                .demographics-slider .swiper-pagination-bullet-active {
-                    background: #7B46F8;
-                }
-            `,
-        }}
-      />
       <div className="bg-white relative">
         <div className="bg-[#7B46F8] relative py-24">
           <div className="absolute top-0 right-0 z-10">
@@ -3764,234 +2642,149 @@ export default function CreatorOnboardingForm() {
             />
           </div>
         </div>
-        <div className="flex h-full">
-          {/* Left Sidebar - Step Navigation */}
-          <div className="bg-white min-w-[400px] p-8 hidden lg:block border-r border-gray-200">
-            <div className="space-y-10">
-              {STEPS.map((step, index) => {
-                const isCompleted = isStepCompleted(step.id);
-                const isActive = isStepActive(step.id);
-                const isClickable = isStepClickable(step.id);
-
-                return (
-                  <div key={step.id} className="relative">
-                    {/* Progress Line */}
-                    {index < STEPS.length - 1 && (
-                      <div
-                        className="absolute left-[15px] top-[32px] h-16 w-0.5"
-                        style={{
-                          background: isCompleted || isActive ? "#7B46F8" : "none",
-                          borderLeft: isCompleted || isActive ? "none" : "1px dashed #D1D5DB",
-                        }}
-                      />
-                    )}
-
-                    {/* Step Item */}
-                    <div
-                      onClick={() => isClickable && handleStepClick(step.id)}
-                      className={`flex items-start gap-6 transition-colors ${
-                        isClickable ? "cursor-pointer" : "cursor-not-allowed"
-                      }`}
-                    >
-                      {/* Step Circle */}
-                      <div
-                        className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                          isActive
-                            ? "bg-[#7B46F8] border-2 border-[#7B46F8]"
-                            : isCompleted
-                              ? "bg-[#7B46F8] border-2 border-[#7B46F8]"
-                              : "bg-[#F8F8F8] border-2 border-gray-300 border-dashed"
-                        }`}
-                      >
-                        {isActive && <div className="w-3 h-3 bg-white rounded-full"></div>}
-                      </div>
-
-                      {/* Step Content */}
-                      <div className="flex-1 pt-1">
-                        <h3
-                          className={`text-lg font-medium ${
-                            isActive
-                              ? "text-[#7B46F8] font-semibold"
-                              : isCompleted
-                                ? "text-gray-900 font-medium"
-                                : "text-gray-600 font-normal"
-                          }`}
-                        >
-                          {step.title}
-                        </h3>
-                        {step.description && (
-                          <p
-                            className={`text-xs mt-1 ${
-                              isActive || isCompleted ? "text-gray-500" : "text-gray-400"
-                            }`}
-                          >
-                            {step.description}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Right Content Area */}
-          <div className="bg-[#F8F8F8] h-full py-12 px-4 sm:px-8 pb-24 w-screen lg:w-[calc(100vw_-_415px)]">
-            <div className="rounded-lg flex flex-col justify-between h-full w-full">
+        <div className="bg-[#F8F8F8] py-12 px-4 sm:px-8 pb-32">
+          <div className="max-w-5xl mx-auto bg-white rounded-lg sm:p-8 p-4">
+            {SECTION_IDS.map((id, idx) => (
               <div
-                key={currentStep}
-                className="sm:p-8 p-4 bg-white rounded-lg"
-                ref={stepContentRef}
+                key={id}
+                ref={(el) => {
+                  sectionRefs.current[id] = el;
+                }}
+                className={`scroll-mt-6 ${idx > 0 ? "mt-4 pt-4 border-t border-gray-200" : ""}`}
               >
-                {renderStepContent()}
+                {renderSection(id)}
               </div>
-
-              {/* Navigation Buttons - Fixed at bottom (all viewports, same as mobile) */}
-              <div className="fixed bottom-0 left-0 right-0 w-full bg-white p-4 md:p-6 border-t border-gray-200 flex justify-end gap-4 rounded-t-lg shadow-lg z-10">
-                {showBackButton && (
-                  <button
-                    type="button"
-                    onClick={handleBack}
-                    className="px-6 py-3 bg-white text-[#7B46F8] border-2 border-[#7B46F8] rounded-lg hover:bg-[#7B46F8] hover:text-white transition-colors font-medium"
-                  >
-                    Back
-                  </button>
-                )}
-                {currentStep < STEPS.length ? (
-                  <button
-                    onClick={handleNext}
-                    className="px-6 py-3 bg-[#7B46F8] text-white rounded-lg hover:bg-[#6B3EE8] transition-colors shadow-md font-medium"
-                  >
-                    Next
-                  </button>
-                ) : (
-                  <button
-                    onClick={async () => {
-                      const result = validateStep(currentStep);
-                      if (!result.valid) {
-                        toast.error(
-                          result.firstErrorMessage ?? "Please fill in all required fields"
-                        );
-                        if (result.firstErrorKey) setPendingSlideToField(result.firstErrorKey);
-                        return;
-                      }
-
-                      setIsSubmitting(true);
-                      try {
-                        const inventoryItems = formData.inventoryItems || {};
-                        const inventoryItemsWithCpm: Record<
-                          string,
-                          { selected: boolean; rate: string; averageViews: string; cpm?: string }
-                        > = {};
-                        for (const key of Object.keys(inventoryItems)) {
-                          const item = inventoryItems[key];
-                          inventoryItemsWithCpm[key] = {
-                            ...item,
-                            averageViews: item.averageViews ?? "",
-                          };
-                          if (item.selected) {
-                            const userPrice = parseFloat(item.rate?.trim() || "0") || 0;
-                            const avgViews =
-                              parseFloat((item.averageViews ?? "").trim() || "0") || 0;
-                            const selling = getSellingPrice(userPrice);
-                            const cpm = getCpm(selling, avgViews);
-                            inventoryItemsWithCpm[key].cpm =
-                              cpm != null && Number.isFinite(cpm) ? String(cpm.toFixed(2)) : "";
-                          }
-                        }
-                        const selectedPlatforms = formData.platforms || [];
-                        const proofMap = formData.platformAudienceProof || {};
-                        const filteredProofMap: typeof proofMap = {};
-                        for (const p of selectedPlatforms) {
-                          if (proofMap[p]) filteredProofMap[p] = proofMap[p];
-                        }
-
-                        const collabMap = formData.platformCollaborationProof || {};
-                        const filteredCollabMap: typeof collabMap = {};
-                        for (const p of selectedPlatforms) {
-                          if (collabMap[p]) filteredCollabMap[p] = collabMap[p];
-                        }
-
-                        // Backward-compatible fields: keep populated using the first selected platform
-                        const firstPlatform = selectedPlatforms[0];
-                        const firstProof = firstPlatform
-                          ? filteredProofMap[firstPlatform]
-                          : undefined;
-                        const firstCollab = firstPlatform
-                          ? filteredCollabMap[firstPlatform]
-                          : undefined;
-
-                        const payload = {
-                          ...formData,
-                          inventoryItems: inventoryItemsWithCpm,
-                          platformAudienceProof: filteredProofMap,
-                          platformCollaborationProof: filteredCollabMap,
-                          ageScreenshot: firstProof?.ageScreenshot ?? "",
-                          genderScreenshot: firstProof?.genderScreenshot ?? "",
-                          topCountriesScreenshot: firstProof?.topCountriesScreenshot ?? "",
-                          ageScreenshotPublicId: firstProof?.ageScreenshotPublicId ?? "",
-                          genderScreenshotPublicId: firstProof?.genderScreenshotPublicId ?? "",
-                          topCountriesScreenshotPublicId:
-                            firstProof?.topCountriesScreenshotPublicId ?? "",
-                          firstCollaborationImage1: firstCollab?.image1 ?? "",
-                          firstCollaborationImage2: firstCollab?.image2 ?? "",
-                          firstCollaborationImage3: firstCollab?.image3 ?? "",
-                          firstCollaborationImage1PublicId: firstCollab?.image1PublicId ?? "",
-                          firstCollaborationImage2PublicId: firstCollab?.image2PublicId ?? "",
-                          firstCollaborationImage3PublicId: firstCollab?.image3PublicId ?? "",
-                        };
-                        const data = await submitCreatorOnboarding(payload);
-
-                        try {
-                          const sheetRes = await fetch("/api/creator-onboarding-sheet", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(payload),
-                          });
-                          if (!sheetRes.ok) {
-                            const errBody = await sheetRes.json().catch(() => ({}));
-                            console.error(
-                              "Creator onboarding Google Sheet sync failed:",
-                              sheetRes.status,
-                              errBody
-                            );
-                          }
-                        } catch (sheetErr) {
-                          console.error("Creator onboarding Google Sheet sync error:", sheetErr);
-                        }
-
-                        // Success: reset and redirect
-                        setCurrentStep(1);
-                        setCompletedSteps(new Set());
-                        setErrors({});
-                        resetForm();
-                        toast.success(data.message ?? "Form submitted successfully!");
-                        router.push("/creator-onboarding/success");
-                      } catch (error: unknown) {
-                        console.error("Error submitting form:", error);
-                        const err = error as {
-                          response?: { data?: { message?: string }; status?: number };
-                        };
-                        const message =
-                          err?.response?.data?.message ||
-                          "Something went wrong. Please try again later.";
-                        toast.error(message);
-                      } finally {
-                        setIsSubmitting(false);
-                      }
-                    }}
-                    disabled={isSubmitting}
-                    className={`px-6 py-3 bg-[#7B46F8] text-white rounded-lg hover:bg-[#6B3EE8] transition-colors shadow-md font-medium ${
-                      isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                  >
-                    {isSubmitting ? "Submitting..." : "Submit"}
-                  </button>
-                )}
-              </div>
-            </div>
+            ))}
           </div>
+        </div>
+        <div className="fixed bottom-0 left-0 right-0 w-full bg-white p-4 md:p-6 border-t border-gray-200 flex justify-end gap-4 rounded-t-lg shadow-lg z-10">
+          <button
+            type="button"
+            onClick={() => {
+              if (
+                typeof window !== "undefined" &&
+                window.confirm("Reset all fields? This will clear everything you've entered.")
+              ) {
+                resetForm();
+                setErrors({});
+                setInstagramInventoryMode(null);
+              }
+            }}
+            disabled={isSubmitting}
+            className="px-6 py-3 bg-white text-[#7B46F8] border-2 border-[#7B46F8] rounded-lg hover:bg-[#7B46F8] hover:text-white transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Reset all
+          </button>
+          <button
+            onClick={async () => {
+              const result = validateAll();
+              if (!result.valid) {
+                toast.error(result.firstErrorMessage ?? "Please fill in all required fields");
+                if (result.firstErrorKey) scrollToSectionForError(result.firstErrorKey);
+                return;
+              }
+
+              setIsSubmitting(true);
+              try {
+                const inventoryItems = formData.inventoryItems || {};
+                const inventoryItemsWithCpm: Record<
+                  string,
+                  { selected: boolean; rate: string; averageViews: string; cpm?: string }
+                > = {};
+                for (const key of Object.keys(inventoryItems)) {
+                  const item = inventoryItems[key];
+                  inventoryItemsWithCpm[key] = {
+                    ...item,
+                    averageViews: item.averageViews ?? "",
+                  };
+                  if (item.selected) {
+                    const userPrice = parseFloat(item.rate?.trim() || "0") || 0;
+                    const avgViews = parseFloat((item.averageViews ?? "").trim() || "0") || 0;
+                    const selling = getSellingPrice(userPrice);
+                    const cpm = getCpm(selling, avgViews);
+                    inventoryItemsWithCpm[key].cpm =
+                      cpm != null && Number.isFinite(cpm) ? String(cpm.toFixed(2)) : "";
+                  }
+                }
+                const selectedPlatforms = formData.platforms || [];
+                const proofMap = formData.platformAudienceProof || {};
+                const filteredProofMap: typeof proofMap = {};
+                for (const p of selectedPlatforms) {
+                  if (proofMap[p]) filteredProofMap[p] = proofMap[p];
+                }
+
+                const collabMap = formData.platformCollaborationProof || {};
+                const filteredCollabMap: typeof collabMap = {};
+                for (const p of selectedPlatforms) {
+                  if (collabMap[p]) filteredCollabMap[p] = collabMap[p];
+                }
+
+                const firstPlatform = selectedPlatforms[0];
+                const firstProof = firstPlatform ? filteredProofMap[firstPlatform] : undefined;
+                const firstCollab = firstPlatform ? filteredCollabMap[firstPlatform] : undefined;
+
+                const payload = {
+                  ...formData,
+                  inventoryItems: inventoryItemsWithCpm,
+                  platformAudienceProof: filteredProofMap,
+                  platformCollaborationProof: filteredCollabMap,
+                  ageScreenshot: firstProof?.ageScreenshot ?? "",
+                  genderScreenshot: firstProof?.genderScreenshot ?? "",
+                  topCountriesScreenshot: firstProof?.topCountriesScreenshot ?? "",
+                  ageScreenshotPublicId: firstProof?.ageScreenshotPublicId ?? "",
+                  genderScreenshotPublicId: firstProof?.genderScreenshotPublicId ?? "",
+                  topCountriesScreenshotPublicId: firstProof?.topCountriesScreenshotPublicId ?? "",
+                  firstCollaborationImage1: firstCollab?.image1 ?? "",
+                  firstCollaborationImage2: firstCollab?.image2 ?? "",
+                  firstCollaborationImage3: firstCollab?.image3 ?? "",
+                  firstCollaborationImage1PublicId: firstCollab?.image1PublicId ?? "",
+                  firstCollaborationImage2PublicId: firstCollab?.image2PublicId ?? "",
+                  firstCollaborationImage3PublicId: firstCollab?.image3PublicId ?? "",
+                };
+                const data = await submitCreatorOnboarding(payload);
+
+                try {
+                  const sheetRes = await fetch("/api/creator-onboarding-sheet", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                  });
+                  if (!sheetRes.ok) {
+                    const errBody = await sheetRes.json().catch(() => ({}));
+                    console.error(
+                      "Creator onboarding Google Sheet sync failed:",
+                      sheetRes.status,
+                      errBody
+                    );
+                  }
+                } catch (sheetErr) {
+                  console.error("Creator onboarding Google Sheet sync error:", sheetErr);
+                }
+
+                setErrors({});
+                resetForm();
+                toast.success(data.message ?? "Form submitted successfully!");
+                router.push("/creator-onboarding/success");
+              } catch (error: unknown) {
+                console.error("Error submitting form:", error);
+                const err = error as {
+                  response?: { data?: { message?: string }; status?: number };
+                };
+                const message =
+                  err?.response?.data?.message ||
+                  "Something went wrong. Please try again later.";
+                toast.error(message);
+              } finally {
+                setIsSubmitting(false);
+              }
+            }}
+            disabled={isSubmitting}
+            className={`px-6 py-3 bg-[#7B46F8] text-white rounded-lg hover:bg-[#6B3EE8] transition-colors shadow-md font-medium ${
+              isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </button>
         </div>
       </div>
     </>

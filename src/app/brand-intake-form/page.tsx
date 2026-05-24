@@ -1,139 +1,54 @@
 "use client";
 import Image from "next/image";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
-import type { Swiper as SwiperType } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 import { useBrandIntakeFormStore } from "@/src/store/brandIntakeForm";
 import { signupWebClient } from "@/src/services/dashboardAuth";
 import { useDashboardAuthStore } from "@/src/store/dashboardAuthStore";
 import { DASHBOARD_HOME } from "@/src/config/dashboardRoutes";
 import type { AuthClient } from "@/src/types/dashboardAuth";
 
-interface Step {
-  id: number;
-  title: string;
-  description: string;
+const SECTION_IDS = [1, 2, 3, 4, 5, 6, 7] as const;
+
+function getErrorKeyToSectionId(key: string): number {
+  if (
+    key === "brandProductName" ||
+    key === "websiteLink" ||
+    key === "primaryContactEmail" ||
+    key === "telegramId" ||
+    key === "whatsappNumber"
+  )
+    return 1;
+  if (key === "categories") return 2;
+  if (key === "campaignGoals") return 3;
+  if (key === "monetizationModel") return 4;
+  if (key === "primaryAudienceGeography" || key === "ageRange" || key === "genderSkew") return 5;
+  if (key === "campaignStartTimeline") return 6;
+  if (key === "customBrief") return 7;
+  return 1;
 }
-
-const STEPS: Step[] = [
-  {
-    id: 1,
-    title: "Brand Snapshot",
-    description: "Short answer (required)",
-  },
-  {
-    id: 2,
-    title: "Market & Audience Readiness",
-    description: "",
-  },
-  {
-    id: 3,
-    title: "Campaign Goal",
-    description: "",
-  },
-  {
-    id: 4,
-    title: "Revenue Model & Market focus",
-    description: "",
-  },
-  {
-    id: 5,
-    title: "Demographics",
-    description: "",
-  },
-  {
-    id: 6,
-    title: "Timeline",
-    description: "",
-  },
-  {
-    id: 7,
-    title: "Custom Brief",
-    description: "",
-  },
-];
-
-// Step 1: slide 0 = brandProductName, websiteLink; slide 1 = primaryContactEmail, telegramId, whatsappNumber
-const BRAND_STEP1_FIELD_TO_SLIDE: Record<string, number> = {
-  brandProductName: 0,
-  websiteLink: 0,
-  primaryContactEmail: 1,
-  telegramId: 1,
-  whatsappNumber: 1,
-};
-// Step 5: slide 0 = primaryAudienceGeography, 1 = ageRange, 2 = genderSkew
-const BRAND_STEP5_FIELD_TO_SLIDE: Record<string, number> = {
-  primaryAudienceGeography: 0,
-  ageRange: 1,
-  genderSkew: 2,
-};
 
 export default function BrandIntakeForm() {
   const router = useRouter();
   const { formData, updateFormData, resetForm } = useBrandIntakeFormStore();
   const login = useDashboardAuthStore((s) => s.login);
-  const [currentStep, setCurrentStep] = useState<number>(1);
-  const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [numberPickupCountry] = useState<string>("us");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [pendingSlideToField, setPendingSlideToField] = useState<string | null>(null);
-  const brandSwiperRef = useRef<SwiperType | null>(null);
-  const demographicsSwiperRef = useRef<SwiperType | null>(null);
-  const stepContentRef = useRef<HTMLDivElement | null>(null);
-  const [stepSlideIndex, setStepSlideIndex] = useState<Record<number, number>>({});
+  const sectionRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
-  // Load completed steps from formData
-  useEffect(() => {
-    const completed = new Set<number>();
-    // Check which steps have data
-    if (
-      formData.brandProductName &&
-      formData.websiteLink &&
-      formData.primaryContactEmail &&
-      (formData.telegramId?.trim() || formData.whatsappNumber?.trim())
-    )
-      completed.add(1);
-    if (formData.categories && formData.categories.length > 0) completed.add(2);
-    if (formData.campaignGoals && formData.campaignGoals.length > 0) completed.add(3);
-    if (formData.monetizationModel && formData.monetizationModel.length > 0) completed.add(4);
-    if (
-      formData.primaryAudienceGeography &&
-      formData.primaryAudienceGeography.length > 0 &&
-      formData.ageRange &&
-      formData.genderSkew
-    )
-      completed.add(5);
-    if (formData.campaignStartTimeline) completed.add(6);
-    if (
-      formData.customBrief &&
-      formData.customBrief
-        .trim()
-        .split(/\s+/)
-        .filter((word) => word.length > 0).length <= 500
-    )
-      completed.add(7);
-    setCompletedSteps(completed);
-  }, [formData]);
-
-  const handleStepClick = (stepId: number) => {
-    if (completedSteps.has(stepId) || stepId === currentStep) {
-      setCurrentStep(stepId);
+  const scrollToSectionForError = (errorKey: string) => {
+    const sectionId = getErrorKeyToSectionId(errorKey);
+    const el = sectionRefs.current[sectionId];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
-  type ValidateResult =
-    | { valid: true; firstErrorMessage?: undefined; firstErrorKey?: undefined }
-    | { valid: false; firstErrorMessage: string; firstErrorKey: string };
-  const validateStep = (step: number): ValidateResult => {
+  const collectStepErrors = (step: number): Record<string, string> => {
     const newErrors: Record<string, string> = {};
 
     switch (step) {
@@ -213,66 +128,28 @@ export default function BrandIntakeForm() {
         break;
     }
 
-    setErrors(newErrors);
-    const keys = Object.keys(newErrors);
-    if (keys.length === 0)
-      return { valid: true as const, firstErrorMessage: undefined, firstErrorKey: undefined };
-    return { valid: false as const, firstErrorMessage: newErrors[keys[0]], firstErrorKey: keys[0] };
+    return newErrors;
   };
 
-  // When validation fails, slide to the field's slide (if step has Swiper) and scroll step into view
-  useEffect(() => {
-    if (!pendingSlideToField || !currentStep) return;
-    const step = currentStep;
-    if (step === 1 && BRAND_STEP1_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
-      brandSwiperRef.current?.slideTo(BRAND_STEP1_FIELD_TO_SLIDE[pendingSlideToField]);
-    } else if (step === 5 && BRAND_STEP5_FIELD_TO_SLIDE[pendingSlideToField] !== undefined) {
-      demographicsSwiperRef.current?.slideTo(BRAND_STEP5_FIELD_TO_SLIDE[pendingSlideToField]);
+  type ValidateAllResult =
+    | { valid: true; firstErrorMessage?: undefined; firstErrorKey?: undefined }
+    | { valid: false; firstErrorMessage: string; firstErrorKey: string };
+  const validateAll = (): ValidateAllResult => {
+    const all: Record<string, string> = {};
+    for (const step of SECTION_IDS) {
+      Object.assign(all, collectStepErrors(step));
     }
-    stepContentRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    setPendingSlideToField(null);
-  }, [currentStep, pendingSlideToField]);
-
-  const handleNext = () => {
-    const result = validateStep(currentStep);
-    if (!result.valid) {
-      toast.error(result.firstErrorMessage ?? "Please fill in all required fields");
-      if (result.firstErrorKey) setPendingSlideToField(result.firstErrorKey);
-      return;
+    setErrors(all);
+    const keys = Object.keys(all);
+    if (keys.length === 0) {
+      return { valid: true };
     }
-
-    if (currentStep < STEPS.length) {
-      setCompletedSteps((prev) => {
-        const newSet = new Set(prev);
-        newSet.add(currentStep);
-        return newSet;
-      });
-      setCurrentStep(currentStep + 1);
-      setErrors({});
-    }
-  };
-
-  const handleBack = () => {
-    const stepsWithSwiper: Record<number, React.MutableRefObject<SwiperType | null>> = {
-      1: brandSwiperRef,
-      5: demographicsSwiperRef,
+    return {
+      valid: false,
+      firstErrorMessage: all[keys[0]],
+      firstErrorKey: keys[0],
     };
-    const ref = stepsWithSwiper[currentStep];
-    const currentSlide = stepSlideIndex[currentStep] ?? 0;
-    if (ref?.current && currentSlide > 0) {
-      ref.current.slideTo(currentSlide - 1);
-      setStepSlideIndex((prev) => ({ ...prev, [currentStep]: currentSlide - 1 }));
-    } else {
-      setCurrentStep(currentStep - 1);
-      setErrors({});
-    }
   };
-
-  const showBackButton = currentStep > 1 || (currentStep === 1 && (stepSlideIndex[1] ?? 0) > 0);
-
-  const isStepCompleted = (stepId: number) => completedSteps.has(stepId);
-  const isStepActive = (stepId: number) => stepId === currentStep;
-  const isStepClickable = (stepId: number) => isStepCompleted(stepId) || isStepActive(stepId);
 
   const handleCampaignGoalChange = (goal: string) => {
     const currentGoals = formData.campaignGoals || [];
@@ -287,193 +164,12 @@ export default function BrandIntakeForm() {
     }
   };
 
-  const renderStepContent = () => {
-    switch (currentStep) {
+  const renderSection = (step: number) => {
+    switch (step) {
       case 1:
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">Brand Snapshot</h2>
-            </div>
-            <div className="hidden md:block w-full overflow-hidden">
-              <Swiper
-                onSwiper={(swiper) => {
-                  brandSwiperRef.current = swiper;
-                }}
-                onSlideChangeTransitionEnd={(swiper) =>
-                  setStepSlideIndex((prev) => ({ ...prev, 1: swiper.activeIndex }))
-                }
-                modules={[Pagination]}
-                spaceBetween={24}
-                slidesPerView={1}
-                pagination={{ clickable: true }}
-                className="brand-snapshot-slider"
-              >
-                {/* First Slide: Brand Product Name and Website Link */}
-                <SwiperSlide>
-                  <div className="space-y-6 w-full">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Brand Product Name <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.brandProductName}
-                        onChange={(e) => {
-                          updateFormData({ brandProductName: e.target.value });
-                          if (errors.brandProductName) {
-                            setErrors((prev) => ({ ...prev, brandProductName: "" }));
-                          }
-                        }}
-                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                          errors.brandProductName ? "border-red-500" : "border-gray-300"
-                        }`}
-                        placeholder="Enter brand product name"
-                      />
-                      {errors.brandProductName && (
-                        <p className="mt-1 text-sm text-red-500">{errors.brandProductName}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Website / Landing / Podcast Page Link{" "}
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <div
-                        className={`flex w-full rounded-lg border bg-white ${errors.websiteLink ? "border-red-500" : "border-gray-300"} focus-within:ring-2 focus-within:ring-[#7B46F8] focus-within:border-transparent`}
-                      >
-                        <span className="inline-flex items-center px-4 py-3 text-gray-500 border-r border-gray-300 rounded-l-lg bg-gray-50 text-sm shrink-0">
-                          www.
-                        </span>
-                        <input
-                          type="text"
-                          value={
-                            formData.websiteLink.startsWith("http")
-                              ? formData.websiteLink
-                              : formData.websiteLink.replace(/^www\./i, "")
-                          }
-                          onChange={(e) => {
-                            const v = e.target.value;
-                            if (v.startsWith("http")) {
-                              updateFormData({ websiteLink: v });
-                            } else {
-                              const domain = v.replace(/^www\./i, "").trim();
-                              updateFormData({ websiteLink: domain ? "www." + domain : "" });
-                            }
-                            if (errors.websiteLink)
-                              setErrors((prev) => ({ ...prev, websiteLink: "" }));
-                          }}
-                          className="flex-1 min-w-0 px-4 py-3 border-0 rounded-r-lg focus:ring-0 focus:outline-none"
-                          placeholder="example.com"
-                        />
-                      </div>
-                      <p className="mt-1 text-xs text-gray-500">
-                        Enter domain with or without www (e.g. example.com or full URL)
-                      </p>
-                      {errors.websiteLink && (
-                        <p className="mt-1 text-sm text-red-500">{errors.websiteLink}</p>
-                      )}
-                    </div>
-                  </div>
-                </SwiperSlide>
-                {/* Second Slide: Contact Information */}
-                <SwiperSlide>
-                  <div className="space-y-6 w-full">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Primary Contact Email <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        value={formData.primaryContactEmail}
-                        onChange={(e) => {
-                          updateFormData({ primaryContactEmail: e.target.value });
-                          if (errors.primaryContactEmail) {
-                            setErrors((prev) => ({ ...prev, primaryContactEmail: "" }));
-                          }
-                        }}
-                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                          errors.primaryContactEmail ? "border-red-500" : "border-gray-300"
-                        }`}
-                        placeholder="arun@abc.com"
-                      />
-                      {errors.primaryContactEmail && (
-                        <p className="mt-1 text-sm text-red-500">{errors.primaryContactEmail}</p>
-                      )}
-                    </div>
-                    <p className="text-sm text-gray-500 mb-2">At least one required</p>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Telegram ID
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.telegramId}
-                        onChange={(e) => {
-                          updateFormData({ telegramId: e.target.value });
-                          if (errors.telegramId || errors.whatsappNumber) {
-                            setErrors((prev) => ({ ...prev, telegramId: "", whatsappNumber: "" }));
-                          }
-                        }}
-                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent ${
-                          errors.telegramId ? "border-red-500" : "border-gray-300"
-                        }`}
-                        placeholder="XXX XXX XXXX"
-                      />
-                      {errors.telegramId && (
-                        <p className="mt-1 text-sm text-red-500">{errors.telegramId}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        WhatsApp Number
-                      </label>
-                      <PhoneInput
-                        country={numberPickupCountry}
-                        value={formData.whatsappNumber}
-                        onChange={(value: string) => {
-                          updateFormData({ whatsappNumber: value });
-                          if (errors.telegramId || errors.whatsappNumber) {
-                            setErrors((prev) => ({ ...prev, telegramId: "", whatsappNumber: "" }));
-                          }
-                        }}
-                        enableLongNumbers
-                        disableCountryCode={false}
-                        inputStyle={{
-                          width: "100%",
-                          height: "48px",
-                          padding: "14px 60px",
-                          border: errors.whatsappNumber ? "2px solid #ef4444" : "2px solid #D1D5DB",
-                          borderRadius: "8px",
-                          fontSize: "16px",
-                          backgroundColor: "#fff",
-                          color: "#1F2937",
-                        }}
-                        containerStyle={{
-                          width: "100%",
-                        }}
-                        buttonStyle={{
-                          border: errors.whatsappNumber ? "2px solid #ef4444" : "2px solid #D1D5DB",
-                          borderRadius: "8px 0 0 8px",
-                          backgroundColor: "#fff",
-                        }}
-                        dropdownStyle={{
-                          backgroundColor: "#fff",
-                          border: "2px solid #D1D5DB",
-                          borderRadius: "8px",
-                        }}
-                      />
-                      {errors.whatsappNumber && (
-                        <p className="mt-1 text-sm text-red-500">{errors.whatsappNumber}</p>
-                      )}
-                    </div>
-                  </div>
-                </SwiperSlide>
-              </Swiper>
-            </div>
-            {/* Mobile view - stacked fields */}
-            <div className="md:hidden space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Brand Product Name <span className="text-red-500">*</span>
@@ -556,7 +252,6 @@ export default function BrandIntakeForm() {
                   <p className="mt-1 text-sm text-red-500">{errors.primaryContactEmail}</p>
                 )}
               </div>
-              <p className="text-sm text-gray-500 mb-2">At least one required</p>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Telegram ID</label>
                 <input
@@ -646,10 +341,6 @@ export default function BrandIntakeForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">Market & Audience Readiness</h2>
-            </div>
             <div className="space-y-6">
               <div>
                 <div className="flex items-center gap-2 mb-4">
@@ -658,7 +349,7 @@ export default function BrandIntakeForm() {
                     Select The Category <span className="text-red-500">*</span>
                   </h3>
                 </div>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                   {categories.map((category) => {
                     const isSelected = formData.categories?.includes(category) || false;
                     return (
@@ -727,13 +418,13 @@ export default function BrandIntakeForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center gap-2 mb-4">
               <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-gray-900">
                 Primary Campaign Goal <span className="text-red-500">*</span>
-              </h2>
+              </h3>
             </div>
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {campaignGoals.map((goal) => {
                 const isSelected = formData.campaignGoals?.includes(goal) || false;
                 return (
@@ -815,10 +506,6 @@ export default function BrandIntakeForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">Revenue Model & Market focus</h2>
-            </div>
             <div className="space-y-6">
               <div>
                 <div className="flex items-center gap-2 mb-4">
@@ -827,7 +514,7 @@ export default function BrandIntakeForm() {
                     Monetization Model <span className="text-red-500">*</span>
                   </h3>
                 </div>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                   {monetizationModels.map((model) => {
                     const isSelected = formData.monetizationModel?.includes(model) || false;
                     return (
@@ -944,270 +631,7 @@ export default function BrandIntakeForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">Demographics</h2>
-            </div>
-            {/* Desktop: slider */}
-            <div className="hidden md:block w-full">
-              <Swiper
-                onSwiper={(swiper) => {
-                  demographicsSwiperRef.current = swiper;
-                }}
-                onSlideChangeTransitionEnd={(swiper) =>
-                  setStepSlideIndex((prev) => ({ ...prev, 5: swiper.activeIndex }))
-                }
-                modules={[Pagination]}
-                spaceBetween={24}
-                slidesPerView={1}
-                pagination={{ clickable: true }}
-                className="demographics-slider"
-              >
-                {/* Slide 1: Primary Audience Geography (max 2) */}
-                <SwiperSlide>
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                        <h3 className="text-lg font-semibold text-gray-900">
-                          Primary Audience Geography <span className="text-red-500">*</span>
-                        </h3>
-                      </div>
-                      <button
-                        onClick={resetGeography}
-                        className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                          />
-                        </svg>
-                        Reset
-                      </button>
-                    </div>
-                    <p className="text-sm text-gray-500 mb-4">
-                      Select your target geography (only 2 allowed)
-                    </p>
-                    <div className="space-y-3">
-                      {geographyOptions.map((option) => {
-                        const isSelected =
-                          formData.primaryAudienceGeography?.includes(option) || false;
-                        return (
-                          <label
-                            key={option}
-                            className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${
-                              isSelected
-                                ? "border-[#7B46F8] bg-white"
-                                : "border-gray-200 bg-white hover:border-gray-300"
-                            }`}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={isSelected}
-                              onChange={() => handleGeographyChange(option)}
-                              className="sr-only"
-                            />
-                            <div
-                              className={`flex items-center justify-center w-5 h-5 rounded border-2 mr-3 ${
-                                isSelected
-                                  ? "bg-[#7B46F8] border-[#7B46F8]"
-                                  : "bg-white border-gray-300"
-                              }`}
-                            >
-                              {isSelected && (
-                                <svg
-                                  className="w-3 h-3 text-white"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={3}
-                                    d="M5 13l4 4L19 7"
-                                  />
-                                </svg>
-                              )}
-                            </div>
-                            <span
-                              className={`text-sm font-medium ${
-                                isSelected ? "text-gray-900" : "text-gray-700"
-                              }`}
-                            >
-                              {option}
-                            </span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                    {errors.primaryAudienceGeography && (
-                      <p className="mt-2 text-sm text-red-500">{errors.primaryAudienceGeography}</p>
-                    )}
-                  </div>
-                </SwiperSlide>
-
-                {/* Slide 2: Primary Audience Age Range */}
-                <SwiperSlide>
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                        <h3 className="text-lg font-semibold text-gray-900">
-                          Primary Audience Age Range <span className="text-red-500">*</span>
-                        </h3>
-                      </div>
-                      <button
-                        onClick={resetAgeRange}
-                        className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                          />
-                        </svg>
-                        Reset
-                      </button>
-                    </div>
-                    <div className="space-y-3">
-                      {ageRangeOptions.map((option) => {
-                        const isSelected = formData.ageRange === option;
-                        return (
-                          <label
-                            key={option}
-                            className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${
-                              isSelected
-                                ? "border-[#7B46F8] bg-white"
-                                : "border-gray-200 bg-white hover:border-gray-300"
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name="ageRange"
-                              checked={isSelected}
-                              onChange={() => handleAgeRangeChange(option)}
-                              className="sr-only"
-                            />
-                            <div
-                              className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 ${
-                                isSelected
-                                  ? "bg-[#7B46F8] border-[#7B46F8]"
-                                  : "bg-white border-gray-300"
-                              }`}
-                            >
-                              {isSelected && <div className="w-2 h-2 bg-white rounded-full"></div>}
-                            </div>
-                            <span
-                              className={`text-sm font-medium ${
-                                isSelected ? "text-gray-900" : "text-gray-700"
-                              }`}
-                            >
-                              {option}
-                            </span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                    {errors.ageRange && (
-                      <p className="mt-2 text-sm text-red-500">{errors.ageRange}</p>
-                    )}
-                  </div>
-                </SwiperSlide>
-
-                {/* Slide 3: Gender Skew */}
-                <SwiperSlide>
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                        <h3 className="text-lg font-semibold text-gray-900">
-                          Gender Skew (Best Estimate) <span className="text-red-500">*</span>
-                        </h3>
-                      </div>
-                      <button
-                        onClick={resetGenderSkew}
-                        className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                          />
-                        </svg>
-                        Reset
-                      </button>
-                    </div>
-                    <div className="space-y-3">
-                      {genderSkewOptions.map((option) => {
-                        const isSelected = formData.genderSkew === option;
-                        return (
-                          <label
-                            key={option}
-                            className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${
-                              isSelected
-                                ? "border-[#7B46F8] bg-white"
-                                : "border-gray-200 bg-white hover:border-gray-300"
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name="genderSkew"
-                              checked={isSelected}
-                              onChange={() => handleGenderSkewChange(option)}
-                              className="sr-only"
-                            />
-                            <div
-                              className={`flex items-center justify-center w-5 h-5 rounded-full border-2 mr-3 ${
-                                isSelected
-                                  ? "bg-[#7B46F8] border-[#7B46F8]"
-                                  : "bg-white border-gray-300"
-                              }`}
-                            >
-                              {isSelected && <div className="w-2 h-2 bg-white rounded-full"></div>}
-                            </div>
-                            <span
-                              className={`text-sm font-medium ${
-                                isSelected ? "text-gray-900" : "text-gray-700"
-                              }`}
-                            >
-                              {option}
-                            </span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                    {errors.genderSkew && (
-                      <p className="mt-2 text-sm text-red-500">{errors.genderSkew}</p>
-                    )}
-                  </div>
-                </SwiperSlide>
-              </Swiper>
-            </div>
-            {/* Mobile: single step - all sections stacked */}
-            <div className="md:hidden space-y-8">
+            <div className="space-y-8">
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
@@ -1235,7 +659,7 @@ export default function BrandIntakeForm() {
                 <p className="text-sm text-gray-500 mb-4">
                   Select your target geography (only 2 allowed)
                 </p>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {geographyOptions.map((option) => {
                     const isSelected = formData.primaryAudienceGeography?.includes(option) || false;
                     return (
@@ -1305,7 +729,7 @@ export default function BrandIntakeForm() {
                     Reset
                   </button>
                 </div>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {ageRangeOptions.map((option) => {
                     const isSelected = formData.ageRange === option;
                     return (
@@ -1360,7 +784,7 @@ export default function BrandIntakeForm() {
                     Reset
                   </button>
                 </div>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {genderSkewOptions.map((option) => {
                     const isSelected = formData.genderSkew === option;
                     return (
@@ -1408,10 +832,6 @@ export default function BrandIntakeForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">Timeline</h2>
-            </div>
             <div className="space-y-6">
               <div>
                 <div className="flex items-center gap-2 mb-4">
@@ -1420,7 +840,7 @@ export default function BrandIntakeForm() {
                     + Campaign Start Timeline <span className="text-red-500">*</span>
                   </h3>
                 </div>
-                <div className="space-y-3">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {timelineOptions.map((option) => {
                     const isSelected = formData.campaignStartTimeline === option;
                     return (
@@ -1477,12 +897,6 @@ export default function BrandIntakeForm() {
 
         return (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-              <h2 className="text-2xl font-semibold text-gray-900">
-                Custom Brief <span className="text-red-500">*</span>
-              </h2>
-            </div>
             <div className="space-y-6">
               <div>
                 <div className="flex items-center gap-2 mb-4">
@@ -1534,71 +948,6 @@ export default function BrandIntakeForm() {
 
   return (
     <>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-                .brand-snapshot-slider .swiper-button-next,
-                .brand-snapshot-slider .swiper-button-prev {
-                    color: #7B46F8;
-                    width: 40px;
-                    height: 40px;
-                    background: white;
-                    border-radius: 50%;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                }
-                .brand-snapshot-slider .swiper-button-next:after,
-                .brand-snapshot-slider .swiper-button-prev:after {
-                    font-size: 18px;
-                    font-weight: bold;
-                }
-                .brand-snapshot-slider {
-                    width: 100%;
-                    overflow: hidden;
-                }
-                .brand-snapshot-slider .swiper-wrapper {
-                    width: 100%;
-                }
-                .brand-snapshot-slider .swiper-slide {
-                    width: 100%;
-                    box-sizing: border-box;
-                }
-                .brand-snapshot-slider .swiper-pagination {
-                    position: relative;
-                    margin-top: 24px;
-                    display: flex;
-                    justify-content: center;
-                    gap: 8px;
-                }
-                .brand-snapshot-slider .swiper-pagination-bullet {
-                    background: #D1D5DB;
-                    width: 8px;
-                    height: 8px;
-                    opacity: 1;
-                    margin: 0 4px;
-                }
-                .brand-snapshot-slider .swiper-pagination-bullet-active {
-                    background: #7B46F8;
-                }
-                .demographics-slider .swiper-pagination {
-                    position: relative;
-                    margin-top: 24px;
-                    display: flex;
-                    justify-content: center;
-                    gap: 8px;
-                }
-                .demographics-slider .swiper-pagination-bullet {
-                    background: #D1D5DB;
-                    width: 8px;
-                    height: 8px;
-                    opacity: 1;
-                    margin: 0 4px;
-                }
-                .demographics-slider .swiper-pagination-bullet-active {
-                    background: #7B46F8;
-                }
-            `,
-        }}
-      />
       <div className="bg-white relative min-h-screen">
         <div className="bg-[#7B46F8] relative py-24">
           <div className="absolute top-0 right-0 z-10">
@@ -1641,229 +990,152 @@ export default function BrandIntakeForm() {
             />
           </div>
         </div>
-        <div className="flex h-full">
-          {/* Left Sidebar - Step Navigation */}
-          <div className="bg-white min-w-[400px] p-8 hidden lg:block border-r border-gray-200">
-            <div className="space-y-10">
-              {STEPS.map((step, index) => {
-                const isCompleted = isStepCompleted(step.id);
-                const isActive = isStepActive(step.id);
-                const isClickable = isStepClickable(step.id);
-
-                return (
-                  <div key={step.id} className="relative">
-                    {/* Progress Line */}
-                    {index < STEPS.length - 1 && (
-                      <div
-                        className="absolute left-[15px] top-[32px] h-16 w-0.5"
-                        style={{
-                          background: isCompleted || isActive ? "#7B46F8" : "none",
-                          borderLeft: isCompleted || isActive ? "none" : "1px dashed #D1D5DB",
-                        }}
-                      />
-                    )}
-
-                    {/* Step Item */}
-                    <div
-                      onClick={() => isClickable && handleStepClick(step.id)}
-                      className={`flex items-start gap-6 transition-colors ${
-                        isClickable ? "cursor-pointer" : "cursor-not-allowed"
-                      }`}
-                    >
-                      {/* Step Circle */}
-                      <div
-                        className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                          isActive
-                            ? "bg-[#7B46F8] border-2 border-[#7B46F8]"
-                            : isCompleted
-                              ? "bg-[#7B46F8] border-2 border-[#7B46F8]"
-                              : "bg-[#F8F8F8] border-2 border-gray-300 border-dashed"
-                        }`}
-                      >
-                        {isActive && <div className="w-3 h-3 bg-white rounded-full"></div>}
-                      </div>
-
-                      {/* Step Content */}
-                      <div className="flex-1 pt-1">
-                        <h3
-                          className={`text-lg font-medium ${
-                            isActive
-                              ? "text-[#7B46F8] font-semibold"
-                              : isCompleted
-                                ? "text-gray-900 font-medium"
-                                : "text-gray-600 font-normal"
-                          }`}
-                        >
-                          {step.title}
-                        </h3>
-                        {step.description && (
-                          <p
-                            className={`text-xs mt-1 ${
-                              isActive || isCompleted ? "text-gray-500" : "text-gray-400"
-                            }`}
-                          >
-                            {step.description}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Right Content Area */}
-          <div className="bg-[#F8F8F8] h-full py-12 px-4 sm:px-8 pb-24 w-screen lg:w-[calc(100vw_-_415px)]">
-            <div className="rounded-lg flex flex-col justify-between h-full w-full">
-              <div className="sm:p-8 p-4 bg-white rounded-lg" ref={stepContentRef}>
-                {renderStepContent()}
+        <div className="bg-[#F8F8F8] py-12 px-4 sm:px-8 pb-32">
+          <div className="max-w-5xl mx-auto bg-white rounded-lg sm:p-8 p-4">
+            {SECTION_IDS.map((id, idx) => (
+              <div
+                key={id}
+                ref={(el) => {
+                  sectionRefs.current[id] = el;
+                }}
+                className={`scroll-mt-6 ${idx > 0 ? "mt-4 pt-4 border-t border-gray-200" : ""}`}
+              >
+                {renderSection(id)}
               </div>
-
-              {/* Navigation Buttons - Fixed at bottom (all viewports, same as mobile) */}
-              <div className="fixed bottom-0 left-0 right-0 w-full bg-white p-4 md:p-6 border-t border-gray-200 flex justify-end gap-4 rounded-t-lg shadow-lg z-10">
-                {showBackButton && (
-                  <button
-                    type="button"
-                    onClick={handleBack}
-                    className="px-6 py-3 bg-white text-[#7B46F8] border-2 border-[#7B46F8] rounded-lg hover:bg-[#7B46F8] hover:text-white transition-colors font-medium"
-                  >
-                    Back
-                  </button>
-                )}
-                {currentStep < STEPS.length ? (
-                  <button
-                    onClick={handleNext}
-                    className="px-6 py-3 bg-[#7B46F8] text-white rounded-lg hover:bg-[#6B3EE8] transition-colors shadow-md font-medium"
-                  >
-                    Next
-                  </button>
-                ) : (
-                  <button
-                    onClick={async () => {
-                      const result = validateStep(currentStep);
-                      if (!result.valid) {
-                        toast.error(
-                          result.firstErrorMessage ?? "Please fill in all required fields"
-                        );
-                        if (result.firstErrorKey) setPendingSlideToField(result.firstErrorKey);
-                        return;
-                      }
-
-                      setIsSubmitting(true);
-                      try {
-                        const payload = {
-                          brandProductName: formData.brandProductName.trim(),
-                          websiteLink: formData.websiteLink.trim(),
-                          primaryContactEmail: formData.primaryContactEmail.trim(),
-                          ...(formData.telegramId?.trim() && {
-                            telegramId: formData.telegramId.trim(),
-                          }),
-                          ...(formData.whatsappNumber?.trim() && {
-                            whatsappNumber: formData.whatsappNumber.trim(),
-                          }),
-                          ...(formData.categories?.length
-                            ? { categories: formData.categories }
-                            : {}),
-                          ...(formData.audienceReadinessLevel?.trim() && {
-                            audienceReadinessLevel: formData.audienceReadinessLevel.trim(),
-                          }),
-                          ...(formData.campaignGoals?.length
-                            ? { campaignGoals: formData.campaignGoals }
-                            : {}),
-                          ...(formData.monetizationModel?.length
-                            ? { monetizationModel: formData.monetizationModel }
-                            : {}),
-                          ...(formData.revenueModel?.trim() && {
-                            revenueModel: formData.revenueModel.trim(),
-                          }),
-                          ...(formData.marketFocus?.trim() && {
-                            marketFocus: formData.marketFocus.trim(),
-                          }),
-                          ...(formData.primaryAudienceGeography?.length
-                            ? { primaryAudienceGeography: formData.primaryAudienceGeography }
-                            : {}),
-                          ...(formData.ageRange?.trim() && { ageRange: formData.ageRange.trim() }),
-                          ...(formData.genderSkew?.trim() && {
-                            genderSkew: formData.genderSkew.trim(),
-                          }),
-                          ...(formData.geographicLocation?.trim() && {
-                            geographicLocation: formData.geographicLocation.trim(),
-                          }),
-                          ...(formData.campaignStartTimeline?.trim() && {
-                            campaignStartTimeline: formData.campaignStartTimeline.trim(),
-                          }),
-                          ...(formData.campaignStartDate?.trim() && {
-                            campaignStartDate: formData.campaignStartDate.trim(),
-                          }),
-                          ...(formData.campaignEndDate?.trim() && {
-                            campaignEndDate: formData.campaignEndDate.trim(),
-                          }),
-                          ...(formData.customBrief?.trim() && {
-                            customBrief: formData.customBrief.trim(),
-                          }),
-                        };
-
-                        const data = await signupWebClient(payload);
-
-                        try {
-                          await fetch("/api/brand-intake", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(payload),
-                          });
-                        } catch (sheetErr) {
-                          console.error("Brand intake Google Sheet request failed:", sheetErr);
-                        }
-
-                        setCompletedSteps((prev) => {
-                          const newSet = new Set(prev);
-                          newSet.add(currentStep);
-                          return newSet;
-                        });
-                        resetForm();
-
-                        const client: AuthClient = {
-                          id: data.client.id,
-                          name: data.client.name,
-                          email: data.client.email,
-                          telegramId:
-                            (data.client as { telegramId?: string | null }).telegramId ?? null,
-                          whatsAppNumber:
-                            (data.client as { whatsAppNumber?: string | null }).whatsAppNumber ??
-                            null,
-                        };
-                        login(client, data.token);
-                        toast.success(data.message ?? "Account created. Redirecting...");
-                        router.push(DASHBOARD_HOME);
-                      } catch (err: unknown) {
-                        const message =
-                          err &&
-                          typeof err === "object" &&
-                          "response" in err &&
-                          err.response &&
-                          typeof err.response === "object" &&
-                          "data" in err.response &&
-                          err.response.data &&
-                          typeof (err.response.data as { error?: string }).error === "string"
-                            ? (err.response.data as { error: string }).error
-                            : "Failed to submit. Please try again.";
-                        toast.error(message);
-                      } finally {
-                        setIsSubmitting(false);
-                      }
-                    }}
-                    disabled={isSubmitting}
-                    className={`px-6 py-3 bg-[#7B46F8] text-white rounded-lg hover:bg-[#6B3EE8] transition-colors shadow-md font-medium ${
-                      isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                  >
-                    {isSubmitting ? "Submitting..." : "Submit"}
-                  </button>
-                )}
-              </div>
-            </div>
+            ))}
           </div>
+        </div>
+        <div className="fixed bottom-0 left-0 right-0 w-full bg-white p-4 md:p-6 border-t border-gray-200 flex justify-end gap-4 rounded-t-lg shadow-lg z-10">
+          <button
+            type="button"
+            onClick={() => {
+              if (
+                typeof window !== "undefined" &&
+                window.confirm("Reset all fields? This will clear everything you've entered.")
+              ) {
+                resetForm();
+                setErrors({});
+              }
+            }}
+            disabled={isSubmitting}
+            className="px-6 py-3 bg-white text-[#7B46F8] border-2 border-[#7B46F8] rounded-lg hover:bg-[#7B46F8] hover:text-white transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Reset all
+          </button>
+          <button
+            onClick={async () => {
+              const result = validateAll();
+              if (!result.valid) {
+                toast.error(result.firstErrorMessage ?? "Please fill in all required fields");
+                if (result.firstErrorKey) scrollToSectionForError(result.firstErrorKey);
+                return;
+              }
+
+              setIsSubmitting(true);
+              try {
+                const payload = {
+                  brandProductName: formData.brandProductName.trim(),
+                  websiteLink: formData.websiteLink.trim(),
+                  primaryContactEmail: formData.primaryContactEmail.trim(),
+                  ...(formData.telegramId?.trim() && {
+                    telegramId: formData.telegramId.trim(),
+                  }),
+                  ...(formData.whatsappNumber?.trim() && {
+                    whatsappNumber: formData.whatsappNumber.trim(),
+                  }),
+                  ...(formData.categories?.length
+                    ? { categories: formData.categories }
+                    : {}),
+                  ...(formData.audienceReadinessLevel?.trim() && {
+                    audienceReadinessLevel: formData.audienceReadinessLevel.trim(),
+                  }),
+                  ...(formData.campaignGoals?.length
+                    ? { campaignGoals: formData.campaignGoals }
+                    : {}),
+                  ...(formData.monetizationModel?.length
+                    ? { monetizationModel: formData.monetizationModel }
+                    : {}),
+                  ...(formData.revenueModel?.trim() && {
+                    revenueModel: formData.revenueModel.trim(),
+                  }),
+                  ...(formData.marketFocus?.trim() && {
+                    marketFocus: formData.marketFocus.trim(),
+                  }),
+                  ...(formData.primaryAudienceGeography?.length
+                    ? { primaryAudienceGeography: formData.primaryAudienceGeography }
+                    : {}),
+                  ...(formData.ageRange?.trim() && { ageRange: formData.ageRange.trim() }),
+                  ...(formData.genderSkew?.trim() && {
+                    genderSkew: formData.genderSkew.trim(),
+                  }),
+                  ...(formData.geographicLocation?.trim() && {
+                    geographicLocation: formData.geographicLocation.trim(),
+                  }),
+                  ...(formData.campaignStartTimeline?.trim() && {
+                    campaignStartTimeline: formData.campaignStartTimeline.trim(),
+                  }),
+                  ...(formData.campaignStartDate?.trim() && {
+                    campaignStartDate: formData.campaignStartDate.trim(),
+                  }),
+                  ...(formData.campaignEndDate?.trim() && {
+                    campaignEndDate: formData.campaignEndDate.trim(),
+                  }),
+                  ...(formData.customBrief?.trim() && {
+                    customBrief: formData.customBrief.trim(),
+                  }),
+                };
+
+                const data = await signupWebClient(payload);
+
+                try {
+                  await fetch("/api/brand-intake", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                  });
+                } catch (sheetErr) {
+                  console.error("Brand intake Google Sheet request failed:", sheetErr);
+                }
+
+                resetForm();
+
+                const client: AuthClient = {
+                  id: data.client.id,
+                  name: data.client.name,
+                  email: data.client.email,
+                  telegramId:
+                    (data.client as { telegramId?: string | null }).telegramId ?? null,
+                  whatsAppNumber:
+                    (data.client as { whatsAppNumber?: string | null }).whatsAppNumber ??
+                    null,
+                };
+                login(client, data.token);
+                toast.success(data.message ?? "Account created. Redirecting...");
+                router.push(DASHBOARD_HOME);
+              } catch (err: unknown) {
+                const message =
+                  err &&
+                  typeof err === "object" &&
+                  "response" in err &&
+                  err.response &&
+                  typeof err.response === "object" &&
+                  "data" in err.response &&
+                  err.response.data &&
+                  typeof (err.response.data as { error?: string }).error === "string"
+                    ? (err.response.data as { error: string }).error
+                    : "Failed to submit. Please try again.";
+                toast.error(message);
+              } finally {
+                setIsSubmitting(false);
+              }
+            }}
+            disabled={isSubmitting}
+            className={`px-6 py-3 bg-[#7B46F8] text-white rounded-lg hover:bg-[#6B3EE8] transition-colors shadow-md font-medium ${
+              isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </button>
         </div>
       </div>
     </>
