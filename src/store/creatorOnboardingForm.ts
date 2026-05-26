@@ -62,13 +62,11 @@ interface CreatorOnboardingFormData {
   turnaroundTimes: string[];
 
   // Step 9: Previous Collaborations
-  // First slide - three images
+  // First slide - two screenshots per platform
   firstCollaborationImage1: string; // URL as string for Excel export
   firstCollaborationImage2: string; // URL as string for Excel export
-  firstCollaborationImage3: string; // URL as string for Excel export
   firstCollaborationImage1PublicId?: string; // PublicId for deletion
   firstCollaborationImage2PublicId?: string; // PublicId for deletion
-  firstCollaborationImage3PublicId?: string; // PublicId for deletion
   /**
    * Per-platform proof of last collaboration and results.
    * Key = platform name (must match `platforms` values).
@@ -78,18 +76,10 @@ interface CreatorOnboardingFormData {
     {
       image1: string;
       image2: string;
-      image3: string;
       image1PublicId?: string;
       image2PublicId?: string;
-      image3PublicId?: string;
     }
   >;
-  // Second slide - links to previous content
-  xLink: string; // X (Twitter) link
-  instagramLink: string; // Instagram link
-  youtubeLink: string; // YouTube link
-  tiktokLink: string; // TikTok link
-  newsletterLink: string; // Newsletter link
 
   // Step 10: Final Confirmation
   finalConfirmation: boolean;
@@ -167,16 +157,9 @@ const initialFormData: CreatorOnboardingFormData = {
   turnaroundTimes: [],
   firstCollaborationImage1: "",
   firstCollaborationImage2: "",
-  firstCollaborationImage3: "",
   firstCollaborationImage1PublicId: "",
   firstCollaborationImage2PublicId: "",
-  firstCollaborationImage3PublicId: "",
   platformCollaborationProof: {},
-  xLink: "",
-  instagramLink: "",
-  youtubeLink: "",
-  tiktokLink: "",
-  newsletterLink: "",
   finalConfirmation: false,
   portfolioLink: "",
   portfolioAdditionalInfo: "",

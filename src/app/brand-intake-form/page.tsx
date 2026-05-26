@@ -581,7 +581,6 @@ export default function BrandIntakeForm() {
           "South East Asia",
           "LATAM (Central America & South America)",
           "MENA (Middle East & North Africa)",
-          "MENA (includes Pakistan)",
         ];
         const ageRangeOptions = ["18 - 24", "25 - 45", "45 - 60"];
         const genderSkewOptions = ["Skewed male", "Balanced", "Skewed Female"];

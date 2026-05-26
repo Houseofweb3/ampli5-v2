@@ -45,10 +45,12 @@ function getErrorKeyToSectionId(key: string): number {
   if (key.startsWith("audienceProof_")) return 6;
   if (key === "paymentTerms") return 7;
   if (key === "turnaroundTimes") return 8;
-  if (key.startsWith("collaborationProof_") || key === "previousBrandedLinks") return 9;
+  if (key.startsWith("collaborationProof_")) return 9;
   if (key === "finalConfirmation") return 10;
   return 1;
 }
+
+const MAX_CATEGORY_SELECTIONS = 2;
 
 /** Selling price = user price + 16%, rounded to nearest 100 (e.g. 554 → 600, 549 → 500). */
 function roundToNearest100(x: number): number {
@@ -336,8 +338,13 @@ export default function CreatorOnboardingForm() {
         const selectedInd = formData.industries?.[0];
         const hasCategories =
           selectedInd && (INDUSTRY_CATEGORY_OPTIONS[selectedInd]?.length ?? 0) > 0;
-        if (hasCategories && (!formData.categories || formData.categories.length === 0)) {
-          newErrors.categories = "Please select at least one category";
+        if (hasCategories) {
+          const count = formData.categories?.length ?? 0;
+          if (count === 0) {
+            newErrors.categories = "Please select at least one category";
+          } else if (count > MAX_CATEGORY_SELECTIONS) {
+            newErrors.categories = `Please select at most ${MAX_CATEGORY_SELECTIONS} categories`;
+          }
         }
         break;
       }
@@ -437,7 +444,7 @@ export default function CreatorOnboardingForm() {
         }
         break;
       case 9:
-        // Previous Collaborations - validate image uploads and links
+        // Previous Collaborations - validate collaboration screenshots per platform
         if (!formData.platforms || formData.platforms.length === 0) {
           newErrors.platforms = "Please select at least one platform first";
           break;
@@ -454,22 +461,6 @@ export default function CreatorOnboardingForm() {
               `Collaboration proof image 2 is required for ${platform}`;
             break;
           }
-          if (!proof?.image3?.trim()) {
-            newErrors[`collaborationProof_${platform}_image3`] =
-              `Collaboration proof image 3 is required for ${platform}`;
-            break;
-          }
-        }
-        // Second slide - at least one link is required
-        const hasAtLeastOneLink = [
-          formData.xLink,
-          formData.instagramLink,
-          formData.youtubeLink,
-          formData.tiktokLink,
-          formData.newsletterLink,
-        ].some((v) => v != null && String(v).trim() !== "");
-        if (!hasAtLeastOneLink) {
-          newErrors.previousBrandedLinks = "At least one link is required";
         }
         break;
       case 10:
@@ -921,12 +912,22 @@ export default function CreatorOnboardingForm() {
           ? (INDUSTRY_CATEGORY_OPTIONS[selectedIndustry] ?? [])
           : [];
 
+        const selectedCategoryCount = formData.categories?.length ?? 0;
+        const atCategoryLimit = selectedCategoryCount >= MAX_CATEGORY_SELECTIONS;
+
         const handleCategoryChange = (category: string) => {
           const currentCategories = formData.categories || [];
-          const newCategories = currentCategories.includes(category)
-            ? currentCategories.filter((c) => c !== category)
-            : [...currentCategories, category];
-          updateFormData({ categories: newCategories });
+          if (currentCategories.includes(category)) {
+            updateFormData({
+              categories: currentCategories.filter((c) => c !== category),
+            });
+          } else {
+            if (currentCategories.length >= MAX_CATEGORY_SELECTIONS) {
+              toast.error(`You can select at most ${MAX_CATEGORY_SELECTIONS} categories`);
+              return;
+            }
+            updateFormData({ categories: [...currentCategories, category] });
+          }
           if (errors.categories) {
             setErrors((prev) => ({ ...prev, categories: "" }));
           }
@@ -941,6 +942,9 @@ export default function CreatorOnboardingForm() {
                   <h3 className="text-lg font-semibold text-gray-900">
                     Select categories for {selectedIndustry || "your industry"}
                   </h3>
+                  <span className="text-sm text-gray-500">
+                    (select up to {MAX_CATEGORY_SELECTIONS})
+                  </span>
                 </div>
                 {!selectedIndustry ? (
                   <p className="text-sm text-gray-500">
@@ -954,18 +958,22 @@ export default function CreatorOnboardingForm() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                     {categoryOptions.map((category) => {
                       const isSelected = formData.categories?.includes(category) || false;
+                      const isDisabled = !isSelected && atCategoryLimit;
                       return (
                         <label
                           key={category}
-                          className={`flex items-center p-4 rounded-lg cursor-pointer transition-all border-2 ${
-                            isSelected
-                              ? "border-[#7B46F8] bg-white"
-                              : "border-gray-200 bg-white hover:border-gray-300"
+                          className={`flex items-center p-4 rounded-lg transition-all border-2 ${
+                            isDisabled
+                              ? "border-gray-200 bg-gray-50 cursor-not-allowed opacity-60"
+                              : isSelected
+                                ? "border-[#7B46F8] bg-white cursor-pointer"
+                                : "border-gray-200 bg-white hover:border-gray-300 cursor-pointer"
                           }`}
                         >
                           <input
                             type="checkbox"
                             checked={isSelected}
+                            disabled={isDisabled}
                             onChange={() => handleCategoryChange(category)}
                             className="sr-only"
                           />
@@ -1906,11 +1914,11 @@ export default function CreatorOnboardingForm() {
         );
       case 7:
         const paymentTermOptions = [
-          "50% fixed upfront + 50% milestone based",
-          "50% advance + 50% post 7 days of delivery",
-          "Milestone-based payment ( higher than 50-50 split )",
-          "33% upfront + 33% milestone 1 + 34% milestone 2",
-          "100% advance",
+          "50% fixed + 50% based on milestones",
+          "50% advance + 50% after 15 days of delivery",
+          "Affiliate Deal",
+          "Barter Deal",
+          "100% Advance",
         ];
 
         const handlePaymentTermChange = (term: string) => {
@@ -2074,7 +2082,11 @@ export default function CreatorOnboardingForm() {
           </div>
         );
       case 9:
-        type CollaborationProofField = "image1" | "image2" | "image3";
+        type CollaborationProofField = "image1" | "image2";
+        const collabScreenshotFields: { field: CollaborationProofField; label: string }[] = [
+          { field: "image1", label: "Screenshot 1" },
+          { field: "image2", label: "Screenshot 2" },
+        ];
         const allowedCollaborationProofImageTypes = [
           "image/jpeg",
           "image/jpg",
@@ -2091,10 +2103,8 @@ export default function CreatorOnboardingForm() {
             proof ?? {
               image1: "",
               image2: "",
-              image3: "",
               image1PublicId: "",
               image2PublicId: "",
-              image3PublicId: "",
             }
           );
         };
@@ -2107,10 +2117,8 @@ export default function CreatorOnboardingForm() {
             proof ?? {
               image1: "",
               image2: "",
-              image3: "",
               image1PublicId: "",
               image2PublicId: "",
-              image3PublicId: "",
             }
           );
         };
@@ -2412,117 +2420,20 @@ export default function CreatorOnboardingForm() {
                           <h4 className="text-base font-semibold text-gray-900">{platform}</h4>
                         </div>
                         <div className="space-y-4">
-                          <PlatformCollabImageField
-                            platform={platform}
-                            field="image1"
-                            label="Upload screenshots"
-                          />
-                          <PlatformCollabImageField
-                            platform={platform}
-                            field="image2"
-                            label="Upload screenshots"
-                          />
-                          <PlatformCollabImageField
-                            platform={platform}
-                            field="image3"
-                            label="Upload screenshots"
-                          />
+                          {collabScreenshotFields.map(({ field, label }) => (
+                            <PlatformCollabImageField
+                              key={`${platform}-${field}`}
+                              platform={platform}
+                              field={field}
+                              label={label}
+                            />
+                          ))}
                         </div>
                         <p className="mt-2 text-xs text-gray-500">
-                          Post screenshots, analytics screenshots
+                          2 screenshots required: post screenshot and analytics screenshot
                         </p>
                       </div>
                     ))}
-                  </div>
-                </div>
-                <div className="max-w-full box-border">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Links To Previous Branded / Sponsored Content
-                    </h3>
-                    <span className="text-sm text-gray-500">(at least one required)</span>
-                  </div>
-                  {errors.previousBrandedLinks && (
-                    <p className="mb-2 text-sm text-red-500">{errors.previousBrandedLinks}</p>
-                  )}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">X</label>
-                      <input
-                        type="text"
-                        value={formData.xLink}
-                        onChange={(e) => {
-                          updateFormData({ xLink: e.target.value });
-                          if (errors.previousBrandedLinks)
-                            setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
-                        }}
-                        className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
-                        placeholder="X"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Instagram
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.instagramLink}
-                        onChange={(e) => {
-                          updateFormData({ instagramLink: e.target.value });
-                          if (errors.previousBrandedLinks)
-                            setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
-                        }}
-                        className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
-                        placeholder="Instagram"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Youtube
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.youtubeLink}
-                        onChange={(e) => {
-                          updateFormData({ youtubeLink: e.target.value });
-                          if (errors.previousBrandedLinks)
-                            setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
-                        }}
-                        className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
-                        placeholder="Youtube"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">TikTok</label>
-                      <input
-                        type="text"
-                        value={formData.tiktokLink}
-                        onChange={(e) => {
-                          updateFormData({ tiktokLink: e.target.value });
-                          if (errors.previousBrandedLinks)
-                            setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
-                        }}
-                        className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
-                        placeholder="TikTok"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Newsletter links
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.newsletterLink}
-                        onChange={(e) => {
-                          updateFormData({ newsletterLink: e.target.value });
-                          if (errors.previousBrandedLinks)
-                            setErrors((prev) => ({ ...prev, previousBrandedLinks: "" }));
-                        }}
-                        className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent"
-                        placeholder="Newsletter links"
-                      />
-                    </div>
                   </div>
                 </div>
               </div>
@@ -2582,8 +2493,7 @@ export default function CreatorOnboardingForm() {
                       formData.finalConfirmation ? "text-gray-900" : "text-gray-700"
                     }`}
                   >
-                    I confirm that all information, rates, screenshots, and links shared are
-                    accurate.
+                    I confirm that all information, rates, and screenshots shared are accurate.
                   </span>
                 </label>
                 {errors.finalConfirmation && (
@@ -2736,10 +2646,8 @@ export default function CreatorOnboardingForm() {
                   topCountriesScreenshotPublicId: firstProof?.topCountriesScreenshotPublicId ?? "",
                   firstCollaborationImage1: firstCollab?.image1 ?? "",
                   firstCollaborationImage2: firstCollab?.image2 ?? "",
-                  firstCollaborationImage3: firstCollab?.image3 ?? "",
                   firstCollaborationImage1PublicId: firstCollab?.image1PublicId ?? "",
                   firstCollaborationImage2PublicId: firstCollab?.image2PublicId ?? "",
-                  firstCollaborationImage3PublicId: firstCollab?.image3PublicId ?? "",
                 };
                 const data = await submitCreatorOnboarding(payload);
 

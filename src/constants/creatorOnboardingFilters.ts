@@ -30,7 +30,6 @@ export const GEOGRAPHY_OPTIONS = [
   "South East Asia",
   "LATAM (Central America & South America)",
   "MENA (Middle East & North Africa)",
-  "MENA (includes Pakistan)",
 ] as const;
 
 export const INDUSTRY_CATEGORY_OPTIONS: Record<string, string[]> = {
