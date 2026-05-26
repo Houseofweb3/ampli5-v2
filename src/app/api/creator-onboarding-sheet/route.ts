@@ -55,6 +55,7 @@ interface CreatorOnboardingInventoryItem {
 }
 
 interface CreatorOnboardingFormData {
+  type?: string;
   channelBrandName: string;
   primaryContactEmail: string;
   telegramId?: string;
@@ -198,7 +199,7 @@ export async function POST(request: Request) {
 
     /**
      * Column order (add header row in Sheet to match):
-     * Date, Time, Channel/Brand, Email, Telegram, WhatsApp, Country, Timezone,
+     * Date, Time, Channel/Brand, Type (I am a), Email, Telegram, WhatsApp, Country, Timezone,
      * Platform, Platform Link, Inventory, Price/Rate (display), Buy price, Selling price (CSP),
      * Avg Views, CPM, CCP, Industries, Categories, Primary GEO, Secondary GEO,
      * Age / Gender / Top countries screenshots, Payment terms, Turnaround,
@@ -236,6 +237,7 @@ export async function POST(request: Request) {
       formattedDate,
       indiaTime,
       body.channelBrandName || "",
+      body.type || "",
       body.primaryContactEmail || "",
       body.telegramId || "",
       body.whatsappNumber || "",

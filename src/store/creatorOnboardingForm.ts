@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 interface CreatorOnboardingFormData {
+  /** Creator role (“I am a”); submitted as `type` in API payload. */
+  type: string;
   // Step 1: Basic Details
   channelBrandName: string;
   primaryContactEmail: string;
@@ -121,6 +123,7 @@ interface CreatorOnboardingFormState {
 }
 
 const initialFormData: CreatorOnboardingFormData = {
+  type: "",
   channelBrandName: "",
   primaryContactEmail: "",
   telegramId: "",

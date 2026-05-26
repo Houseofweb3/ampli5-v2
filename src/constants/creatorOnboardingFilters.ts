@@ -23,6 +23,23 @@ export const INDUSTRY_OPTIONS = [
   "Travel",
 ] as const;
 
+/** “I am a” options on creator onboarding (single selection). Sent as `type` in API payload. */
+export const CREATOR_TYPE_OPTIONS = [
+  "Influencer",
+  "Content creator",
+  "Videographer",
+  "Photographer",
+  "Blogger",
+  "Vlogger",
+  "Reel specialist",
+  "Event Host",
+  "Event organizer",
+  "Script writer",
+  "Voice artist",
+  "Actor",
+  "Artist",
+] as const;
+
 export const GEOGRAPHY_OPTIONS = [
   "North America (US, Canada)",
   "Europe (All Zones)",

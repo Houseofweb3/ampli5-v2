@@ -14,6 +14,7 @@ import {
   INDUSTRY_CATEGORY_OPTIONS,
   PLATFORM_INVENTORY_OPTIONS,
   GEOGRAPHY_OPTIONS,
+  CREATOR_TYPE_OPTIONS,
   ALL_INSTAGRAM_INVENTORY_KEYS,
   getInventoryOptionsForPlatform,
   type InstagramInventoryMode,
@@ -24,10 +25,12 @@ import {
   deleteAmpli5ImageByUrl,
   uploadAmpli5Image,
 } from "@/src/services/ampli5Images";
+import { OnboardingImagePreview } from "@/src/components/creator-onboarding/OnboardingImagePreview";
 
 const SECTION_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
 
 function getErrorKeyToSectionId(key: string): number {
+  if (key === "type") return 1;
   if (
     key === "channelBrandName" ||
     key === "primaryContactEmail" ||
@@ -51,7 +54,6 @@ function getErrorKeyToSectionId(key: string): number {
 }
 
 const MAX_CATEGORY_SELECTIONS = 2;
-
 /** Selling price = user price + 16%, rounded to nearest 100 (e.g. 554 → 600, 549 → 500). */
 function roundToNearest100(x: number): number {
   return Math.round(x / 100) * 100;
@@ -291,7 +293,10 @@ export default function CreatorOnboardingForm() {
     const newErrors: Record<string, string> = {};
 
     switch (step) {
-      case 1:
+      case 1: {
+        if (!formData.type?.trim()) {
+          newErrors.type = "Please select one option";
+        }
         if (!formData.channelBrandName.trim()) {
           newErrors.channelBrandName = "Channel / Brand Name is required";
         }
@@ -329,6 +334,7 @@ export default function CreatorOnboardingForm() {
           }
         }
         break;
+      }
       case 2:
         if (!formData.industries || formData.industries.length === 0) {
           newErrors.industries = "Please select one industry";
@@ -495,7 +501,12 @@ export default function CreatorOnboardingForm() {
 
   const renderSection = (step: number) => {
     switch (step) {
-      case 1:
+      case 1: {
+        const handleCreatorTypeSelect = (option: string) => {
+          updateFormData({ type: formData.type === option ? "" : option });
+          if (errors.type) setErrors((prev) => ({ ...prev, type: "" }));
+        };
+
         const handlePlatformChange = (platform: string) => {
           const currentPlatforms = formData.platforms || [];
           const isRemoving = currentPlatforms.includes(platform);
@@ -516,6 +527,33 @@ export default function CreatorOnboardingForm() {
         return (
           <div>
             <div className="space-y-6">
+              <div className="pb-6 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">About me</h3>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  I am a <span className="text-red-500">*</span>
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {CREATOR_TYPE_OPTIONS.map((option) => {
+                    const isSelected = formData.type === option;
+                    return (
+                      <button
+                        key={option}
+                        type="button"
+                        onClick={() => handleCreatorTypeSelect(option)}
+                        className={`inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium border transition-all ${
+                          isSelected
+                            ? "bg-[#7B46F8] border-[#7B46F8] text-white"
+                            : "bg-gray-100 border-gray-200 text-gray-800 hover:border-gray-300"
+                        }`}
+                      >
+                        {!isSelected && <span className="text-gray-500">+</span>}
+                        {option}
+                      </button>
+                    );
+                  })}
+                </div>
+                {errors.type && <p className="mt-2 text-sm text-red-500">{errors.type}</p>}
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <div className="flex items-center gap-2 mb-2">
@@ -840,6 +878,7 @@ export default function CreatorOnboardingForm() {
             </div>
           </div>
         );
+      }
       case 2:
         const handleIndustryChange = (industry: string) => {
           const currentIndustries = formData.industries || [];
@@ -1642,65 +1681,13 @@ export default function CreatorOnboardingForm() {
             <div className="space-y-3">
               {fieldError && <p className="text-sm text-red-500">{fieldError}</p>}
               {hasImage ? (
-                <div className="relative border-2 border-gray-300 rounded-lg p-4">
-                  <div className="relative w-full h-64 mb-3 bg-gray-50 rounded-lg overflow-hidden">
-                    <Image
-                      src={url}
-                      alt={`${platform}: ${label}`}
-                      fill
-                      className="object-contain rounded-lg"
-                      unoptimized
-                    />
-                  </div>
-                  <button
-                    onClick={() => handlePlatformImageDelete(platform, field)}
-                    disabled={isBusy}
-                    className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isDeleting ? (
-                      <>
-                        <svg
-                          className="animate-spin h-5 w-5 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        <span>Deleting...</span>
-                      </>
-                    ) : (
-                      <>
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                        <span>Delete Image</span>
-                      </>
-                    )}
-                  </button>
-                </div>
+                <OnboardingImagePreview
+                  url={url}
+                  alt={`${platform}: ${label}`}
+                  onDelete={() => handlePlatformImageDelete(platform, field)}
+                  isDeleting={isDeleting}
+                  deleteDisabled={isBusy}
+                />
               ) : (
                 <div className="relative">
                   <input
@@ -2263,65 +2250,13 @@ export default function CreatorOnboardingForm() {
               </div>
               {fieldError && <p className="text-sm text-red-500">{fieldError}</p>}
               {hasImage ? (
-                <div className="relative border-2 border-gray-300 rounded-lg p-4">
-                  <div className="relative w-full h-64 mb-3 bg-gray-50 rounded-lg overflow-hidden">
-                    <Image
-                      src={url}
-                      alt={`${platform}: ${label}`}
-                      fill
-                      className="object-contain rounded-lg"
-                      unoptimized
-                    />
-                  </div>
-                  <button
-                    onClick={() => handlePlatformCollabDelete(platform, field)}
-                    disabled={isBusy}
-                    className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isDeleting ? (
-                      <>
-                        <svg
-                          className="animate-spin h-5 w-5 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        <span>Deleting...</span>
-                      </>
-                    ) : (
-                      <>
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                        <span>Delete Image</span>
-                      </>
-                    )}
-                  </button>
-                </div>
+                <OnboardingImagePreview
+                  url={url}
+                  alt={`${platform}: ${label}`}
+                  onDelete={() => handlePlatformCollabDelete(platform, field)}
+                  isDeleting={isDeleting}
+                  deleteDisabled={isBusy}
+                />
               ) : (
                 <div className="relative">
                   <input
@@ -2635,6 +2570,7 @@ export default function CreatorOnboardingForm() {
 
                 const payload = {
                   ...formData,
+                  type: formData.type?.trim() ?? "",
                   inventoryItems: inventoryItemsWithCpm,
                   platformAudienceProof: filteredProofMap,
                   platformCollaborationProof: filteredCollabMap,
