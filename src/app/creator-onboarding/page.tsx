@@ -15,6 +15,11 @@ import {
   PLATFORM_INVENTORY_OPTIONS,
   GEOGRAPHY_OPTIONS,
   CREATOR_TYPE_OPTIONS,
+  COLLABORATION_PROOF_SLOTS,
+  EMPTY_PLATFORM_COLLABORATION_PROOF,
+  type CollaborationProofImageField,
+  getPlatformDisplay,
+  type AudienceProofScreenshotField,
   ALL_INSTAGRAM_INVENTORY_KEYS,
   getInventoryOptionsForPlatform,
   type InstagramInventoryMode,
@@ -26,7 +31,6 @@ import {
   uploadAmpli5Image,
 } from "@/src/services/ampli5Images";
 import { OnboardingImagePreview } from "@/src/components/creator-onboarding/OnboardingImagePreview";
-
 const SECTION_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
 
 function getErrorKeyToSectionId(key: string): number {
@@ -457,16 +461,27 @@ export default function CreatorOnboardingForm() {
         }
         for (const platform of formData.platforms) {
           const proof = (formData.platformCollaborationProof || {})[platform];
-          if (!proof?.image1?.trim()) {
-            newErrors[`collaborationProof_${platform}_image1`] =
-              `Collaboration proof image 1 is required for ${platform}`;
-            break;
+          for (const slot of COLLABORATION_PROOF_SLOTS) {
+            const link = (proof?.[slot.linkField] ?? "").trim();
+            const image = (proof?.[slot.imageField] ?? "").trim();
+            if (!link) {
+              newErrors[`collaborationProof_${platform}_${slot.linkField}`] =
+                `Collaboration post link is required for ${platform} (${slot.sectionTitle})`;
+              break;
+            }
+            if (!isValidUrl(link)) {
+              newErrors[`collaborationProof_${platform}_${slot.linkField}`] =
+                `Please enter a valid URL for ${platform} (${slot.sectionTitle})`;
+              break;
+            }
+            if (!image) {
+              newErrors[`collaborationProof_${platform}_${slot.imageField}`] =
+                `Collaboration screenshot is required for ${platform} (${slot.sectionTitle})`;
+              break;
+            }
           }
-          if (!proof?.image2?.trim()) {
-            newErrors[`collaborationProof_${platform}_image2`] =
-              `Collaboration proof image 2 is required for ${platform}`;
+          if (Object.keys(newErrors).some((k) => k.startsWith(`collaborationProof_${platform}_`)))
             break;
-          }
         }
         break;
       case 10:
@@ -1678,8 +1693,9 @@ export default function CreatorOnboardingForm() {
           const inputId = `file-input-${platform}-${field}`.replace(/\s+/g, "-");
 
           return (
-            <div className="space-y-3">
-              {fieldError && <p className="text-sm text-red-500">{fieldError}</p>}
+            <div className="flex min-w-0 flex-col gap-2">
+              <span className="text-xs font-medium text-gray-700 leading-snug">{label}</span>
+              {fieldError && <p className="text-xs text-red-500">{fieldError}</p>}
               {hasImage ? (
                 <OnboardingImagePreview
                   url={url}
@@ -1687,9 +1703,10 @@ export default function CreatorOnboardingForm() {
                   onDelete={() => handlePlatformImageDelete(platform, field)}
                   isDeleting={isDeleting}
                   deleteDisabled={isBusy}
+                  layout="column"
                 />
               ) : (
-                <div className="relative">
+                <div className="relative min-h-[100px]">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -1703,16 +1720,16 @@ export default function CreatorOnboardingForm() {
                   />
                   <label
                     htmlFor={inputId}
-                    className={`w-full px-4 py-3 rounded-lg flex items-center justify-between cursor-pointer transition-all ${
+                    className={`flex min-h-[100px] w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border px-2 py-3 text-center transition-all ${
                       isBusy
-                        ? "opacity-50 cursor-not-allowed bg-gray-50 border border-gray-200"
+                        ? "cursor-not-allowed border-gray-200 bg-gray-50 opacity-50"
                         : isFocused
                           ? "border-2 border-[#7B46F8] bg-white"
-                          : "bg-gray-50 border border-gray-200 hover:border-gray-300"
+                          : "border-gray-200 bg-gray-50 hover:border-gray-300"
                     }`}
                   >
-                    <span className="text-sm font-medium text-gray-700">
-                      {isUploading ? "Uploading..." : isDeleting ? "Deleting..." : label}
+                    <span className="text-xs font-medium text-gray-600">
+                      {isUploading ? "Uploading..." : isDeleting ? "Deleting..." : "Upload"}
                     </span>
                     {isBusy ? (
                       <svg
@@ -1870,31 +1887,56 @@ export default function CreatorOnboardingForm() {
               )}
 
               <div className="space-y-8">
-                {(formData.platforms || []).map((platform) => (
+                {(formData.platforms || []).map((platform) => {
+                  const platformDisplay = getPlatformDisplay(platform);
+                  return (
                   <div key={platform} className="border border-gray-200 rounded-lg p-4 sm:p-6">
                     <div className="flex items-center gap-2 mb-4">
                       <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                      <h4 className="text-base font-semibold text-gray-900">{platform}</h4>
+                      {platformDisplay.iconSrc ? (
+                        <Image
+                          src={platformDisplay.iconSrc}
+                          alt=""
+                          width={22}
+                          height={22}
+                          className="h-5 w-5 object-contain"
+                        />
+                      ) : null}
+                      <h4 className="text-base font-semibold text-gray-900">
+                        {platformDisplay.shortLabel}
+                      </h4>
                     </div>
-                    <div className="space-y-4">
-                      <PlatformImageUploadField
-                        platform={platform}
-                        field="ageScreenshot"
-                        label="Upload Age screenshot"
-                      />
-                      <PlatformImageUploadField
-                        platform={platform}
-                        field="genderScreenshot"
-                        label="Upload gender screenshot"
-                      />
-                      <PlatformImageUploadField
-                        platform={platform}
-                        field="topCountriesScreenshot"
-                        label="Upload top countries screenshot"
-                      />
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                      {(
+                        [
+                          {
+                            field: "ageScreenshot" as const,
+                            label: "Age screenshot",
+                          },
+                          {
+                            field: "genderScreenshot" as const,
+                            label: "Gender screenshot",
+                          },
+                          {
+                            field: "topCountriesScreenshot" as const,
+                            label: "Top countries screenshot",
+                          },
+                        ] satisfies {
+                          field: AudienceProofScreenshotField;
+                          label: string;
+                        }[]
+                      ).map(({ field, label }) => (
+                        <PlatformImageUploadField
+                          key={`${platform}-${field}`}
+                          platform={platform}
+                          field={field}
+                          label={label}
+                        />
+                      ))}
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -2069,11 +2111,6 @@ export default function CreatorOnboardingForm() {
           </div>
         );
       case 9:
-        type CollaborationProofField = "image1" | "image2";
-        const collabScreenshotFields: { field: CollaborationProofField; label: string }[] = [
-          { field: "image1", label: "Screenshot 1" },
-          { field: "image2", label: "Screenshot 2" },
-        ];
         const allowedCollaborationProofImageTypes = [
           "image/jpeg",
           "image/jpg",
@@ -2086,28 +2123,14 @@ export default function CreatorOnboardingForm() {
 
         const getPlatformCollab = (platform: string) => {
           const proof = (formData.platformCollaborationProof || {})[platform];
-          return (
-            proof ?? {
-              image1: "",
-              image2: "",
-              image1PublicId: "",
-              image2PublicId: "",
-            }
-          );
+          return proof ?? { ...EMPTY_PLATFORM_COLLABORATION_PROOF };
         };
 
         const getLatestPlatformCollab = (platform: string) => {
           const latestMap =
             useCreatorOnboardingFormStore.getState().formData.platformCollaborationProof || {};
           const proof = latestMap[platform];
-          return (
-            proof ?? {
-              image1: "",
-              image2: "",
-              image1PublicId: "",
-              image2PublicId: "",
-            }
-          );
+          return proof ?? { ...EMPTY_PLATFORM_COLLABORATION_PROOF };
         };
 
         const setPlatformCollab = (
@@ -2129,7 +2152,7 @@ export default function CreatorOnboardingForm() {
 
         const handlePlatformCollabUpload = async (
           platform: string,
-          field: CollaborationProofField,
+          field: CollaborationProofImageField,
           file: File
         ) => {
           if (
@@ -2176,7 +2199,7 @@ export default function CreatorOnboardingForm() {
 
         const handlePlatformCollabDelete = async (
           platform: string,
-          field: CollaborationProofField
+          field: CollaborationProofImageField
         ) => {
           const proof = getPlatformCollab(platform);
           const currentUrl = (proof as any)[field] as string;
@@ -2203,27 +2226,29 @@ export default function CreatorOnboardingForm() {
           }
         };
 
-        const PlatformCollabImageField = ({
+        const PlatformCollabProofSlot = ({
           platform,
-          field,
-          label,
-        }: {
-          platform: string;
-          field: CollaborationProofField;
-          label: string;
-        }) => {
+          imageField,
+          linkField,
+          sectionTitle,
+          linkLabel,
+          uploadLabel,
+        }: (typeof COLLABORATION_PROOF_SLOTS)[number] & { platform: string }) => {
           const proof = getPlatformCollab(platform);
-          const url = ((proof as any)[field] as string) || "";
+          const url = proof[imageField] || "";
+          const linkValue = proof[linkField] || "";
           const hasImage = !!url;
-          const uploadingKey = `collaborationProof:${platform}:${field}`;
+          const uploadingKey = `collaborationProof:${platform}:${imageField}`;
           const isUploading = uploadingFields.has(uploadingKey);
-          const deletingKey = `collaborationProof:delete:${platform}:${field}`;
+          const deletingKey = `collaborationProof:delete:${platform}:${imageField}`;
           const isDeleting = uploadingFields.has(deletingKey);
           const isBusy = isUploading || isDeleting;
           const fileInputRef = useRef<HTMLInputElement>(null);
           const [isFocused, setIsFocused] = useState(false);
-          const errKey = `collaborationProof_${platform}_${field}`;
-          const fieldError = errors[errKey];
+          const imageErrKey = `collaborationProof_${platform}_${imageField}`;
+          const linkErrKey = `collaborationProof_${platform}_${linkField}`;
+          const imageError = errors[imageErrKey];
+          const linkError = errors[linkErrKey];
 
           const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const files = e.target.files;
@@ -2234,30 +2259,52 @@ export default function CreatorOnboardingForm() {
               return;
             }
             const file = files[0];
-            if (file) handlePlatformCollabUpload(platform, field, file);
+            if (file) handlePlatformCollabUpload(platform, imageField, file);
             if (fileInputRef.current) fileInputRef.current.value = "";
           };
 
-          const inputId = `collab-file-input-${platform}-${field}`.replace(/\s+/g, "-");
+          const inputId = `collab-file-input-${platform}-${imageField}`.replace(/\s+/g, "-");
 
           return (
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 mb-2">
+            <div className="space-y-3 rounded-lg border border-gray-100 bg-white p-4">
+              <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
-                <label className="block text-sm font-medium text-gray-700">
-                  {label} <span className="text-red-500">*</span>
-                </label>
+                <h5 className="text-sm font-semibold text-gray-900">{sectionTitle}</h5>
               </div>
-              {fieldError && <p className="text-sm text-red-500">{fieldError}</p>}
-              {hasImage ? (
-                <OnboardingImagePreview
-                  url={url}
-                  alt={`${platform}: ${label}`}
-                  onDelete={() => handlePlatformCollabDelete(platform, field)}
-                  isDeleting={isDeleting}
-                  deleteDisabled={isBusy}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {linkLabel} <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="url"
+                  value={linkValue}
+                  onChange={(e) => {
+                    setPlatformCollab(platform, { [linkField]: e.target.value });
+                    if (errors[linkErrKey]) {
+                      setErrors((prev) => ({ ...prev, [linkErrKey]: "" }));
+                    }
+                  }}
+                  placeholder="https://"
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent text-sm ${
+                    linkError ? "border-red-500" : "border-gray-300"
+                  }`}
                 />
-              ) : (
+                {linkError && <p className="mt-1 text-sm text-red-500">{linkError}</p>}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {uploadLabel} <span className="text-red-500">*</span>
+                </label>
+                {imageError && <p className="mb-1 text-sm text-red-500">{imageError}</p>}
+                {hasImage ? (
+                  <OnboardingImagePreview
+                    url={url}
+                    alt={`${platform}: ${uploadLabel}`}
+                    onDelete={() => handlePlatformCollabDelete(platform, imageField)}
+                    isDeleting={isDeleting}
+                    deleteDisabled={isBusy}
+                  />
+                ) : (
                 <div className="relative">
                   <input
                     ref={fileInputRef}
@@ -2285,7 +2332,7 @@ export default function CreatorOnboardingForm() {
                         ? "Uploading..."
                         : isDeleting
                           ? "Deleting..."
-                          : "Upload screenshots"}
+                          : uploadLabel}
                     </span>
                     {isBusy ? (
                       <svg
@@ -2325,7 +2372,8 @@ export default function CreatorOnboardingForm() {
                     )}
                   </label>
                 </div>
-              )}
+                )}
+              </div>
             </div>
           );
         };
@@ -2355,17 +2403,17 @@ export default function CreatorOnboardingForm() {
                           <h4 className="text-base font-semibold text-gray-900">{platform}</h4>
                         </div>
                         <div className="space-y-4">
-                          {collabScreenshotFields.map(({ field, label }) => (
-                            <PlatformCollabImageField
-                              key={`${platform}-${field}`}
+                          {COLLABORATION_PROOF_SLOTS.map((slot) => (
+                            <PlatformCollabProofSlot
+                              key={`${platform}-${slot.imageField}`}
                               platform={platform}
-                              field={field}
-                              label={label}
+                              {...slot}
                             />
                           ))}
                         </div>
                         <p className="mt-2 text-xs text-gray-500">
-                          2 screenshots required: post screenshot and analytics screenshot
+                          For each slot: collaboration post link and screenshot (post + analytics)
+                          are required.
                         </p>
                       </div>
                     ))}
@@ -2582,6 +2630,8 @@ export default function CreatorOnboardingForm() {
                   topCountriesScreenshotPublicId: firstProof?.topCountriesScreenshotPublicId ?? "",
                   firstCollaborationImage1: firstCollab?.image1 ?? "",
                   firstCollaborationImage2: firstCollab?.image2 ?? "",
+                  firstCollaborationPostLink1: firstCollab?.postLink1 ?? "",
+                  firstCollaborationPostLink2: firstCollab?.postLink2 ?? "",
                   firstCollaborationImage1PublicId: firstCollab?.image1PublicId ?? "",
                   firstCollaborationImage2PublicId: firstCollab?.image2PublicId ?? "",
                 };

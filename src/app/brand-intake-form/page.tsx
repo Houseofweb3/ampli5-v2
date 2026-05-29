@@ -577,7 +577,7 @@ export default function BrandIntakeForm() {
         const geographyOptions = [
           "North America (US, Canada)",
           "Europe (All Zones)",
-          "South Asia (Includes India and Pakistan)",
+          "SAARC (includes India & Pakistan)",
           "South East Asia",
           "LATAM (Central America & South America)",
           "MENA (Middle East & North Africa)",

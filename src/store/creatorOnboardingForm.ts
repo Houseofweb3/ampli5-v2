@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import type { PlatformCollaborationProof } from "@/src/constants/creatorOnboardingFilters";
 
 interface CreatorOnboardingFormData {
   /** Creator role (“I am a”); submitted as `type` in API payload. */
@@ -67,21 +68,15 @@ interface CreatorOnboardingFormData {
   // First slide - two screenshots per platform
   firstCollaborationImage1: string; // URL as string for Excel export
   firstCollaborationImage2: string; // URL as string for Excel export
+  firstCollaborationPostLink1: string;
+  firstCollaborationPostLink2: string;
   firstCollaborationImage1PublicId?: string; // PublicId for deletion
   firstCollaborationImage2PublicId?: string; // PublicId for deletion
   /**
    * Per-platform proof of last collaboration and results.
    * Key = platform name (must match `platforms` values).
    */
-  platformCollaborationProof: Record<
-    string,
-    {
-      image1: string;
-      image2: string;
-      image1PublicId?: string;
-      image2PublicId?: string;
-    }
-  >;
+  platformCollaborationProof: Record<string, PlatformCollaborationProof>;
 
   // Step 10: Final Confirmation
   finalConfirmation: boolean;
@@ -160,6 +155,8 @@ const initialFormData: CreatorOnboardingFormData = {
   turnaroundTimes: [],
   firstCollaborationImage1: "",
   firstCollaborationImage2: "",
+  firstCollaborationPostLink1: "",
+  firstCollaborationPostLink2: "",
   firstCollaborationImage1PublicId: "",
   firstCollaborationImage2PublicId: "",
   platformCollaborationProof: {},

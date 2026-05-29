@@ -13,6 +13,29 @@ export const PLATFORM_OPTIONS = [
   "PR/Editorial",
 ] as const;
 
+/** Short label + icon for audience-proof platform headers (e.g. IG, YT). */
+export const PLATFORM_DISPLAY: Record<
+  string,
+  { shortLabel: string; iconSrc: string }
+> = {
+  X: { shortLabel: "X", iconSrc: "/socials/twitter.svg" },
+  Youtube: { shortLabel: "YT", iconSrc: "/socials/youtube.svg" },
+  Instagram: { shortLabel: "IG", iconSrc: "/socials/Instagram.svg" },
+  TikTok: { shortLabel: "TT", iconSrc: "/socials/TikTok.svg" },
+  Newsletter: { shortLabel: "NL", iconSrc: "/socials/news.svg" },
+  Spotify: { shortLabel: "SP", iconSrc: "/socials/Spotify.svg" },
+  "PR/Editorial": { shortLabel: "PR", iconSrc: "/socials/news.svg" },
+};
+
+export function getPlatformDisplay(platform: string) {
+  return (
+    PLATFORM_DISPLAY[platform] ?? {
+      shortLabel: platform,
+      iconSrc: "",
+    }
+  );
+}
+
 export const INDUSTRY_OPTIONS = [
   "Crypto",
   "AI",
@@ -40,10 +63,56 @@ export const CREATOR_TYPE_OPTIONS = [
   "Artist",
 ] as const;
 
+/** Per-platform collaboration proof: post link + screenshot for each slot (step 9). */
+export type CollaborationProofImageField = "image1" | "image2";
+export type CollaborationProofLinkField = "postLink1" | "postLink2";
+
+export type PlatformCollaborationProof = {
+  image1: string;
+  image2: string;
+  postLink1: string;
+  postLink2: string;
+  image1PublicId?: string;
+  image2PublicId?: string;
+};
+
+export const EMPTY_PLATFORM_COLLABORATION_PROOF: PlatformCollaborationProof = {
+  image1: "",
+  image2: "",
+  postLink1: "",
+  postLink2: "",
+  image1PublicId: "",
+  image2PublicId: "",
+};
+
+/** UI labels and field keys for each collaboration proof slot. */
+
+export type AudienceProofScreenshotField =
+  | "ageScreenshot"
+  | "genderScreenshot"
+  | "topCountriesScreenshot";
+
+export const COLLABORATION_PROOF_SLOTS = [
+  {
+    imageField: "image1" as const,
+    linkField: "postLink1" as const,
+    sectionTitle: "Screenshot 1",
+    linkLabel: "Copy-paste Collaboration post link 1",
+    uploadLabel: "Upload Screenshot 1",
+  },
+  {
+    imageField: "image2" as const,
+    linkField: "postLink2" as const,
+    sectionTitle: "Screenshot 2",
+    linkLabel: "Copy-paste Collaboration post link 2",
+    uploadLabel: "Upload Screenshot 2",
+  },
+] as const;
+
 export const GEOGRAPHY_OPTIONS = [
   "North America (US, Canada)",
   "Europe (All Zones)",
-  "South Asia (Includes India and Pakistan)",
+  "SAARC (includes India & Pakistan)",
   "South East Asia",
   "LATAM (Central America & South America)",
   "MENA (Middle East & North Africa)",
@@ -82,7 +151,7 @@ export const INDUSTRY_CATEGORY_OPTIONS: Record<string, string[]> = {
     "Fintech product reviews",
     "Fintech Podcasters",
     "Fintech clippers",
-    "Metals Forex Indice Trading",
+    "Metals/Forex/Indices Trading",
   ],
   "Robotics & Hardware": [
     "R&H Tech & Gadget creators",

@@ -84,12 +84,16 @@ interface CreatorOnboardingFormData {
   turnaroundTimes?: string[];
   firstCollaborationImage1?: string;
   firstCollaborationImage2?: string;
+  firstCollaborationPostLink1?: string;
+  firstCollaborationPostLink2?: string;
   firstCollaborationImage3?: string;
   platformCollaborationProof?: Record<
     string,
     {
       image1?: string;
       image2?: string;
+      postLink1?: string;
+      postLink2?: string;
       image3?: string;
     }
   >;
@@ -203,7 +207,8 @@ export async function POST(request: Request) {
      * Platform, Platform Link, Inventory, Price/Rate (display), Buy price, Selling price (CSP),
      * Avg Views, CPM, CCP, Industries, Categories, Primary GEO, Secondary GEO,
      * Age / Gender / Top countries screenshots, Payment terms, Turnaround,
-     * Collab images 1–3, X/IG/YT/TikTok/Newsletter links, Final confirmation
+     * Collab post link 1, Collab image 1, Collab post link 2, Collab image 2,
+     * (legacy collab image 3, X/IG/YT/TikTok/Newsletter links), Final confirmation
      */
     const getProofForPlatform = (platform: string) => {
       const proof = body.platformAudienceProof?.[platform];
@@ -217,7 +222,9 @@ export async function POST(request: Request) {
     const getCollabForPlatform = (platform: string) => {
       const proof = body.platformCollaborationProof?.[platform];
       return {
+        postLink1: proof?.postLink1 || body.firstCollaborationPostLink1 || "",
         image1: proof?.image1 || body.firstCollaborationImage1 || "",
+        postLink2: proof?.postLink2 || body.firstCollaborationPostLink2 || "",
         image2: proof?.image2 || body.firstCollaborationImage2 || "",
         image3: proof?.image3 || body.firstCollaborationImage3 || "",
       };
@@ -261,7 +268,9 @@ export async function POST(request: Request) {
       getProofForPlatform(platform).topCountriesScreenshot,
       body.paymentTerms || "",
       body.turnaroundTimes?.join(", ") || "",
+      getCollabForPlatform(platform).postLink1,
       getCollabForPlatform(platform).image1,
+      getCollabForPlatform(platform).postLink2,
       getCollabForPlatform(platform).image2,
       getCollabForPlatform(platform).image3,
       body.xLink || "",

@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.0",
+    "@fancyapps/ui": "^6.1.14",
     "@radix-ui/react-hover-card": "^1.1.1",
     "@radix-ui/react-tabs": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
