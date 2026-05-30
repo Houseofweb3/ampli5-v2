@@ -37,3 +37,28 @@ export function openOnboardingFancybox(src: string, caption?: string) {
     }
   );
 }
+
+export type OnboardingFancyboxSlide = { src: string; caption: string };
+
+/** Platform example gallery only (not mixed with uploads or other platforms). */
+export function openOnboardingFancyboxGallery(
+  slides: OnboardingFancyboxSlide[],
+  startIndex = 0
+) {
+  if (slides.length === 0) return;
+
+  resetFancybox();
+
+  Fancybox.show(
+    slides.map((slide) => ({
+      src: slide.src,
+      type: "image" as const,
+      caption: slide.caption,
+    })),
+    {
+      ...FANCYBOX_UI_OPTIONS,
+      startIndex: Math.min(Math.max(0, startIndex), slides.length - 1),
+      Carousel: { infinite: false },
+    }
+  );
+}

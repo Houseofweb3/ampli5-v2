@@ -18,6 +18,7 @@ import {
   COLLABORATION_PROOF_SLOTS,
   EMPTY_PLATFORM_COLLABORATION_PROOF,
   type CollaborationProofImageField,
+  getAudienceProofHeaderExamples,
   getPlatformDisplay,
   type AudienceProofScreenshotField,
   ALL_INSTAGRAM_INVENTORY_KEYS,
@@ -31,6 +32,8 @@ import {
   uploadAmpli5Image,
 } from "@/src/services/ampli5Images";
 import { OnboardingImagePreview } from "@/src/components/creator-onboarding/OnboardingImagePreview";
+import { openOnboardingFancyboxGallery } from "@/src/components/creator-onboarding/useOnboardingFancybox";
+
 const SECTION_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
 
 function getErrorKeyToSectionId(key: string): number {
@@ -1889,9 +1892,10 @@ export default function CreatorOnboardingForm() {
               <div className="space-y-8">
                 {(formData.platforms || []).map((platform) => {
                   const platformDisplay = getPlatformDisplay(platform);
+                  const headerExamples = getAudienceProofHeaderExamples(platform);
                   return (
                   <div key={platform} className="border border-gray-200 rounded-lg p-4 sm:p-6">
-                    <div className="flex items-center gap-2 mb-4">
+                    <div className="mb-4 flex flex-wrap items-center gap-2">
                       <div className="w-2 h-2 bg-[#7B46F8] rotate-45"></div>
                       {platformDisplay.iconSrc ? (
                         <Image
@@ -1905,6 +1909,36 @@ export default function CreatorOnboardingForm() {
                       <h4 className="text-base font-semibold text-gray-900">
                         {platformDisplay.shortLabel}
                       </h4>
+                      {headerExamples && (
+                        <button
+                          type="button"
+                          className="inline-flex items-center gap-1 text-xs font-medium text-[#7B46F8] hover:text-[#6a3de0]"
+                          title="View example screenshots for this platform"
+                          onClick={() => openOnboardingFancyboxGallery(headerExamples)}
+                        >
+                          <svg
+                            className="h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            aria-hidden
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                            />
+                          </svg>
+                          Ex.
+                        </button>
+                      )}
                     </div>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                       {(

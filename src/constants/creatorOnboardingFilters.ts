@@ -92,6 +92,47 @@ export type AudienceProofScreenshotField =
   | "genderScreenshot"
   | "topCountriesScreenshot";
 
+export type AudienceProofExampleSlide = { src: string; caption: string };
+
+const YT_AUDIENCE_PROOF_EXAMPLES: AudienceProofExampleSlide[] = [
+  {
+    src: "/cob/YT-Channel-analytics-example.jpg",
+    caption: "YT — Age screenshot example",
+  },
+  {
+    src: "/cob/YT-Age-Gender%26Demographics.jpg",
+    caption: "YT — Gender screenshot example",
+  },
+  {
+    src: "/cob/YT-video-insights-example.jpg",
+    caption: "YT — Top countries screenshot example",
+  },
+];
+
+const IG_AUDIENCE_PROOF_EXAMPLES: AudienceProofExampleSlide[] = [
+  {
+    src: "/cob/IG-Age-Example.jpeg",
+    caption: "IG — Age screenshot example",
+  },
+  {
+    src: "/cob/IG-Gender-example.jpeg",
+    caption: "IG — Gender screenshot example",
+  },
+  {
+    src: "/cob/IG-Location-example-Top-countries.jpeg",
+    caption: "IG — Top countries screenshot example",
+  },
+];
+
+/** Header “Ex.” gallery — Instagram & Youtube only. */
+export function getAudienceProofHeaderExamples(
+  platform: string
+): AudienceProofExampleSlide[] | null {
+  if (platform === "Instagram") return IG_AUDIENCE_PROOF_EXAMPLES;
+  if (platform === "Youtube") return YT_AUDIENCE_PROOF_EXAMPLES;
+  return null;
+}
+
 export const COLLABORATION_PROOF_SLOTS = [
   {
     imageField: "image1" as const,
