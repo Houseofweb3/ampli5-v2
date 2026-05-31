@@ -16,3 +16,28 @@ export async function submitCreatorOnboarding(
   );
   return res.data;
 }
+
+export interface InstagramOAuthUrl {
+  url: string;
+  state: string;
+}
+
+/**
+ * GET /api/v1/web/instagram/oauth-url – no auth. Returns the Instagram authorize URL
+ * for the "Login with Instagram" popup. The popup posts the connection result back to
+ * this window via postMessage on completion.
+ */
+export async function getInstagramOAuthUrl(): Promise<InstagramOAuthUrl> {
+  const res = await dashboardClient.get<{ success: boolean } & InstagramOAuthUrl>(
+    "/web/instagram/oauth-url"
+  );
+  return { url: res.data.url, state: res.data.state };
+}
+
+/**
+ * POST /api/v1/web/instagram/disconnect – removes the stored connection + token for
+ * the given Instagram user id. Called by the "Disconnect" button on the form.
+ */
+export async function disconnectInstagram(igUserId: string): Promise<void> {
+  await dashboardClient.post("/web/instagram/disconnect", { igUserId });
+}

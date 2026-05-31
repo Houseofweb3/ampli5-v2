@@ -16,6 +16,22 @@ interface CreatorOnboardingFormData {
   /** Profile/channel URL per platform (Step 1, fourth slide). Key = platform name e.g. 'X', 'Youtube'. */
   platformUrls: Record<string, string>;
 
+  // Instagram Login (OAuth) — set after the "Login with Instagram" popup round-trip.
+  /** Instagram user id from a connect; sent in submit payload to link the InstagramAccount row. */
+  instagramUserId: string;
+  /** True once the creator has connected Instagram via OAuth. */
+  instagramConnected: boolean;
+  /** Verified audience summary echoed back from the OAuth popup (read-only display). */
+  instagramVerified?: {
+    username: string;
+    followersCount: number;
+    accountType: string;
+    topCountries?: { key: string; value: number }[];
+    topCities?: { key: string; value: number }[];
+    age?: { key: string; value: number }[];
+    gender?: { key: string; value: number }[];
+  };
+
   // Step 2: Industry selection
   industries: string[];
 
@@ -127,6 +143,9 @@ const initialFormData: CreatorOnboardingFormData = {
   primaryTimezone: "",
   platforms: [],
   platformUrls: {},
+  instagramUserId: "",
+  instagramConnected: false,
+  instagramVerified: undefined,
   industries: [],
   categories: [],
   inventoryItems: {},

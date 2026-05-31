@@ -25,7 +25,11 @@ import {
   getInventoryOptionsForPlatform,
   type InstagramInventoryMode,
 } from "@/src/constants/creatorOnboardingFilters";
-import { submitCreatorOnboarding } from "@/src/services/creatorOnboardingApi";
+import {
+  submitCreatorOnboarding,
+  getInstagramOAuthUrl,
+  disconnectInstagram,
+} from "@/src/services/creatorOnboardingApi";
 import {
   buildOnboardingFolderName,
   deleteAmpli5ImageByUrl,
@@ -281,12 +285,139 @@ export default function CreatorOnboardingForm() {
   /** UI-only: which Instagram inventory list to show (not sent in submit payload). */
   const [instagramInventoryMode, setInstagramInventoryMode] =
     useState<InstagramInventoryMode | null>(null);
+  /** UI-only: true while the "Login with Instagram" popup round-trip is in flight. */
+  const [connectingInstagram, setConnectingInstagram] = useState<boolean>(false);
+  /** UI-only: friendly, client-ready error shown in the Instagram card after a failed connect. */
+  const [instagramError, setInstagramError] = useState<string>("");
 
   useEffect(() => {
     if (!formData.platforms?.includes("Instagram")) {
       setInstagramInventoryMode(null);
     }
   }, [formData.platforms]);
+
+  // Listen for the OAuth popup result (postMessage from the backend callback page).
+  // On success, store the verified summary + auto-fill the Instagram URL/handle/followers.
+  useEffect(() => {
+    // The popup callback runs on the backend origin. In local dev that's the dashboard
+    // API origin; behind an HTTPS tunnel (e.g. ngrok) set NEXT_PUBLIC_IG_CALLBACK_ORIGIN
+    // to the tunnel origin so the postMessage isn't dropped.
+    const allowedOrigins = [
+      (() => {
+        try {
+          return new URL(process.env.NEXT_PUBLIC_DASHBOARD_API_URL || "").origin;
+        } catch {
+          return "";
+        }
+      })(),
+      process.env.NEXT_PUBLIC_IG_CALLBACK_ORIGIN || "",
+    ].filter(Boolean);
+
+    const onMessage = (event: MessageEvent) => {
+      if (allowedOrigins.length > 0 && !allowedOrigins.includes(event.origin)) return;
+      const data = event.data as
+        | {
+            source?: string;
+            success?: boolean;
+            reason?: string;
+            instagram?: Record<string, unknown>;
+            error?: string;
+          }
+        | undefined;
+      // Only handle our own OAuth popup messages (marker set by the backend callback).
+      if (!data || typeof data !== "object" || data.source !== "ampli5-instagram") return;
+
+      setConnectingInstagram(false);
+      if (data.success === false || !data.instagram) {
+        const friendly =
+          data.error ||
+          (data.reason === "cancelled"
+            ? "Instagram login was cancelled."
+            : "We couldn’t connect your Instagram account. Please try again.");
+        setInstagramError(friendly);
+        toast.error(friendly);
+        return;
+      }
+      setInstagramError("");
+
+      const ig = data.instagram as {
+        igUserId: string;
+        username: string;
+        followersCount: number;
+        accountType: string;
+        topCountries?: { key: string; value: number }[];
+        topCities?: { key: string; value: number }[];
+        age?: { key: string; value: number }[];
+        gender?: { key: string; value: number }[];
+        note?: string;
+      };
+
+      updateFormData({
+        instagramConnected: true,
+        instagramUserId: ig.igUserId,
+        instagramVerified: {
+          username: ig.username,
+          followersCount: ig.followersCount,
+          accountType: ig.accountType,
+          topCountries: ig.topCountries,
+          topCities: ig.topCities,
+          age: ig.age,
+          gender: ig.gender,
+        },
+        instagramHandle: ig.username,
+        instagramFollowers: String(ig.followersCount ?? ""),
+        platformUrls: {
+          ...(useCreatorOnboardingFormStore.getState().formData.platformUrls || {}),
+          Instagram: `https://instagram.com/${ig.username}`,
+        },
+      });
+      setErrors((prev) => ({ ...prev, platformUrl_Instagram: "" }));
+      toast.success(`Connected as @${ig.username}`);
+      if (ig.note) toast(ig.note, { icon: "ℹ️" });
+    };
+
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [updateFormData]);
+
+  const handleConnectInstagram = async () => {
+    try {
+      setInstagramError("");
+      setConnectingInstagram(true);
+      const { url } = await getInstagramOAuthUrl();
+      const popup = window.open(url, "ig_oauth", "width=600,height=700");
+      if (!popup) {
+        setConnectingInstagram(false);
+        const msg = "Popup blocked. Please allow popups for this site and try again.";
+        setInstagramError(msg);
+        toast.error(msg);
+      }
+    } catch (e) {
+      setConnectingInstagram(false);
+      const msg = "Couldn’t start Instagram login. Please try again in a moment.";
+      setInstagramError(msg);
+      toast.error(msg);
+    }
+  };
+
+  const handleDisconnectInstagram = async () => {
+    const igUserId = formData.instagramUserId;
+    // Clear local state immediately; revoke the stored connection on the backend too.
+    updateFormData({
+      instagramConnected: false,
+      instagramUserId: "",
+      instagramVerified: undefined,
+    });
+    setInstagramError("");
+    if (igUserId) {
+      try {
+        await disconnectInstagram(igUserId);
+      } catch (e) {
+        // Local state is already cleared; surface a non-blocking notice.
+        toast.error("Disconnected locally, but the server cleanup failed. Please retry if it reconnects.");
+      }
+    }
+  };
 
   const scrollToSectionForError = (errorKey: string) => {
     const sectionId = getErrorKeyToSectionId(errorKey);
@@ -428,6 +559,11 @@ export default function CreatorOnboardingForm() {
           break;
         }
         for (const platform of formData.platforms) {
+          // Instagram audience data comes from the verified OAuth connection, so skip
+          // the manual screenshot requirement when the creator has connected Instagram.
+          if (platform === "Instagram" && formData.instagramConnected) {
+            continue;
+          }
           const proof = (formData.platformAudienceProof || {})[platform];
           if (!proof?.ageScreenshot?.trim()) {
             newErrors[`audienceProof_${platform}_ageScreenshot`] =
@@ -807,10 +943,14 @@ export default function CreatorOnboardingForm() {
                     const url = (formData.platformUrls || {})[platform] ?? "";
                     const errKey = `platformUrl_${platform}`;
                     const hasError = !!errors[errKey];
+                    const isInstagram = platform === "Instagram";
+                    const igConnected = isInstagram && !!formData.instagramConnected;
                     return (
                       <div
                         key={platform}
                         className={`flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-lg transition-all border-2 ${
+                          isInstagram ? "sm:flex-wrap" : ""
+                        } ${
                           isSelected
                             ? "border-[#7B46F8] bg-white"
                             : "border-gray-200 bg-white hover:border-gray-300"
@@ -876,9 +1016,82 @@ export default function CreatorOnboardingForm() {
                             }}
                             placeholder="Enter URL"
                             disabled={!isSelected}
-                            className={`flex-1 min-w-0 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-70 ${hasError ? "border-red-500" : "border-gray-300"}`}
+                            readOnly={igConnected}
+                            className={`flex-1 min-w-0 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-70 ${
+                              igConnected ? "bg-gray-50 cursor-not-allowed" : ""
+                            } ${hasError ? "border-red-500" : "border-gray-300"}`}
                           />
                         </div>
+                        {isInstagram && isSelected && (
+                          <div className="w-full basis-full">
+                            {igConnected ? (
+                              (() => {
+                                const v = formData.instagramVerified;
+                                const top = (
+                                  rows?: { key: string; value: number }[]
+                                ) => rows?.[0]?.key;
+                                const details = [
+                                  top(v?.topCountries) && `Top country: ${top(v?.topCountries)}`,
+                                  top(v?.topCities) && `Top city: ${top(v?.topCities)}`,
+                                  top(v?.age) && `Top age: ${top(v?.age)}`,
+                                  top(v?.gender) && `Top gender: ${top(v?.gender)}`,
+                                ].filter(Boolean) as string[];
+                                return (
+                                  <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2">
+                                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                                      <span className="text-sm text-green-800">
+                                        ✓ Connected as{" "}
+                                        <span className="font-semibold">@{v?.username}</span>
+                                        {typeof v?.followersCount === "number" && (
+                                          <>
+                                            {" · "}
+                                            {v.followersCount.toLocaleString()} followers
+                                          </>
+                                        )}
+                                        {v?.accountType && (
+                                          <span className="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                                            {v.accountType} · verified
+                                          </span>
+                                        )}
+                                      </span>
+                                      <button
+                                        type="button"
+                                        onClick={handleDisconnectInstagram}
+                                        className="self-start text-sm font-medium text-green-700 underline hover:text-green-900"
+                                      >
+                                        Disconnect
+                                      </button>
+                                    </div>
+                                    {details.length > 0 ? (
+                                      <p className="mt-1 text-xs text-green-700">
+                                        {details.join("  ·  ")}
+                                      </p>
+                                    ) : (
+                                      <p className="mt-1 text-xs text-green-700">
+                                        Audience demographics need a Business/Creator account with
+                                        100+ followers.
+                                      </p>
+                                    )}
+                                  </div>
+                                );
+                              })()
+                            ) : (
+                              <>
+                                <button
+                                  type="button"
+                                  onClick={handleConnectInstagram}
+                                  disabled={connectingInstagram}
+                                  className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-[#7B46F8] to-pink-500 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                                >
+                                  {connectingInstagram ? "Connecting…" : "Login with Instagram"}
+                                </button>
+                                {instagramError && (
+                                  <p className="mt-2 text-sm text-red-600">{instagramError}</p>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        )}
                       </div>
                     );
                   })}
@@ -1893,6 +2106,65 @@ export default function CreatorOnboardingForm() {
                 {(formData.platforms || []).map((platform) => {
                   const platformDisplay = getPlatformDisplay(platform);
                   const headerExamples = getAudienceProofHeaderExamples(platform);
+
+                  // Instagram, when connected via OAuth, shows verified imported
+                  // demographics instead of the manual screenshot uploaders.
+                  if (platform === "Instagram" && formData.instagramConnected) {
+                    const v = formData.instagramVerified;
+                    const fmt = (rows?: { key: string; value: number }[]) =>
+                      (rows || [])
+                        .slice(0, 3)
+                        .map((r) => `${r.key} (${r.value.toLocaleString()})`)
+                        .join(", ") || "—";
+                    return (
+                      <div
+                        key={platform}
+                        className="border border-green-200 bg-green-50/40 rounded-lg p-4 sm:p-6"
+                      >
+                        <div className="mb-4 flex flex-wrap items-center gap-2">
+                          {platformDisplay.iconSrc ? (
+                            <Image
+                              src={platformDisplay.iconSrc}
+                              alt=""
+                              width={22}
+                              height={22}
+                              className="h-5 w-5 object-contain"
+                            />
+                          ) : null}
+                          <h4 className="text-base font-semibold text-gray-900">
+                            {platformDisplay.shortLabel}
+                          </h4>
+                          <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
+                            ✓ Verified via Instagram
+                          </span>
+                        </div>
+                        <p className="mb-3 text-sm text-gray-600">
+                          Audience data was imported directly from{" "}
+                          <span className="font-semibold">@{v?.username}</span> — no
+                          screenshots needed.
+                        </p>
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                          <div className="rounded-md bg-white p-3 text-sm">
+                            <span className="font-medium text-gray-900">Top countries:</span>{" "}
+                            <span className="text-gray-600">{fmt(v?.topCountries)}</span>
+                          </div>
+                          <div className="rounded-md bg-white p-3 text-sm">
+                            <span className="font-medium text-gray-900">Top cities:</span>{" "}
+                            <span className="text-gray-600">{fmt(v?.topCities)}</span>
+                          </div>
+                          <div className="rounded-md bg-white p-3 text-sm">
+                            <span className="font-medium text-gray-900">Age:</span>{" "}
+                            <span className="text-gray-600">{fmt(v?.age)}</span>
+                          </div>
+                          <div className="rounded-md bg-white p-3 text-sm">
+                            <span className="font-medium text-gray-900">Gender:</span>{" "}
+                            <span className="text-gray-600">{fmt(v?.gender)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+
                   return (
                   <div key={platform} className="border border-gray-200 rounded-lg p-4 sm:p-6">
                     <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -2653,6 +2925,8 @@ export default function CreatorOnboardingForm() {
                 const payload = {
                   ...formData,
                   type: formData.type?.trim() ?? "",
+                  // Links created influencers to the connected InstagramAccount row.
+                  instagramUserId: formData.instagramUserId?.trim() ?? "",
                   inventoryItems: inventoryItemsWithCpm,
                   platformAudienceProof: filteredProofMap,
                   platformCollaborationProof: filteredCollabMap,

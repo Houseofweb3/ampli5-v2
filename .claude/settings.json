@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la modules)",
+      "Bash(ls -la features)",
+      "Bash(ls -la routes)",
+      "Bash(ls -la controllers)",
+      "Bash(ls -la)",
+      "Bash(cat MEMORY.md)",
+      "Bash(npm install *)",
+      "Bash(node -e \"require\\('node-cron'\\); console.log\\('node-cron OK'\\); console.log\\('types:', require\\('fs'\\).existsSync\\('node_modules/@types/node-cron'\\)\\)\")",
+      "Bash(npm run *)",
+      "Bash(yarn lint *)",
+      "WebFetch(domain:developers.facebook.com)",
+      "WebSearch",
+      "Bash(curl -s -X GET \"https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=FAKE&access_token=IGAAFAKETOKEN\")",
+      "Bash(curl -s -X GET \"https://graph.instagram.com/v22.0/access_token?grant_type=ig_exchange_token&client_secret=FAKE&access_token=IGAAFAKETOKEN\")",
+      "Bash(curl -s -X GET \"https://graph.facebook.com/v22.0/oauth/access_token?grant_type=ig_exchange_token&client_secret=FAKE&access_token=IGAAFAKETOKEN\")",
+      "WebFetch(domain:stackoverflow.com)"
+    ]
+  }
+}
