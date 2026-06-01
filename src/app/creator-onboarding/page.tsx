@@ -393,6 +393,7 @@ export default function CreatorOnboardingForm() {
         toast.error(msg);
       }
     } catch (e) {
+      console.error("Error connecting Instagram:", e);
       setConnectingInstagram(false);
       const msg = "Couldn’t start Instagram login. Please try again in a moment.";
       setInstagramError(msg);
