@@ -41,3 +41,28 @@ export async function getInstagramOAuthUrl(): Promise<InstagramOAuthUrl> {
 export async function disconnectInstagram(igUserId: string): Promise<void> {
   await dashboardClient.post("/web/instagram/disconnect", { igUserId });
 }
+
+export interface YoutubeOAuthUrl {
+  url: string;
+  state: string;
+}
+
+/**
+ * GET /api/v1/web/youtube/oauth-url – no auth. Returns the Google authorize URL for the
+ * "Login with YouTube" popup. The popup posts the connection result back to this window
+ * via postMessage (source: "ampli5-youtube") on completion.
+ */
+export async function getYoutubeOAuthUrl(): Promise<YoutubeOAuthUrl> {
+  const res = await dashboardClient.get<{ success: boolean } & YoutubeOAuthUrl>(
+    "/web/youtube/oauth-url"
+  );
+  return { url: res.data.url, state: res.data.state };
+}
+
+/**
+ * POST /api/v1/web/youtube/disconnect – removes the stored connection + tokens for the
+ * given YouTube channel id. Called by the "Disconnect" button on the form.
+ */
+export async function disconnectYoutube(channelId: string): Promise<void> {
+  await dashboardClient.post("/web/youtube/disconnect", { channelId });
+}

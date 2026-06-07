@@ -29,6 +29,8 @@ import {
   submitCreatorOnboarding,
   getInstagramOAuthUrl,
   disconnectInstagram,
+  getYoutubeOAuthUrl,
+  disconnectYoutube,
 } from "@/src/services/creatorOnboardingApi";
 import {
   buildOnboardingFolderName,
@@ -289,6 +291,10 @@ export default function CreatorOnboardingForm() {
   const [connectingInstagram, setConnectingInstagram] = useState<boolean>(false);
   /** UI-only: friendly, client-ready error shown in the Instagram card after a failed connect. */
   const [instagramError, setInstagramError] = useState<string>("");
+  /** UI-only: true while the "Login with YouTube" popup round-trip is in flight. */
+  const [connectingYoutube, setConnectingYoutube] = useState<boolean>(false);
+  /** UI-only: friendly, client-ready error shown in the YouTube card after a failed connect. */
+  const [youtubeError, setYoutubeError] = useState<string>("");
 
   useEffect(() => {
     if (!formData.platforms?.includes("Instagram")) {
@@ -380,6 +386,93 @@ export default function CreatorOnboardingForm() {
     return () => window.removeEventListener("message", onMessage);
   }, [updateFormData]);
 
+  // Listen for the YouTube OAuth popup result (postMessage from the backend callback page).
+  // On success, store the verified channel summary + auto-fill the YouTube URL/handle/subs.
+  useEffect(() => {
+    const allowedOrigins = [
+      (() => {
+        try {
+          return new URL(process.env.NEXT_PUBLIC_DASHBOARD_API_URL || "").origin;
+        } catch {
+          return "";
+        }
+      })(),
+      process.env.NEXT_PUBLIC_IG_CALLBACK_ORIGIN || "",
+    ].filter(Boolean);
+
+    const onMessage = (event: MessageEvent) => {
+      if (allowedOrigins.length > 0 && !allowedOrigins.includes(event.origin)) return;
+      const data = event.data as
+        | {
+            source?: string;
+            success?: boolean;
+            reason?: string;
+            youtube?: Record<string, unknown>;
+            error?: string;
+          }
+        | undefined;
+      // Only handle our own OAuth popup messages (marker set by the backend callback).
+      if (!data || typeof data !== "object" || data.source !== "ampli5-youtube") return;
+
+      setConnectingYoutube(false);
+      if (data.success === false || !data.youtube) {
+        const friendly =
+          data.error ||
+          (data.reason === "cancelled"
+            ? "YouTube login was cancelled."
+            : "We couldn’t connect your YouTube channel. Please try again.");
+        setYoutubeError(friendly);
+        toast.error(friendly);
+        return;
+      }
+      setYoutubeError("");
+
+      const yt = data.youtube as {
+        channelId: string;
+        title: string;
+        customUrl?: string;
+        subscriberCount: number;
+        videoCount?: number;
+        viewCount?: number;
+        topCountries?: { key: string; value: number }[];
+        age?: { key: string; value: number }[];
+        gender?: { key: string; value: number }[];
+        note?: string;
+      };
+
+      const channelUrl = yt.customUrl
+        ? `https://www.youtube.com/${yt.customUrl.startsWith("@") ? yt.customUrl : "@" + yt.customUrl}`
+        : `https://www.youtube.com/channel/${yt.channelId}`;
+
+      updateFormData({
+        youtubeConnected: true,
+        youtubeChannelId: yt.channelId,
+        youtubeVerified: {
+          title: yt.title,
+          customUrl: yt.customUrl,
+          subscriberCount: yt.subscriberCount,
+          videoCount: yt.videoCount,
+          viewCount: yt.viewCount,
+          topCountries: yt.topCountries,
+          age: yt.age,
+          gender: yt.gender,
+        },
+        youtubeHandle: yt.customUrl || yt.title,
+        youtubeSubscribers: String(yt.subscriberCount ?? ""),
+        platformUrls: {
+          ...(useCreatorOnboardingFormStore.getState().formData.platformUrls || {}),
+          Youtube: channelUrl,
+        },
+      });
+      setErrors((prev) => ({ ...prev, platformUrl_Youtube: "" }));
+      toast.success(`Connected ${yt.title}`);
+      if (yt.note) toast(yt.note, { icon: "ℹ️" });
+    };
+
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [updateFormData]);
+
   const handleConnectInstagram = async () => {
     try {
       setInstagramError("");
@@ -415,6 +508,45 @@ export default function CreatorOnboardingForm() {
         await disconnectInstagram(igUserId);
       } catch (e) {
         // Local state is already cleared; surface a non-blocking notice.
+        toast.error("Disconnected locally, but the server cleanup failed. Please retry if it reconnects.");
+      }
+    }
+  };
+
+  const handleConnectYoutube = async () => {
+    try {
+      setYoutubeError("");
+      setConnectingYoutube(true);
+      const { url } = await getYoutubeOAuthUrl();
+      const popup = window.open(url, "yt_oauth", "width=600,height=700");
+      if (!popup) {
+        setConnectingYoutube(false);
+        const msg = "Popup blocked. Please allow popups for this site and try again.";
+        setYoutubeError(msg);
+        toast.error(msg);
+      }
+    } catch (e) {
+      console.error("Error connecting YouTube:", e);
+      setConnectingYoutube(false);
+      const msg = "Couldn’t start YouTube login. Please try again in a moment.";
+      setYoutubeError(msg);
+      toast.error(msg);
+    }
+  };
+
+  const handleDisconnectYoutube = async () => {
+    const channelId = formData.youtubeChannelId;
+    // Clear local state immediately; revoke the stored connection on the backend too.
+    updateFormData({
+      youtubeConnected: false,
+      youtubeChannelId: "",
+      youtubeVerified: undefined,
+    });
+    setYoutubeError("");
+    if (channelId) {
+      try {
+        await disconnectYoutube(channelId);
+      } catch (e) {
         toast.error("Disconnected locally, but the server cleanup failed. Please retry if it reconnects.");
       }
     }
@@ -563,6 +695,10 @@ export default function CreatorOnboardingForm() {
           // Instagram audience data comes from the verified OAuth connection, so skip
           // the manual screenshot requirement when the creator has connected Instagram.
           if (platform === "Instagram" && formData.instagramConnected) {
+            continue;
+          }
+          // Same for YouTube: skip manual screenshots when connected via OAuth.
+          if (platform === "Youtube" && formData.youtubeConnected) {
             continue;
           }
           const proof = (formData.platformAudienceProof || {})[platform];
@@ -946,11 +1082,13 @@ export default function CreatorOnboardingForm() {
                     const hasError = !!errors[errKey];
                     const isInstagram = platform === "Instagram";
                     const igConnected = isInstagram && !!formData.instagramConnected;
+                    const isYoutube = platform === "Youtube";
+                    const ytConnected = isYoutube && !!formData.youtubeConnected;
                     return (
                       <div
                         key={platform}
                         className={`flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-lg transition-all border-2 ${
-                          isInstagram ? "sm:flex-wrap" : ""
+                          isInstagram || isYoutube ? "sm:flex-wrap" : ""
                         } ${
                           isSelected
                             ? "border-[#7B46F8] bg-white"
@@ -1017,9 +1155,9 @@ export default function CreatorOnboardingForm() {
                             }}
                             placeholder="Enter URL"
                             disabled={!isSelected}
-                            readOnly={igConnected}
+                            readOnly={igConnected || ytConnected}
                             className={`flex-1 min-w-0 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#7B46F8] focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-70 ${
-                              igConnected ? "bg-gray-50 cursor-not-allowed" : ""
+                              igConnected || ytConnected ? "bg-gray-50 cursor-not-allowed" : ""
                             } ${hasError ? "border-red-500" : "border-gray-300"}`}
                           />
                         </div>
@@ -1088,6 +1226,73 @@ export default function CreatorOnboardingForm() {
                                 </button>
                                 {instagramError && (
                                   <p className="mt-2 text-sm text-red-600">{instagramError}</p>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        )}
+                        {isYoutube && isSelected && (
+                          <div className="w-full basis-full">
+                            {ytConnected ? (
+                              (() => {
+                                const v = formData.youtubeVerified;
+                                const top = (
+                                  rows?: { key: string; value: number }[]
+                                ) => rows?.[0]?.key;
+                                const details = [
+                                  top(v?.topCountries) && `Top country: ${top(v?.topCountries)}`,
+                                  top(v?.age) && `Top age: ${top(v?.age)}`,
+                                  top(v?.gender) && `Top gender: ${top(v?.gender)}`,
+                                ].filter(Boolean) as string[];
+                                return (
+                                  <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2">
+                                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                                      <span className="text-sm text-green-800">
+                                        ✓ Connected{" "}
+                                        <span className="font-semibold">{v?.title}</span>
+                                        {typeof v?.subscriberCount === "number" && (
+                                          <>
+                                            {" · "}
+                                            {v.subscriberCount.toLocaleString()} subscribers
+                                          </>
+                                        )}
+                                        <span className="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                                          verified
+                                        </span>
+                                      </span>
+                                      <button
+                                        type="button"
+                                        onClick={handleDisconnectYoutube}
+                                        className="self-start text-sm font-medium text-green-700 underline hover:text-green-900"
+                                      >
+                                        Disconnect
+                                      </button>
+                                    </div>
+                                    {details.length > 0 ? (
+                                      <p className="mt-1 text-xs text-green-700">
+                                        {details.join("  ·  ")}
+                                      </p>
+                                    ) : (
+                                      <p className="mt-1 text-xs text-green-700">
+                                        Audience demographics need more channel activity (views over
+                                        the last year).
+                                      </p>
+                                    )}
+                                  </div>
+                                );
+                              })()
+                            ) : (
+                              <>
+                                <button
+                                  type="button"
+                                  onClick={handleConnectYoutube}
+                                  disabled={connectingYoutube}
+                                  className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-[#7B46F8] to-red-500 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                                >
+                                  {connectingYoutube ? "Connecting…" : "Login with YouTube"}
+                                </button>
+                                {youtubeError && (
+                                  <p className="mt-2 text-sm text-red-600">{youtubeError}</p>
                                 )}
                               </>
                             )}
@@ -2166,6 +2371,68 @@ export default function CreatorOnboardingForm() {
                     );
                   }
 
+                  // YouTube, when connected via OAuth, shows verified imported
+                  // demographics instead of the manual screenshot uploaders.
+                  if (platform === "Youtube" && formData.youtubeConnected) {
+                    const v = formData.youtubeVerified;
+                    const fmt = (rows?: { key: string; value: number }[]) =>
+                      (rows || [])
+                        .slice(0, 3)
+                        .map((r) => `${r.key} (${r.value.toLocaleString()})`)
+                        .join(", ") || "—";
+                    return (
+                      <div
+                        key={platform}
+                        className="border border-green-200 bg-green-50/40 rounded-lg p-4 sm:p-6"
+                      >
+                        <div className="mb-4 flex flex-wrap items-center gap-2">
+                          {platformDisplay.iconSrc ? (
+                            <Image
+                              src={platformDisplay.iconSrc}
+                              alt=""
+                              width={22}
+                              height={22}
+                              className="h-5 w-5 object-contain"
+                            />
+                          ) : null}
+                          <h4 className="text-base font-semibold text-gray-900">
+                            {platformDisplay.shortLabel}
+                          </h4>
+                          <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
+                            ✓ Verified via YouTube
+                          </span>
+                        </div>
+                        <p className="mb-3 text-sm text-gray-600">
+                          Audience data was imported directly from{" "}
+                          <span className="font-semibold">{v?.title}</span> — no screenshots
+                          needed.
+                        </p>
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                          <div className="rounded-md bg-white p-3 text-sm">
+                            <span className="font-medium text-gray-900">Top countries:</span>{" "}
+                            <span className="text-gray-600">{fmt(v?.topCountries)}</span>
+                          </div>
+                          <div className="rounded-md bg-white p-3 text-sm">
+                            <span className="font-medium text-gray-900">Subscribers:</span>{" "}
+                            <span className="text-gray-600">
+                              {typeof v?.subscriberCount === "number"
+                                ? v.subscriberCount.toLocaleString()
+                                : "—"}
+                            </span>
+                          </div>
+                          <div className="rounded-md bg-white p-3 text-sm">
+                            <span className="font-medium text-gray-900">Age:</span>{" "}
+                            <span className="text-gray-600">{fmt(v?.age)}</span>
+                          </div>
+                          <div className="rounded-md bg-white p-3 text-sm">
+                            <span className="font-medium text-gray-900">Gender:</span>{" "}
+                            <span className="text-gray-600">{fmt(v?.gender)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+
                   return (
                   <div key={platform} className="border border-gray-200 rounded-lg p-4 sm:p-6">
                     <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -2928,6 +3195,8 @@ export default function CreatorOnboardingForm() {
                   type: formData.type?.trim() ?? "",
                   // Links created influencers to the connected InstagramAccount row.
                   instagramUserId: formData.instagramUserId?.trim() ?? "",
+                  // Links created influencers to the connected YoutubeAccount row.
+                  youtubeChannelId: formData.youtubeChannelId?.trim() ?? "",
                   inventoryItems: inventoryItemsWithCpm,
                   platformAudienceProof: filteredProofMap,
                   platformCollaborationProof: filteredCollabMap,

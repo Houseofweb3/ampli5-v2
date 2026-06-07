@@ -32,6 +32,23 @@ interface CreatorOnboardingFormData {
     gender?: { key: string; value: number }[];
   };
 
+  // YouTube Login (Google OAuth) — set after the "Login with YouTube" popup round-trip.
+  /** YouTube channel id from a connect; sent in submit payload to link the YoutubeAccount row. */
+  youtubeChannelId: string;
+  /** True once the creator has connected YouTube via OAuth. */
+  youtubeConnected: boolean;
+  /** Verified channel + audience summary echoed back from the OAuth popup (read-only display). */
+  youtubeVerified?: {
+    title: string;
+    customUrl?: string;
+    subscriberCount: number;
+    videoCount?: number;
+    viewCount?: number;
+    topCountries?: { key: string; value: number }[];
+    age?: { key: string; value: number }[];
+    gender?: { key: string; value: number }[];
+  };
+
   // Step 2: Industry selection
   industries: string[];
 
@@ -146,6 +163,9 @@ const initialFormData: CreatorOnboardingFormData = {
   instagramUserId: "",
   instagramConnected: false,
   instagramVerified: undefined,
+  youtubeChannelId: "",
+  youtubeConnected: false,
+  youtubeVerified: undefined,
   industries: [],
   categories: [],
   inventoryItems: {},
